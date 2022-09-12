@@ -1,0 +1,143 @@
+<?php
+    // pass cors header to allow from cross-origin
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json; charset=UTF-8");
+    header("Access-Control-Allow-Methods: POST");// OPTIONS,GET,POST,PUT,DELETE
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    Header("Cache-Control: no-cache");
+
+    include "../cartsfunction.php";
+    
+  
+
+    $endpoint = basename($_SERVER['PHP_SELF']);
+    $method = getenv('REQUEST_METHOD');
+
+    if ($method == 'POST') {
+
+        // Get company private key
+        $query = 'SELECT * FROM apidatatable';
+        $stmt = $connect->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row =  mysqli_fetch_assoc($result);
+        $companykey = $row['privatekey'];
+        $servername = $row['servername'];
+        $expiresIn = $row['tokenexpiremin'];
+
+        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        $user_pubkey = $decodedToken->usertoken;
+
+        // send error if ur is not in the database
+        if (!checkIfIsAdmin($connect, $user_pubkey)){
+            // send user not found response to the user
+            $errordesc =  "Not Authorized";
+            $linktosolve = 'https://';
+            $hint = "User not authorized to change user status";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+
+        // $user_id = getUserWithPubKey($connect, $user_pubkey);
+        
+        // Check if the user id field is passed
+        if (!isset($_POST['user_id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required email field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $user_id = cleanme($_POST['user_id']);
+        }
+
+        // Check if the complain id field is passed
+        if (!isset($_POST['id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required id field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $id = cleanme($_POST['id']);
+        }
+
+
+         // check if none of the field is empty
+         if ( empty($user_id) ){
+
+            $errordesc = "Insert all fields";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass value to the user id, recipient name, recipient phone, local government area, state, country,
+            address, and address number in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+
+        // check if id is a valid one
+        if ( !checkIfUserisInDB($connect, $user_id) ){
+            $errordesc = "User not in the db";
+            $linktosolve = 'https://';
+            $hint = "Kindly a pass a valid user in the database ";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+
+        if (!checkifFieldExist($connect, "usercomplains" , "id" , $id) ){
+            $errordesc = "Invalid Complain id";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required email field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+        
+        $seen = "1";
+
+        $userQuery = 
+            'UPDATE
+                `usercomplains`
+            SET
+                `adminseen` = ?
+            WHERE
+                `id` = ? AND `user_id` = ? ';
+        $updateStmt = $connect->prepare($userQuery);
+        $updateStmt->bind_param("sss", $seen ,$id ,$user_id);
+
+        if ( $updateStmt->execute() ) {
+            $updateStmt->close();
+
+            $text= "Complain successfully";
+            $status = true;
+            $data = [];
+            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+            respondOK($successData);
+
+        }else{
+            $errordesc =  $updateStmt->error;
+            $linktosolve = 'https://';
+            $hint = "500 code internal error, check ur database connections";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondInternalError($data);
+        }
+
+    }else{
+
+        // Send an error response because a wrong method was passed 
+        $errordesc = "Method not allowed";
+        $linktosolve = 'https://';
+        $hint = "This route only accepts POST request, kindly pass a post request";
+        $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        respondMethodNotAlowed($data);
+        
+    }
+
+
+?>
