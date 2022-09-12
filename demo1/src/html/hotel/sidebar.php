@@ -92,6 +92,34 @@
                                         </li>
                                     </ul>
                                 </li><!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle" data-bs-original-title="" title="">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
+                                        <span class="nk-menu-text">Integration</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/hotel/paystack.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">Pay Stack</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/hotel/monify.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">Monify</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/hotel/kudi.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">KudiApi</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/hotel/sendgrid.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">Send Grid</span></a>
+                                        </li>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/hotel/termiapi.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">Termi Api</span></a>
+                                        </li>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/hotel/smartsolution.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">Smart Solution</span></a>
+                                        </li>
+                                    </ul><!-- .nk-menu-sub -->
+                                </li>
                                 <li class="nk-menu-item">
                                     <a href="html/hotel/support.php" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-chat-circle-fill"></em></span>

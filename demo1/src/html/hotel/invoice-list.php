@@ -3,7 +3,9 @@
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
-    <div class="nk-app-root">
+    <div id="admin">
+        <?php include "loading.php"; ?>
+        <div class="nk-app-root">
         <!-- main @s -->
         <div class="nk-main ">
             <!-- sidebar @s -->
@@ -432,6 +434,9 @@
             </div><!-- .modal-content -->
         </div><!-- .modla-dialog -->
     </div><!-- .modal -->
+
+    </div>
+    
     <!-- JavaScript -->
     <script src="./assets/js/bundle.js?ver=3.0.3"></script>
     <script src="./assets/js/scripts.js?ver=3.0.3"></script>
