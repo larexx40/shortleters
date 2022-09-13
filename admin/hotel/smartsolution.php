@@ -363,8 +363,8 @@
     </div>
     <!-- app-root @e -->
     <!-- JavaScript -->
-    <script src="./assets/js/bundle.js?ver=3.0.3"></script>
-    <script src="./assets/js/scripts.js?ver=3.0.3"></script>
+    <script src="../assets/js/bundle.js?ver=3.0.3"></script>
+    <script src="../assets/js/scripts.js?ver=3.0.3"></script>
     <?php include "vue-script.php"; ?>
 </body>
 
