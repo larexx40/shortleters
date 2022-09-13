@@ -14,7 +14,7 @@
     $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
 
-    if($method =='GET'){
+    if($method =='POST'){
         //get company details to decode usertoken
         $detailsID =1;
         $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
@@ -40,82 +40,73 @@
         }
         $adminid =checkIfIsAdmin($connect, $adminpubkey);
 
-        if(!isset($_GET['id'])){
-            $errordesc="id required";
+        //confirm if building id is passed
+        if(!isset($_POST['buildingTypeid'])){
+            $errordesc="Building type id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="pass in valid id";
-            $method=getenv('REQUEST_METHOD');
+            $text="Pass in building type  id";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-        }else{
-            $id = cleanme($_GET['id']);
+            
+        }else {
+            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
         }
-        //check if its numeric
-        if(!is_numeric($id)){
-            $errordesc = "Invalid id passed";
-            $linktosolve = 'https://';
-            $hint = "id is always numeric, Kindly pass valid id";
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="pass in valid id";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-        }
-        if(empty($id)){
+
+        //confirm if building type id is not empty
+        if(empty($buildingTypeid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please fill all require address information";
+            $text="Please pass in the building type id ";
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+        }
+
+        //delete Building type
+        $sqlQuery = "DELETE FROM `building_types` WHERE build_id =?";
+        $stmt = $connect->prepare($sqlQuery);
+        $stmt->bind_param("s",$buildingTypeid);
+        $stmt->execute();
+        $affectedRow =$stmt->affected_rows;
+
+        if(!$stmt->execute()){
+            //DB error || invalid input
+            $errordesc=$stmt->error;
+            $linktosolve="htps://";
+            $hint=["Ensure database connection is on","Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Database comection error";
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondInternalError($data);
+        }
+        if($affectedRow > 0){
+            // return success message
+            $maindata=[];
+            $errordesc = " ";
+            $linktosolve = "htps://";
+            $hint = ["Building Type deleted from the database"];
+            $errordata = [];
+            $text = "Building type successfully deleted";
+            $status = true;
+            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+            respondOK($data);
+        }else{
+            //id not found response
+            $errordesc="Building type id not found";
+            $linktosolve="htps://";
+            $hint='Building type id not in database';
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Building type id not found";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-        }else {
-            //delete blog
-            $sqlQuery = "DELETE FROM `blog` WHERE id =?";
-            $stmt = $connect->prepare($sqlQuery);
-            $stmt->bind_param("s",$id);
-            $stmt->execute();
-            $affectedRow =$stmt->affected_rows;
-
-            if(!$stmt->execute()){
-                //DB error || invalid input
-                $errordesc=$stmt->error;
-                $linktosolve="htps://";
-                $hint=["Ensure database connection is on","Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-                $errordata=returnError7003($errordesc,$linktosolve,$hint);
-                $text="Database comection error";
-                $method=getenv('REQUEST_METHOD');
-                $data=returnErrorArray($text,$method,$endpoint,$errordata);
-                respondInternalError($data);
-            }
-            if($affectedRow > 0){
-                // return success message
-                $maindata=[];
-                $errordesc = " ";
-                $linktosolve = "htps://";
-                $hint = ["Blog deleted from the database"];
-                $errordata = [];
-                $text = "Blog successfully deleted";
-                $status = true;
-                $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-                respondOK($data);
-            }else{
-                //id not found response
-                $errordesc="Blog id not found";
-                $linktosolve="htps://";
-                $hint='id not in database';
-                $errordata=returnError7003($errordesc,$linktosolve,$hint);
-                $text="Blog id not found";
-                $method=getenv('REQUEST_METHOD');
-                $data=returnErrorArray($text,$method,$endpoint,$errordata);
-                respondBadRequest($data);
-            }
-
         }
+
+        
     }else {
         // method not allowed
         $errordesc="Method not allowed";
