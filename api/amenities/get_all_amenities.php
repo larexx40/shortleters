@@ -28,7 +28,7 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
+        $admin =  checkIfIsAdmin($connect, $pubkey);
         // $agent = getShopWithPubKey($connect, $user_pubkey);
         // $user = getUserWithPubKey($connect, $user_pubkey);
 

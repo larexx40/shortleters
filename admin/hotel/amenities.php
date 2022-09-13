@@ -24,9 +24,9 @@
                                     <div class="nk-block-head nk-block-head-sm">
                                         <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Stock Details</h3>
+                                                <h3 class="nk-block-title page-title">Amenities Details</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Here is our verious stock list.</p>
+                                                    <p>Here is our verious amenities details.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
@@ -36,8 +36,9 @@
                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul class="link-list-opt no-bdr">
-                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Stock</span></a></li>
-                                                                    <li><a href="#"><span>Import Expenses</span></a></li>
+                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Amenities</span></a></li>
+                                                                    <!-- <li><a href="#"><span>View Amenities</span></a></li>
+                                                                    <li><a href="#"><span>Delete Amenities</span></a></li> -->
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -52,7 +53,7 @@
                                                 <div class="card-inner position-relative card-tools-toggle">
                                                     <div class="card-title-group">
                                                         <div class="card-tools">
-                                                            <div class="form-inline flex-nowrap gx-3">
+                                                            <!-- <div class="form-inline flex-nowrap gx-3">
                                                                 <div class="form-wrap w-150px">
                                                                     <select class="form-select js-select2 js-select2-sm" data-search="off" data-placeholder="Bulk Action">
                                                                         <option value="">Bulk Action</option>
@@ -64,8 +65,10 @@
                                                                     <span class="d-none d-md-block"><button class="btn btn-dim btn-outline-light disabled">Apply</button></span>
                                                                     <span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span>
                                                                 </div>
-                                                            </div><!-- .form-inline -->
-                                                        </div><!-- .card-tools -->
+                                                            </div> -->
+                                                        </div>
+                                                        <!-- .form-inline -->
+                                                        <!-- .card-tools -->
                                                         <div class="card-tools me-n1">
                                                             <ul class="btn-toolbar gx-1">
                                                                 <li>
@@ -170,21 +173,20 @@
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div class="card-inner p-0">
+                                                <div v-if="all_amenities" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
-                                                            <div class="nk-tb-col nk-tb-col-check">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid">
                                                                     <label class="custom-control-label" for="uid"></label>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Product Name</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Quantity</span></div>
-                                                            <div class="nk-tb-col tb-col-sm"><span class="sub-text">Price (pcs / KG)</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
-                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <div class="dropdown">
                                                                     <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-plus"></em></a>
                                                                     <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
@@ -210,15 +212,15 @@
                                                                         </ul>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                         </div><!-- .nk-tb-item -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
+                                                        <div v-for="(item, index) in all_amenities" class="nk-tb-item">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid1">
                                                                     <label class="custom-control-label" for="uid1"></label>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="nk-tb-col tb-col-mb">
                                                                 <span><a href="#">#565601</a></span>
                                                             </div>
@@ -227,9 +229,6 @@
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span>70 pcs</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="30.00">
-                                                                <span class="tb-amount">$30.00<span class="currency">USD</span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span class="tb-status text-success">Available</span>
@@ -518,6 +517,54 @@
                                                         </div><!-- .nk-tb-item  -->
                                                     </div><!-- .nk-tb-list -->
                                                 </div><!-- .card-inner -->
+
+                                                <!-- Table when record not found -->
+                                                <div v-if="!all_amenities" class="card-inner p-0">
+                                                    <div class="nk-tb-list nk-tb-ulist">
+                                                        <div class="nk-tb-item nk-tb-head">
+                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
+                                                        </div><!-- .nk-tb-item -->
+                                                        <div  class="nk-tb-item">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
+                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                                    <input type="checkbox" class="custom-control-input" id="uid1">
+                                                                    <label class="custom-control-label" for="uid1"></label>
+                                                                </div>
+                                                            </div> -->
+                                                            <div class="nk-tb-col tb-col-mb">
+                                                                <span><a href="#">#565601</a></span>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>Soup spoon <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                <span>70 pcs</span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                <span class="tb-status text-success">Available</span>
+                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-tools">
+                                                                <ul class="nk-tb-actions gx-1">
+                                                                    <li>
+                                                                        <div class="drodown">
+                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                                <ul class="link-list-opt no-bdr">
+                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
+                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div><!-- .nk-tb-item  -->
+                                                    </div><!-- .nk-tb-list -->
+                                                </div>
+                                                
                                                 <div class="card-inner">
                                                     <div class="nk-block-between-md g-3">
                                                         <div class="g">

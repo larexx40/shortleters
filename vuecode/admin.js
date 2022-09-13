@@ -143,7 +143,7 @@ let admin = Vue.createApp({
             track_id: null,
             order_status: null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMwODI3NjIsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzA4Mjc2MiwiZXhwIjoxNjYzMTU2NTYyLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.jUSFS6c6qieJ9ByTKUTLtCqkrdPKYn524inz2YxXBb808NtYQgDWCpIOYgKzYSL50Fydpga-6TiBhoNTQ2JCUA",
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMwODUwNDAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzA4NTA0MCwiZXhwIjoxNjYzMTU4ODQwLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.ULESpOn4NDSX9xCxSoUxwRPgK31etppmk3BXlJZ7k7g6Mbz-6ElGv5gM1XfpnU9IKJGqP5L1S_bbvnA7UhVK4A",
             all_amenities: null,
             email: null,
             ref_link: null,
@@ -232,36 +232,7 @@ let admin = Vue.createApp({
         }
     },
     async created() {
-        this.getToken();
-        let adminid = (localStorage.getItem("adminid")) ? localStorage.getItem("adminid"): null;
-        let logisticid = (localStorage.getItem("logisticid")) ? localStorage.getItem("logisticid"): null;
-        let orderRefno = (localStorage.getItem("orderRefno")) ? localStorage.getItem("orderRefno"): null;
-        //console.log('page', webPage);
-        this.loading = true;
-        this.blogs = null;
-        this.logistics = null;
-        this.admins = null;
-        this.orders = null;
-        this.order_details = null;
-        if(webPage == 'posts.php'){
-            //console.log('token', this.authToken);
-            //console.log("in posts");
-            await this.getAllBlog();
-        }
-
-        if(webPage == 'logistics.php'){
-            //console.log("in logistics");
-            await this.getAllLogistics();
-        }
-
-        if(webPage == "admins.php"){ 
-            //console.log("in Admin");
-            await this.getAllAdmin();
-        }
-        if(webPage == 'orders.php'){
-            //console.log("in orders");
-            await this.getAllCarts();
-        }
+        // this.getToken();
 
         if(webPage == 'admin-details.php'){
             //get adminid from localstorage
@@ -271,25 +242,6 @@ let admin = Vue.createApp({
                 window.location.href = 'admins.php'
             }
             
-        }
-        if(webPage == 'logistics-details.php'){
-            //get logisticid from localstorage
-            if(logisticid){
-                await this.getLogisticByid(logisticid)
-            }else{
-                window.location.href = 'logistics.php'
-            }
-        }
-        if(webPage == 'invoice-details.php' || webPage == 'invoice-print.php' ){
-            //get orderrefno from localStorage
-            if(orderRefno){
-                //console.log('orderRefno ', orderRefno);
-                this.loading = true;
-                await this.getCartByOrderRefno(orderRefno);
-                await this.getOrderByOrderRefno(orderRefno);
-            }else{
-                window.location.href = 'orders.php';
-            }
         }
         if(webPage =='monify.php'){
             await this.getAllMonify()
@@ -312,19 +264,6 @@ let admin = Vue.createApp({
         if(webPage == 'addresses.php'){
             await this.getAllAddresses();
         }
-        //end of 2nd merge
-        if(webPage == 'single-product.php'){
-            if(productid){
-                await this.getProductReview(id);
-            }else{
-                window.location.href=""
-            }
-        }
-        if(webPage == 'index.php'){
-            await this.getRecentOrder();
-            await this.getTopProductOrdered();
-            await this.getstoreStatistics();
-        }
         
     },
     methods: {
@@ -340,7 +279,7 @@ let admin = Vue.createApp({
             const options = {
                 method: "GET",
                 headers: { 
-                    //"Content-type": "application/json",
+                    "Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
                 },
                 url
@@ -592,60 +531,12 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async getstoreStatistics(){
-            const url = `${this.baseUrl}api/admin/storeStatistics.php`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-
-            try {
-                this.loading = true;
-                let response = await axios(options)
-                if ( response.data.status ){
-                    this.storeStatistics = response.data.data.storeStatistics;
-                    
-
-                }else {
-                    this.storeStatistics=null;
-                }
-                
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status === 400){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                        //console.log("error", this.error);
-                    }
-                    if (error.response.status === 405){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                        //console.log("error", this.error);
-                    }
-                    if (error.response.status === 500){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                        //console.log("error", this.error);
-                    }
-                }else{
-                    this.error = error.message || "Error processing request"
-                    new Toasteur().error(this.error);;
-                    //console.log("error", this.error);
-                }
-            }finally {
-                this.loading = false;
-            }
-        },
         async getAdminDetails(){
             const url = `${this.baseUrl}api/admin/getAdminDetails.php`;
             const options = {
                 method: "GET",
                 headers: { 
-                    //"Content-type": "application/json",
+                    "Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
                 },
                 url
@@ -661,37 +552,6 @@ let admin = Vue.createApp({
                     const strings = this.admin_details.name.split(" ");
                     const initials = `${strings[0].charAt(0)} ${strings[1].charAt(0)}`;
                     this.admin_initials = initials.toUpperCase();
-                    await this.getRecentOrder();
-
-                    if ( webPage === "complaints.php"){
-                        await this.comp_getAllComplains();
-                    }
-                    if (webPage === "sliders.php"){
-                        await this.getAllSliders();
-                        await this.getAllProducts(3, 4);
-                    }
-                    if (webPage === "shops.php"){
-                        await this.getAllShops();
-                    }
-                    if (webPage === "customers.php"){
-                        await this.getAllUsers();
-                    }
-                    if (webPage === "transactions.php"){
-                        await this.getAllTransactions();
-                    }
-                    if (webPage === "products.php"){
-                        await this.getAllProducts();
-                    }
-                    if ( webPage === "category.php" ){
-                        await this.getAllCategories();
-                    }
-                    if ( webPage === "sub_categories.php" ){
-                        await this.getAllCategories(4,4);
-                        await this.getAllSubCategories();
-                    }
-                    if ( webPage === "brands.php" ){
-                        await this.getAllBrands();
-                    }
                 }
                 
             } catch (error) {
@@ -1053,1155 +913,255 @@ let admin = Vue.createApp({
             
         },
 
-        //logistics
-        async addLogistic(){
-            if(this.logisticEmail == null || this.logisticName == null ||this.logisticPassword == null){
-                new Toasteur().error("Kindly fill all fields")
-            }
-
-            let data = new FormData();
-            data.append('email', this.logisticEmail );
-            data.append('password', this.logisticPassword );
-            data.append('name', this.logisticName );
-
-            const url = `${this.baseUrl}api/logistics/addLogistic.php`;
-
-            const options = {
-                method: "POST",
-                data,
-                url,
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                }
-            }
-
-            try {
-                this.loading = true;
-                const response = await axios(options); 
-                if(response.data.status){
-                    await this.getAllLogistics();
-                    Swal.fire(response.data.text);
-                    
-                }
-            } catch (error) {
-                ////console.log(error);
-                if (error.response.status == 400){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-
-                if (error.response.status == 401){
-                    const errorMsg = "User not Authorized";
-                    new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
-                    return
-                }
-
-                if (error.response.status == 405){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-
-                if (error.response.status == 500){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-            }finally {
-                this.loading = false;
-            }
-        },
-        async deleteLogistics(id){
-            let data = new FormData();
-            data.append('id', id );
-
-            const url = `${this.baseUrl}api/admin/deleteAdmin.php`;
-
-            const options = {
-                method: "POST",
-                data: data,
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                const response = await axios(options);
-                if(response.data.status){
-                    Swal.fire(response.data.text)
-                }    
-            } catch (error) {
-                ////console.log(error);
-                if (error.response.status == 400){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-
-                if (error.response.status == 401){
-                    const errorMsg = "User not Authorized";
-                    new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
-                    return
-                }
-
-                if (error.response.status == 405){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-
-                if (error.response.status == 500){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getAllLogistics(){
-            let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 4;
-            const url = `${this.baseUrl}api/logistics/getAllLogistic.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true;
-                const response = await axios(options);
-                if(response.data.status){
-                    this.logistics = response.data.data.logistics;
-                    this.currentPage =response.data.data.page;
-                    this.totalData =response.data.data.total_data;
-                    this.totalPage =response.data.data.totalPage;
-                    //console.log("ApiLogistics", response.data.data.logistics);
-                }else{
-                    this.logistics = null;
-                    this.currentPage =0;
-                    this.totalData =0;
-                    this.totalPage =0;
-                }     
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getLogisticByid(logisticid){
-            //console.log("logisticid", logisticid);
-            const url = `http://localhost/cartynew/api/logistics/getLogisticDetails.php?logisticid=${logisticid}`;
-            //console.log("URL", url);
-            const options = {
-                method: "GET",
-                headers: { "Authorization": `Bearer ${this.authToken}` },
-                url
-            }
-            try {
-                this.logistics_details = null;
-                this.loading = true;
-                let response = await axios(options)
-                if ( response.data.status ){
-                    //console.log('logisticDetails', response.data.data);
-                    this.logistic_details = response.data.data;
-                }
-                
-            } catch (error) {
-                //console.log(error);
-                if (error.response){
-                    if (error.response.status === 400){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                    }
-                    if (error.response.status === 405){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                    }
-                    if (error.response.status === 500){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                    }
-                }else{
-                    this.error = error.message || "Error processing request"
-                    new Toasteur().error(this.error);;
-                }
-            }finally {
-                this.loading = false;
-            }
-        },
-
-        //.....locations.....
-        async getLogisticLocations(logisticid, load = 1){
-            let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.location_currentPage )? this.location_currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 2;
-            const url = `${this.baseUrl}api/logistics/location/getLocationByLogisticid.php?logisticid=${logisticid}&noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            //console.log('URL', url);
-            //console.log('page', page);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                if(load ==1 ){
-                    this.loading = true
-                }
-                const response = await axios(options);
-                if(response.data.status){
-                    this.logisticLocations=response.data.data.locations;
-                    //console.log('ApiLocation', response.data.data.locations); 
-                    this.location_currentPage =response.data.data.page;
-                    this.location_totalData =response.data.data.total_data;
-                    this.location_totalPage =response.data.data.totalPage;    
-                    //console.log('location_totalPage', this.location_totalPage);
-                    //console.log('location_currentPage', this.location_currentPage);           
-                }else{
-                    this.logisticLocations= null;
-                    //console.log("Location not found");
-                    this.location_currentPage = 0
-                    this.location_totalData =0
-                    this.location_totalPage =0;          
-                }     
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getLogisticPrices(logisticid, load =1){
-            let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.price_currentPage )? this.price_currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 2;
-            const url = `${this.baseUrl}api/logistics/price/getPriceByLogisticid.php?logisticid=${logisticid}&noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            //console.log('URL', url);
-            //console.log('log', page);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                if(load ==1 ){
-                    this.loading = true
-                }
-                const response = await axios(options);
-                if(response.data.status){
-                    this.logisticPrices=response.data.data.logisticPrices;
-                    //console.log('APIPrices', response.data.data.logisticPrices); 
-                    this.price_currentPage =response.data.data.page;
-                    this.price_totalData =response.data.data.total_data;
-                    this.price_totalPage =response.data.data.totalPage;    
-                    //console.log('price_totalPage', this.price_totalPage);
-                    //console.log('price_totalData', this.price_totalData);           
-                }else{
-                    this.logisticPrices= null;
-                    //console.log("Location not found");
-                    this.price_currentPage = 0
-                    this.price_totalData =0
-                    this.price_totalPage =0;          
-                }     
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getLocationByid(id){
-            //console.log("getByid", id);
-            const url = `${this.baseUrl}api/logistics/location/getLocationByid.php?locationid=${id}`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if (response.data.status) {
-                    this.logisticLocation_details= response.data.data;
-                    //console.log(response.data.data);
-                }
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }else{
-                    new Toasteur().error(error.message || "Error processing request");
-                }
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getPriceByid(id){
-            //console.log("addressid", id);
-            const url = `${this.baseUrl}api/logistics/price/getLogisticPriceByid.php?id=${id}`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if (response.data.status) {
-                    this.logisticPrice_details= response.data.data;
-                    //console.log(response.data.data);
-                }
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }else{
-                    new Toasteur().error(error.message || "Error processing request");
-                }
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-
-
-        //cart
-        async getAllCarts(load=1){
-            let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 4;
-            const url = `${this.baseUrl}api/cart/getAllCart.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            //console.log('URL', url);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                if(load ==1 ){
-                    this.loading = true
-                }
-                const response = await axios(options);
-                if(response.data.status){
-                    this.orders=response.data.data.productCarts;
-                    this.currentPage =response.data.data.page;
-                    this.totalData =response.data.data.total_data;
-                    this.totalPage =response.data.data.totalPage;      
-                    //console.log('ApiPrices', response.data.data.productCarts);
-                    //console.log('APITotalPage', response.data.data.totalPage);
-                    //console.log('APICurrentPage', response.data.data.page);
-                    //console.log("APIOrders", response.data.data.productCarts);
-
-                }else{
-                    this.orders= null
-                    this.currentPage = 0;
-                    this.totalData =0;
-                    this.totalPage =0;
-                }     
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async changeCartStatus(id, status){
-            const url = `${this.baseUrl}api/logistics/price/changePriceStatus.php??`;
-            //console.log('URL', url);
-            if(!id && !status){
-                new Toasteur().error("undefined")
-            }else{
-                const data = new FormData();
-                data.append('id', id);
-                data.append('status', status);
-                const options = {
-                    method: "POST",
-                    headers: { 
-                        //"Content-type": "application/json",
-                        "Authorization": `Bearer ${this.authToken}`
-                    },
-                    data,
-                    url
-                }
-                try {
-                    this.loading = true
-                    const response = await axios(options);
-                    if(response.data.status){
-                        new Toasteur().success("Status Changed")
-                        this.getLogisticPrices();      
-                    }else{
-                        this.getLogisticPrices();
-                    }     
-                } catch (error) {
-                    // //console.log(error);
-                    if (error.response){
-                        if (error.response.status == 400){
-                            const errorMsg = error.response.data.text;
-                            new Toasteur().error(errorMsg);
-                            return
-                        }
-        
-                        if (error.response.status == 401){
-                            const errorMsg = "User not Authorized";
-                            new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
-                            return
-                        }
-        
-                        if (error.response.status == 405){
-                            const errorMsg = error.response.data.text;
-                            new Toasteur().error(errorMsg);
-                            return
-                        }
-        
-                        if (error.response.status == 500){
-                            const errorMsg = error.response.data.text;
-                            new Toasteur().error(errorMsg);
-                            return
-                        }
-                    }
-
-                    new Toasteur().error(error.message || "Error processing request")
-
-                    
-                }finally {
-                    this.loading = false;
-                }
-
-            }
-            
-        },
-        
-        async getRecentOrder(){
-            const url = `${this.baseUrl}api/cart/getAllCart.php?noPerPage=5`;
-            //console.log('URL', url);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true;
-                const response = await axios(options);
-                if(response.data.status){
-                    this.recentOrders=response.data.data.productCarts;     
-                    //console.log("RecentOrders", this.recentOrders);
-
-                }else{
-                    this.recentOrders= null;
-                }     
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getTopProductOrdered(){
-            const url = `${this.baseUrl}api/order/topOrders.php`;
-            //console.log('URL', url);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true;
-                const response = await axios(options);
-                if(response.data.status){
-                    this.topProductOrdered=response.data.data.topOrders;     
-                    //console.log("TopOrders", this.topProductOrdered);
-
-                }else{
-                    this.topProductOrdered= null;
-                }     
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async changeCartStatus(id, status){
-            const url = `${this.baseUrl}api/cart/changeCartStatus.php?`;
-            //console.log('URL', url);
-            if(!id && !status){
-                new Toasteur().error("undefined")
-            }else{
-                const data = new FormData();
-                data.append('id', id);
-                data.append('status', status);
-                const options = {
-                    method: "POST",
-                    headers: { 
-                        //"Content-type": "application/json",
-                        "Authorization": `Bearer ${this.authToken}`
-                    },
-                    data,
-                    url
-                }
-                try {
-                    this.loading = true
-                    const response = await axios(options);
-                    if(response.data.status){
-                        new Toasteur().success("Status Changed")
-                        this.getLogisticPrices();      
-                    }else{
-                        this.getLogisticPrices();
-                    }     
-                } catch (error) {
-                    // //console.log(error);
-                    if (error.response){
-                        if (error.response.status == 400){
-                            const errorMsg = error.response.data.text;
-                            new Toasteur().error(errorMsg);
-                            return
-                        }
-        
-                        if (error.response.status == 401){
-                            const errorMsg = "User not Authorized";
-                            new Toasteur().error(errorMsg);
-                            return
-                        }
-        
-                        if (error.response.status == 405){
-                            const errorMsg = error.response.data.text;
-                            new Toasteur().error(errorMsg);
-                            return
-                        }
-        
-                        if (error.response.status == 500){
-                            const errorMsg = error.response.data.text;
-                            new Toasteur().error(errorMsg);
-                            return
-                        }
-                    }
-
-                    new Toasteur().error(error.message || "Error processing request")
-
-                    
-                }finally {
-                    this.loading = false;
-                }
-
-            }
-            
-        },
-        async getCartByOrderRefno(orderRefno){
-            //console.log("orderRefno", orderRefno);
-            const url = `${this.baseUrl}api/cart/getCartByOrderref.php?orderref=${orderRefno}`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if (response.data.status) {
-                    this.order_details= response.data.data;
-                    //console.log(response.data.data);
-                }
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                       new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
-                }else{
-                    new Toasteur().error(error.message || "Error processing request");
-                }
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getOrderByOrderRefno(orderRefno){
-            //console.log('refnoMethod',orderRefno);
-            const url = `${this.baseUrl}api/order/getOrderByOrderref.php?orderrefno=${orderRefno}`;
-            //console.log("orderRefURL", url);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if (response.data.status) {
-                    this.orders= response.data.data.orders;
-                    //console.log(response.data.data.orders);
-                }else{
-                    this.orders = null;
-                }    
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-
-
         //...blog
-        async getAllBlog(load = 1){
-            let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortDays=${this.sortDays}&sortDraft=${this.sortDraft}` : "";  
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+        // async getAllBlog(load = 1){
+        //     let search = (this.search)? `&search=${this.search}`: '';
+        //     let sort = (this.sort != null) ? `&sort=1&sortDays=${this.sortDays}&sortDraft=${this.sortDraft}` : "";  
+        //     let page = ( this.currentPage )? this.currentPage : 1;
+        //     let noPerPage = ( this.per_page ) ? this.per_page : 4;
 
-            const url = `${this.baseUrl}api/blog/getBlog.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            //console.log("getBlogUrl",url);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                if(load == 1){
-                    this.loading = true;
-                }
-                this.blogs = null;
-                let response = await axios(options)
-                if ( response.data.status ){
-                    //console.log('blogs', response.data.data.blogs);
-                    this.currentPage =response.data.data.page;
-                    this.totalData =response.data.data.total_data;
-                    this.totalPage =response.data.data.totalPage;  
-                    this.blogs = response.data.data.blogs;
-                    this.blogCount = response.data.data.total_data;
-                }else{
-                    this.blogs= null;
-                    if(webPage == 'location.php'){
-                        this.currentPage = 0
-                        this.totalData =0
-                        this.totalPage =0;
-                    }   
-                }
+        //     const url = `${this.baseUrl}api/blog/getBlog.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+        //     //console.log("getBlogUrl",url);
+        //     const options = {
+        //         method: "GET",
+        //         headers: { 
+        //             //"Content-type": "application/json",
+        //             "Authorization": `Bearer ${this.authToken}`
+        //         },
+        //         url
+        //     }
+        //     try {
+        //         if(load == 1){
+        //             this.loading = true;
+        //         }
+        //         this.blogs = null;
+        //         let response = await axios(options)
+        //         if ( response.data.status ){
+        //             //console.log('blogs', response.data.data.blogs);
+        //             this.currentPage =response.data.data.page;
+        //             this.totalData =response.data.data.total_data;
+        //             this.totalPage =response.data.data.totalPage;  
+        //             this.blogs = response.data.data.blogs;
+        //             this.blogCount = response.data.data.total_data;
+        //         }else{
+        //             this.blogs= null;
+        //             if(webPage == 'location.php'){
+        //                 this.currentPage = 0
+        //                 this.totalData =0
+        //                 this.totalPage =0;
+        //             }   
+        //         }
                 
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status === 400){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                        //console.log("error", this.error);
-                    }
-                    if (error.response.status === 405){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                        //console.log("error", this.error);
-                    }
-                    if (error.response.status === 500){
-                        this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                        //console.log("error", this.error);
-                    }
-                }else{
-                    this.error = error.message || "Error processing request"
-                    new Toasteur().error(this.error);;
-                    //console.log("error", this.error);
-                }
-            }finally {
-                this.loading = false;
-            }
-        },
-        async blogImage(event){
-            this.blogImage = event.target.files[0];
-        },
-        async addBlog(){
-            //console.log("Headline",this.blogHeadline);
-            //console.log("content", this.blogContent);
-            //console.log("minto read", this.minsToRead);
-            //console.log('blogImage', this.blogImage );
-            if(this.blogHeadline == null || this.blogContent == null || this.minsToRead == null || this.blogImage == null){
-                new Toasteur().error("Kindly fill all fields")
-            }else{
-                let data = new FormData();
-                // blogImage, blogHeadline, howManyMinRead, blogContent, 
-                data.append('blogHeadline', this.blogHeadline );
-                data.append('howManyMinRead', this.minsToRead );
-                data.append('blogContent', this.blogContent );
-                data.append('blogImage', this.blogImage );
+        //     } catch (error) {
+        //         if (error.response){
+        //             if (error.response.status === 400){
+        //                 this.error = error.response.data.error.text
+        //                 new Toasteur().error(this.error);;
+        //                 //console.log("error", this.error);
+        //             }
+        //             if (error.response.status === 405){
+        //                 this.error = error.response.data.error.text
+        //                 new Toasteur().error(this.error);;
+        //                 //console.log("error", this.error);
+        //             }
+        //             if (error.response.status === 500){
+        //                 this.error = error.response.data.error.text
+        //                 new Toasteur().error(this.error);;
+        //                 //console.log("error", this.error);
+        //             }
+        //         }else{
+        //             this.error = error.message || "Error processing request"
+        //             new Toasteur().error(this.error);;
+        //             //console.log("error", this.error);
+        //         }
+        //     }finally {
+        //         this.loading = false;
+        //     }
+        // },
+        // async blogImage(event){
+        //     this.blogImage = event.target.files[0];
+        // },
+        // async addBlog(){
+        //     //console.log("Headline",this.blogHeadline);
+        //     //console.log("content", this.blogContent);
+        //     //console.log("minto read", this.minsToRead);
+        //     //console.log('blogImage', this.blogImage );
+        //     if(this.blogHeadline == null || this.blogContent == null || this.minsToRead == null || this.blogImage == null){
+        //         new Toasteur().error("Kindly fill all fields")
+        //     }else{
+        //         let data = new FormData();
+        //         // blogImage, blogHeadline, howManyMinRead, blogContent, 
+        //         data.append('blogHeadline', this.blogHeadline );
+        //         data.append('howManyMinRead', this.minsToRead );
+        //         data.append('blogContent', this.blogContent );
+        //         data.append('blogImage', this.blogImage );
 
-                const url = `${this.baseUrl}api/blog/addBlog.php`;
-                //console.log("URL", url);
+        //         const url = `${this.baseUrl}api/blog/addBlog.php`;
+        //         //console.log("URL", url);
                 
-                const options = {
-                    method: "POST",
-                    data,
-                    url,
-                    headers: { 
-                        //"Content-type": "application/json",
-                        "Authorization": `Bearer ${this.authToken}`
-                    }
-                }
+        //         const options = {
+        //             method: "POST",
+        //             data,
+        //             url,
+        //             headers: { 
+        //                 //"Content-type": "application/json",
+        //                 "Authorization": `Bearer ${this.authToken}`
+        //             }
+        //         }
 
-                try {
-                    this.loading = true;
-                    const response = await axios(options); 
-                    if(response.data.status){
-                        window.location.href='posts.php'
-                        new Toasteur().success(response.data.text);
+        //         try {
+        //             this.loading = true;
+        //             const response = await axios(options); 
+        //             if(response.data.status){
+        //                 window.location.href='posts.php'
+        //                 new Toasteur().success(response.data.text);
                         
-                    }
-                } catch (error) {
-                    // //console.log(error);
-                    if (error.response){
-                        if (error.response.status == 400){
-                            const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                            return
-                        }
+        //             }
+        //         } catch (error) {
+        //             // //console.log(error);
+        //             if (error.response){
+        //                 if (error.response.status == 400){
+        //                     const errorMsg = error.response.data.text;
+        //                 new Toasteur().error(errorMsg);
+        //                     return
+        //                 }
         
-                        if (error.response.status == 401){
-                            const errorMsg = "User not Authorized";
-                            new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
-                            return
-                        }
+        //                 if (error.response.status == 401){
+        //                     const errorMsg = "User not Authorized";
+        //                     new Toasteur().error(errorMsg);
+        //                     // // window.location.href="./login.php"
+        //                     return
+        //                 }
         
-                        if (error.response.status == 405){
-                            const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                            return
-                        }
+        //                 if (error.response.status == 405){
+        //                     const errorMsg = error.response.data.text;
+        //                 new Toasteur().error(errorMsg);
+        //                     return
+        //                 }
         
-                        if (error.response.status == 500){
-                            const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                            return
-                        }
-                    }
+        //                 if (error.response.status == 500){
+        //                     const errorMsg = error.response.data.text;
+        //                 new Toasteur().error(errorMsg);
+        //                     return
+        //                 }
+        //             }
 
-                    new Toasteur().error(error.message || "Error processing request")
+        //             new Toasteur().error(error.message || "Error processing request")
 
                     
-                }finally {
-                    this.loading = false;
-                }
-            }
-        },
-        async getBlogByid(id){
-            //console.log("blog", id);
-            const url = `${this.baseUrl}api/blog/getBlogByid.php?id=${id}`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if (response.data.status) {
-                    this.blog_details= response.data.data;
-                    //console.log(response.data.data);
-                }else{
-                    new Toasteur().error(response.data.text);
-                }
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
+        //         }finally {
+        //             this.loading = false;
+        //         }
+        //     }
+        // },
+        // async getBlogByid(id){
+        //     //console.log("blog", id);
+        //     const url = `${this.baseUrl}api/blog/getBlogByid.php?id=${id}`;
+        //     const options = {
+        //         method: "GET",
+        //         headers: { 
+        //             //"Content-type": "application/json",
+        //             "Authorization": `Bearer ${this.authToken}`
+        //         },
+        //         url
+        //     }
+        //     try {
+        //         this.loading = true
+        //         const response = await axios(options);
+        //         if (response.data.status) {
+        //             this.blog_details= response.data.data;
+        //             //console.log(response.data.data);
+        //         }else{
+        //             new Toasteur().error(response.data.text);
+        //         }
+        //     } catch (error) {
+        //         // //console.log(error);
+        //         if (error.response){
+        //             if (error.response.status == 400){
+        //                 const errorMsg = error.response.data.text;
+        //                 new Toasteur().error(errorMsg);
+        //                 return
+        //             }
     
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
+        //             if (error.response.status == 401){
+        //                 const errorMsg = "User not Authorized";
+        //                 new Toasteur().error(errorMsg);
+        //                 return
+        //             }
     
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
+        //             if (error.response.status == 405){
+        //                 const errorMsg = error.response.data.text;
+        //                 new Toasteur().error(errorMsg);
+        //                 return
+        //             }
     
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }else{
-                    new Toasteur().error(error.message || "Error processing request");
-                }
+        //             if (error.response.status == 500){
+        //                 const errorMsg = error.response.data.text;
+        //                 new Toasteur().error(errorMsg);
+        //                 return
+        //             }
+        //         }else{
+        //             new Toasteur().error(error.message || "Error processing request");
+        //         }
                 
-            }finally {
-                this.loading = false;
-            }
-        },
-        async deleteBlog(id){
-            const url = `${this.baseUrl}api/blog/deleteBlog.php?id=${id}`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true;
-                const response = await axios(options);
-                if(response.data.status){
-                    this.getAllBlog();
-                }    
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
+        //     }finally {
+        //         this.loading = false;
+        //     }
+        // },
+        // async deleteBlog(id){
+        //     const url = `${this.baseUrl}api/blog/deleteBlog.php?id=${id}`;
+        //     const options = {
+        //         method: "GET",
+        //         headers: { 
+        //             //"Content-type": "application/json",
+        //             "Authorization": `Bearer ${this.authToken}`
+        //         },
+        //         url
+        //     }
+        //     try {
+        //         this.loading = true;
+        //         const response = await axios(options);
+        //         if(response.data.status){
+        //             this.getAllBlog();
+        //         }    
+        //     } catch (error) {
+        //         // //console.log(error);
+        //         if (error.response){
+        //             if (error.response.status == 400){
+        //                 const errorMsg = error.response.data.text;
+        //                new Toasteur().error(errorMsg);
+        //                 return
+        //             }
     
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
+        //             if (error.response.status == 401){
+        //                 const errorMsg = "User not Authorized";
+        //                new Toasteur().error(errorMsg);
+        //                 return
+        //             }
     
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
+        //             if (error.response.status == 405){
+        //                 const errorMsg = error.response.data.text;
+        //                new Toasteur().error(errorMsg);
+        //                 return
+        //             }
     
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                       new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
+        //             if (error.response.status == 500){
+        //                 const errorMsg = error.response.data.text;
+        //                new Toasteur().error(errorMsg);
+        //                 return
+        //             }
+        //         }
 
-                new Toasteur().error(error.message || "Error processing request")
+        //         new Toasteur().error(error.message || "Error processing request")
 
                 
-            }finally {
-                this.loading = false;
-            }
-        },
-        async updateBlog(){
+        //     }finally {
+        //         this.loading = false;
+        //     }
+        // },
+        // async updateBlog(){
 
-        },
+        // },
 
         //......3rd party API
         //monify
@@ -4472,22 +3432,6 @@ let admin = Vue.createApp({
         },
 
         //.....utilities..............
-        async getLocations(){
-            let logisticid = (localStorage.getItem("logisticid")) ? localStorage.getItem("logisticid"): null;
-            if(logisticid){
-                await this.getLogisticLocations(logisticid)
-            }else{
-                window.location.href = 'logistics.php'
-            }
-        },
-        async getPrices(){
-            let logisticid = (localStorage.getItem("logisticid")) ? localStorage.getItem("logisticid"): null;
-            if(logisticid){
-                await this.getLogisticPrices(logisticid)
-            }else{
-                window.location.href = 'logistics.php'
-            }
-        },
         async getToken(){
             this.loading= true
             const token = window.localStorage.getItem("authToken");
@@ -4499,89 +3443,11 @@ let admin = Vue.createApp({
             this.currentPage = parseInt(this.currentPage) + 1;
             this.totalData =null;
             this.totalPage =null;
-            if(webPage == "logistics.php"){
-                this.getAllLogistics();
-            }
-            if(webPage == "admins.php"){
-                this.getAllAdmin();
-            }
-            if(webPage == 'orders.php'){
-                this.getAllCarts();
-            }
-            if(webPage == 'prices.php'){
-                this.getLogisticPrices();
-            }
-            if(webPage == 'location.php'){
-                this.getLogisticLocations();
-            }if(webPage =='monify.php'){
-                await this.getAllMonify()
-            }
-            if(webPage =='paystack.php'){
-                await this.getAllPaystack()
-            }
-            if(webPage =='kudi.php' ){
-                await this.getAllKudi();
-            }
-            if(webPage =='smartsolution.php'){
-                await this.getAllSmartSolution();
-            }
-            if(webPage =='sendgrid.php'){
-                await this.getAllSendGrid()
-            }
-            if(webPage == 'termiapi.php'){
-                await this.getTermiApi();
-            }
-            if(webPage == 'addresses.php'){
-                await this.getAllAddresses();
-            }
-            if(webPage == 'posts.php'){
-                await this.getAllBlog();
-            }
         },
         async previousPage(){
             this.currentPage = parseInt(this.currentPage) - 1;
             this.totalData =null;
             this.totalPage =null;
-            if(webPage == "logistics.php"){
-                this.getAllLogistics();
-            }
-            if(webPage == "admins.php"){
-                this.getAllAdmin();
-            }
-            if(webPage == 'orders.php'){
-                this.getAllCarts();                
-            }
-            if(webPage == 'prices.php'){
-                this.getLogisticPrices()
-            }
-            if(webPage == 'location.php'){
-                this.getLogisticLocations()
-            }
-
-            if(webPage =='monify.php'){
-                await this.getAllMonify()
-            }
-            if(webPage =='paystack.php'){
-                await this.getAllPaystack()
-            }
-            if(webPage =='kudi.php' ){
-                await this.getAllKudi();
-            }
-            if(webPage =='smartsolution.php'){
-                await this.getAllSmartSolution();
-            }
-            if(webPage =='sendgrid.php'){
-                await this.getAllSendGrid()
-            }
-            if(webPage == 'termiapi.php'){
-                await this.getTermiApi();
-            }
-            if(webPage == 'addresses.php'){
-                await this.getAllAddresses();
-            }
-            if(webPage == 'posts.php'){
-                await this.getAllBlog();
-            }
         },
         async tab_nextPage(item){
             let logisticid = (localStorage.getItem("logisticid")) ? localStorage.getItem("logisticid"): null;
@@ -4799,12 +3665,6 @@ let admin = Vue.createApp({
             }
         
         },
-        async saveRefno(orderRefno){
-            this.loading = false
-            localStorage.setItem("orderRefno", orderRefno);
-            window.location.href=`invoice-details.php?`;
-        
-        },
         async deleteByid(id){
             const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -4897,677 +3757,8 @@ let admin = Vue.createApp({
         //end of LanreWaju methods
 
         // Korede's Functions
-
-        async comp_getAllComplains(load = 1){
-            let search = (this.kor_search) ? `&search=${this.kor_search}` : ""; 
-            let sort = (this.kor_sort !== null) ? `&sort=1&sortStatus=${this.kor_sort}` : "";
-            let page = ( this.kor_page )? this.kor_page : 1;
-            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
-            
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            let url = `${this.baseUrl}api/complains/getAllComplains.php?page=${page}&per_page=${per_page}${search}${sort}`;
-
-            this.kor_total_page = null
-            try {
-                if(load == 1){
-                    this.loading = true;
-                }
-                const response = await axios.get(url, {headers} );
-                if ( response.data.status ){
-                    if (response.data.data.page){
-                        this.complains = response.data.data.complains;
-                        this.kor_page = response.data.data.page;
-                        this.kor_total_page= response.data.data.totalPage;
-                        this.kor_per_page = response.data.data.per_page;
-                        this.kor_total_data = response.data.data.total_data;
-                        //console.log(this.complains);
-                    }
-                }else{
-                    this.complains = null
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-
-        },
-        async getComplain(index){
-            //console.log(this.complains);
-            this.complain = this.complains[parseInt(index)];
-            //console.log(this.complain);
-        },
-        async changeComplainStatus(comlain_id, user_id, status){
-
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            const data = new FormData();
-            data.append('id', comlain_id);
-            data.append('user_id', user_id);
-            data.append('status', status);
-
-            let url = `${this.baseUrl}api/complains/changeStatus.php`;
-
-
-            try {
-                const response = await axios.post(url, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                    await this.comp_getAllComplains(7);
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
-        async changeReadStatus(comlain_id, user_id, index){
-            //console.log(index);
-            this.getComplain(index);
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            const data = new FormData();
-            data.append('id', comlain_id);
-            data.append('user_id', user_id);
-
-            let url = `${this.baseUrl}api/complains/changeReadStatus.php`;
-
-
-            try {
-                const response = await axios.post(url, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    await this.comp_getAllComplains(7);
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-
-
-        },
-        async deleteComplain(id){
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            
-
-            const data = new FormData();
-            data.append('id', id);
-
-            let url = `${this.baseUrl}api/complains/deleteComplain.php`;
-
-
-            try {
-                const response = await axios.post(url, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                    await this.comp_getAllComplains(7);
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-
-        },
-        async getAllSliders(load = 1){
-            let search = (this.kor_search) ? `&search=${this.kor_search}` : ""; 
-            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
-            let page = ( this.kor_page )? this.kor_page : 1;
-            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 3;
-            
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            let url = `${this.baseUrl}api/slider/getAllSlider.php?page=${page}&per_page=${per_page}${search}${sort}`;
-
-            this.kor_total_page = null
-            try {
-                if(load == 1){
-                    this.loading = true;
-                }
-                const response = await axios.get(url, {headers} );
-                if ( response.data.status ){
-                    if (response.data.data.page){
-                        this.sliders = response.data.data.sliders;
-                        this.kor_page = response.data.data.page;
-                        this.kor_total_page= response.data.data.totalPage;
-                        this.kor_per_page = response.data.data.per_page;
-                        this.kor_total_data = response.data.data.total_data;
-                    }
-                }else{
-                    this.sliders = null
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
-        async getSlider(index){
-            this.slider = this.sliders[index];
-            //console.log(this.slider);
-        },
-        async changeSliderImage(event){
-            this.kor_file = event.target.files[0];
-            //console.log(this.kor_file);
-        },
-        async addSliderImage(){
-            if (!this.slider_name || !this.slider_type || !this.kor_file || !this.slider_desc || !this.slider_product ){
-                Swal.fire("Insert all Fields");
-            }
-
-
-
-            
-
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            const data = new FormData();
-            data.append('name', this.slider_name);
-            data.append('type', this.slider_type);
-            data.append('image', this.kor_file);
-            data.append('shortdesc', this.slider_desc);
-            data.append('product_id', this.slider_product.id);
-            data.append('product_image', this.slider_product.images[0].image);
-
-            let url = `${this.baseUrl}api/slider/addSlider.php`;
-
-            try {
-                this.loading = true;
-                const response = await axios.post(url, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                    this.kor_file = null;
-                    await this.getAllSliders(7);
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-
-
-            
-        },
-        async updateSlider(){
-            if (!this.slider.name || !this.slider.type_code || !this.slider.description || !this.slider.product_id){
-                Swal.fire("Insert all Fields");
-            }
-
-            const id = this.slider.product_id;
-
-            var found = this.all_products.find(function(element) {
-                return element.id === id;
-            });
-
-        
-
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            const data = new FormData();
-            data.append('slider_id', this.slider.id);
-            data.append('name', this.slider.name);
-            data.append('type', this.slider.type_code);
-            if (this.kor_file){
-                data.append('image', this.kor_file);
-            }else{
-                data.append('image', this.slider.img_link);
-            }
-            
-            data.append('shortdesc', this.slider.description);
-            data.append("product_id", id);
-            data.append("product_image", found.images[0].image);
-
-            let url = `${this.baseUrl}api/slider/updateSlider.php`;
-
-            try {
-                const response = await axios.post(url, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                    await this.getAllSliders(7);
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
-        async deleteSlider(id){
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            
-
-            const data = new FormData();
-            data.append('slider_id', id);
-
-            let url = `${this.baseUrl}api/slider/deleteSlider.php`;
-
-
-            try {
-                const response = await axios.post(url, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                    await this.getAllSliders(7);
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-
-        },
         async generatePass(){
             this.shop_password = generatePassword();
-        },
-        async addShop(){
-            if (!this.shopname || !this.shop_city || !this.shop_country || !this.shop_currency || !this.shop_email || !this.shop_password 
-                 || !this.shop_phone || !this.shop_whatsapp || !this.shop_type){
-                new Toasteur().error("Insert All Fields");
-                return
-            }
-
-            if (!validatePhoneNumber(this.shop_phone)){
-                new Toasteur().error("Invalid Phone Number");
-                return
-            }
-            if (!validatePhoneNumber(this.shop_whatsapp)){
-                new Toasteur().error("Invalid Phone Number");
-                return
-            }
-
-            const data = new FormData();
-            data.append('shopname', this.shopname);
-            data.append('shop_country', this.shop_country);
-            data.append('shop_city', this.shop_city);
-            data.append('shop_password', this.shop_password);
-            data.append('shop_email', this.shop_email);
-            data.append('shop_phone', validatePhoneNumber(this.shop_phone));
-            data.append('shop_whatsapp', validatePhoneNumber(this.shop_whatsapp) );
-            data.append('shop_type', this.shop_type);
-            data.append('shop_currency', this.shop_currency);
-
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            let url = `${this.baseUrl}api/shops/addShop.php`;
-
-
-            try {
-                const response = await axios.post(url, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                    await this.getAllShops();
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
-        async getAllShops(load = 1){
-            let search = (this.kor_search) ? `&search=${this.kor_search}` : ""; 
-            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
-            let page = ( this.kor_page )? this.kor_page : 1;
-            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
-            
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            let url = `${this.baseUrl}api/shops/getAllShops.php?page=${page}&per_page=${per_page}${search}${sort}`;
-
-            this.kor_total_page = null
-            try {
-                if(load == 1){
-                    this.loading = true;
-                }
-                const response = await axios.get(url, {headers} );
-                if ( response.data.status ){
-                    if (response.data.data.page){
-                        this.shops = response.data.data.shop;
-                        this.kor_page = response.data.data.page;
-                        this.kor_total_page= response.data.data.totalPage;
-                        this.kor_per_page = response.data.data.per_page;
-                        this.kor_total_data = response.data.data.total_data;
-                    }
-                }else{
-                    this.shops = null
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
-        async getShop(index){
-            this.shop = this.shops[index];
-            //console.log(this.shop);
         },
         async setShopId(id){
             //console.log(id);
@@ -7667,48 +5858,13 @@ let admin = Vue.createApp({
     },
     beforeMount(){
         this.loading = true;
+        console.log(this.authToken);
     },
     async mounted(){
-        this.getToken();
-        this.getAdminDetails();
-        //......lareWaju...........
-        if (webPage !== "logistics-detail.php" && webPage !== "logistics.php"){
-            if ( window.localStorage.getItem("Logistic_id") ){
-                window.localStorage.removeItem("Logistic_id")
-            }
-        }
-        if ( webPage !== "invoice-details.php" && webPage !== 'invoice-print.php'){
-            if ( window.localStorage.getItem("orderRefno") ){
-                window.localStorage.removeItem("orderRefno")
-            }
-        }
+        await this.getAdminDetails();
+        // this.getToken();
         if ( webPage === "amenities.php" ){
             await this.getAllAmenities(4)
-        }
-
-        if (webPage !== "admin-details.php" && webPage !== "admins.php"){
-            if ( window.localStorage.getItem("admin_id") ){
-                window.localStorage.removeItem("admin_id")
-            }
-        }
-        // End larewaju
-
-        if (webPage !== "shop-detail.php" && webPage !== "shops.php"){
-            if ( window.localStorage.getItem("shop_id") ){
-                window.localStorage.removeItem("shop_id")
-            }
-        }
-        if ( webPage === "shop-detail.php"){
-            await this.getShopDetails();
-        }
-
-        if (webPage !== "customer-details.php" && webPage !== "customers.php"){
-            if ( window.localStorage.getItem("user_id") ){
-                window.localStorage.removeItem("user_id")
-            }
-        }
-        if ( webPage === "customer-details.php"){
-            await this.getUserDetails();
         }
     }
 
