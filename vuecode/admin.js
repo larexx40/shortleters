@@ -143,7 +143,8 @@ let admin = Vue.createApp({
             track_id: null,
             order_status: null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: null,
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMwODI3NjIsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzA4Mjc2MiwiZXhwIjoxNjYzMTU2NTYyLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.jUSFS6c6qieJ9ByTKUTLtCqkrdPKYn524inz2YxXBb808NtYQgDWCpIOYgKzYSL50Fydpga-6TiBhoNTQ2JCUA",
+            all_amenities: null,
             email: null,
             ref_link: null,
             admin_details: null,
@@ -329,6 +330,67 @@ let admin = Vue.createApp({
     methods: {
         //LanreWaju Method
           //address
+          async getAllAmenities( load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+
+            const url = `${this.baseUrl}api/amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.all_amenities = response.data.data.amenities;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }  
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+          },
           async getAllAddresses(){
             let search = (this.search)? `&search=${this.search}`: '';
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
@@ -344,7 +406,9 @@ let admin = Vue.createApp({
                 url
             }
             try {
-                this.loading = true;
+                if (load == 1){
+                    this.loading = true;
+                }
                 const response = await axios(options);
                 if(response.data.status){
                     this.addresses = response.data.data.deliveryAddress;
@@ -7617,6 +7681,9 @@ let admin = Vue.createApp({
             if ( window.localStorage.getItem("orderRefno") ){
                 window.localStorage.removeItem("orderRefno")
             }
+        }
+        if ( webPage === "amenities.php" ){
+            await this.getAllAmenities(4)
         }
 
         if (webPage !== "admin-details.php" && webPage !== "admins.php"){

@@ -7,13 +7,14 @@
     Header("Cache-Control: no-cache");
 
     include "../cartsfunction.php";
+    
   
 
     $endpoint = basename($_SERVER['PHP_SELF']);
     $method = getenv('REQUEST_METHOD');
 
-    // check if the right request was sent
     if ($method == 'POST') {
+
         // Get company private key
         $query = 'SELECT * FROM apidatatable';
         $stmt = $connect->prepare($query);
@@ -27,105 +28,81 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
-        // get if the user is a shop
-        $admin = checkIfIsAdmin($connect, $user_pubkey);
-        
+        $admin =  checkIfIsAdmin($connect, $user_pubkey);
+
         // send error if ur is not in the database
-        if ( !$admin ){
+        if (!$admin){
             // send user not found response to the user
-            $errordesc =  "Not Authorized";
+            $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
-            $hint = "Only authorized users can access this endpoint";
+            $hint = "User is not in the database ensure the user is in the database";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondUnAuthorized($data);
         }
 
-
-        if ( !isset($_POST['amenity_id']) ){
+        
+        // Check if the email field is passed
+        if ( !isset($_POST['host_type_id']) ){
 
             $errordesc="product id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="amenity id must be passed";
+            $text="host type id must be passed";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
 
         }else{
-            $amenity_id = cleanme($_POST['amenity_id']);
+            $host_type_id = cleanme($_POST['host_type_id']);
         }
 
-        if ( empty($amenity_id) ){
-
-            $errordesc = "Enter amenity id";
+        // Check if the recipient name field is passed
+        if (!isset($_POST['name'])){
+            $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly ensure that a valid id is passed";
+            $hint = "Kindly pass the required name field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $name = cleanme($_POST['name']);
+        }
+        
+         // check if none of the field is empty
+        if ( empty($host_type_id) || empty($name) ){
+
+            $errordesc = "Insert all fields";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass value to all the fields";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
 
-        if ( !isset($_POST['status']) ){
-            $errordesc="Product status required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Product status must be passed";
-            $method;
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-        }else{
-            $status = cleanme($_POST['status']);
-        }
-
-
-        // check the status passed
-        if ($status == 0 || $status === "inactive"){
-            $changeStatus = 0;
-            $changeStatusText = "Deactivated";
-        }else{
-            $changeStatus = "";
-        }
-
-        if ($status == 1 || $status === 'active'){
-            $changeStatus = 1;
-            $changeStatusText = "activated";
-        }else{
-            $changeStatus = "";
-        }
-
-
-        if ( $changeStatus != 0 && $changeStatus !== 1){
-            $errordesc = "Status passed is invalid ";
+        if (!checkifFieldExist($connect, "host_type", "host_type_id", $host_type_id)){
+            $errordesc = "Amenity id not Found";
             $linktosolve = 'https://';
-            $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";
+            $hint = "Kindly pass valid value to all the fields";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
 
-        // check if product is valid
-        if ( !checkifFieldExist($connect, "amenities", "amen_id", $amenity_id) ) {
+        $query = 'UPDATE `host_type` SET `name`= ? WHERE `host_type_id` = ?';
+        $slider_update = $connect->prepare($query);
+        $slider_update->bind_param("ss", $name, $host_type_id);
 
-            $errordesc = "Amenity does not Exist ";
-            $linktosolve = 'https://';
-            $hint = "Kindly ensure the product id passed is for an existing product";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
+        if ( $slider_update->execute() ) {
+            $text= "Host Type successfully updated";
+            $status = true;
+            $data = [];
+            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+            respondOK($successData);
 
-
-        // update status
-        $query = "UPDATE `amenities` SET `status` = ? WHERE amen_id = ?";
-        $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("ss", $changeStatus, $amenity_id);
-        $updateStatus->execute();
-
-        if ($updateStatus->error){
-            $errordesc =  $updateStatus->error;
+        }else{
+            $errordesc =  $slider_update->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -133,15 +110,6 @@
             respondInternalError($data);
         }
 
-        if ( $updateStatus->execute()){
-            
-            $data = [];
-            $text= "Amenity successfully ". $changeStatusText;
-            $status = true;
-            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
-            respondOK($successData);
-        }
-    
     }else{
 
         // Send an error response because a wrong method was passed 
@@ -151,6 +119,8 @@
         $errorData = returnError7003($errordesc, $linktosolve, $hint);
         $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
         respondMethodNotAlowed($data);
-
+        
     }
+
+
 ?>

@@ -28,94 +28,72 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
-
         // send error if ur is not in the database
-        if (!$admin){
+        if (!checkIfIsAdmin($connect, $user_pubkey)){
             // send user not found response to the user
             $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
             $hint = "User is not in the database ensure the user is in the database";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
+            respondBadRequest($data);
         }
 
-        
         // Check if the email field is passed
-        if (!isset($_POST['amenity_id'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required amenity id field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $amenity_id = cleanme($_POST['amenity_id']);
-        }
+        if ( !isset($_POST['host_type_id']) ){
 
-        // Check if the recipient name field is passed
-        if (!isset($_POST['name'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required name field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            $errordesc="product id required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="host type id must be passed";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-        }else{
-            $name = cleanme($_POST['name']);
-        }
 
-        if (!isset($_POST['icon'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required icon field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
         }else{
-            $icon = cleanme($_POST['icon']);
+            $host_type_id = cleanme($_POST['host_type_id']);
         }
         
-         // check if none of the field is empty
-        if ( empty($amenity_id) || empty($name)  || empty($icon) ){
-
-            $errordesc = "Insert all fields";
+        if ( empty($host_type_id) ){
+            $errordesc = "host type id must be filled";
             $linktosolve = 'https://';
-            $hint = "Kindly pass value to all the fields";
+            $hint = "Kindly pass a valid slider id field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
 
-        if (!checkifFieldExist($connect, "amenities", "amen_id", $amenity_id)){
-            $errordesc = "Amenity id not Found";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass valid value to all the fields";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
+        $query = 'DELETE FROM `host_type` WHERE `host_type_id` = ?';
+        $slider_stmt = $connect->prepare($query);
+        $slider_stmt->bind_param("s", $host_type_id);
+        $slider_stmt->execute();
+        $rows_affected = $slider_stmt->affected_rows;
 
-        $query = 'UPDATE `amenities` SET `name`= ?,`icon`= ? WHERE `amen_id` = ?';
-        $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("sss", $name, $icon, $amenity_id);
+        if ( $rows_affected > 0 ) {
+            $slider_stmt->close();
 
-        if ( $slider_update->execute() ) {
-            $text= "Amenity successfully updated";
+            $text= "Host Type successfully deleted";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
         }else{
-            $errordesc =  $slider_update->error;
+            $errordesc = "Host Type not Found";
             $linktosolve = 'https://';
-            $hint = "500 code internal error, check ur database connections";
+            $hint = "Kindly pass a slider that exist in the database";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondInternalError($data);
+            respondBadRequest($data);
         }
+
+        $errordesc =  $slider_stmt->error;
+        $linktosolve = 'https://';
+        $hint = "500 code internal error, check ur database connections";
+        $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        respondInternalError($data);
 
     }else{
 

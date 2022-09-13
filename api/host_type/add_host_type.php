@@ -41,19 +41,6 @@
             respondUnAuthorized($data);
         }
 
-        
-        // Check if the email field is passed
-        if (!isset($_POST['amenity_id'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required amenity id field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $amenity_id = cleanme($_POST['amenity_id']);
-        }
-
         // Check if the recipient name field is passed
         if (!isset($_POST['name'])){
             $errordesc = "All fields must be passed";
@@ -65,20 +52,10 @@
         }else{
             $name = cleanme($_POST['name']);
         }
-
-        if (!isset($_POST['icon'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required icon field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $icon = cleanme($_POST['icon']);
-        }
+   
         
          // check if none of the field is empty
-        if ( empty($amenity_id) || empty($name)  || empty($icon) ){
+        if ( empty($name) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -88,28 +65,23 @@
             respondBadRequest($data);
         }
 
-        if (!checkifFieldExist($connect, "amenities", "amen_id", $amenity_id)){
-            $errordesc = "Amenity id not Found";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass valid value to all the fields";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
 
-        $query = 'UPDATE `amenities` SET `name`= ?,`icon`= ? WHERE `amen_id` = ?';
-        $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("sss", $name, $icon, $amenity_id);
+        $host_type_id = generateUniqueShortKey($connect, "host_type", "host_type_id ");
 
-        if ( $slider_update->execute() ) {
-            $text= "Amenity successfully updated";
+
+        $query = 'INSERT INTO `host_type`(`host_type_id`, `name`) VALUES (?, ?)';
+        $slider_stmt = $connect->prepare($query);
+        $slider_stmt->bind_param("ss", $host_type_id, $name);
+
+        if ( $slider_stmt->execute() ) {
+            $text= "Host Type successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
         }else{
-            $errordesc =  $slider_update->error;
+            $errordesc =  $slider_stmt->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);

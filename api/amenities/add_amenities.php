@@ -53,7 +53,8 @@
             $name = cleanme($_POST['name']);
         }
 
-        if (!isset($_FILES['icon'])){
+        
+        if ( !isset($_POST['icon']) ){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required description field in this endpoint";
@@ -62,10 +63,10 @@
             respondBadRequest($data);
         }else{
             $icon = cleanme($_POST['icon']);
-        }
+        }   
         
          // check if none of the field is empty
-        if ( empty($name)  || empty($description) || empty($building_type) ){
+        if ( empty($name)  || empty($icon) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -75,16 +76,16 @@
             respondBadRequest($data);
         }
 
-        $sub_building_id = generateUniqueShortKey($connect, "sub_building_types", "sub_build_id ");
+
+        $amenities_id = generateUniqueShortKey($connect, "amenities", "amen_id ");
 
 
-
-        $query = 'INSERT INTO `sub_building_types`(`build_type_id`, `sub_build_id`, `name`, `description`) VALUES (?,?,?,?)';
+        $query = 'INSERT INTO `amenities`(`amen_id`, `name`, `icon`) VALUES (?, ?, ?)';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ssss", $building_type, $sub_building_id, $name, $description);
+        $slider_stmt->bind_param("sss", $amenities_id, $name, $icon);
 
         if ( $slider_stmt->execute() ) {
-            $text= "Slider successfully added";
+            $text= "Amenity successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
