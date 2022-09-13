@@ -40,39 +40,24 @@
             respondUnAuthorized($data);
         }
 
-        //confirm how to pass in the id
-        if(!isset($_POST['buildingTypeid'])){
-            $errordesc="Building type id required";
+        //confirm if Highlight id is passed
+       if(!isset($_POST['highlightid'])){
+            $errordesc="Highlight id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in building type  id";
-            $method=getenv('REQUEST_METHOD');
+            $text="Pass in Highlight  id";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-            
         }else {
-            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
+            $highlightid = cleanme($_POST['highlightid']); 
         }
-
-        if ( !isset($_FILES['image']) ){
-            // send error if Building field is not passed
-            $errordesc = "Building Image must be passed";
+    
+        if ( !isset($_POST['name']) ){
+            // send error if name field is not passed
+            $errordesc = "Highlight name must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
-        }else{
-            $image = $_FILES['image'];
-        }
-
-        if ( !isset($_POST['name']) ){
-            // send error if howmanyminread field is not passed
-            $errordesc = "Building name must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required rateStar field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
@@ -81,20 +66,32 @@
             $name = cleanme($_POST['name']);
         }
 
-        if (empty($name)|| empty($image)){
-            // send error if inputs are empty
-            $errordesc = "Building type inputs are required";
+        if ( !isset($_POST['icon']) ){
+            $errordesc = "Highlight icon must be passed";
             $linktosolve = 'https://';
-            $hint = "Pass in building type details, it can't be empty";
+            $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
+
+        }else{
+            $icon = cleanme($_POST['icon']);
+        }
+
+        if (empty($name) || empty($icon) || empty($highlightid)){
+            //all input required / bad request
+            $errordesc="Bad request";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Please pass in the Highlight id ";
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
         }
         
-        //UPDATE `building_types` SET `id`='[value-1]',`build_id`='[value-2]',`name`='[value-3]',`image_url`='[value-4]',
-        $sql = "UPDATE `building_types` SET name = ?, image_url = ? WHERE build_id = ?";
+        $sql = "UPDATE `highlights` SET name = ?, icon = ? WHERE `highlightid` = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('sss', $name, $imageUrl, $buildingTypeid);
+        $stmt->bind_param('ss', $name, $highlightid);
         $update =$stmt->execute();
         if($update){
             $maindata=[];
@@ -102,7 +99,7 @@
             $linktosolve = "htps://";
             $hint = [];
             $errordata = [];
-            $text = "Building type Updated";
+            $text = "Highlight Updated";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);

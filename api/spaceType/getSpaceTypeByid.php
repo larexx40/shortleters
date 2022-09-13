@@ -28,35 +28,35 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-       //confirm if building id is passed
-       if(!isset($_POST['buildingTypeid'])){
-        $errordesc="Building type id required";
+       //confirm if space type id is passed
+       if(!isset($_POST['spaceTypeid'])){
+        $errordesc="Space type id required";
         $linktosolve="htps://";
         $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
         $errordata=returnError7003($errordesc,$linktosolve,$hint);
-        $text="Pass in building type  id";
+        $text="Pass in space type  id";
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondBadRequest($data);
         
         }else {
-            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
+            $spaceTypeid = cleanme($_POST['spaceTypeid']); 
         }
 
-        //confirm if building type id is not empty
-        if(empty($buildingTypeid)){
+        //confirm if space type id is not empty
+        if(empty($spaceTypeid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the building type id ";
+            $text="Please pass in the space type id ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
         
-        $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` WHERE `build_id` = ?";
+        $sqlQuery = "SELECT `id`, `type_id`, `name`,`status` FROM `space_type` WHERE `type_id` = ?";
         $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$buildingTypeid);
+        $stmt->bind_param("s",$spaceTypeid);
         $stmt->execute();  
         $result = $stmt->get_result();
         $numRow = $result->num_rows;
@@ -77,15 +77,17 @@
             //pass fetched data as array maindata[]
             $row = $result->fetch_assoc();
             $id = $row['id'];
-            $buildingTypeid = $row['build_id'];
+            $spaceTypeid = $row['type_id'];
             $name = $row['name'];
-            $imageUrl = $row['image_url'];
             $statusCode = $row['status'];
-            $status =$statusCode;
-
+            if($statusCode == 1){
+                $status = "Active";
+            }else{
+                $status = "Inctive";
+            }
             $maindata=[
                 "id"=>$id,
-                "buildingTypeid"=>$buildingTypeid,
+                "spaceTypeid"=>$spaceTypeid,
                 "name"=>$name,
                 "status"=>$status,
                 "statusCode"=>$statusCode,

@@ -74,7 +74,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $searchQuery = "SELECT `id`, `highlightid`, `name`, `status`, `icon` FROM `highlights` 
                                 WHERE (`name` like ? ) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("ss", $searchParam, $status);
@@ -85,14 +85,14 @@
 
                 $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("ssss", $searchParam, $status, $offset, $noPerPage);
+                $stmt->bind_param("ssss",  $searchParam, $status, $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $numRow = $result->num_rows;  
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $sqlQuery = "SELECT `id`, `highlightid`, `name`, `status`, `icon` FROM `highlights`
                             WHERE `status` =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
@@ -113,7 +113,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $searchQuery = "SELECT `id`, `highlightid`, `name`, `status`, `icon` FROM `highlights`  
                                 WHERE `name` like ? ";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("s",  $searchParam);
@@ -131,14 +131,14 @@
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types`";
+                $sqlQuery = "SELECT `id`, `highlightid`, `name`, `status`, `icon` FROM `highlights`";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT `id`, `highlightid`, `name`, `status`, `icon` FROM `highlights` ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
@@ -165,19 +165,24 @@
             $allResponse = [];
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
-            $buildingTypeid = $row['build_id'];
-            $name = $row['name'];
-            $imageUrl = $row['image_url'];
-            $statusCode = $row['status'];
-            $status =$statusCode;
+                $highlightid = $row['highlightid'];
+                $name = $row['name'];
+                $icon = $row['icon'];
+                $statusCode = $row['status'];
+                if($statusCode == 1){
+                    $status = "Active";
+                }else{
+                    $status = "Inctive";
+                }
 
-            array_push($allResponse, array(
-                "id"=>$id,
-                "buildingTypeid"=>$buildingTypeid,
-                "name"=>$name,
-                "status"=>$status,
-                "statusCode"=>$statusCode,
-            ));
+                array_push($allResponse, array(
+                    "id"=>$id,
+                    "highlightid"=>$highlightid,
+                    "name"=>$name,
+                    "icon"=>$icon,
+                    "status"=>$status,
+                    "statusCode"=>$statusCode,
+                ));
 
             }
             $maindata = [
@@ -185,7 +190,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'buildingTypes'=> $allResponse
+                'highlights'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

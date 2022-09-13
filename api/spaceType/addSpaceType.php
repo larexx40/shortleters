@@ -39,22 +39,9 @@
             respondUnAuthorized($data);
         }
 
-        if ( !isset($_FILES['image']) ){
-            // send error if building image field is not passed
-            $errordesc = "Building Image must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
-        }else{
-            $image = $_FILES['image'];
-        }
-
         if ( !isset($_POST['name']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "Building name must be passed";
+            $errordesc = "Space type name must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -65,26 +52,24 @@
             $name = cleanme($_POST['name']);
         }
 
-        if (empty($name)|| empty($image)){
+        if (empty($name)){
             // send error if inputs are empty
-            $errordesc = "Building type inputs are required";
+            $errordesc = "Space type inputs are required";
             $linktosolve = 'https://';
-            $hint = "Pass in building type details, it can't be empty";
+            $hint = "Pass in Space Type details, it can't be empty";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
         }
         $status =0;
-        $buildingTypeid = generateUniqueShortKey($connect,'building_types','build_id');
-        
-        $imageName = uploadImage($image, "buildingTypes", $endpoint, $method);
-        $imageUrl = $baseUrl."/buildingTypes";
-        $query = "INSERT INTO `building_types`(`build_id`, `name`, `image_url`, `status`) VALUES (?,?,?,?)";
+        $typeid = generateUniqueShortKey($connect,'space_type','space_id');
+        //SELECT `space_id`,`name`,`status` FROM `space_type`
+        $query = "INSERT INTO `space_type`(`type_id`, `name`, `status`) VALUES (?,?,?)";
         $stmt = $connect->prepare($query);
-        $stmt->bind_param("ssss", $buildingTypeid, $name, $imageUrl, $status);
+        $stmt->bind_param("sss", $typeid, $name, $status);
 
         if ( $stmt->execute() ){
-            $text= "Building type successfully posted";
+            $text= "Space type successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);

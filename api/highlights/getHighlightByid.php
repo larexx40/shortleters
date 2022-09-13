@@ -28,35 +28,34 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-       //confirm if building id is passed
-       if(!isset($_POST['buildingTypeid'])){
-        $errordesc="Building type id required";
-        $linktosolve="htps://";
-        $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-        $errordata=returnError7003($errordesc,$linktosolve,$hint);
-        $text="Pass in building type  id";
-        $data=returnErrorArray($text,$method,$endpoint,$errordata);
-        respondBadRequest($data);
-        
+       //confirm if Highlight id is passed
+       if(!isset($_POST['highlightid'])){
+            $errordesc="Highlight id required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Pass in Highlight  id";
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
         }else {
-            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
+            $highlightid = cleanme($_POST['highlightid']); 
         }
 
-        //confirm if building type id is not empty
-        if(empty($buildingTypeid)){
+        //confirm if highlightid is not empty
+        if(empty($highlightid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the building type id ";
+            $text="Please pass in the Highlight id ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
         
-        $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` WHERE `build_id` = ?";
+        $sqlQuery = "SELECT `id`, `highlightid`, `name`, `status`, `icon` FROM `highlights` WHERE `highlightid` = ?";
         $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$buildingTypeid);
+        $stmt->bind_param("s",$highlightid);
         $stmt->execute();  
         $result = $stmt->get_result();
         $numRow = $result->num_rows;
@@ -77,16 +76,20 @@
             //pass fetched data as array maindata[]
             $row = $result->fetch_assoc();
             $id = $row['id'];
-            $buildingTypeid = $row['build_id'];
+            $highlightid = $row['highlightid'];
             $name = $row['name'];
-            $imageUrl = $row['image_url'];
+            $icon = $row['icon'];
             $statusCode = $row['status'];
-            $status =$statusCode;
-
+            if($statusCode == 1){
+                $status = "Active";
+            }else{
+                $status = "Inctive";
+            }
             $maindata=[
                 "id"=>$id,
-                "buildingTypeid"=>$buildingTypeid,
+                "highlightid"=>$highlightid,
                 "name"=>$name,
+                "icon"=>$icon,
                 "status"=>$status,
                 "statusCode"=>$statusCode,
             ];

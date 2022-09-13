@@ -69,15 +69,15 @@
         $offset = ($page_no - 1) * $noPerPage;
 
 
-        if($status > 0){
+        if($sort > 0){
             //sort with default address
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` 
-                                WHERE (`name` like ? ) AND `status` =?";
+                $searchQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety` 
+                                WHERE (`name` like ? OR `description` like ? ) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("ss", $searchParam, $status);
+                $stmt->bind_param("sss", $searchParam, $searchParam, $status);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
@@ -85,14 +85,14 @@
 
                 $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("ssss", $searchParam, $status, $offset, $noPerPage);
+                $stmt->bind_param("sssss",  $searchParam, $searchParam, $status, $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $numRow = $result->num_rows;  
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety`
                             WHERE `status` =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
@@ -113,10 +113,10 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` 
-                                WHERE `name` like ? ";
+                $searchQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety`  
+                                WHERE `name` like ? OR  `description` like ?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("s",  $searchParam);
+                $stmt->bind_param("ss",  $searchParam, $searchParam);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
@@ -125,20 +125,20 @@
                 //paginate the fetch data
                 $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("sss", $searchParam, $offset, $noPerPage);
+                $stmt->bind_param("ssss", $searchParam, $searchParam, $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types`";
+                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety`";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety` ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
@@ -165,19 +165,24 @@
             $allResponse = [];
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
-            $buildingTypeid = $row['build_id'];
-            $name = $row['name'];
-            $imageUrl = $row['image_url'];
-            $statusCode = $row['status'];
-            $status =$statusCode;
+                $guestSafetyid = $row['guest_safetyid'];
+                $name = $row['name'];
+                $description = $row['description'];
+                $statusCode = $row['status'];
+                if($statusCode == 1){
+                    $status = "Active";
+                }else{
+                    $status = "Inctive";
+                }
 
-            array_push($allResponse, array(
-                "id"=>$id,
-                "buildingTypeid"=>$buildingTypeid,
-                "name"=>$name,
-                "status"=>$status,
-                "statusCode"=>$statusCode,
-            ));
+                array_push($allResponse, array(
+                    "id"=>$id,
+                    "guestSafetyid"=>$guestSafetyid,
+                    "name"=>$name,
+                    "description"=>$description,
+                    "status"=>$status,
+                    "statusCode"=>$statusCode,
+                ));
 
             }
             $maindata = [
@@ -185,7 +190,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'buildingTypes'=> $allResponse
+                'guestSafety'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

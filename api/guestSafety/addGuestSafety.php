@@ -1,18 +1,17 @@
 <?php
-    // send some CORS headers so the API can be called from anywhere
+    // pass cors header to allow from cross-origin
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: POST");// OPTIONS,GET,POST,PUT,DELETE
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
-    // header("Access-Control-Max-Age: 3600");//3600 seconds
-    // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
     include "../cartsfunction.php";
 
-    $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
-
+    $method = getenv('REQUEST_METHOD');
+    $maindata= [];
+ 
     if ($method == 'POST') {
         //get company details to decode usertoken
         $detailsID =1;
@@ -40,39 +39,11 @@
             respondUnAuthorized($data);
         }
 
-        //confirm how to pass in the id
-        if(!isset($_POST['buildingTypeid'])){
-            $errordesc="Building type id required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in building type  id";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-            
-        }else {
-            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
-        }
-
-        if ( !isset($_FILES['image']) ){
-            // send error if Building field is not passed
-            $errordesc = "Building Image must be passed";
+        if ( !isset($_POST['name']) ){
+            // send error if name field is not passed
+            $errordesc = "Guest safety name must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
-        }else{
-            $image = $_FILES['image'];
-        }
-
-        if ( !isset($_POST['name']) ){
-            // send error if howmanyminread field is not passed
-            $errordesc = "Building name must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required rateStar field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
@@ -81,45 +52,48 @@
             $name = cleanme($_POST['name']);
         }
 
-        if (empty($name)|| empty($image)){
-            // send error if inputs are empty
-            $errordesc = "Building type inputs are required";
+        if ( !isset($_POST['description']) ){
+            // send error if description field is not passed
+            $errordesc = "Guest safety description must be passed";
             $linktosolve = 'https://';
-            $hint = "Pass in building type details, it can't be empty";
+            $hint = "Kindly pass the required field in this register endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data);
+
+        }else{
+            $description = cleanme($_POST['description']);
+        }
+        if (empty($name) || empty($description)){
+            // send error if inputs are empty
+            $errordesc = "Guest safety inputs are required";
+            $linktosolve = 'https://';
+            $hint = "Pass in guest safety details, it can't be empty";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
         }
-        
-        //UPDATE `building_types` SET `id`='[value-1]',`build_id`='[value-2]',`name`='[value-3]',`image_url`='[value-4]',
-        $sql = "UPDATE `building_types` SET name = ?, image_url = ? WHERE build_id = ?";
-        $stmt = $connect->prepare($sql);
-        $stmt->bind_param('sss', $name, $imageUrl, $buildingTypeid);
-        $update =$stmt->execute();
-        if($update){
-            $maindata=[];
-            $errordesc = " ";
-            $linktosolve = "htps://";
-            $hint = [];
-            $errordata = [];
-            $text = "Building type Updated";
+        $status =0;
+        $guestSafetyid = generateUniqueShortKey($connect,'guest_safety','guest_safetyid');
+
+        $query = "INSERT INTO `guest_safety`(`guest_safetyid`, `description`, `name`, `status`) VALUES (?,?,?,?)";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("ssss", $guestSafetyid, $description, $name, $status);
+
+        if ( $stmt->execute() ){
+            $text= "Guest safety successfully added";
             $status = true;
-            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-            respondOK($data);
-
+            $data = [];
+            $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
+            respondOK($successData);
         }else{
-            //invalid input || server error
-            $errordesc=$stmt->error;
-            $linktosolve="htps://";
-            $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="invalid api id or Check DB connection";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            $errordesc =  $stmt->error;
+            $linktosolve = 'https://';
+            $hint = "500 code internal error, check ur database connections";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondInternalError($data);
-        }
-
-    
+            }
 
     }else{
         // method not allowed
@@ -131,5 +105,6 @@
         $method=getenv('REQUEST_METHOD');
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondMethodNotAlowed($data);
-    }  
+    }
+ 
 ?>
