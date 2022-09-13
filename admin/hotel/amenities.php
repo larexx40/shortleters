@@ -535,10 +535,10 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#565601</a></span>
+                                                                <span><a href="#"></a></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span>Soup spoon <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                                <span>No record <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span>70 pcs</span>

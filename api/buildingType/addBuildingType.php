@@ -78,7 +78,8 @@
         $buildingTypeid = generateUniqueShortKey($connect,'building_types','build_id');
         
         $imageName = uploadImage($image, "buildingTypes", $endpoint, $method);
-        $imageUrl = $baseUrl."/buildingTypes";
+        $imageUrl = $imageurl."/buildingTypes/". $imageName;
+        echo $imageUrl;
         $query = "INSERT INTO `building_types`(`build_id`, `name`, `image_url`, `status`) VALUES (?,?,?,?)";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("ssss", $buildingTypeid, $name, $imageUrl, $status);
