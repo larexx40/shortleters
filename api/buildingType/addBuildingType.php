@@ -38,36 +38,22 @@
         }
         $adminid = checkIfIsAdmin($connect, $userpubkey);
 
-        if ( !isset($_FILES['blogImage']) ){
+        if ( !isset($_FILES['image']) ){
             // send error if blogimage field is not passed
-            $errordesc = "Blogimage must be passed";
+            $errordesc = "Building Image must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required review field in this register endpoint";
+            $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
 
         }else{
-            $blogImage = $_FILES['blogImage'];
+            $image = $_FILES['image'];
         }
 
-
-        if ( !isset($_POST['blogHeadline']) ){
-            // send error if blogheadline field is not passed
-            $errordesc = "Blogheadline must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required productid field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
-        }else{
-            $blogHeadline = cleanme($_POST['blogHeadline']);
-        }
-
-        if ( !isset($_POST['howManyMinRead']) ){
+        if ( !isset($_POST['name']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "HowManyMinRead must be passed";
+            $errordesc = "Building name must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required rateStar field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -75,42 +61,29 @@
             respondBadRequest($data);
 
         }else{
-            $howManyMinRead = cleanme($_POST['howManyMinRead']);
+            $name = cleanme($_POST['name']);
         }
 
-        if ( !isset($_POST['blogContent']) ){
-            // send error if blogContent field is not passed
-            $errordesc = "blogContent must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required rateStar field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
-        }else{
-            $blogContent = cleanme($_POST['blogContent']);
-        }
-
-        $dateAdded = time();
-        $draft =1;
-    
-        if (empty($blogImage)|| empty($blogHeadline)|| empty($howManyMinRead) || empty($blogContent) || empty($draft)){
+        if (empty($name)|| empty($image)){
             // send error if inputs are empty
-            $errordesc = "Blog inputs are required";
+            $errordesc = "Building type inputs are required";
             $linktosolve = 'https://';
-            $hint = "Pass in article details, it can't be empty";
+            $hint = "Pass in building type details, it can't be empty";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
-            //uploadImage($img, "products", $endpoint, $method);
         }
-        $imageLink = uploadImage($blogImage, "blogImages", $endpoint, $method);
-        $query = "INSERT INTO `blog`(`adminid`, `dateadded`, `blogimage`, `blogheadline`, `howmanyminread`, `blogcontent`,`draft`) VALUES (?,?,?,?,?,?,?)";
+        $status =0;
+        $buildingTypeid = generateUniqueShortKey($connect,'coinproducts','producttrackid');
+        
+        $imageName = uploadImage($image, "blogImages", $endpoint, $method);
+        $imageUrl = $baseUrl."/buildingTypes";
+        $query = "INSERT INTO INSERT INTO `building_types`(`build_id`, `name`, `image_url`, `status`) VALUES (?,?,?,?)";
         $stmt = $connect->prepare($query);
-        $stmt->bind_param("sssssss", $adminid, $dateAdded, $imageLink, $blogHeadline, $howManyMinRead, $blogContent, $draft);
+        $stmt->bind_param("ssss", $buildingTypeid, $name, $imageUrl, $status);
 
         if ( $stmt->execute() ){
-            $text= "Blog Successfully posted";
+            $text= "Building type successfully posted";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);

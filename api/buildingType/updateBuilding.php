@@ -40,49 +40,36 @@
         $adminid = checkIfIsAdmin($connect,$userpubkey);
 
         //confirm how to pass in the id
-        if(!isset($_POST['id'])){
-            $errordesc="id required";
+        if(!isset($_POST['buildingTypeid'])){
+            $errordesc="Building type id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in  id";
+            $text="Pass in building type  id";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
             
         }else {
-            $id = cleanme($_POST['id']); 
+            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
         }
 
-        if ( !isset($_POST['blogImage']) ){
+        if ( !isset($_FILES['image']) ){
             // send error if blogimage field is not passed
-            $errordesc = "Blogimage must be passed";
+            $errordesc = "Building Image must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required review field in this register endpoint";
+            $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
 
         }else{
-            $blogImage = cleanme($_POST['blogImage']);
+            $image = $_FILES['image'];
         }
 
-        if ( !isset($_POST['blogHeadline']) ){
-            // send error if blogheadline field is not passed
-            $errordesc = "Blogheadline must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required productid field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
-        }else{
-            $blogHeadline = cleanme($_POST['blogHeadline']);
-        }
-
-        if ( !isset($_POST['howManyMinRead']) ){
+        if ( !isset($_POST['name']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "HowManyMinRead must be passed";
+            $errordesc = "Building name must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required rateStar field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -90,64 +77,48 @@
             respondBadRequest($data);
 
         }else{
-            $howManyMinRead = cleanme($_POST['howManyMinRead']);
+            $name = cleanme($_POST['name']);
         }
 
-        if ( !isset($_POST['blogContent']) ){
-            // send error if blogContent field is not passed
-            $errordesc = "blogContent must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required rateStar field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
-        }else{
-            $blogContent = cleanme($_POST['blogContent']);
-        }
-
-        if (empty($blogImage)|| empty($blogHeadline)|| empty($howManyMinRead) || empty($blogContent)){
+        if (empty($name)|| empty($image)){
             // send error if inputs are empty
-            $errordesc="Bad request";
+            $errordesc = "Building type inputs are required";
+            $linktosolve = 'https://';
+            $hint = "Pass in building type details, it can't be empty";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data);
+        }
+        
+        //UPDATE `building_types` SET `id`='[value-1]',`build_id`='[value-2]',`name`='[value-3]',`image_url`='[value-4]',
+        $sql = "UPDATE `building_types` SET name = ?, image_url = ? WHERE build_id = ?";
+        $stmt = $connect->prepare($sql);
+        $stmt->bind_param('sss', $name, $imageUrl, $buildingTypeid);
+        $update =$stmt->execute();
+        if($update){
+            $maindata=[];
+            $errordesc = " ";
+            $linktosolve = "htps://";
+            $hint = [];
+            $errordata = [];
+            $text = "Building type Updated";
+            $status = true;
+            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+            respondOK($data);
+
+        }else{
+            //invalid input || server error
+            $errordesc=$stmt->error;
             $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please fill all require data input";
+            $text="invalid api id or Check DB connection";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-        }else{
-            // UPDATE db with id
-            //`adminid`='',`dateadded`='',`blogimage`='',`blogheadline`='',`howmanyminread`='',`blogcontent`=',`draft`= 
-            $sql = "UPDATE `blog` SET blogheadline = ?, howmanyminread = ?, blogcontent = ? WHERE id = ? AND adminid = ?";
-            $stmt = $connect->prepare($sql);
-            $stmt->bind_param('sssss', $blogHeadline, $howManyMinRead, $blogContent, $id, $adminid);
-            $update =$stmt->execute();
-
-            if($update){
-                $maindata=[];
-                $errordesc = " ";
-                $linktosolve = "htps://";
-                $hint = [];
-                $errordata = [];
-                $text = "Blog contentent Updated";
-                $status = true;
-                $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-                respondOK($data);
-
-            }else{
-                //invalid input || server error
-                $errordesc=$stmt->error;
-                $linktosolve="htps://";
-                $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
-                $errordata=returnError7003($errordesc,$linktosolve,$hint);
-                $text="invalid api id or Check DB connection";
-                $method=getenv('REQUEST_METHOD');
-                $data=returnErrorArray($text,$method,$endpoint,$errordata);
-                respondInternalError($data);
-            }
-
+            respondInternalError($data);
         }
+
+    
 
     }else{
         // method not allowed
