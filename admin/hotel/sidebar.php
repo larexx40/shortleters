@@ -41,14 +41,14 @@
                                 <li class="nk-menu-item has-sub">
                                      <a href="#"class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon"><em class="icon ni ni-home-fill"></em></span>
-                                        <span class="nk-menu-text">Room</span>
+                                        <span class="nk-menu-text">Building Types</span>
                                     </a>
                                     <ul class="nk-menu-sub">
                                         <li class="nk-menu-item">
-                                            <a href="./room-list.php" class="nk-menu-link"><span class="nk-menu-text">All Rooms</span></a>
+                                            <a href="./room-list.php" class="nk-menu-link"><span class="nk-menu-text">All Building Types</span></a>
                                         </li>
                                         <li class="nk-menu-item">
-                                            <a href="./room-type.php" class="nk-menu-link"><span class="nk-menu-text">Room Types</span></a>
+                                            <a href="./room-type.php" class="nk-menu-link"><span class="nk-menu-text">All Sub Building Types</span></a>
                                         </li>
                                     </ul>
                                 </li><!-- .nk-menu-item -->
@@ -69,6 +69,37 @@
                                         </li>
                                     </ul>
                                 </li><!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                     <a href="#"class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+                                        <span class="nk-menu-text">Apartments</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="./all_apartments.php" class="nk-menu-link"><span class="nk-menu-text">All Apartments</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nk-menu-item has-sub">
+                                     <a href="#"class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+                                        <span class="nk-menu-text">Apartment Features</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="./amenities.php" class="nk-menu-link"><span class="nk-menu-text">Amenities</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./highlights.php" class="nk-menu-link"><span class="nk-menu-text">Highlights</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./host_type.php" class="nk-menu-link"><span class="nk-menu-text">Host Type</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./guest_features.php" class="nk-menu-link"><span class="nk-menu-text">Guest Features</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li class="nk-menu-item">
                                     <a href="./customers.php" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>

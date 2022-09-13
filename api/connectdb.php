@@ -8,7 +8,7 @@ date_default_timezone_set("Africa/Lagos");
 
 $username= 'root';
 $password= '';
-$dbname= 'cart.ng';
+$dbname= 'shortleters';
 $connect= mysqli_connect('localhost',$username,$password,$dbname);
 
 // $host = "localhost";
@@ -22,6 +22,7 @@ $resetLink = "http://localhost/cart.ng2/resetpassword.php";
 $admin_resetLink = "http://localhost/cart.ng2/admin/resetpassword.php";
 $shop_resetLink = "http://localhost/cart.ng2/shop/resetpassword.php";
 $logistics_resetLink = "http://localhost/cart.ng2/logistics/resetpassword.php";
+$imageurl = "http://localhost/shortleters/assets/images/"
 
 
 

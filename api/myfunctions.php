@@ -138,7 +138,7 @@
     function generateUniqueShortKey($connect, $tableName, $field){
         $loop = 0;
         while ($loop == 0){
-            $userKey = "CNG".generateShortKey(5);
+            $userKey = "SHL".generateShortKey(5);
             if ( checkIfCodeisInDB($connect, $tableName, $field ,$userKey) ){
                 $loop = 0;
             }else {
