@@ -28,16 +28,17 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-        if(!checkIfIsAdmin($connect,$userpubkey)){
+        //check if isadmin
+        $adminid = checkIfIsAdmin($connect,$userpubkey);
+        if(!$adminid){
             // send user not found response to the user
-            $errordesc =  "User not a shop owner";
+            $errordesc =  "User not a admin";
             $linktosolve = 'https://';
-            $hint = "Only shop owner can access this route";
+            $hint = "Only admin can access this route";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
         }
-        $adminid = checkIfIsAdmin($connect,$userpubkey);
 
         //confirm how to pass in the id
         if(!isset($_POST['buildingTypeid'])){
@@ -55,7 +56,7 @@
         }
 
         if ( !isset($_FILES['image']) ){
-            // send error if blogimage field is not passed
+            // send error if Building field is not passed
             $errordesc = "Building Image must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";

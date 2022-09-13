@@ -59,6 +59,7 @@
         $stmt->bind_param("s",$buildingTypeid);
         $stmt->execute();  
         $result = $stmt->get_result();
+        $numRow = $result->num_rows;
 
         //check for db error || connection lost
         if(!$stmt->execute()){
@@ -72,7 +73,7 @@
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondInternalError($data);
         }
-        if($result->affected_rows > 0){
+        if($numRow > 0){
             //pass fetched data as array maindata[]
             $row = $result->fetch_assoc();
             $id = $row['id'];

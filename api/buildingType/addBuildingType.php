@@ -27,19 +27,20 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-        if(!checkIfIsAdmin($connect, $userpubkey)){
-            // send Admin not found response
-            $errordesc =  "Admin  not found";
+        //check if isadmin
+        $adminid = checkIfIsAdmin($connect,$userpubkey);
+        if(!$adminid){
+            // send user not found response to the user
+            $errordesc =  "User not a admin";
             $linktosolve = 'https://';
-            $hint = "Only Admin can access this route";
+            $hint = "Only admin can access this route";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
         }
-        $adminid = checkIfIsAdmin($connect, $userpubkey);
 
         if ( !isset($_FILES['image']) ){
-            // send error if blogimage field is not passed
+            // send error if building image field is not passed
             $errordesc = "Building Image must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
@@ -55,7 +56,7 @@
             // send error if howmanyminread field is not passed
             $errordesc = "Building name must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required rateStar field in this register endpoint";
+            $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
@@ -74,11 +75,11 @@
             respondBadRequest($data);
         }
         $status =0;
-        $buildingTypeid = generateUniqueShortKey($connect,'coinproducts','producttrackid');
+        $buildingTypeid = generateUniqueShortKey($connect,'building_types','build_id');
         
-        $imageName = uploadImage($image, "blogImages", $endpoint, $method);
+        $imageName = uploadImage($image, "buildingTypes", $endpoint, $method);
         $imageUrl = $baseUrl."/buildingTypes";
-        $query = "INSERT INTO INSERT INTO `building_types`(`build_id`, `name`, `image_url`, `status`) VALUES (?,?,?,?)";
+        $query = "INSERT INTO `building_types`(`build_id`, `name`, `image_url`, `status`) VALUES (?,?,?,?)";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("ssss", $buildingTypeid, $name, $imageUrl, $status);
 

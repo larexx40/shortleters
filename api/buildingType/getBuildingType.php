@@ -85,7 +85,7 @@
 
                 $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("sssssss", $searchParam, $searchParam, $searchParam, $searchParam, $status, $offset, $noPerPage);
+                $stmt->bind_param("ssss", $searchParam, $status, $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $numRow = $result->num_rows;  

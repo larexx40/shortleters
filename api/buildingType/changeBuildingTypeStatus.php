@@ -13,7 +13,7 @@
     $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
 
-    if ($method == 'GET') {
+    if ($method == 'POST') {
         //get company details to decode usertoken
         $detailsID =1;
         $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
@@ -52,24 +52,37 @@
         }else {
             $buildingTypeid = cleanme($_POST['buildingTypeid']); 
         }
+        //check status passed
         if ( !isset($_POST['status']) ){
-            $errordesc="Shop Location status required";
+            $errordesc="Building type status required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Shop Location status must be passed";
+            $text="Building type status must be passed";
             $method;
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }else{
             $status = cleanme($_POST['status']);
         }
+
         if ($status == 0 || $status == "inactive"){
             $changeStatus = 0;
             $message = "Deactivated";
         }elseif ($status == 1 || $status == 'active'){
             $changeStatus = 1;
             $message = "Activated";
+        }else{
+            $changeStatus = "";
+        }
+
+        if ( $changeStatus != 0 && $changeStatus !== 1){
+            $errordesc = "Status passed is invalid ";
+            $linktosolve = 'https://';
+            $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
         }
 
         //confirm if building type id is not empty
@@ -87,25 +100,25 @@
         //.....change draft to 1 (show)
         $sql = "UPDATE `building_types` SET `status`= ? WHERE build_id = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ss', $show, $id);
+        $stmt->bind_param('ss', $changeStatus, $buildingTypeid);
         $stmt->execute();
 
         if ( $stmt->affected_rows > 0 ){
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = "Blog draft set to  ";
+            $hint = "Building type status set to $message";
             $errordata = [];
-            $text = "User can view blog";
+            $text = "Building type set to $message";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
         
         }else{
-            //blog not found
-            $errordesc = "Blog with id not found";
+            //Building type not found
+            $errordesc = "Building type with id not found";
             $linktosolve = 'https://';
-            $hint = "Kindly pass valid blog id";
+            $hint = "Kindly pass valid building id";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data); 
@@ -117,7 +130,6 @@
         $hint=["Ensure to use the method stated in the documentation."];
         $errordata=returnError7003($errordesc,$linktosolve,$hint);
         $text="Method used not allowed";
-        $method=getenv('REQUEST_METHOD');
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondMethodNotAlowed($data);
     }  
