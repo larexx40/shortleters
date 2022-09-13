@@ -890,6 +890,7 @@
 
                 $allowed_exs = array("jpg", "jpeg", "png");
 
+               
                 if (in_array($img_ex_lc, $allowed_exs)) {
                     $path = "../../assets/images/$path/";
                     $new_img_name = uniqid("CNG-IMG-", true). "." . $img_ex_lc;

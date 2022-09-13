@@ -162,8 +162,8 @@
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $icon = $row['icon'];
-                $created = gettheTimeAndDate($row['created_at']);
-                $updated = gettheTimeAndDate($row['updated_at']);
+                $created = gettheTimeAndDate(strtotime($row['created_at']));
+                $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
                 array_push($allAmenities, array(
                     'id' => $row['amen_id'],

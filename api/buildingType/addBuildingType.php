@@ -79,7 +79,6 @@
         
         $imageName = uploadImage($image, "buildingTypes", $endpoint, $method);
         $imageUrl = $imageurl."/buildingTypes/". $imageName;
-        echo $imageUrl;
         $query = "INSERT INTO `building_types`(`build_id`, `name`, `image_url`, `status`) VALUES (?,?,?,?)";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("ssss", $buildingTypeid, $name, $imageUrl, $status);

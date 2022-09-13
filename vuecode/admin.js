@@ -66,18 +66,10 @@ let admin = Vue.createApp({
     data(){
         return{
             length: null,
-            storeStatistics: null,
-            topProductOrdered: null,
-            recentOrders: null,
-            productReviews: null,
-            //secondmerge
+            
             superAdmin: null,
-            sortPost: null,
-            sortDays: null,
-            sortDraft: null,
             blog_details: null,
             arrayIndex: null,
-            itemDetails: null,
             addresses: null,
             //lanre data @S 
             minsToRead: null,
@@ -110,20 +102,9 @@ let admin = Vue.createApp({
             termiApi_details: null,
             smartSolutions: null,
             smartSolution_details: null,
-            logisticLocations: null,
-            logisticPrices: null,
-            logisticLocation_details: null,
-            logisticPrice_details: null,
-            order_details: null,
             getAdmin_details:null,
             admin_details: null,
             admin_initials: null,
-            price_currentPage: null,
-            price_totalData: null,
-            price_totalPage: null,
-            location_currentPage: null,
-            location_totalData: null,            
-            location_totalPage: null,
             currentPage: null,
             totalData: null,
             totalPage: null,
@@ -132,19 +113,12 @@ let admin = Vue.createApp({
             per_page: null,
             blogs: null,
             blogCount: null,
-            logistics:null,
             admins:null,
-            shops: null,
-            customers: null,
-            carts: [],
-            orders: null,
-            refNo: null,
-            trackid: null,
-            track_id: null,
-            order_status: null,
             baseUrl:'http://localhost/shortleters/',
             authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMwODUwNDAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzA4NTA0MCwiZXhwIjoxNjYzMTU4ODQwLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.ULESpOn4NDSX9xCxSoUxwRPgK31etppmk3BXlJZ7k7g6Mbz-6ElGv5gM1XfpnU9IKJGqP5L1S_bbvnA7UhVK4A",
             all_amenities: null,
+            amenities_name: null,
+            amenities_icon: null,
             email: null,
             ref_link: null,
             admin_details: null,
@@ -158,9 +132,6 @@ let admin = Vue.createApp({
             fullname: null,
             phoneno: null,
             state: null,
-            locationid: "",
-            minWeight: null,
-            maxWeight: null,
             price: null,
             locationName: null,
             longitude: null,
@@ -184,22 +155,6 @@ let admin = Vue.createApp({
             slider_type: null,
             slider_product: null,
             slider_desc: null,
-            shops: null,
-            shop: null,
-            shop_details: null,
-            shop_locations: null,
-            shop_location: null,
-            shop_products: null,
-            shop_product: null,
-            shopname: null,
-            shop_country: null,
-            shop_city: null,
-            shop_password: null,
-            shop_email: null,
-            shop_phone: null,
-            shop_whatsapp: null,
-            shop_type: null,
-            shop_currency: "Naira",
             users: null,
             user: null,
             user_details: null,
@@ -217,18 +172,6 @@ let admin = Vue.createApp({
             user_transaction: null,
             all_transactions: null,
             transaction: null,
-            all_products: null,
-            product: null,
-            all_categories: null,
-            category_name: null,
-            category_description: null,
-            category: null,
-            all_sub_categories: null,
-            sub_category: null,
-            sub_category_name: null,
-            category_id: null,
-            all_brands: null,
-            brand: null
         }
     },
     async created() {
@@ -268,32 +211,38 @@ let admin = Vue.createApp({
     },
     methods: {
         //LanreWaju Method
-          //address
-          async getAllAmenities( load = 1){
+        //buildingtype
+        async getAllBuildingType(load=1){
             let search = (this.search)? `&search=${this.search}`: '';
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
             let page = ( this.currentPage )? this.currentPage : 1;
             let noPerPage = ( this.per_page ) ? this.per_page : 4;
-
-            const url = `${this.baseUrl}api/amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
-                    "Content-type": "application/json",
+                    //"Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
                 },
                 url
             }
             try {
-                this.loading = true;
+                if(load == 1){
+                    this.loading = true;
+                }
                 const response = await axios(options);
                 if(response.data.status){
-                    this.all_amenities = response.data.data.amenities;
+                    this.monifys = response.data.data.monifys;
                     this.currentPage =response.data.data.page;
                     this.totalData =response.data.data.total_data;
                     this.totalPage =response.data.data.totalPage;
-                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
-                }  
+                    //console.log("APiMonify", response.data.data.monifys);
+                }else{
+                    this.monifys = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
             } catch (error) {
                 // //console.log(error);
                 if (error.response){
@@ -306,7 +255,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // window.location.href="/login.php"
+                        // // window.location.href="./login.php"
                         return
                     }
     
@@ -330,7 +279,1425 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
           },
-          async getAllAddresses(){
+        
+        async getBuildingTypeByid(id){
+            //console.log("monifyid", id);
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true
+                const response = await axios(options);
+                if (response.data.status) {
+                    this.monify_details= response.data.data;
+                    //console.log(response.data.data);
+                }else{
+                    new Toasteur().error(response.data.text);
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }else{
+                    new Toasteur().error(error.message || "Error processing request");
+                }
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async addBuildingType(){
+            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('apiKey', this.apiKey );
+            data.append('name', this.apiName );
+            data.append('secreteKey', this.secretKey );
+            data.append('apiMerchant', this.apiMerchant );
+            data.append('apiWallet', this.apiWallet );
+            data.append('apiAccno', this.secretKey );
+
+            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    await this.getAllMonify();
+                    Swal.fire(response.data.text);
+                    
+                }
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    // // window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }finally {
+                this.loading = false;
+            }
+
+        },
+        async deleteBuildingType(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.getAllMonify();
+                }    
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                       new Toasteur().error(errorMsg);
+                       // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async changeBuildingTypeStatus(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+            //console.log('URL', url);
+            if(!id){
+                new Toasteur().error("undefined")
+            }else{
+                const data = new FormData();
+                data.append('id', id);;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    data,
+                    url
+                }
+                try {
+                    this.loading = true
+                    const response = await axios(options);
+                    if(response.data.status){
+                        new Toasteur().success("Status Changed")
+                        this.getAllMonify();      
+                    }else{
+                        this.getAllMonify();
+                    }     
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+
+                    new Toasteur().error(error.message || "Error processing request")
+
+                    
+                }finally {
+                    this.loading = false;
+                }
+
+            }
+            
+        },
+        async updateBuildingType(){
+            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }else{
+
+                let data = new FormData();
+                data.append('id', this.monify_details.id );
+                data.append('apikey', this.monify_details.apikey );
+                data.append('name', this.monify_details.name );
+                data.append('secretkey', this.monify_details.secretkey );
+                data.append('apimerchant', this.monify_details.apimerchant );
+                data.append('apiwallet', this.monify_details.apiwallet);
+                data.append('apiaccno', this.monify_details.apiaccno );
+
+
+                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                
+                const options = {
+                    method: "POST",
+                    data,
+                    url,
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    }
+                }
+
+                try {
+                    this.loading = true;
+                    const response = await axios(options); 
+                    if(response.data.status){
+                        await this.getAllMonify();
+                        Swal.fire(response.data.text);
+                        
+                    }
+                } catch (error) {
+                    ////console.log(error);
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }finally {
+                    this.loading = false;
+                }
+            }
+
+        },
+        //Space type
+        async getAllSpaceType(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.monifys = response.data.data.monifys;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("APiMonify", response.data.data.monifys);
+                }else{
+                    this.monifys = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getSpaceTypeByid(id){
+            //console.log("monifyid", id);
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true
+                const response = await axios(options);
+                if (response.data.status) {
+                    this.monify_details= response.data.data;
+                    //console.log(response.data.data);
+                }else{
+                    new Toasteur().error(response.data.text);
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }else{
+                    new Toasteur().error(error.message || "Error processing request");
+                }
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async addSpaceType(){
+            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('apiKey', this.apiKey );
+            data.append('name', this.apiName );
+            data.append('secreteKey', this.secretKey );
+            data.append('apiMerchant', this.apiMerchant );
+            data.append('apiWallet', this.apiWallet );
+            data.append('apiAccno', this.secretKey );
+
+            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    await this.getAllMonify();
+                    Swal.fire(response.data.text);
+                    
+                }
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    // // window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }finally {
+                this.loading = false;
+            }
+
+        },
+        async deleteSpaceType(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.getAllMonify();
+                }    
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                       new Toasteur().error(errorMsg);
+                       // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async changeSpaceTypeStatus(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+            //console.log('URL', url);
+            if(!id){
+                new Toasteur().error("undefined")
+            }else{
+                const data = new FormData();
+                data.append('id', id);;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    data,
+                    url
+                }
+                try {
+                    this.loading = true
+                    const response = await axios(options);
+                    if(response.data.status){
+                        new Toasteur().success("Status Changed")
+                        this.getAllMonify();      
+                    }else{
+                        this.getAllMonify();
+                    }     
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+
+                    new Toasteur().error(error.message || "Error processing request")
+
+                    
+                }finally {
+                    this.loading = false;
+                }
+
+            }
+            
+        },
+        async updateSpaceType(){
+            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }else{
+
+                let data = new FormData();
+                data.append('id', this.monify_details.id );
+                data.append('apikey', this.monify_details.apikey );
+                data.append('name', this.monify_details.name );
+                data.append('secretkey', this.monify_details.secretkey );
+                data.append('apimerchant', this.monify_details.apimerchant );
+                data.append('apiwallet', this.monify_details.apiwallet);
+                data.append('apiaccno', this.monify_details.apiaccno );
+
+
+                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                
+                const options = {
+                    method: "POST",
+                    data,
+                    url,
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    }
+                }
+
+                try {
+                    this.loading = true;
+                    const response = await axios(options); 
+                    if(response.data.status){
+                        await this.getAllMonify();
+                        Swal.fire(response.data.text);
+                        
+                    }
+                } catch (error) {
+                    ////console.log(error);
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }finally {
+                    this.loading = false;
+                }
+            }
+
+        },
+        //Highlights
+        async getAllHighlight(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.monifys = response.data.data.monifys;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("APiMonify", response.data.data.monifys);
+                }else{
+                    this.monifys = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getHighlightByid(id){
+            //console.log("monifyid", id);
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true
+                const response = await axios(options);
+                if (response.data.status) {
+                    this.monify_details= response.data.data;
+                    //console.log(response.data.data);
+                }else{
+                    new Toasteur().error(response.data.text);
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }else{
+                    new Toasteur().error(error.message || "Error processing request");
+                }
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async addHighlight(){
+            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('apiKey', this.apiKey );
+            data.append('name', this.apiName );
+            data.append('secreteKey', this.secretKey );
+            data.append('apiMerchant', this.apiMerchant );
+            data.append('apiWallet', this.apiWallet );
+            data.append('apiAccno', this.secretKey );
+
+            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    await this.getAllMonify();
+                    Swal.fire(response.data.text);
+                    
+                }
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    // // window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }finally {
+                this.loading = false;
+            }
+
+        },
+        async deleteHighlight(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.getAllMonify();
+                }    
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                       new Toasteur().error(errorMsg);
+                       // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async changeHighlightStatus(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+            //console.log('URL', url);
+            if(!id){
+                new Toasteur().error("undefined")
+            }else{
+                const data = new FormData();
+                data.append('id', id);;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    data,
+                    url
+                }
+                try {
+                    this.loading = true
+                    const response = await axios(options);
+                    if(response.data.status){
+                        new Toasteur().success("Status Changed")
+                        this.getAllMonify();      
+                    }else{
+                        this.getAllMonify();
+                    }     
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+
+                    new Toasteur().error(error.message || "Error processing request")
+
+                    
+                }finally {
+                    this.loading = false;
+                }
+
+            }
+            
+        },
+        async updateHighlight(){
+            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }else{
+
+                let data = new FormData();
+                data.append('id', this.monify_details.id );
+                data.append('apikey', this.monify_details.apikey );
+                data.append('name', this.monify_details.name );
+                data.append('secretkey', this.monify_details.secretkey );
+                data.append('apimerchant', this.monify_details.apimerchant );
+                data.append('apiwallet', this.monify_details.apiwallet);
+                data.append('apiaccno', this.monify_details.apiaccno );
+
+
+                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                
+                const options = {
+                    method: "POST",
+                    data,
+                    url,
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    }
+                }
+
+                try {
+                    this.loading = true;
+                    const response = await axios(options); 
+                    if(response.data.status){
+                        await this.getAllMonify();
+                        Swal.fire(response.data.text);
+                        
+                    }
+                } catch (error) {
+                    ////console.log(error);
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }finally {
+                    this.loading = false;
+                }
+            }
+
+        },
+        //guest safety
+        async getAllGuestSafety(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.monifys = response.data.data.monifys;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("APiMonify", response.data.data.monifys);
+                }else{
+                    this.monifys = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getGuestSafetyByid(id){
+            //console.log("monifyid", id);
+            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true
+                const response = await axios(options);
+                if (response.data.status) {
+                    this.monify_details= response.data.data;
+                    //console.log(response.data.data);
+                }else{
+                    new Toasteur().error(response.data.text);
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }else{
+                    new Toasteur().error(error.message || "Error processing request");
+                }
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async addGuestSafety(){
+            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('apiKey', this.apiKey );
+            data.append('name', this.apiName );
+            data.append('secreteKey', this.secretKey );
+            data.append('apiMerchant', this.apiMerchant );
+            data.append('apiWallet', this.apiWallet );
+            data.append('apiAccno', this.secretKey );
+
+            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    await this.getAllMonify();
+                    Swal.fire(response.data.text);
+                    
+                }
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    // // window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }finally {
+                this.loading = false;
+            }
+
+        },
+        async deleteGuestSafety(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.getAllMonify();
+                }    
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                       new Toasteur().error(errorMsg);
+                       // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async changeGuestSafetyStatus(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+            //console.log('URL', url);
+            if(!id){
+                new Toasteur().error("undefined")
+            }else{
+                const data = new FormData();
+                data.append('id', id);;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    data,
+                    url
+                }
+                try {
+                    this.loading = true
+                    const response = await axios(options);
+                    if(response.data.status){
+                        new Toasteur().success("Status Changed")
+                        this.getAllMonify();      
+                    }else{
+                        this.getAllMonify();
+                    }     
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+
+                    new Toasteur().error(error.message || "Error processing request")
+
+                    
+                }finally {
+                    this.loading = false;
+                }
+
+            }
+            
+        },
+        async updateGuestSafety(){
+            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }else{
+
+                let data = new FormData();
+                data.append('id', this.monify_details.id );
+                data.append('apikey', this.monify_details.apikey );
+                data.append('name', this.monify_details.name );
+                data.append('secretkey', this.monify_details.secretkey );
+                data.append('apimerchant', this.monify_details.apimerchant );
+                data.append('apiwallet', this.monify_details.apiwallet);
+                data.append('apiaccno', this.monify_details.apiaccno );
+
+
+                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                
+                const options = {
+                    method: "POST",
+                    data,
+                    url,
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    }
+                }
+
+                try {
+                    this.loading = true;
+                    const response = await axios(options); 
+                    if(response.data.status){
+                        await this.getAllMonify();
+                        Swal.fire(response.data.text);
+                        
+                    }
+                } catch (error) {
+                    ////console.log(error);
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }finally {
+                    this.loading = false;
+                }
+            }
+
+        },
+        
+        async getAllAddresses(){
             let search = (this.search)? `&search=${this.search}`: '';
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
             let page = ( this.currentPage )? this.currentPage : 1;
@@ -1475,14 +2842,6 @@ let admin = Vue.createApp({
             
         },
         async updateMonify(){
-            
-            //console.log("monify_detailsid", this.monify_details.id);
-            //console.log("monify_details.name", this.monify_details.name);
-            //console.log("monify_details.wallet", this.monify_details.apiwallet);
-            //console.log("monify_details.password", this.monify_details.apimerchant);
-            //console.log("monify_details.account", this.monify_details.apiaccno);
-            //console.log("monify_details.secret", this.monify_details.secretkey);
-            //console.log("monify_details.apikey", this.monify_details.apikey);
             if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
                 new Toasteur().error("Kindly fill all fields")
             }else{
@@ -3760,6 +5119,133 @@ let admin = Vue.createApp({
         async generatePass(){
             this.shop_password = generatePassword();
         },
+        // korede
+        async getAllAmenities( load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+    
+            const url = `${this.baseUrl}api/amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.all_amenities = response.data.data.amenities;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }  
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
+                
+            }finally {
+                this.loading = false;
+            }
+            },
+            async addamenity( load = 1){
+                if (!this.amenities_name ||  !this.amenities_icon){
+                    this.error = "Insert all Fields"
+                    new Toasteur().error(this.error);
+                    return;
+                }
+                const data = new FormData();
+                data.append("name", this.amenities_name);
+                data.append("icon", this.amenities_icon);
+                const url = `${this.baseUrl}api/amenities/add_amenities.php`;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url,
+                    data
+                }
+                try {
+                    this.loading = true;
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        await this.getAllAmenities(6);
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+    
+                    new Toasteur().error(error.message || "Error processing request")
+    
+                    
+                }finally {
+                    this.loading = false;
+                }  
+            },
+            // korede
         async setShopId(id){
             //console.log(id);
             window.localStorage.setItem("shop_id", id);
