@@ -162,12 +162,12 @@
                 $status_code = $row['status'];
                 $build_type_id = $row['build_type_id'];
                 $build_type_name = getNameFromField($connect, "building_types", "build_id", $build_type_id);
-                $status = ($row['type'] == 1) ? "Active" : "Inactive";
+                $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $description = $row['description'];
                 $created = gettheTimeAndDate($row['created_at']);
                 $updated = gettheTimeAndDate($row['updated_at']);
                 
-                array_push($allSlider, array(
+                array_push($allSubTypes, array(
                     'id' => $row['sub_build_id'],
                     'name' => $name,
                     'status_code' => $status_code,
@@ -184,7 +184,7 @@
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'sliders' => $allSubTypes
+                'build_subtype' => $allSubTypes
             );
             $text= "Fetch Successful";
             $status = true;

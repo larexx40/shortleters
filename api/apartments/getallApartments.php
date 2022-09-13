@@ -28,7 +28,7 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $pubkey);
+        $admin =  checkIfIsAdmin($connect, $user_pubkey);
         // $agent = getShopWithPubKey($connect, $user_pubkey);
         // $user = getUserWithPubKey($connect, $user_pubkey);
 
@@ -82,9 +82,9 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT  `amen_id`, `name`, `icon`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE status = ? AND ( name LIKE ? OR icon LIKE ?) ";
+                $query = "SELECT apartments.* FROM `apartments`, `guest_safety`,`highlights`, `building_types`, `sub_building_types`, `host_type`, `amenities`, `space_type` WHERE apartment_status = ? AND ( guest_safety.name LIKE ? OR highlights.name LIKE ? OR building_types.name LIKE ? OR sub_building_types.name LIKE ? OR host_type.name LIKE ? OR apartments.name LIKE ? OR amenities.name LIKE ? OR space_type.name LIKE ? OR apartments.title LIKE ? OR apartments.availability LIKE ? )";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sss", $status, $searching, $searching );
+                $queryStmt->bind_param("sssssssssss", $status ,$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -92,15 +92,15 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sssss", $status, $searching, $searching , $offset, $no_per_page);
+                $queryStmt->bind_param("sssssssssssss", $status,$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT  `amen_id`, `name`, `icon`, `status`, `created_at`, `updated_at` FROM `amenities` name LIKE ? OR icon LIKE ?";
+                $query = "SELECT apartments.* FROM `apartments`, `guest_safety`,`highlights`, `building_types`, `sub_building_types`, `host_type`, `amenities`, `space_type` WHERE guest_safety.name LIKE ? OR highlights.name LIKE ? OR building_types.name LIKE ? OR sub_building_types.name LIKE ? OR host_type.name LIKE ? OR apartments.name LIKE ? OR amenities.name LIKE ? OR space_type.name LIKE ? OR apartments.title LIKE ? OR apartments.availability LIKE ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ss", $searching, $searching);
+                $queryStmt->bind_param("ssssssssss", $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $total_num_row = $result->num_rows;
@@ -108,7 +108,7 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ssss", $searching, $searching, $offset, $no_per_page);
+                $queryStmt->bind_param("ssssssssssss",$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -119,7 +119,7 @@
 
             if ($sort > 0){
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `amenities` WHERE `status` = ?";
+                $query = "SELECT * FROM `apartments` WHERE `status` = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $status);
                 $gtTotalPgs->execute();
@@ -135,7 +135,7 @@
                 $num_row = $result->num_rows;
             }else{
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `amenities`";
+                $query = "SELECT * FROM `apartments`";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->execute();
                 $result = $gtTotalPgs->get_result();
@@ -147,21 +147,20 @@
                 $gtTotalcomplains->bind_param("ss", $offset, $no_per_page);
                 $gtTotalcomplains->execute();
                 $result = $gtTotalcomplains->get_result();
-                $num_row = $result->num_rows;
-                
+                $num_row = $result->num_rows;   
             }
-            
 
         }
 
         if ($num_row > 0){
-            $allAmenities = [];
+            $allApartments = [];
 
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
-                $icon = $row['icon'];
+                $icon = $row['title'];
+                $description = $row[''];
                 $created = gettheTimeAndDate($row['created_at']);
                 $updated = gettheTimeAndDate($row['updated_at']);
                 

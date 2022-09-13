@@ -30,7 +30,9 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-        if(!checkIfIsAdmin($connect, $userpubkey)){
+        $adminid = checkIfIsAdmin($connect, $userpubkey);
+
+        if( !$adminid ){
             // send Admin not found response
             $errordesc =  "Admin  not found";
             $linktosolve = 'https://';
@@ -39,7 +41,7 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
         }
-        $adminid = checkIfIsAdmin($connect, $userpubkey);
+        
         
         //get Admin details
         $getAdmin = $connect->prepare("SELECT id, email, `name`, username, `status`, superadmin FROM admin WHERE id = ?");
