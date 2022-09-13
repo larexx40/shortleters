@@ -145,6 +145,8 @@ let admin = Vue.createApp({
             baseUrl:'http://localhost/shortleters/',
             authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMwODUwNDAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzA4NTA0MCwiZXhwIjoxNjYzMTU4ODQwLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.ULESpOn4NDSX9xCxSoUxwRPgK31etppmk3BXlJZ7k7g6Mbz-6ElGv5gM1XfpnU9IKJGqP5L1S_bbvnA7UhVK4A",
             all_amenities: null,
+            amenities_name: null,
+            amenities_icon: null,
             email: null,
             ref_link: null,
             admin_details: null,
@@ -292,6 +294,70 @@ let admin = Vue.createApp({
                     this.currentPage =response.data.data.page;
                     this.totalData =response.data.data.total_data;
                     this.totalPage =response.data.data.totalPage;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }  
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+          },
+          async addamenity( load = 1){
+            if (!this.amenities_name ||  !this.amenities_icon){
+                this.error = "Insert all Fields"
+                new Toasteur().error(this.error);
+                return;
+            }
+            const data = new FormData();
+            data.append("name", this.amenities_name);
+            data.append("icon", this.amenities_icon);
+            const url = `${this.baseUrl}api/amenities/add_amenities.php`;
+            const options = {
+                method: "POST",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url,
+                data
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.success = response.data.text;
+                    new Toasteur().success(this.success);
+                    await this.getAllAmenities(6);
                     //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                 }  
             } catch (error) {

@@ -3,7 +3,7 @@
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
-    <div id="admin">
+    <div id="admin" v-cloak>
         <?php include "./loading.php" ?>
         <div class="nk-app-root">
             <!-- main @s -->
@@ -222,282 +222,17 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#565601</a></span>
+                                                                <span><a href="#">{{parseInt(index) + 1}}</a></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span>Soup spoon <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                                <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span>70 pcs</span>
+                                                                <span>{{item.icon}}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Available</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div><!-- .nk-tb-item  -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid2">
-                                                                    <label class="custom-control-label" for="uid2"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#125GG5</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span>Rocking Chairs <span class="dot dot-warning d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>08 pcs</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="20.00">
-                                                                <span class="tb-amount">$20.00<span class="currency">USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-warning">Low</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div><!-- .nk-tb-item  -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid3">
-                                                                    <label class="custom-control-label" for="uid3"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#12UFG5</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span>Bed <span class="dot dot-danger d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>00 pcs</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="0.00">
-                                                                <span class="tb-amount">$0.00<span class="currency">USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-danger">Out of Stock</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div><!-- .nk-tb-item  -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid4">
-                                                                    <label class="custom-control-label" for="uid4"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#555FG5</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span>Chinese Kadai <span class="dot dot-success d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>12 pcs</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="10.99">
-                                                                <span class="tb-amount">$10.99<span class="currency">USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Available</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div><!-- .nk-tb-item  -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid5">
-                                                                    <label class="custom-control-label" for="uid5"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#885FG5</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span>Indian Kadai <span class="dot dot-success d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>09 pcs</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="09.99">
-                                                                <span class="tb-amount">$09.99<span class="currency">USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Available</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div><!-- .nk-tb-item  -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid6">
-                                                                    <label class="custom-control-label" for="uid6"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#995FG5</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span>Chicken <span class="dot dot-warning d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>120 KG</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="09.99">
-                                                                <span class="tb-amount">$05.99<span class="currency">USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-warning">Low</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div><!-- .nk-tb-item  -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid7">
-                                                                    <label class="custom-control-label" for="uid7"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#005FG5</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span>Door <span class="dot dot-success d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>95 pcs</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="199.99">
-                                                                <span class="tb-amount">$199.99<span class="currency">USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Available</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div><!-- .nk-tb-item  -->
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid8">
-                                                                    <label class="custom-control-label" for="uid8"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#">#125UU5</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span>Chairs <span class="dot dot-warning d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>20 psc</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm" data-order="99.99">
-                                                                <span class="tb-amount">$99.99<span class="currency">USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-warning">Low</span>
+                                                                <span v-if="item.status_code > 0" class="tb-status text-success">{{item.status}}</span>
+                                                                <span v-if="item.status_code < 1" class="tb-status text-danger">{{item.status}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
@@ -534,32 +269,8 @@
                                                                     <label class="custom-control-label" for="uid1"></label>
                                                                 </div>
                                                             </div> -->
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span><a href="#"></a></span>
-                                                            </div>
                                                             <div class="nk-tb-col">
-                                                                <span>No record <span class="dot dot-success d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>70 pcs</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Available</span>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
-                                                                <ul class="nk-tb-actions gx-1">
-                                                                    <li>
-                                                                        <div class="drodown">
-                                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                                <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
+                                                                <span>No records Found <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                         </div><!-- .nk-tb-item  -->
                                                     </div><!-- .nk-tb-list -->
@@ -755,35 +466,19 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Stock Details</h5>
-                        <form action="#" class="mt-2">
+                        <h5 class="modal-title">Add Amenities Details</h5>
+                        <form @submit.prevent="addamenity" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">Product Name</label>
-                                        <input type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-add">Amenity Name</label>
+                                        <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Quantity</label>
-                                        <input type="text" class="form-control" id="quantity-add" placeholder="Quantity">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="peice-add">Price</label>
-                                        <input type="number" class="form-control" id="peice-add" placeholder="300.99 USD">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="status-add">Status</label>
-                                        <select class="form-select js-select2" id="status-add">
-                                            <option>Available</option>
-                                            <option>Low</option>
-                                            <option>Out of Stock</option>
-                                        </select>
+                                        <label class="form-label" for="quantity-add">Amenity Icon</label>
+                                        <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity">
                                     </div>
                                 </div>
                                 <div class="col-12">
