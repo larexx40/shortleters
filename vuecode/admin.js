@@ -279,70 +279,7 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
           },
-          async addamenity( load = 1){
-            if (!this.amenities_name ||  !this.amenities_icon){
-                this.error = "Insert all Fields"
-                new Toasteur().error(this.error);
-                return;
-            }
-            const data = new FormData();
-            data.append("name", this.amenities_name);
-            data.append("icon", this.amenities_icon);
-            const url = `${this.baseUrl}api/amenities/add_amenities.php`;
-            const options = {
-                method: "POST",
-                headers: { 
-                    "Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url,
-                data
-            }
-            try {
-                this.loading = true;
-                const response = await axios(options);
-                if(response.data.status){
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                    await this.getAllAmenities(6);
-                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
-                }
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }  
-        },
+        
         async getBuildingTypeByid(id){
             //console.log("monifyid", id);
             const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
@@ -1759,67 +1696,7 @@ let admin = Vue.createApp({
             }
 
         },
-        async getAllAmenities( load = 1){
-        let search = (this.search)? `&search=${this.search}`: '';
-        let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
-        let page = ( this.currentPage )? this.currentPage : 1;
-        let noPerPage = ( this.per_page ) ? this.per_page : 4;
-
-        const url = `${this.baseUrl}api/amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
-        const options = {
-            method: "GET",
-            headers: { 
-                "Content-type": "application/json",
-                "Authorization": `Bearer ${this.authToken}`
-            },
-            url
-        }
-        try {
-            this.loading = true;
-            const response = await axios(options);
-            if(response.data.status){
-                this.all_amenities = response.data.data.amenities;
-                this.currentPage =response.data.data.page;
-                this.totalData =response.data.data.total_data;
-                this.totalPage =response.data.data.totalPage;
-                //console.log("ApiDelivery address", response.data.data.deliveryAddress);
-            }  
-        } catch (error) {
-            // //console.log(error);
-            if (error.response){
-                if (error.response.status == 400){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-
-                if (error.response.status == 401){
-                    const errorMsg = "User not Authorized";
-                    new Toasteur().error(errorMsg);
-                    // window.location.href="/login.php"
-                    return
-                }
-
-                if (error.response.status == 405){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-
-                if (error.response.status == 500){
-                    const errorMsg = error.response.data.text;
-                    new Toasteur().error(errorMsg);
-                    return
-                }
-            }
-
-            new Toasteur().error(error.message || "Error processing request")
-
-            
-        }finally {
-            this.loading = false;
-        }
-        },
+        
         async getAllAddresses(){
             let search = (this.search)? `&search=${this.search}`: '';
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
@@ -5242,6 +5119,133 @@ let admin = Vue.createApp({
         async generatePass(){
             this.shop_password = generatePassword();
         },
+        // korede
+        async getAllAmenities( load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+    
+            const url = `${this.baseUrl}api/amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.all_amenities = response.data.data.amenities;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }  
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
+                
+            }finally {
+                this.loading = false;
+            }
+            },
+            async addamenity( load = 1){
+                if (!this.amenities_name ||  !this.amenities_icon){
+                    this.error = "Insert all Fields"
+                    new Toasteur().error(this.error);
+                    return;
+                }
+                const data = new FormData();
+                data.append("name", this.amenities_name);
+                data.append("icon", this.amenities_icon);
+                const url = `${this.baseUrl}api/amenities/add_amenities.php`;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url,
+                    data
+                }
+                try {
+                    this.loading = true;
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        await this.getAllAmenities(6);
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+    
+                    new Toasteur().error(error.message || "Error processing request")
+    
+                    
+                }finally {
+                    this.loading = false;
+                }  
+            },
+            // korede
         async setShopId(id){
             //console.log(id);
             window.localStorage.setItem("shop_id", id);
