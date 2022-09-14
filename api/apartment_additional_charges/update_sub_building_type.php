@@ -41,6 +41,30 @@
             respondUnAuthorized($data);
         }
 
+        
+        // Check if the email field is passed
+        if (!isset($_POST['sub_type_id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required sub type id field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $sub_building_type_id = cleanme($_POST['sub_type_id']);
+        }
+
+        if (!isset($_POST['building_type_id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required building type field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $building_type = cleanme($_POST['building_type_id']);
+        }
+
         // Check if the recipient name field is passed
         if (!isset($_POST['name'])){
             $errordesc = "All fields must be passed";
@@ -53,10 +77,19 @@
             $name = cleanme($_POST['name']);
         }
 
-       
+        if (!isset($_POST['description'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required description field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $description = cleanme($_POST['description']);
+        }
         
          // check if none of the field is empty
-        if ( empty($name) ){
+        if ( empty($sub_building_type_id) || empty($name)  || empty($description) || empty($building_type) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -66,23 +99,37 @@
             respondBadRequest($data);
         }
 
+        if (!checkifFieldExist($connect, "building_types", "build_id", $building_type)){
+            $errordesc = "Invalid building Type";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass valid value to all the fields";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
 
-        $amenities_id = generateUniqueShortKey($connect, "amenities", "amen_id ");
+        if (!checkifFieldExist($connect, "sub_building_types", "sub_build_id", $sub_building_type_id)){
+            $errordesc = "Sub Building Type not Found";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass valid value to all the fields";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
 
+        $query = 'UPDATE `sub_building_types` SET `build_type_id`= ?, `name`= ?, `description`= ? WHERE `sub_build_id` = ?';
+        $slider_update = $connect->prepare($query);
+        $slider_update->bind_param("ssss", $building_type, $name, $description, $sub_building_type_id);
 
-        $query = 'INSERT INTO `amenities`(`amen_id`, `name`) VALUES (?, ?)';
-        $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ss", $amenities_id, $name);
-
-        if ( $slider_stmt->execute() ) {
-            $text= "Amenity successfully added";
+        if ( $slider_update->execute() ) {
+            $text= "Slider successfully updated";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
         }else{
-            $errordesc =  $slider_stmt->error;
+            $errordesc =  $slider_update->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);

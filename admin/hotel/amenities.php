@@ -91,7 +91,7 @@
                                                                                         </a>
                                                                                         <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
                                                                                             <div class="dropdown-head">
-                                                                                                <span class="sub-title dropdown-title">Filter Report</span>
+                                                                                                <span class="sub-title dropdown-title">Filter Result</span>
                                                                                                 <div class="dropdown">
                                                                                                     <a href="#" class="btn btn-sm btn-icon">
                                                                                                         <em class="icon ni ni-more-h"></em>
@@ -99,38 +99,14 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="dropdown-body dropdown-body-rg">
-                                                                                                <div class="row gx-6 gy-3">
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select v-model="sort" class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="null">Any Status</option>
-                                                                                                                <option value="1">Active</option>
-                                                                                                                <option value="0">Inactive</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <!-- <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Date</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">All Time</option>
-                                                                                                                <option value="week">Last 7 Days</option>
-                                                                                                                <option value="month">Last 30 Days</option>
-                                                                                                                <option value="six">Last 6 Months</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div> -->
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="form-group">
-                                                                                                            <button @click.prevent="getAllAmenities(4)" type="button" class="btn btn-secondary">Filter</button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="dropdown-foot between">
-                                                                                                <a class="clickable" href="#">Reset Filter</a>
-                                                                                                <a href="#">Save Filter</a>
+                                                                                                <ul class="link-check">
+                                                                                                    <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
+                                                                                                </ul>
                                                                                             </div>
                                                                                         </div><!-- .filter-wg -->
                                                                                     </div><!-- .dropdown -->
@@ -143,21 +119,25 @@
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
                                                                                             <ul class="link-check">
                                                                                                 <li><span>Show</span></li>
-                                                                                                <li class="active"><a href="#">10</a></li>
-                                                                                                <li><a href="#">20</a></li>
-                                                                                                <li><a href="#">50</a></li>
+                                                                                                <li v-if="kor_per_page == 10" class="" :class="{active: class_active}" @click.prevent="setPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="kor_per_page != 10" class=""  @click.prevent="setPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="kor_per_page == 20" :class="{active: class_active}"  @click.prevent="setPerPage(20)" class=""><a href="#">20</a></li>
+                                                                                                <li v-if="kor_per_page != 20" class=""  @click.prevent="setPerPage(20)"><a href="#">20</a></li>
+                                                                                                <li v-if="kor_per_page == 50" :class="{active: class_active}" @click.prevent="setPerPage(50)" class=""><a href="#">50</a></li>
+                                                                                                <li v-if="kor_per_page != 50" class=""  @click.prevent="setPerPage(50)"><a href="#">50</a></li>
                                                                                             </ul>
-                                                                                            <ul class="link-check">
+                                                                                            <!-- <ul class="link-check">
                                                                                                 <li><span>Order</span></li>
                                                                                                 <li class="active"><a href="#">DESC</a></li>
                                                                                                 <li><a href="#">ASC</a></li>
-                                                                                            </ul>
+                                                                                            </ul> -->
                                                                                         </div>
                                                                                     </div><!-- .dropdown -->
                                                                                 </li><!-- li -->
                                                                             </ul><!-- .btn-toolbar -->
                                                                         </div><!-- .toggle-content -->
-                                                                    </div><!-- .toggle-wrap -->
+                                                                    </div>
+                                                                    <!-- .toggle-wrap -->
                                                                 </li><!-- li -->
                                                             </ul><!-- .btn-toolbar -->
                                                         </div><!-- .card-tools -->
@@ -183,7 +163,6 @@
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -227,9 +206,6 @@
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span>{{item.icon}}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.status_code > 0" class="tb-status text-success">{{item.status}}</span>
                                                                 <span v-if="item.status_code < 1" class="tb-status text-danger">{{item.status}}</span>
                                                             </div>
@@ -260,7 +236,6 @@
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
@@ -277,50 +252,47 @@
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
                                                 
-                                                <div class="card-inner">
-                                                    <div class="nk-block-between-md g-3">
-                                                        <div class="g">
-                                                            <ul class="pagination justify-content-center justify-content-md-start">
-                                                                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                                <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                            </ul><!-- .pagination -->
-                                                        </div>
-                                                        <div class="g">
-                                                            <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                                                <div>Page</div>
-                                                                <div>
-                                                                    <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                                                        <option value="page-1">1</option>
-                                                                        <option value="page-2">2</option>
-                                                                        <option value="page-4">4</option>
-                                                                        <option value="page-5">5</option>
-                                                                        <option value="page-6">6</option>
-                                                                        <option value="page-7">7</option>
-                                                                        <option value="page-8">8</option>
-                                                                        <option value="page-9">9</option>
-                                                                        <option value="page-10">10</option>
-                                                                        <option value="page-11">11</option>
-                                                                        <option value="page-12">12</option>
-                                                                        <option value="page-13">13</option>
-                                                                        <option value="page-14">14</option>
-                                                                        <option value="page-15">15</option>
-                                                                        <option value="page-16">16</option>
-                                                                        <option value="page-17">17</option>
-                                                                        <option value="page-18">18</option>
-                                                                        <option value="page-19">19</option>
-                                                                        <option value="page-20">20</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div>OF 102</div>
+                                                <div v-if="all_amenities" class="card">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block-between-md g-3">
+                                                            <div class="g">
+                                                                <ul class="pagination justify-content-center justify-content-md-start">
+                                                                    <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
+                                                                    <li v-if="kor_page > 1" @click="nav_previousPage" class="page-item"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
+                                                                    
+                                                                    <li class="page-item" v-for="page in kor_total_page">
+                                                                        <a v-if='page < 7'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        
+                                                                    </li>
+                                                                    <span v-if="kor_total_page > 7" class="page-link"><em class="icon ni ni-more-h"></em></span>
+                                                                    <li class="page-item" v-for="page in kor_total_page">
+                                                                        <a v-if='page > 13'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
+                                                                    </li>
+                                                                    
+                                                                    <li v-if="kor_page < kor_total_page"  class="page-item" @click="nav_nextPage"><a class="page-link"><em class="icon ni ni-chevrons-right"></em></a></li>
+                                                                    <li v-if="kor_page == kor_total_page" class="page-item disabled"><a  class="page-link" href="#"><em class="icon ni ni-chevrons-right"></em></a></li>
+                                                                </ul><!-- .pagination -->
                                                             </div>
-                                                        </div><!-- .pagination-goto -->
-                                                    </div><!-- .nk-block-between -->
-                                                </div><!-- .card-inner -->
+                                                            <div class="g">
+                                                                <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+                                                                    <div>Page</div>
+                                                                    <div>
+                                                                        <select v-if="kor_total_page > 1" @change="selectPage(kor_page)" v-model="kor_page" class="form-select js-select2" data-search="on" data-dropdown="xs center">
+                                                                            <option v-for="page in kor_total_page" v-bind:value="page">{{page}}</option>
+                                                                        </select>
+                                                                        <select v-if="kor_total_page == 1" class="form-select js-select2 " data-search="on" data-dropdown="xs center">
+                                                                            <option value="1">1</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div>OF {{kor_total_page}}</div>
+                                                                </div>
+                                                            </div><!-- .pagination-goto -->
+                                                        </div><!-- .nk-block-between -->
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
                                         </div><!-- .card -->
                                     </div><!-- .nk-block -->
@@ -476,12 +448,6 @@
                                         <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Amenity Icon</label>
-                                        <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity">
-                                    </div>
-                                </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
@@ -511,12 +477,6 @@
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-edit">Amenity Name</label>
                                         <input type="text" v-model="amenity.name" class="form-control" id="product-name-edit" placeholder="Product Name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="quantity-edit">Amenity Icon</label>
-                                        <input type="text" v-model="amenity.icon" class="form-control" id="quantity-edit" placeholder="Quantity">
                                     </div>
                                 </div>
                                 <div class="col-12">

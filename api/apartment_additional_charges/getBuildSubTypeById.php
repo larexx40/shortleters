@@ -43,18 +43,18 @@
             respondUnAuthorized($data);
         }
 
-        if (!isset($_GET['amenity_id'])){
+        if (!isset($_GET['sub_type_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required amenity id field in this endpoint";
+            $hint = "Kindly pass the required sub type id field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $amenity_id = cleanme($_GET['amenity_id']);
+            $sub_building_type_id = cleanme($_GET['sub_type_id']);
         }
 
-        if ( empty($amenity_id)){
+        if ( empty($sub_building_type_id)){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -66,9 +66,9 @@
 
                 
 
-        $query = "SELECT * FROM `amenities` WHERE `amen_id` = ?";
+        $query = "SELECT * FROM `sub_building_types` WHERE `sub_build_id` = ?";
         $gtTotalcomplains = $connect->prepare($query);
-        $gtTotalcomplains->bind_param("s", $amenity_id);
+        $gtTotalcomplains->bind_param("s", $sub_building_type_id);
         $gtTotalcomplains->execute();
         $result = $gtTotalcomplains->get_result();
         $num_row = $result->num_rows;
@@ -79,21 +79,27 @@
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
                 $status_code = $row['status'];
+                $build_type_id = $row['build_type_id'];
+                $build_type_name = getNameFromField($connect, "building_types", "build_id", $build_type_id);
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
+                $description = $row['description'];
                 $created = gettheTimeAndDate($row['created_at']);
                 $updated = gettheTimeAndDate($row['updated_at']);
                 
-                $allAmenity = array(
-                    'id' => $row['amen_id'],
+                $building_sub_type = array(
+                    'id' => $row['sub_build_id'],
                     'name' => $name,
                     'status_code' => $status_code,
+                    'build_type' => $build_type_id,
+                    'build_type_name' => $build_type_name,
                     'status' => $status,
                     'created' => $created,
                     'updated' => $updated,
+                    'description' => str_replace(array('\n','\r\n','\r'),array("\n","\r\n","\r"), $description)
                 );
             }
             $data = array(
-                'amenities' => $allAmenity
+                'build_subtype' => $building_sub_type
             );
             $text= "Fetch Successful";
             $status = true;

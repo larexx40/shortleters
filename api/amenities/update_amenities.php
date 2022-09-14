@@ -65,20 +65,9 @@
         }else{
             $name = cleanme($_POST['name']);
         }
-
-        if (!isset($_POST['icon'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required icon field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $icon = cleanme($_POST['icon']);
-        }
         
          // check if none of the field is empty
-        if ( empty($amenity_id) || empty($name)  || empty($icon) ){
+        if ( empty($amenity_id) || empty($name) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -97,9 +86,9 @@
             respondBadRequest($data);
         }
 
-        $query = 'UPDATE `amenities` SET `name`= ?,`icon`= ? WHERE `amen_id` = ?';
+        $query = 'UPDATE `amenities` SET `name`= ? WHERE `amen_id` = ?';
         $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("sss", $name, $icon, $amenity_id);
+        $slider_update->bind_param("ss", $name, $amenity_id);
 
         if ( $slider_update->execute() ) {
             $text= "Amenity successfully updated";

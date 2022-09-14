@@ -2,7 +2,7 @@
     // pass cors header to allow from cross-origin
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
-    header("Access-Control-Allow-Methods: GET");// OPTIONS,GET,POST,PUT,DELETE
+    header("Access-Control-Allow-Methods: POST");// OPTIONS,GET,POST,PUT,DELETE
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
@@ -13,7 +13,7 @@
     $endpoint = basename($_SERVER['PHP_SELF']);
     $method = getenv('REQUEST_METHOD');
 
-    if ($method == 'GET') {
+    if ($method == 'POST') {
 
         // Get company private key
         $query = 'SELECT * FROM apidatatable';
@@ -26,97 +26,82 @@
         $expiresIn = $row['tokenexpiremin'];
 
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        $user_pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
-        // $agent = getShopWithPubKey($connect, $user_pubkey);
-        // $user = getUserWithPubKey($connect, $user_pubkey);
-
-        if  (!$admin){
-
+        // send error if ur is not in the database
+        if (!checkIfIsAdmin($connect, $user_pubkey)){
             // send user not found response to the user
-            $errordesc =  "User not an Admin";
+            $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
+            $hint = "User is not in the database ensure the user is in the database";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
+            respondBadRequest($data);
         }
 
-        if (!isset($_GET['amenity_id'])){
+        // Check if the email field is passed
+        if (!isset($_POST['sub_type_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required amenity id field in this endpoint";
+            $hint = "Kindly pass the required sub type id field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $amenity_id = cleanme($_GET['amenity_id']);
+            $sub_type_id = cleanme($_POST['sub_type_id']);
         }
-
-        if ( empty($amenity_id)){
-
-            $errordesc = "Insert all fields";
+        
+        if ( empty($sub_type_id) ){
+            $errordesc = "Sub type id must be filled";
             $linktosolve = 'https://';
-            $hint = "Kindly pass value to all the fields";
+            $hint = "Kindly pass a valid slider id field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
 
-                
+        $query = 'DELETE FROM `sub_building_types` WHERE `sub_build_id` = ?';
+        $slider_stmt = $connect->prepare($query);
+        $slider_stmt->bind_param("s", $sub_type_id);
+        $slider_stmt->execute();
+        $rows_affected = $slider_stmt->affected_rows;
 
-        $query = "SELECT * FROM `amenities` WHERE `amen_id` = ?";
-        $gtTotalcomplains = $connect->prepare($query);
-        $gtTotalcomplains->bind_param("s", $amenity_id);
-        $gtTotalcomplains->execute();
-        $result = $gtTotalcomplains->get_result();
-        $num_row = $result->num_rows;
-                
+        if ( $rows_affected > 0 ) {
+            $slider_stmt->close();
 
-        if ($num_row > 0){
-
-            while($row = $result->fetch_assoc()){
-                $name =  $row['name'];
-                $status_code = $row['status'];
-                $status = ($row['status'] == 1) ? "Active" : "Inactive";
-                $created = gettheTimeAndDate($row['created_at']);
-                $updated = gettheTimeAndDate($row['updated_at']);
-                
-                $allAmenity = array(
-                    'id' => $row['amen_id'],
-                    'name' => $name,
-                    'status_code' => $status_code,
-                    'status' => $status,
-                    'created' => $created,
-                    'updated' => $updated,
-                );
-            }
-            $data = array(
-                'amenities' => $allAmenity
-            );
-            $text= "Fetch Successful";
+            $text= "Sub Type successfully deleted";
             $status = true;
+            $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
+
+        }else{
+            $errordesc = "Sub building type not Found";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass a slider that exist in the database";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
         }
 
-        $errordesc = "No Records found";
+        $errordesc =  $slider_stmt->error;
         $linktosolve = 'https://';
-        $hint = "Kindly make sure the table has been populated";
+        $hint = "500 code internal error, check ur database connections";
         $errorData = returnError7003($errordesc, $linktosolve, $hint);
         $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-        respondOK($data);
+        respondInternalError($data);
 
     }else{
 
         // Send an error response because a wrong method was passed 
         $errordesc = "Method not allowed";
         $linktosolve = 'https://';
-        $hint = "This route only accepts GET request, kindly pass a post request";
+        $hint = "This route only accepts POST request, kindly pass a post request";
         $errorData = returnError7003($errordesc, $linktosolve, $hint);
         $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
         respondMethodNotAlowed($data);
-
+        
     }
+
+
 ?>

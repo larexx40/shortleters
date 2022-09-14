@@ -15,3 +15,4 @@
     <link rel="stylesheet" href="../assets/css/dashlite.css?ver=3.0.3">
     <link id="skin-default" rel="stylesheet" href="../assets/css/dashlite.css?ver=3.0.3">
     <link rel="stylesheet" href="../assets/css/toasteur-default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/brands.min.css" integrity="sha512-+oRH6u1nDGSm3hH8poU85YFIVTdSnS2f+texdPGrURaJh8hzmhMiZrQth6l56P4ZQmxeZzd2DqVEMqQoJ8J89A==" crossorigin="anonymous" referrerpolicy="no-referrer" />

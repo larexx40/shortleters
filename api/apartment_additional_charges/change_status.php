@@ -42,24 +42,24 @@
         }
 
 
-        if ( !isset($_POST['amenity_id']) ){
+        if ( !isset($_POST['sub_type_id']) ){
 
             $errordesc="product id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="amenity id must be passed";
+            $text="sub type id must be passed";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
 
         }else{
-            $amenity_id = cleanme($_POST['amenity_id']);
+            $sub_type_id = cleanme($_POST['sub_type_id']);
         }
 
-        if ( empty($amenity_id) ){
+        if ( empty($sub_type_id) ){
 
-            $errordesc = "Enter amenity id";
+            $errordesc = "Enter sub type id";
             $linktosolve = 'https://';
             $hint = "Kindly ensure that a valid id is passed";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -97,7 +97,7 @@
         }
 
 
-        if ( $changeStatus > 0 && $changeStatus !== 1 && $changeStatus < 0){
+        if (  $changeStatus > 0  && $changeStatus != 1 && $changeStatus < 0 ){
             $errordesc = "Status passed is invalid ";
             $linktosolve = 'https://';
             $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";
@@ -107,9 +107,9 @@
         }
 
         // check if product is valid
-        if ( !checkifFieldExist($connect, "amenities", "amen_id", $amenity_id) ) {
+        if ( !checkifFieldExist($connect, "sub_building_types", "sub_build_id", $sub_type_id) ) {
 
-            $errordesc = "Amenity does not Exist ";
+            $errordesc = "Sub Building Type does not Exist ";
             $linktosolve = 'https://';
             $hint = "Kindly ensure the product id passed is for an existing product";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -119,9 +119,9 @@
 
 
         // update status
-        $query = "UPDATE `amenities` SET `status` = ? WHERE amen_id = ?";
+        $query = "UPDATE `sub_building_types` SET `status` = ? WHERE sub_build_id = ?";
         $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("ss", $changeStatus, $amenity_id);
+        $updateStatus->bind_param("ss", $changeStatus, $sub_type_id);
         $updateStatus->execute();
 
         if ($updateStatus->error){
@@ -136,7 +136,7 @@
         if ( $updateStatus->execute()){
             
             $data = [];
-            $text= "Amenity successfully ". $changeStatusText;
+            $text= "Sub building Type successfully ". $changeStatusText;
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);

@@ -41,6 +41,19 @@
             respondUnAuthorized($data);
         }
 
+        
+        // Check if the email field is passed
+        if (!isset($_POST['building_type_id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required building type field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $building_type = cleanme($_POST['building_type_id']);
+        }
+
         // Check if the recipient name field is passed
         if (!isset($_POST['name'])){
             $errordesc = "All fields must be passed";
@@ -53,10 +66,19 @@
             $name = cleanme($_POST['name']);
         }
 
-       
+        if (!isset($_POST['description'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required description field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $description = cleanme($_POST['description']);
+        }
         
          // check if none of the field is empty
-        if ( empty($name) ){
+        if ( empty($name)  || empty($description) || empty($building_type) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -66,16 +88,16 @@
             respondBadRequest($data);
         }
 
+        $sub_building_id = generateUniqueShortKey($connect, "sub_building_types", "sub_build_id ");
 
-        $amenities_id = generateUniqueShortKey($connect, "amenities", "amen_id ");
 
 
-        $query = 'INSERT INTO `amenities`(`amen_id`, `name`) VALUES (?, ?)';
+        $query = 'INSERT INTO `sub_building_types`(`build_type_id`, `sub_build_id`, `name`, `description`) VALUES (?,?,?,?)';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ss", $amenities_id, $name);
+        $slider_stmt->bind_param("ssss", $building_type, $sub_building_id, $name, $description);
 
         if ( $slider_stmt->execute() ) {
-            $text= "Amenity successfully added";
+            $text= "Slider successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);

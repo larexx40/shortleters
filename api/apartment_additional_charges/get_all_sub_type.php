@@ -82,9 +82,9 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT  `amen_id`, `name`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE status = ? AND ( name LIKE ? OR icon LIKE ?) ";
+                $query = "SELECT sub_building_types.id, sub_building_types.build_type_id, sub_building_types.sub_build_id, sub_building_types.name, sub_building_types.description, sub_building_types.status, sub_building_types.description, sub_building_types.created_at FROM sub_building_types LEFT JOIN building_types ON building_types.build_id = sub_building_types.build_type_id WHERE sub_building_types.status = ? AND ( building_types.name LIKE ? OR sub_building_types.name LIKE ? OR sub_building_types.description LIKE ?) ";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sss", $status, $searching, $searching );
+                $queryStmt->bind_param("ssss", $status, $searching, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -92,15 +92,15 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sssss", $status, $searching, $searching , $offset, $no_per_page);
+                $queryStmt->bind_param("ssssss", $status, $searching, $searching, $searching , $offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT  `amen_id`, `name`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE name LIKE ? OR icon LIKE ?";
+                $query = "SELECT sub_building_types.id, sub_building_types.build_type_id, sub_building_types.sub_build_id, sub_building_types.name, sub_building_types.description, sub_building_types.status, sub_building_types.description, sub_building_types.created_at FROM sub_building_types LEFT JOIN building_types ON building_types.build_id = sub_building_types.build_type_id WHERE building_types.name LIKE ? OR sub_building_types.name LIKE ? OR sub_building_types.description LIKE ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ss", $searching, $searching);
+                $queryStmt->bind_param("sss", $searching, $searching, $searching);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $total_num_row = $result->num_rows;
@@ -108,7 +108,7 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ssss", $searching, $searching, $offset, $no_per_page);
+                $queryStmt->bind_param("sssss", $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -119,7 +119,7 @@
 
             if ($sort > 0){
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `amenities` WHERE `status` = ?";
+                $query = "SELECT * FROM `sub_building_types` WHERE status = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $status);
                 $gtTotalPgs->execute();
@@ -135,7 +135,7 @@
                 $num_row = $result->num_rows;
             }else{
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `amenities`";
+                $query = "SELECT * FROM `sub_building_types`";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->execute();
                 $result = $gtTotalPgs->get_result();
@@ -155,22 +155,28 @@
         }
 
         if ($num_row > 0){
-            $allAmenities = [];
+            $allSubTypes = [];
 
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
                 $status_code = $row['status'];
+                $build_type_id = $row['build_type_id'];
+                $build_type_name = getNameFromField($connect, "building_types", "build_id", $build_type_id);
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
+                $description = $row['description'];
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
-                array_push($allAmenities, array(
-                    'id' => $row['amen_id'],
+                array_push($allSubTypes, array(
+                    'id' => $row['sub_build_id'],
                     'name' => $name,
                     'status_code' => $status_code,
+                    'build_type' => $build_type_id,
+                    'build_type_name' => $build_type_name,
                     'status' => $status,
                     'created' => $created,
-                    'updated' => $updated
+                    'updated' => $updated,
+                    'description' => str_replace(array('\n','\r\n','\r'),array("\n","\r\n","\r"), $description)
                 ));
             }
             $data = array(
@@ -178,7 +184,7 @@
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'amenities' => $allAmenities
+                'build_subtype' => $allSubTypes
             );
             $text= "Fetch Successful";
             $status = true;
