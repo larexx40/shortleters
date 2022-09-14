@@ -130,7 +130,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMxMzIzMjEsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzEzMjMyMSwiZXhwIjo2MzY2MzEzMjMwMSwidXNlcnRva2VuIjoiQ05HVWFkbWluIn0.wQBQDV501QcBJfzM0oXFnAAIth3xsB64lLCh4ZXdQynL9fNOgBEnQi026B9Yq136Kga4zbrrDvFp-RffSYYLfw",
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMxNTE0ODAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzE1MTQ4MCwiZXhwIjoxNjYzMjI1MjgwLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.obi0l8Hy0zU_xXA11jFORrxsqdfdEd7aDkG1he4jbePhpwwofSBUIiEp3J0xNBrLlWo40u4rDR0o014WCCQn5A",
             email: null,
             ref_link: null,
             admin_details: null,
@@ -151,6 +151,7 @@ let admin = Vue.createApp({
             success: null,
             error: null,
             // korede data
+            class_active: false,
             kor_page: 1,
             kor_total_page: null,
             kor_total_data: null,
@@ -5159,6 +5160,9 @@ let admin = Vue.createApp({
             if (webPage == "host_type.php" ){
                 this.hosts = this.all_host_type[index];
             }
+            if (webPage == "room-type.php" ){
+                this.sub_building_type = this.all_sub_building_types[index];
+            }
             //console.log(this.shop_product)
         },
         // korede
@@ -5978,7 +5982,7 @@ let admin = Vue.createApp({
             data.append("name", this.sub_building_type.name);
             data.append("description", this.sub_building_type.description);
             
-            const url = `${this.baseUrl}api/sub_building_type//update_sub_building_type.php`;
+            const url = `${this.baseUrl}api/sub_building_type/update_sub_building_type.php`;
             const options = {
                     method: "POST",
                     headers: { 
@@ -6035,7 +6039,7 @@ let admin = Vue.createApp({
         async deleteBuildingSubType(id){
             const data = new FormData();
                 data.append("sub_type_id", id);
-                const url = `${this.baseUrl}api/host_type/delete_host_type.php`;
+                const url = `${this.baseUrl}api/host_type/delete_sub_building.php`;
                 const options = {
                     method: "POST",
                     headers: { 
@@ -6089,6 +6093,13 @@ let admin = Vue.createApp({
                 }finally {
                     this.loading = false;
                 }
+        },
+        async setPerPage(ins){
+            if ( webPage === "room-type.php"){
+                this.class_active = true;
+                this.per_page = ins;
+                await this.getAllbuildingSubTypes(4);
+            }
         },
             // korede
         async setShopId(id){
@@ -8201,7 +8212,8 @@ let admin = Vue.createApp({
             await this.getAllHosttype(4)
         }
         if ( webPage === "room-type.php" ){
-            await this.getAllHosttype(4)
+            await this.getAllbuildingSubTypes(4);
+            await this.getAllBuildingType(4);
         }
     }
 

@@ -117,9 +117,9 @@
             respondBadRequest($data);
         }
 
-        $query = 'UPDATE `sub_building_types` SET `build_type_id`= ?, `name`= ?,`description`= ? WHERE `sub_build_id` = ?';
+        $query = 'UPDATE `sub_building_types` SET `build_type_id`= ?, `name`= ?, `description`= ? WHERE `sub_build_id` = ?';
         $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("ssss", $building_type, $name, $description, $sub_building_id);
+        $slider_update->bind_param("ssss", $building_type, $name, $description, $sub_building_type_id);
 
         if ( $slider_update->execute() ) {
             $text= "Slider successfully updated";

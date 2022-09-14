@@ -141,17 +141,17 @@
                                                                                             <em class="icon ni ni-setting"></em>
                                                                                         </a>
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                                                            <ul class="link-check">
+                                                                                            <ul v-if="class" class="link-check">
                                                                                                 <li><span>Show</span></li>
-                                                                                                <li class="active"><a href="#">10</a></li>
-                                                                                                <li><a href="#">20</a></li>
-                                                                                                <li><a href="#">50</a></li>
+                                                                                                <li @click.prevent="setPerPage(10)" class="" :class="{active: class_active}"><a href="#">10</a></li>
+                                                                                                <li  @click.prevent="setPerPage(20)" class="" :class="{active: class_active}" ><a href="#">20</a></li>
+                                                                                                <li  @click.prevent="setPerPage(50)" class="" :class="{active: class_active}"><a href="#">50</a></li>
                                                                                             </ul>
-                                                                                            <ul class="link-check">
+                                                                                            <!-- <ul class="link-check">
                                                                                                 <li><span>Order</span></li>
                                                                                                 <li class="active"><a href="#">DESC</a></li>
                                                                                                 <li><a href="#">ASC</a></li>
-                                                                                            </ul>
+                                                                                            </ul> -->
                                                                                         </div>
                                                                                     </div><!-- .dropdown -->
                                                                                 </li><!-- li -->
@@ -184,6 +184,7 @@
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Building Sub Type Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Building Sub Type Description</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -229,6 +230,9 @@
                                                             <div class="nk-tb-col">
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>{{item.description}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.status_code > 0" class="tb-status text-success">{{item.status}}</span>
                                                                 <span v-if="item.status_code < 1" class="tb-status text-danger">{{item.status}}</span>
@@ -255,12 +259,13 @@
                                                 </div><!-- .card-inner -->
 
                                                 <!-- Table when record not found -->
-                                                <div v-if="!all_host_type" class="card-inner p-0">
+                                                <div v-if="!all_sub_building_types" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                         <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Building Sub Type Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Building Sub Type Description</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                             </div>
@@ -472,12 +477,12 @@
                         <h5 class="modal-title">Add Amenities Details</h5>
                         <form @submit.prevent="addBuildingSubType" class="mt-2">
                             <div class="row g-gs">
-                                <div v-if="" class="col-12">
+                                <div v-if="buildingTypes" class="col-12">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add">SelectBuilding Type</label>
                                         <select class="form-select js-select2 js-select2-sm" v-model="building_type_id" data-search="off" data-placeholder="Bulk Action">
                                             <option value="null">Select Building Type</option>
-                                            <option value="edit">Edit Selected</option>
+                                            <option v-for="(item, index) in buildingTypes" v-bind:value="item.buildingTypeid">{{item.name}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -514,14 +519,29 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="hosts" class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Host Type Details</h5>
-                        <form @submit.prevent="updateHostType" class="mt-2">
+                    <div v-if="sub_building_type" class="modal-body modal-body-md">
+                        <h5 class="modal-title">Edit Sub Building Type Details</h5>
+                        <form @submit.prevent="updateBuildingSubType" class="mt-2">
                             <div class="row g-gs">
+                                <div v-if="buildingTypes" class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-add">SelectBuilding Type</label>
+                                        <select class="form-select js-select2 js-select2-sm" v-model="sub_building_type.build_type" data-search="off" data-placeholder="Bulk Action">
+                                            <option value="null">Select Building Type</option>
+                                            <option v-for="(item, index) in buildingTypes" v-bind:value="item.buildingTypeid">{{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Host Type Name</label>
-                                        <input type="text" v-model="hosts.name" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-edit">Building Sub Type Name</label>
+                                        <input type="text" v-model="sub_building_type.name" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-edit">Building Sub Type Description</label>
+                                        <input type="text" v-model="sub_building_type.description" class="form-control" id="product-name-edit" placeholder="Product Name">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -543,7 +563,7 @@
         <div class="modal fade" id="modalDelete" style="display: none;" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content"> <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="hosts" class="modal-body modal-body-lg text-center">
+                    <div v-if="sub_building_type" class="modal-body modal-body-lg text-center">
                         <div class="nk-modal py-4"> <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
                             <h4 class="nk-modal-title">Are You Sure ?</h4>
                             <div class="nk-modal-text mt-n2">
@@ -551,7 +571,7 @@
                             </div>
                             <ul class="d-flex justify-content-center gx-4 mt-4">
                                 <li>
-                                    <button @click="deleteHostType(hosts.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
+                                    <button @click="deleteBuildingSubType(sub_building_type.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
                                 </li>
                                 <li>
                                     <button data-bs-dismiss="modal" class="btn btn-danger btn-dim">Cancel</button>
