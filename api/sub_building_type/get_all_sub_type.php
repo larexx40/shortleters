@@ -28,7 +28,7 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
+        $admin =  checkIfIsAdmin($connect, $pubkey);
         // $agent = getShopWithPubKey($connect, $user_pubkey);
         // $user = getUserWithPubKey($connect, $user_pubkey);
 
@@ -164,8 +164,8 @@
                 $build_type_name = getNameFromField($connect, "building_types", "build_id", $build_type_id);
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $description = $row['description'];
-                $created = gettheTimeAndDate($row['created_at']);
-                $updated = gettheTimeAndDate($row['updated_at']);
+                $created = gettheTimeAndDate(strtotime($row['created_at']));
+                $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
                 array_push($allSubTypes, array(
                     'id' => $row['sub_build_id'],

@@ -96,8 +96,7 @@
             $changeStatus = "";
         }
 
-
-        if ( $changeStatus != 0 && $changeStatus !== 1){
+        if (  $changeStatus > 0  && $changeStatus != 1 && $changeStatus < 0 ){
             $errordesc = "Status passed is invalid ";
             $linktosolve = 'https://';
             $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";

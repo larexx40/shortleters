@@ -28,7 +28,7 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
+        $admin =  checkIfIsAdmin($connect, $pubkey);
         // $agent = getShopWithPubKey($connect, $user_pubkey);
         // $user = getUserWithPubKey($connect, $user_pubkey);
 
@@ -100,7 +100,7 @@
                 // get the total number of pages
                 $query = "SELECT `host_type_id`, `name`, `status`, `created_at`, `updated_at` FROM `host_type` WHERE name LIKE ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ss", $searching);
+                $queryStmt->bind_param("s", $searching);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $total_num_row = $result->num_rows;
@@ -161,8 +161,8 @@
                 $name =  $row['name'];
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
-                $created = gettheTimeAndDate($row['created_at']);
-                $updated = gettheTimeAndDate($row['updated_at']);
+                $created = gettheTimeAndDate(strtotime($row['created_at']));
+                $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
                 array_push($allHost_Type, array(
                     'id' => $row['host_type_id'],
