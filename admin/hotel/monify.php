@@ -142,22 +142,22 @@
                                             <div class="card-inner">
                                                 <div class="nk-block-between-md g-3">
                                                     <div class="g">
-                                                    <ul class="pagination justify-content-end">
-                                                        <li v-if="currentPage == 1" class="page-item disabled">
-                                                            <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
-                                                        </li>
-                                                        <li v-else class="page-item">
-                                                            <a @click.prevent="previousPage()" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
-                                                        </li>
-                                                        <li class="page-item"><a class="page-link">{{currentPage}} of {{totalPage}}</a></li>
-                                                        <li v-if="currentPage < totalPage" class="page-item">
-                                                            <a v-on:click.prevent="nextPage()" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
-                                                        </li>
-                                                        <li v-else class="page-item disabled">
-                                                            <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
-                                                        </li>
-                                                    </ul>
-                                                    <!-- .pagination -->
+                                                        <ul class="pagination justify-content-end">
+                                                            <li v-if="currentPage == 1" class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item">
+                                                                <a @click.prevent="previousPage()" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link">{{currentPage}} of {{totalPage}}</a></li>
+                                                            <li v-if="currentPage < totalPage" class="page-item">
+                                                                <a v-on:click.prevent="nextPage()" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                        </ul>
+                                                        <!-- .pagination -->
                                                     </div>
                                                     <!-- .pagination-goto -->
                                                 </div><!-- .nk-block-between -->

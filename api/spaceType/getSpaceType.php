@@ -74,7 +74,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `type_id`, `name`,`status` FROM `space_type` 
+                $searchQuery = "SELECT `id`,`name`,`status`,`space_id` FROM `space_type` 
                                 WHERE (`name` like ? ) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("ss", $searchParam, $status);
@@ -92,7 +92,7 @@
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `id`, `type_id`, `name`,`status` FROM `space_type` 
+                $sqlQuery = "SELECT `id`,`name`,`status`,`space_id` FROM `space_type` 
                             WHERE `status` =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
@@ -113,7 +113,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `type_id`, `name`,`status` FROM `space_type`  
+                $searchQuery = "SELECT `id`,`name`,`status`,`space_id` FROM `space_type`  
                                 WHERE `name` like ? ";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("s",  $searchParam);
@@ -131,14 +131,14 @@
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `id`, `type_id`, `name`,`status` FROM `space_type` ";
+                $sqlQuery = "SELECT `id`,`name`,`status`,`space_id` FROM `space_type`";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT `id`,`name`,`status`,`space_id` FROM `space_type` ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
@@ -165,13 +165,13 @@
             $allResponse = [];
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
-                $spaceTypeid = $row['type_id'];
+                $spaceTypeid = $row['space_id'];
                 $name = $row['name'];
                 $statusCode = $row['status'];
                 if($statusCode == 1){
                     $status = "Active";
                 }else{
-                    $status = "Inctive";
+                    $status = "Inactive";
                 }
 
                 array_push($allResponse, array(
@@ -188,7 +188,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'buildingTypes'=> $allResponse
+                'spaceTypes'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

@@ -24,9 +24,9 @@
                                     <div class="nk-block-head nk-block-head-sm">
                                         <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Highlights</h3>
+                                                <h3 class="nk-block-title page-title">Space Type</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Here are verious highlights in your shortlet.</p>
+                                                    <p>Here are space type in your shortlet.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
@@ -36,7 +36,7 @@
                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul class="link-list-opt no-bdr">
-                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Highlight</span></a></li>
+                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Space Type</span></a></li>
                                                                     <!-- <li><a href="#"><span>View Amenities</span></a></li>
                                                                     <li><a href="#"><span>Delete Amenities</span></a></li> -->
                                                                 </ul>
@@ -166,13 +166,13 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllHighlight(4)' v-model ='search' placeholder="Search by product name or id">
+                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllSpaceType(4)' v-model ='search' placeholder="Search by product name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if="highlights" class="card-inner p-0">
+                                                <div v-if="spaceTypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -182,8 +182,7 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Highlight Name</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Space Type Name</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -213,7 +212,7 @@
                                                                 </div> -->
                                                             </div> 
                                                         </div><!-- .nk-tb-item -->
-                                                        <div v-for="(item, index) in highlights" class="nk-tb-item">
+                                                        <div v-for="(item, index) in spaceTypes" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid1">
@@ -225,9 +224,6 @@
                                                             </div>
                                                             <div class="nk-tb-col">
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md tb-product">
-                                                                <span>{{item.icon}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
@@ -241,9 +237,9 @@
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
                                                                                     <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li @click.prevent = 'changeHighlightStatus(item.highlightid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
-                                                                                    <li @click.prevent = 'changeHighlightStatus(item.highlightid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
-                                                                                    <li @click.prevent= 'deleteByid(item.highlightid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                    <li @click.prevent = 'changeSpaceTypeStatus(item.spaceTypeid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
+                                                                                    <li @click.prevent = 'changeSpaceTypeStatus(item.spaceTypeid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
+                                                                                    <li @click.prevent= 'deleteByid(item.spaceTypeid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -255,12 +251,11 @@
                                                 </div><!-- .card-inner -->
 
                                                 <!-- Table when record not found -->
-                                                <div v-if="!highlights" class="card-inner p-0">
+                                                <div v-if="!spaceTypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Highlight name</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Space Type name</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
@@ -473,25 +468,19 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Highlight</h5>
-                        <form @submit.prevent="addHighlight" class="mt-2">
+                        <h5 class="modal-title">Add Space Type</h5>
+                        <form @submit.prevent="addSpaceType" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add"> Name</label>
-                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Highlight Name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Icon</label>
-                                        <input type="text" v-model="icon" class="form-control" id="quantity-add" placeholder="Icon  class">
+                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Space type">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Highlight</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Space Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -510,25 +499,19 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Highlight</h5>
-                        <form @submit.prevent="updateHighlight"  action="#" class="mt-2">
+                        <h5 class="modal-title">Edit Space Type</h5>
+                        <form @submit.prevent="updateSpaceType"  action="#" class="mt-2">
                             <div v-if='itemDetails' class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Highlight Name</label>
+                                        <label class="form-label" for="product-name-edit"> Name</label>
                                         <input type="text" class="form-control" id="product-name-edit" v-model="itemDetails.name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Icon</label>
-                                        <input type="text" class="form-control" id="product-name-edit" v-model="itemDetails.icon">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Highlight</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Space Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>

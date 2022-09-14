@@ -8,7 +8,7 @@
     // header("Access-Control-Max-Age: 3600");//3600 seconds
     // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
-    include "../../cartsfunction.php";
+    include "../cartsfunction.php";
 
     $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
@@ -97,7 +97,7 @@
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `space_type` SET `status`= ? WHERE `type_id` = ?";
+        $sql = "UPDATE `space_type` SET `status`= ? WHERE `space_id` = ?";
         $stmt = $connect->prepare($sql);
         $stmt->bind_param('ss', $changeStatus, $spaceTypeid);
         $stmt->execute();

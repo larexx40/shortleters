@@ -8,10 +8,11 @@
     // header("Access-Control-Max-Age: 3600");//3600 seconds
     // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
-    include "../../cartsfunction.php";
+    include "../cartsfunction.php";
 
-    $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
+    $method = getenv('REQUEST_METHOD');
+    $maindata= [];
 
     if ($method == 'POST') {
         //get company details to decode usertoken
@@ -27,13 +28,14 @@
 
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
-        $adminid = checkIfIsAdmin($connect,$userpubkey);
 
+        //check if isadmin
+        $adminid = checkIfIsAdmin($connect,$userpubkey);
         if(!$adminid){
             // send user not found response to the user
             $errordesc =  "User not a admin";
             $linktosolve = 'https://';
-            $hint = "Only admin access this route";
+            $hint = "Only admin can access this route";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);

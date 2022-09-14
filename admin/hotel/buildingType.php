@@ -26,7 +26,7 @@
                                             <div class="nk-block-head-content">
                                                 <h3 class="nk-block-title page-title">Building Types</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Here is verious types of building to shortlet.</p>
+                                                    <p>Here are verious types of building to shortlet.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
@@ -167,7 +167,7 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
+                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllBuildingType(4)' v-model ='search' placeholder="Search by product name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
@@ -186,8 +186,8 @@
                                                             <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Image</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
-                                                            <!-- <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <div class="dropdown">
+                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
+                                                                <!-- <div class="dropdown">
                                                                     <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-plus"></em></a>
                                                                     <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
                                                                         <ul class="link-tidy sm no-bdr">
@@ -211,8 +211,8 @@
                                                                             </li>
                                                                         </ul>
                                                                     </div>
-                                                                </div>
-                                                            </div> -->
+                                                                </div> -->
+                                                            </div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div v-for="(item, index) in buildingTypes" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -242,7 +242,9 @@
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
                                                                                     <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
+                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
+                                                                                    <li @click.prevent= 'deleteByid(item.buildingTypeid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -279,15 +281,21 @@
                                                 <div class="card-inner">
                                                     <div class="nk-block-between-md g-3">
                                                         <div class="g">
-                                                            <ul class="pagination justify-content-center justify-content-md-start">
-                                                                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                                <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                            </ul><!-- .pagination -->
+                                                        <ul class="pagination justify-content-end">
+                                                            <li v-if="currentPage == 1" class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item">
+                                                                <a @click.prevent="previousPage()" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link">{{currentPage}} of {{totalPage}}</a></li>
+                                                            <li v-if="currentPage < totalPage" class="page-item">
+                                                                <a v-on:click.prevent="nextPage()" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                        </ul><!-- .pagination -->
                                                         </div>
                                                         <!-- <div class="g">
                                                             <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
@@ -510,7 +518,7 @@
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
                         <h5 class="modal-title">Edit Building Type</h5>
-                        <form action="#" class="mt-2">
+                        <form @submit.prevent="updateBuildingType"  action="#" class="mt-2">
                             <div v-if='itemDetails' class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">

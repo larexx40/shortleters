@@ -108,6 +108,9 @@
                                             <a href="./host_type.php" class="nk-menu-link"><span class="nk-menu-text">Host Type</span></a>
                                         </li>
                                         <li class="nk-menu-item">
+                                            <a href="./spaceType.php" class="nk-menu-link"><span class="nk-menu-text">Space Type</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
                                             <a href="./guest_features.php" class="nk-menu-link"><span class="nk-menu-text">Guest Features</span></a>
                                         </li>
                                     </ul>
@@ -133,6 +136,7 @@
                                         <li class="nk-menu-item">
                                             <a href="./invoice-details.php" class="nk-menu-link"><span class="nk-menu-text">Invocie Details</span></a>
                                         </li>
+                                        
                                     </ul>
                                 </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item has-sub">

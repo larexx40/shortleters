@@ -396,6 +396,8 @@ let admin = Vue.createApp({
                 this.loading = true;
                 const response = await axios(options); 
                 if(response.data.status){
+                    this.name = null;
+                    this.uploadImage= null;
                     await this.getAllBuildingType();
                     new Toasteur().success(response.data.text);
                     
@@ -432,7 +434,7 @@ let admin = Vue.createApp({
 
         },
         async deleteBuildingType(id){
-            const url = `${this.baseUrl}/api/buildingType/addBuildingType.php?`;
+            const url = `${this.baseUrl}/api/buildingType/deleteBuildingType.php?`;
             if(id == null ){
                 new Toasteur().error("Undefined")
             }
@@ -490,14 +492,16 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeBuildingTypeStatus(status){
+        async changeBuildingTypeStatus(id, status){
+            console.log("id", id);
+            console.log("status", status);
             const url = `${this.baseUrl}/api/buildingType/changeBuildingTypeStatus.php?`;
             //console.log('URL', url);
-            if(!this.itemid){
+            if(!id){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('buildingTypeid', this.itemid);
+                data.append('buildingTypeid', id);
                 data.append('status', status);
                 const options = {
                     method: "POST",
@@ -557,16 +561,16 @@ let admin = Vue.createApp({
             
         },
         async updateBuildingType(){
-            if(this.itemDetails.id == null || this.itemDetails.name== null || this.uploadImage == null ){
+            if(this.itemDetails.buildingTypeid == null || this.itemDetails.name== null || this.uploadImage == null ){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('id', this.buildingType_details.id );
-                data.append('image', this.buildingType_details.image );
-                data.append('name', this.buildingType_details.name );
+                data.append('buildingTypeid', this.itemDetails.buildingTypeid );
+                data.append('image', this.uploadImage);
+                data.append('name', this.itemDetails.name );
 
-                const url = `${this.baseUrl}/api/buildingType/updateBuildingType.php`;
+                const url = `${this.baseUrl}/api/buildingType/updateBuilding.php`;
                 
                 const options = {
                     method: "POST",
@@ -641,7 +645,7 @@ let admin = Vue.createApp({
                 }
                 const response = await axios(options);
                 if(response.data.status){
-                    this.spaceTypes = response.data.data.spaceType;
+                    this.spaceTypes = response.data.data.spaceTypes;
                     this.currentPage =response.data.data.page;
                     this.totalData =response.data.data.total_data;
                     this.totalPage =response.data.data.totalPage;
@@ -768,7 +772,7 @@ let admin = Vue.createApp({
                 const response = await axios(options); 
                 if(response.data.status){
                     await this.getAllSpaceType();
-                    Swal.fire(response.data.text);
+                    new Toasteur().success(response.data.text);
                     
                 }
             } catch (error) {
@@ -861,14 +865,14 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeSpaceTypeStatus(status){
+        async changeSpaceTypeStatus(id, status){
             const url = `${this.baseUrl}api/spaceType/changeSpaceTypeStatus.php?`;
             //console.log('URL', url);
-            if(!this.itemid){
+            if(!id){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('spaceTypeid', this.itemid);
+                data.append('spaceTypeid', id);
                 data.append('status', status);
                 const options = {
                     method: "POST",
@@ -884,9 +888,9 @@ let admin = Vue.createApp({
                     const response = await axios(options);
                     if(response.data.status){
                         new Toasteur().success("Status Changed")
-                        this.getAllMonify();      
+                        this.getAllSpaceType();      
                     }else{
-                        this.getAllMonify();
+                        this.getAllSpaceType();
                     }     
                 } catch (error) {
                     // //console.log(error);
@@ -928,16 +932,16 @@ let admin = Vue.createApp({
             
         },
         async updateSpaceType(){
-            if(this.spaceType_details.name == null || this.spaceType_details.spaceTypeid == null ){
+            if(this.itemDetails.name == null || this.itemDetails.spaceTypeid == null ){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('spaceTypeid', this.spaceType_details.spaceTypeid );
-                data.append('name', this.spaceType_details.name );
+                data.append('spaceTypeid', this.itemDetails.spaceTypeid );
+                data.append('name', this.itemDetails.name );
 
 
-                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                const url = `${this.baseUrl}api/spaceType/updateSpaceType.php`;
                 
                 const options = {
                     method: "POST",
@@ -953,8 +957,8 @@ let admin = Vue.createApp({
                     this.loading = true;
                     const response = await axios(options); 
                     if(response.data.status){
-                        await this.getAllMonify();
-                        Swal.fire(response.data.text);
+                        await this.getAllSpaceType();
+                        new Toasteur().success(response.data.text);
                         
                     }
                 } catch (error) {
@@ -1172,6 +1176,7 @@ let admin = Vue.createApp({
 
         },
         async deleteHighlight(id){
+            console.log("id", id);
             const url = `${this.baseUrl}api/highlights/deleteHighlight.php?`;
             if(id == null ){
                 new Toasteur().error("Kindly fill all fields")
@@ -1186,13 +1191,14 @@ let admin = Vue.createApp({
                     //"Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
                 },
+                data,
                 url
             }
             try {
                 this.loading = true;
                 const response = await axios(options);
                 if(response.data.status){
-                    this.getAllMonify();
+                    this.getAllHighlight();
                 }    
             } catch (error) {
                 // //console.log(error);
@@ -1230,15 +1236,15 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeHighlightStatus(status){
-            const url = `${this.baseUrl}api/thirdPartyApi/changeHighlightStatus.php?`;
+        async changeHighlightStatus(id,status){
+            const url = `${this.baseUrl}api/highlights/changeHighlightStatus.php`;
             //console.log('URL', url);
-            if(!this.itemid){
+            if(!id){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
                 data.append('status', status);
-                data.append('highlightid', this.itemid);
+                data.append('highlightid', id);
                 const options = {
                     method: "POST",
                     headers: { 
@@ -1253,9 +1259,9 @@ let admin = Vue.createApp({
                     const response = await axios(options);
                     if(response.data.status){
                         new Toasteur().success("Status Changed")
-                        this.getAllMonify();      
+                        this.getAllHighlight();      
                     }else{
-                        this.getAllMonify();
+                        this.getAllHighlight();
                     }     
                 } catch (error) {
                     // //console.log(error);
@@ -1297,16 +1303,17 @@ let admin = Vue.createApp({
             
         },
         async updateHighlight(){
-            if(this.highlight_detail.name == null || this.highlight_detail.id== null ){
+            if(this.itemDetails.name == null || this.itemDetails.highlightid == null || this.itemDetails.icon == null){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('id', this.highlight_detail.id );
-                data.append('name', this.highlight_detail.name );
+                data.append('highlightid', this.itemDetails.highlightid );
+                data.append('name', this.itemDetails.name );
+                data.append('icon', this.itemDetails.icon );
 
 
-                const url = `${this.baseUrl}api/highlights/updateHighlights.php`;
+                const url = `${this.baseUrl}api/highlights/updateHighlight.php`;
                 
                 const options = {
                     method: "POST",
@@ -1322,6 +1329,7 @@ let admin = Vue.createApp({
                     this.loading = true;
                     const response = await axios(options); 
                     if(response.data.status){
+                        new Toasteur().success(response.data.text);
                         await this.getAllHighlight();
                         
                     }
@@ -1599,14 +1607,15 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeGuestSafetyStatus(status){
+        async changeGuestSafetyStatus(id, status){
             const url = `${this.baseUrl}api/guestSafety/changeGuestSafetyStatus.php?`;
             //console.log('URL', url);
-            if(!this.itemid){
+            if(!id){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('guestSafetyid', this.itemid);;
+                data.append('guestSafetyid', id);
+                data.append('status', status);
                 const options = {
                     method: "POST",
                     headers: { 
@@ -1665,15 +1674,15 @@ let admin = Vue.createApp({
             
         },
         async updateGuestSafety(){
-            if(this.guestSafty_details.name == null || this.guestSafty_details.icon== null || this.guestSafty_details.image== null || this.guestSafty_details.guestSafetyid== null ){
+            if(this.itemDetails.name == null || this.itemDetails.icon== null || this.itemDetails.image== null || this.itemDetails.guestSafetyid== null ){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('guestSafetyid', this.guestSafty_details.guestSafetyid );
-                data.append('icon', this.guestSafty_details.icon );
-                data.append('name', this.guestSafty_details.name );
-                data.append('image', this.guestSafty_details.image );
+                data.append('guestSafetyid', this.itemDetails.guestSafetyid );
+                data.append('icon', this.itemDetails.icon );
+                data.append('name', this.itemDetails.name );
+                data.append('image', this.itemDetails.image );
 
 
                 const url = `${this.baseUrl}api/guestSafety/updateGuestSafety.php`;
@@ -1692,6 +1701,7 @@ let admin = Vue.createApp({
                     this.loading = true;
                     const response = await axios(options); 
                     if(response.data.status){
+                        new Toasteur().success(response.data.text);
                         await this.getAllGuestSafety();
                         
                     }
@@ -5032,6 +5042,9 @@ let admin = Vue.createApp({
             }
 
         },
+        async log(){
+            console.log("sort", this.sort);
+        },
         async changeStatus(id,status){
             this.currentPage =null;
             this.totalData =null;
@@ -5107,6 +5120,18 @@ let admin = Vue.createApp({
                 if(webPage == 'posts.php'){
                     this.deleteBlog(id);
                 }
+                if(webPage == 'buildingType.php'){
+                    this.deleteBuildingType(id);
+                }
+                if(webPage == 'guestSafety.php'){
+                    this.deleteGuestSafety(id);
+                }
+                if(webPage == 'spaceType.php'){
+                    this.deleteSpaceType(id);
+                }
+                if(webPage == 'highlights.php'){
+                    this.deleteHighlight(id);
+                }
                 swalWithBootstrapButtons.fire(
                 'Deleted!',
                 'Record deleted succesfully.',
@@ -5145,9 +5170,16 @@ let admin = Vue.createApp({
                 this.itemDetails = this.addresses[index];
             }
             if(webPage == 'buildingType.php'){
-                console.log("index", index);
                 this.itemDetails = this.buildingTypes[index];
-                console.log('details', this.itemDetails.name);
+            }
+            if(webPage == 'guestSafety.php'){
+                this.itemDetails = this.guestSafeties[index];
+            }
+            if(webPage == 'spaceType.php'){
+                this.itemDetails = this.spaceTypes[index];
+            }
+            if(webPage == 'highlights.php'){
+                this.itemDetails = this.highlights[index];
             }
         },
         async generateUserPassword(){

@@ -70,11 +70,12 @@
 
 
         if($status > 0){
+            
             //sort with default address
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $searchQuery = "SELECT `id`,`scenicid`,`name`, `status` FROM `scenic_view` 
                                 WHERE (`name` like ? ) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("ss", $searchParam, $status);
@@ -92,7 +93,7 @@
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $sqlQuery = "SELECT `id`,`scenicid`,`name`, `status` FROM `scenic_view`
                             WHERE `status` =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
@@ -113,7 +114,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $searchQuery = "SELECT `id`,`scenicid`,`name`, `status` FROM `scenic_view` 
                                 WHERE `name` like ? ";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("s",  $searchParam);
@@ -131,14 +132,14 @@
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types`";
+                $sqlQuery = "SELECT `id`,`scenicid`,`name`, `status` FROM `scenic_view`";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT `id`,`scenicid`,`name`, `status` FROM `scenic_view` ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
@@ -165,9 +166,8 @@
             $allResponse = [];
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
-                $buildingTypeid = $row['build_id'];
+                $scenicViewid = $row['scenicid'];
                 $name = $row['name'];
-                $imageUrl = $row['image_url'];
                 $statusCode = $row['status'];
                 if($statusCode == 1){
                     $status = "Active";
@@ -177,9 +177,8 @@
 
             array_push($allResponse, array(
                 "id"=>$id,
-                "buildingTypeid"=>$buildingTypeid,
+                "scenicViewid"=>$scenicViewid,
                 "name"=>$name,
-                "imageUrl"=>$imageUrl,
                 "status"=>$status,
                 "statusCode"=>$statusCode,
             ));
@@ -190,7 +189,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'buildingTypes'=> $allResponse
+                'scenicView'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

@@ -172,7 +172,7 @@
                 if($statusCode == 1){
                     $status = "Active";
                 }else{
-                    $status = "Inctive";
+                    $status = "Inactive";
                 }
 
                 array_push($allResponse, array(
