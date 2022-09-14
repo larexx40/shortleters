@@ -172,7 +172,7 @@
                 if($statusCode == 1){
                     $status = "Active";
                 }else{
-                    $status = "Inctive";
+                    $status = "Inactive";
                 }
 
                 array_push($allResponse, array(
@@ -190,7 +190,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'guestSafety'=> $allResponse
+                'guestSafeties'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

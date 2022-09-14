@@ -1,19 +1,20 @@
 <?php
-    // pass cors header to allow from cross-origin
+
+    // send some CORS headers so the API can be called from anywhere
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: GET");// OPTIONS,GET,POST,PUT,DELETE
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
+    // header("Access-Control-Max-Age: 3600");//3600 seconds
+    // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
     include "../cartsfunction.php";
-    
-  
 
-    $endpoint = basename($_SERVER['PHP_SELF']);
     $method = getenv('REQUEST_METHOD');
+    $endpoint = basename($_SERVER['PHP_SELF']);
 
-    if ($method == 'GET') {
+    if($method =='POST'){
         //get company details to decode usertoken
         $detailsID =1;
         $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
@@ -26,41 +27,52 @@
         $serverName = $companyDetails['servername'];
 
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
-        $userpubkey = $decodeToken->usertoken;
+        $adminpubkey = $decodeToken->usertoken;
+        //confirm adminkey from jwt
+        if(!checkIfIsAdmin($connect, $adminpubkey)){
+            //respond not admin
+            $errordesc =  "User not an Admin";
+            $linktosolve = 'https://';
+            $hint = "Only Admin can access this route";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data);
+        }
+        $adminid =checkIfIsAdmin($connect, $adminpubkey);
 
-       //confirm if guestSafetyid id is passed
-       if(!isset($_POST['guestSafetyid'])){
-            $errordesc="Guest safety id required";
+        //confirm if building id is passed
+        if(!isset($_POST['buildingTypeid'])){
+            $errordesc="Building type id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in Guest safety  id";
+            $text="Pass in building type  id";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
+            
         }else {
-            $guestSafetyid = cleanme($_POST['guestSafetyid']); 
+            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
         }
 
-        //confirm if guestSafetyid is not empty
-        if(empty($guestSafetyid)){
+        //confirm if building type id is not empty
+        if(empty($buildingTypeid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the Guest safety id ";
+            $text="Please pass in the building type id ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
-        
-        $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety` WHERE `guest_safetyid` = ?";
-        $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$guestSafetyid);
-        $stmt->execute();  
-        $result = $stmt->get_result();
-        $numRow = $result->num_rows;
 
-        //check for db error || connection lost
+        //delete Building type
+        $sqlQuery = "DELETE FROM `building_types` WHERE build_id =?";
+        $stmt = $connect->prepare($sqlQuery);
+        $stmt->bind_param("s",$buildingTypeid);
+        $stmt->execute();
+        $affectedRow =$stmt->affected_rows;
+
         if(!$stmt->execute()){
             //DB error || invalid input
             $errordesc=$stmt->error;
@@ -68,62 +80,42 @@
             $hint=["Ensure database connection is on","Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
             $text="Database comection error";
-            $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondInternalError($data);
         }
-        if($numRow > 0){
-            //pass fetched data as array maindata[]
-            $row = $result->fetch_assoc();
-            $id = $row['id'];
-            $guestSafetyid = $row['guest_safetyid'];
-            $name = $row['name'];
-            $description = $row['description'];
-            $statusCode = $row['status'];
-            if($statusCode == 1){
-                $status = "Active";
-            }else{
-                $status = "Inactive";
-            }
-            $maindata=[
-                "id"=>$id,
-                "guestSafetyid"=>$guestSafetyid,
-                "name"=>$name,
-                "description"=>$description,
-                "status"=>$status,
-                "statusCode"=>$statusCode,
-            ];
+        if($affectedRow > 0){
+            // return success message
+            $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = [];
+            $hint = ["Building Type deleted from the database"];
             $errordata = [];
-            $text = "Data found";
-            $method = getenv('REQUEST_METHOD');
+            $text = "Building type successfully deleted";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
-
         }else{
-            // incorrect building id
-            $errordesc="Record not found";
+            //id not found response
+            $errordesc="Building type id not found";
             $linktosolve="htps://";
-            $hint=["pass in valid id"];
+            $hint='Building type id not in database';
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="data with id not found";
+            $text="Building type id not found";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
-        
-        
-    }else{
-        // Send an error response because a wrong method was passed 
-        $errordesc = "Method not allowed";
-        $linktosolve = 'https://';
-        $hint = "This route only accepts GET request, kindly pass a post request";
-        $errorData = returnError7003($errordesc, $linktosolve, $hint);
-        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-        respondMethodNotAlowed($data);
 
+        
+    }else {
+        // method not allowed
+        $errordesc="Method not allowed";
+        $linktosolve="htps://";
+        $hint=["Ensure to use the method stated in the documentation."];
+        $errordata=returnError7003($errordesc,$linktosolve,$hint);
+        $text="Method used not allowed";
+        $method=getenv('REQUEST_METHOD');
+        $data=returnErrorArray($text,$method,$endpoint,$errordata);
+        respondMethodNotAlowed($data);
     }
 ?>

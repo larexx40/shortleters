@@ -8,7 +8,7 @@
     // header("Access-Control-Max-Age: 3600");//3600 seconds
     // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
 
     $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
@@ -27,84 +27,102 @@
 
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
-
-        //check if isadmin
         $adminid = checkIfIsAdmin($connect,$userpubkey);
+
         if(!$adminid){
             // send user not found response to the user
             $errordesc =  "User not a admin";
             $linktosolve = 'https://';
-            $hint = "Only admin can access this route";
+            $hint = "Only admin access this route";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
         }
-        //confirm how to pass in the id
-        if(!isset($_POST['spaceTypeid'])){
-            $errordesc="Space type id required";
+
+        //confirm if building id is passed
+       if(!isset($_POST['buildingTypeid'])){
+        $errordesc="Building type id required";
+        $linktosolve="htps://";
+        $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+        $errordata=returnError7003($errordesc,$linktosolve,$hint);
+        $text="Pass in building type  id";
+        $data=returnErrorArray($text,$method,$endpoint,$errordata);
+        respondBadRequest($data);
+        
+        }else {
+            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
+        }
+        //check status passed
+        if ( !isset($_POST['status']) ){
+            $errordesc="Building type status required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in space type id";
+            $text="Building type status must be passed";
+            $method;
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-            
-        }else {
-            $spaceTypeid = cleanme($_POST['spaceTypeid']); 
-        }
-    
-        if ( !isset($_POST['name']) ){
-            // send error if howmanyminread field is not passed
-            $errordesc = "Building name must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required rateStar field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
-
         }else{
-            $name = cleanme($_POST['name']);
+            $status = cleanme($_POST['status']);
         }
 
-        if (empty($name)){
-            // send error if inputs are empty
-            $errordesc = "Space Type inputs are required";
+        if ($status == 0 || $status == "inactive"){
+            $changeStatus = 0;
+            $message = "Deactivated";
+        }elseif ($status == 1 || $status == 'active'){
+            $changeStatus = 1;
+            $message = "Activated";
+        }else{
+            $changeStatus = "";
+        }
+
+        if ( $changeStatus != 0 && $changeStatus !== 1){
+            $errordesc = "Status passed is invalid ";
             $linktosolve = 'https://';
-            $hint = "Pass in Space Type details, it can't be empty";
+            $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+
+        //confirm if building type id is not empty
+        if(empty($buildingTypeid)){
+            //all input required / bad request
+            $errordesc="Bad request";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Please pass in the building type id ";
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `space_type` SET name = ? WHERE `type_id` = ?";
+        //.....change draft to 1 (show)
+        $sql = "UPDATE `building_types` SET `status`= ? WHERE build_id = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ss', $name, $spaceTypeid);
-        $update =$stmt->execute();
-        if($update){
+        $stmt->bind_param('ss', $changeStatus, $buildingTypeid);
+        $stmt->execute();
+
+        if ( $stmt->affected_rows > 0 ){
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = [];
+            $hint = "Building type status set to $message";
             $errordata = [];
-            $text = "Space Type Updated";
+            $text = "Building type set to $message";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
-
+        
         }else{
-            //invalid input || server error
-            $errordesc=$stmt->error;
-            $linktosolve="htps://";
-            $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="invalid api id or Check DB connection";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondInternalError($data);
+            //Building type not found
+            $errordesc = "Building type with id not found";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass valid building id";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data); 
         }
-
-    
-
     }else{
         // method not allowed
         $errordesc="Method not allowed";
@@ -112,7 +130,6 @@
         $hint=["Ensure to use the method stated in the documentation."];
         $errordata=returnError7003($errordesc,$linktosolve,$hint);
         $text="Method used not allowed";
-        $method=getenv('REQUEST_METHOD');
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondMethodNotAlowed($data);
     }  

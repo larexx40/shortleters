@@ -65,13 +65,28 @@ const webPage = urlPath[length -1];
 let admin = Vue.createApp({
     data(){
         return{
+            //lanre data @S
+            buildingTypes: null,
+            buildingType_details: null,
+            spaceTypes: null,
+            spaceType_details: null,
+            highlights: null,
+            highlight_detail: null,
+            guestSafeties: null,
+            guestSafty_details: null,
+            itemid: null,
+            name: null,
+            image: null,
+            icon: null,
+            description: null,
+            itemDetails: null,
+
+            //lanre data @E 
             length: null,
-            
             superAdmin: null,
             blog_details: null,
             arrayIndex: null,
             addresses: null,
-            //lanre data @S 
             minsToRead: null,
             blogContent: null,
             blogHeadline: null,
@@ -115,7 +130,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMwODUwNDAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzA4NTA0MCwiZXhwIjoxNjYzMTU4ODQwLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.ULESpOn4NDSX9xCxSoUxwRPgK31etppmk3BXlJZ7k7g6Mbz-6ElGv5gM1XfpnU9IKJGqP5L1S_bbvnA7UhVK4A",
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMxMzIzMjEsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzEzMjMyMSwiZXhwIjo2MzY2MzEzMjMwMSwidXNlcnRva2VuIjoiQ05HVWFkbWluIn0.wQBQDV501QcBJfzM0oXFnAAIth3xsB64lLCh4ZXdQynL9fNOgBEnQi026B9Yq136Kga4zbrrDvFp-RffSYYLfw",
             email: null,
             ref_link: null,
             admin_details: null,
@@ -209,6 +224,18 @@ let admin = Vue.createApp({
         if(webPage == 'addresses.php'){
             await this.getAllAddresses();
         }
+        if(webPage == 'buildingType.php'){
+            await this.getAllBuildingType();
+        }
+        if(webPage == 'guestSafety.php'){
+            await this.getAllGuestSafety();
+        }
+        if(webPage == 'spaceType.php'){
+            await this.getAllSpaceType();
+        }
+        if(webPage == 'highlights.php'){
+            await this.getAllHighlight();
+        }
         
     },
     methods: {
@@ -219,7 +246,7 @@ let admin = Vue.createApp({
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
             let page = ( this.currentPage )? this.currentPage : 1;
             let noPerPage = ( this.per_page ) ? this.per_page : 4;
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}/api/buildingType/getBuildingType.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -234,13 +261,12 @@ let admin = Vue.createApp({
                 }
                 const response = await axios(options);
                 if(response.data.status){
-                    this.monifys = response.data.data.monifys;
+                    this.buildingTypes = response.data.data.buildingTypes;
                     this.currentPage =response.data.data.page;
                     this.totalData =response.data.data.total_data;
                     this.totalPage =response.data.data.totalPage;
-                    //console.log("APiMonify", response.data.data.monifys);
                 }else{
-                    this.monifys = null;
+                    this.buildingTypes = null;
                     this.currentPage =0;
                     this.totalData =0;
                     this.totalPage =0;
@@ -280,11 +306,11 @@ let admin = Vue.createApp({
             }finally {
                 this.loading = false;
             }
-          },
+        },
         
         async getBuildingTypeByid(id){
             //console.log("monifyid", id);
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const url = `${this.baseUrl}api/buildingType/getBuildingTypeByid.php?`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -297,8 +323,7 @@ let admin = Vue.createApp({
                 this.loading = true
                 const response = await axios(options);
                 if (response.data.status) {
-                    this.monify_details= response.data.data;
-                    //console.log(response.data.data);
+                    this.buildingType_details= response.data.data;
                 }else{
                     new Toasteur().error(response.data.text);
                 }
@@ -338,19 +363,17 @@ let admin = Vue.createApp({
             }
         },
         async addBuildingType(){
-            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+            console.log('name', this.name);
+            console.log('uploadImage', this.uploadImage);
+            if(this.name == null || this.uploadImage== null ){
                 new Toasteur().error("Kindly fill all fields")
             }
 
             let data = new FormData();
-            data.append('apiKey', this.apiKey );
-            data.append('name', this.apiName );
-            data.append('secreteKey', this.secretKey );
-            data.append('apiMerchant', this.apiMerchant );
-            data.append('apiWallet', this.apiWallet );
-            data.append('apiAccno', this.secretKey );
+            data.append('name', this.name );
+            data.append('image', this.uploadImage );
 
-            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            const url = `${this.baseUrl}/api/buildingType/addBuildingType.php`;
             
             const options = {
                 method: "POST",
@@ -366,8 +389,8 @@ let admin = Vue.createApp({
                 this.loading = true;
                 const response = await axios(options); 
                 if(response.data.status){
-                    await this.getAllMonify();
-                    Swal.fire(response.data.text);
+                    await this.getAllBuildingType();
+                    new Toasteur().success(response.data.text);
                     
                 }
             } catch (error) {
@@ -402,20 +425,27 @@ let admin = Vue.createApp({
 
         },
         async deleteBuildingType(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const url = `${this.baseUrl}/api/buildingType/addBuildingType.php?`;
+            if(id == null ){
+                new Toasteur().error("Undefined")
+            }
+
+            let data = new FormData();
+            data.append('buildingTypeid', id );
             const options = {
-                method: "GET",
+                method: "POST",
                 headers: { 
                     //"Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
                 },
+                data,
                 url
             }
             try {
                 this.loading = true;
                 const response = await axios(options);
                 if(response.data.status){
-                    this.getAllMonify();
+                    this.getAllBuildingType();
                 }    
             } catch (error) {
                 // //console.log(error);
@@ -453,14 +483,15 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeBuildingTypeStatus(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+        async changeBuildingTypeStatus(status){
+            const url = `${this.baseUrl}/api/buildingType/changeBuildingTypeStatus.php?`;
             //console.log('URL', url);
-            if(!id){
+            if(!this.itemid){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('id', id);;
+                data.append('buildingTypeid', this.itemid);
+                data.append('status', status);
                 const options = {
                     method: "POST",
                     headers: { 
@@ -475,9 +506,9 @@ let admin = Vue.createApp({
                     const response = await axios(options);
                     if(response.data.status){
                         new Toasteur().success("Status Changed")
-                        this.getAllMonify();      
+                        this.getAllBuildingType();      
                     }else{
-                        this.getAllMonify();
+                        this.getAllBuildingType();
                     }     
                 } catch (error) {
                     // //console.log(error);
@@ -519,21 +550,16 @@ let admin = Vue.createApp({
             
         },
         async updateBuildingType(){
-            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+            if(this.itemDetails.id == null || this.itemDetails.name== null || this.uploadImage == null ){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('id', this.monify_details.id );
-                data.append('apikey', this.monify_details.apikey );
-                data.append('name', this.monify_details.name );
-                data.append('secretkey', this.monify_details.secretkey );
-                data.append('apimerchant', this.monify_details.apimerchant );
-                data.append('apiwallet', this.monify_details.apiwallet);
-                data.append('apiaccno', this.monify_details.apiaccno );
+                data.append('id', this.buildingType_details.id );
+                data.append('image', this.buildingType_details.image );
+                data.append('name', this.buildingType_details.name );
 
-
-                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                const url = `${this.baseUrl}/api/buildingType/updateBuildingType.php`;
                 
                 const options = {
                     method: "POST",
@@ -549,8 +575,10 @@ let admin = Vue.createApp({
                     this.loading = true;
                     const response = await axios(options); 
                     if(response.data.status){
-                        await this.getAllMonify();
-                        Swal.fire(response.data.text);
+                        this.itemDetails = null;
+                        this.uploadImage = null;
+                        await this.getAllBuildingType();
+                        new Toasteur().success(response.data.text);
                         
                     }
                 } catch (error) {
@@ -591,7 +619,7 @@ let admin = Vue.createApp({
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
             let page = ( this.currentPage )? this.currentPage : 1;
             let noPerPage = ( this.per_page ) ? this.per_page : 4;
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}api/spaceType/getSpaceType.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -606,13 +634,13 @@ let admin = Vue.createApp({
                 }
                 const response = await axios(options);
                 if(response.data.status){
-                    this.monifys = response.data.data.monifys;
+                    this.spaceTypes = response.data.data.spaceType;
                     this.currentPage =response.data.data.page;
                     this.totalData =response.data.data.total_data;
                     this.totalPage =response.data.data.totalPage;
                     //console.log("APiMonify", response.data.data.monifys);
                 }else{
-                    this.monifys = null;
+                    this.spaceTypes = null;
                     this.currentPage =0;
                     this.totalData =0;
                     this.totalPage =0;
@@ -655,7 +683,7 @@ let admin = Vue.createApp({
         },
         async getSpaceTypeByid(id){
             //console.log("monifyid", id);
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const url = `${this.baseUrl}api/spaceType/getSpaceType.iByid.php?spaceTypeid=${id}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -668,7 +696,7 @@ let admin = Vue.createApp({
                 this.loading = true
                 const response = await axios(options);
                 if (response.data.status) {
-                    this.monify_details= response.data.data;
+                    this.spaceType_details= response.data.data;
                     //console.log(response.data.data);
                 }else{
                     new Toasteur().error(response.data.text);
@@ -709,19 +737,14 @@ let admin = Vue.createApp({
             }
         },
         async addSpaceType(){
-            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+            if(this.name == null ){
                 new Toasteur().error("Kindly fill all fields")
             }
 
             let data = new FormData();
-            data.append('apiKey', this.apiKey );
-            data.append('name', this.apiName );
-            data.append('secreteKey', this.secretKey );
-            data.append('apiMerchant', this.apiMerchant );
-            data.append('apiWallet', this.apiWallet );
-            data.append('apiAccno', this.secretKey );
+            data.append('name', this.name );
 
-            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            const url = `${this.baseUrl}api/spaceType/addSpaceType.php`;
             
             const options = {
                 method: "POST",
@@ -737,7 +760,7 @@ let admin = Vue.createApp({
                 this.loading = true;
                 const response = await axios(options); 
                 if(response.data.status){
-                    await this.getAllMonify();
+                    await this.getAllSpaceType();
                     Swal.fire(response.data.text);
                     
                 }
@@ -773,20 +796,27 @@ let admin = Vue.createApp({
 
         },
         async deleteSpaceType(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const url = `${this.baseUrl}api/spaceType/deleteSpaceType.php`;
+            if(id == null ){
+                new Toasteur().error("Undefine")
+            }
+
+            let data = new FormData();
+            data.append('spaceTypeid', id );
             const options = {
-                method: "GET",
+                method: "POST",
                 headers: { 
                     //"Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
                 },
+                data,
                 url
             }
             try {
                 this.loading = true;
                 const response = await axios(options);
                 if(response.data.status){
-                    this.getAllMonify();
+                    this.getAllSpaceType();
                 }    
             } catch (error) {
                 // //console.log(error);
@@ -824,14 +854,15 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeSpaceTypeStatus(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+        async changeSpaceTypeStatus(status){
+            const url = `${this.baseUrl}api/spaceType/changeSpaceTypeStatus.php?`;
             //console.log('URL', url);
-            if(!id){
+            if(!this.itemid){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('id', id);;
+                data.append('spaceTypeid', this.itemid);
+                data.append('status', status);
                 const options = {
                     method: "POST",
                     headers: { 
@@ -890,18 +921,13 @@ let admin = Vue.createApp({
             
         },
         async updateSpaceType(){
-            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+            if(this.spaceType_details.name == null || this.spaceType_details.spaceTypeid == null ){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('id', this.monify_details.id );
-                data.append('apikey', this.monify_details.apikey );
-                data.append('name', this.monify_details.name );
-                data.append('secretkey', this.monify_details.secretkey );
-                data.append('apimerchant', this.monify_details.apimerchant );
-                data.append('apiwallet', this.monify_details.apiwallet);
-                data.append('apiaccno', this.monify_details.apiaccno );
+                data.append('spaceTypeid', this.spaceType_details.spaceTypeid );
+                data.append('name', this.spaceType_details.name );
 
 
                 const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
@@ -962,7 +988,7 @@ let admin = Vue.createApp({
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
             let page = ( this.currentPage )? this.currentPage : 1;
             let noPerPage = ( this.per_page ) ? this.per_page : 4;
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}api/highlights/getHighlights.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -977,13 +1003,12 @@ let admin = Vue.createApp({
                 }
                 const response = await axios(options);
                 if(response.data.status){
-                    this.monifys = response.data.data.monifys;
+                    this.highlights = response.data.data.highlights;
                     this.currentPage =response.data.data.page;
                     this.totalData =response.data.data.total_data;
                     this.totalPage =response.data.data.totalPage;
-                    //console.log("APiMonify", response.data.data.monifys);
                 }else{
-                    this.monifys = null;
+                    this.highlights = null;
                     this.currentPage =0;
                     this.totalData =0;
                     this.totalPage =0;
@@ -1026,7 +1051,7 @@ let admin = Vue.createApp({
         },
         async getHighlightByid(id){
             //console.log("monifyid", id);
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const url = `${this.baseUrl}api/highlights/getHighlightByid.php?highlightid=${id}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -1039,7 +1064,7 @@ let admin = Vue.createApp({
                 this.loading = true
                 const response = await axios(options);
                 if (response.data.status) {
-                    this.monify_details= response.data.data;
+                    this.highlight_detail= response.data.data;
                     //console.log(response.data.data);
                 }else{
                     new Toasteur().error(response.data.text);
@@ -1080,19 +1105,15 @@ let admin = Vue.createApp({
             }
         },
         async addHighlight(){
-            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+            if(this.name == null || this.icon== null ){
                 new Toasteur().error("Kindly fill all fields")
             }
 
             let data = new FormData();
-            data.append('apiKey', this.apiKey );
-            data.append('name', this.apiName );
-            data.append('secreteKey', this.secretKey );
-            data.append('apiMerchant', this.apiMerchant );
-            data.append('apiWallet', this.apiWallet );
-            data.append('apiAccno', this.secretKey );
+            data.append('name', this.name );
+            data.append('icon', this.icon );
 
-            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            const url = `${this.baseUrl}api/highlights/addHighlights.php`;
             
             const options = {
                 method: "POST",
@@ -1108,7 +1129,7 @@ let admin = Vue.createApp({
                 this.loading = true;
                 const response = await axios(options); 
                 if(response.data.status){
-                    await this.getAllMonify();
+                    await this.getAllHighlight();
                     Swal.fire(response.data.text);
                     
                 }
@@ -1144,9 +1165,16 @@ let admin = Vue.createApp({
 
         },
         async deleteHighlight(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const url = `${this.baseUrl}api/highlights/deleteHighlight.php?`;
+            if(id == null ){
+                new Toasteur().error("Kindly fill all fields")
+            }
+            let data = new FormData();
+            data.append('highlightid', id );
+
+            //highlightid
             const options = {
-                method: "GET",
+                method: "POST",
                 headers: { 
                     //"Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
@@ -1195,14 +1223,15 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeHighlightStatus(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+        async changeHighlightStatus(status){
+            const url = `${this.baseUrl}api/thirdPartyApi/changeHighlightStatus.php?`;
             //console.log('URL', url);
-            if(!id){
+            if(!this.itemid){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('id', id);;
+                data.append('status', status);
+                data.append('highlightid', this.itemid);
                 const options = {
                     method: "POST",
                     headers: { 
@@ -1261,21 +1290,16 @@ let admin = Vue.createApp({
             
         },
         async updateHighlight(){
-            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+            if(this.highlight_detail.name == null || this.highlight_detail.id== null ){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('id', this.monify_details.id );
-                data.append('apikey', this.monify_details.apikey );
-                data.append('name', this.monify_details.name );
-                data.append('secretkey', this.monify_details.secretkey );
-                data.append('apimerchant', this.monify_details.apimerchant );
-                data.append('apiwallet', this.monify_details.apiwallet);
-                data.append('apiaccno', this.monify_details.apiaccno );
+                data.append('id', this.highlight_detail.id );
+                data.append('name', this.highlight_detail.name );
 
 
-                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                const url = `${this.baseUrl}api/highlights/updateHighlights.php`;
                 
                 const options = {
                     method: "POST",
@@ -1291,8 +1315,7 @@ let admin = Vue.createApp({
                     this.loading = true;
                     const response = await axios(options); 
                     if(response.data.status){
-                        await this.getAllMonify();
-                        Swal.fire(response.data.text);
+                        await this.getAllHighlight();
                         
                     }
                 } catch (error) {
@@ -1333,7 +1356,7 @@ let admin = Vue.createApp({
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
             let page = ( this.currentPage )? this.currentPage : 1;
             let noPerPage = ( this.per_page ) ? this.per_page : 4;
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApi.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}api/guestSafety/getGuestSafety.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -1348,13 +1371,12 @@ let admin = Vue.createApp({
                 }
                 const response = await axios(options);
                 if(response.data.status){
-                    this.monifys = response.data.data.monifys;
+                    this.guestSafeties = response.data.data.guestSafeties;
                     this.currentPage =response.data.data.page;
                     this.totalData =response.data.data.total_data;
                     this.totalPage =response.data.data.totalPage;
-                    //console.log("APiMonify", response.data.data.monifys);
                 }else{
-                    this.monifys = null;
+                    this.guestSafeties = null;
                     this.currentPage =0;
                     this.totalData =0;
                     this.totalPage =0;
@@ -1397,7 +1419,7 @@ let admin = Vue.createApp({
         },
         async getGuestSafetyByid(id){
             //console.log("monifyid", id);
-            const url = `${this.baseUrl}api/thirdPartyApi/getMonifyApiByid.php?id=${id}`;
+            const url = `${this.baseUrl}api/guestSafety/getGuestSafetyByid.php?guestSafetyid=${id}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -1410,7 +1432,7 @@ let admin = Vue.createApp({
                 this.loading = true
                 const response = await axios(options);
                 if (response.data.status) {
-                    this.monify_details= response.data.data;
+                    this.guestSafty_details= response.data.data;
                     //console.log(response.data.data);
                 }else{
                     new Toasteur().error(response.data.text);
@@ -1451,19 +1473,16 @@ let admin = Vue.createApp({
             }
         },
         async addGuestSafety(){
-            if(this.apiWallet == null || this.apiMerchant== null || this.apiAccno== null || this.apiKey == null ||this.apiName == null || this.secretKey == null){
+            if(this.name == null || this.icon== null || this.image== null){
                 new Toasteur().error("Kindly fill all fields")
             }
 
             let data = new FormData();
-            data.append('apiKey', this.apiKey );
-            data.append('name', this.apiName );
-            data.append('secreteKey', this.secretKey );
-            data.append('apiMerchant', this.apiMerchant );
-            data.append('apiWallet', this.apiWallet );
-            data.append('apiAccno', this.secretKey );
+            data.append('image', this.image );
+            data.append('name', this.name );
+            data.append('icon', this.icon );
 
-            const url = `${this.baseUrl}api/thirdPartyApi/addMonifyApi.php`;
+            const url = `${this.baseUrl}api/guestSafety/addGuestSafety.php`;
             
             const options = {
                 method: "POST",
@@ -1479,7 +1498,7 @@ let admin = Vue.createApp({
                 this.loading = true;
                 const response = await axios(options); 
                 if(response.data.status){
-                    await this.getAllMonify();
+                    await this.getAllGuestSafety();
                     Swal.fire(response.data.text);
                     
                 }
@@ -1515,13 +1534,20 @@ let admin = Vue.createApp({
 
         },
         async deleteGuestSafety(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/deleteMonifyApi.php?id=${id}`;
+            const url = `${this.baseUrl}api/guestSafety/deleteGuestSafety.php?guestSafetyid=${id}`;
+            if(id == null ){
+                new Toasteur().error("Undefined")
+            }
+
+            let data = new FormData();
+            data.append('guestSafetyid', id );
             const options = {
-                method: "GET",
+                method: "POST",
                 headers: { 
                     //"Content-type": "application/json",
                     "Authorization": `Bearer ${this.authToken}`
                 },
+                data,
                 url
             }
             try {
@@ -1566,14 +1592,14 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async changeGuestSafetyStatus(id){
-            const url = `${this.baseUrl}api/thirdPartyApi/changeMonifyApiStatus.php?`;
+        async changeGuestSafetyStatus(status){
+            const url = `${this.baseUrl}api/guestSafety/changeGuestSafetyStatus.php?`;
             //console.log('URL', url);
-            if(!id){
+            if(!this.itemid){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('id', id);;
+                data.append('guestSafetyid', this.itemid);;
                 const options = {
                     method: "POST",
                     headers: { 
@@ -1632,21 +1658,18 @@ let admin = Vue.createApp({
             
         },
         async updateGuestSafety(){
-            if(this.monify_details.apiwallet == null || this.monify_details.apimerchant== null || this.monify_details.apiaccno== null || this.monify_details.apikey == null ||this.monify_details.name == null || this.monify_details.secretkey == null){
+            if(this.guestSafty_details.name == null || this.guestSafty_details.icon== null || this.guestSafty_details.image== null || this.guestSafty_details.guestSafetyid== null ){
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
-                data.append('id', this.monify_details.id );
-                data.append('apikey', this.monify_details.apikey );
-                data.append('name', this.monify_details.name );
-                data.append('secretkey', this.monify_details.secretkey );
-                data.append('apimerchant', this.monify_details.apimerchant );
-                data.append('apiwallet', this.monify_details.apiwallet);
-                data.append('apiaccno', this.monify_details.apiaccno );
+                data.append('guestSafetyid', this.guestSafty_details.guestSafetyid );
+                data.append('icon', this.guestSafty_details.icon );
+                data.append('name', this.guestSafty_details.name );
+                data.append('image', this.guestSafty_details.image );
 
 
-                const url = `${this.baseUrl}api/thirdPartyApi/updateMonifyApi.php`;
+                const url = `${this.baseUrl}api/guestSafety/updateGuestSafety.php`;
                 
                 const options = {
                     method: "POST",
@@ -1662,8 +1685,7 @@ let admin = Vue.createApp({
                     this.loading = true;
                     const response = await axios(options); 
                     if(response.data.status){
-                        await this.getAllMonify();
-                        Swal.fire(response.data.text);
+                        await this.getAllGuestSafety();
                         
                     }
                 } catch (error) {
@@ -4793,6 +4815,10 @@ let admin = Vue.createApp({
         },
 
         //.....utilities..............
+        async uploadImage(event){
+            this.uploadImage = event.target.files[0];
+            console.log("image", this.uploadImage);
+        },
         async getToken(){
             this.loading= true
             const token = window.localStorage.getItem("authToken");
@@ -5110,6 +5136,11 @@ let admin = Vue.createApp({
             }
             if(webPage == 'addresses.php'){
                 this.itemDetails = this.addresses[index];
+            }
+            if(webPage == 'buildingType.php'){
+                console.log("index", index);
+                this.itemDetails = this.buildingTypes[index];
+                console.log('details', this.itemDetails.name);
             }
         },
         async generateUserPassword(){

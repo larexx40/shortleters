@@ -28,34 +28,35 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-       //confirm if guestSafetyid id is passed
-       if(!isset($_POST['guestSafetyid'])){
-            $errordesc="Guest safety id required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in Guest safety  id";
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
+       //confirm if building id is passed
+       if(!isset($_POST['buildingTypeid'])){
+        $errordesc="Building type id required";
+        $linktosolve="htps://";
+        $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+        $errordata=returnError7003($errordesc,$linktosolve,$hint);
+        $text="Pass in building type  id";
+        $data=returnErrorArray($text,$method,$endpoint,$errordata);
+        respondBadRequest($data);
+        
         }else {
-            $guestSafetyid = cleanme($_POST['guestSafetyid']); 
+            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
         }
 
-        //confirm if guestSafetyid is not empty
-        if(empty($guestSafetyid)){
+        //confirm if building type id is not empty
+        if(empty($buildingTypeid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the Guest safety id ";
+            $text="Please pass in the building type id ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
         
-        $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety` WHERE `guest_safetyid` = ?";
+        $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` WHERE `build_id` = ?";
         $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$guestSafetyid);
+        $stmt->bind_param("s",$buildingTypeid);
         $stmt->execute();  
         $result = $stmt->get_result();
         $numRow = $result->num_rows;
@@ -76,20 +77,16 @@
             //pass fetched data as array maindata[]
             $row = $result->fetch_assoc();
             $id = $row['id'];
-            $guestSafetyid = $row['guest_safetyid'];
+            $buildingTypeid = $row['build_id'];
             $name = $row['name'];
-            $description = $row['description'];
+            $imageUrl = $row['image_url'];
             $statusCode = $row['status'];
-            if($statusCode == 1){
-                $status = "Active";
-            }else{
-                $status = "Inactive";
-            }
+            $status =$statusCode;
+
             $maindata=[
                 "id"=>$id,
-                "guestSafetyid"=>$guestSafetyid,
+                "buildingTypeid"=>$buildingTypeid,
                 "name"=>$name,
-                "description"=>$description,
                 "status"=>$status,
                 "statusCode"=>$statusCode,
             ];
