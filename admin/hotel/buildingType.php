@@ -26,7 +26,7 @@
                                             <div class="nk-block-head-content">
                                                 <h3 class="nk-block-title page-title">Building Types</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Here is verious type of building to shortlet.</p>
+                                                    <p>Here is verious types of building to shortlet.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
@@ -173,7 +173,7 @@
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if="all_amenities" class="card-inner p-0">
+                                                <div v-if="buildingTypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -183,8 +183,8 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Image</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <!-- <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <div class="dropdown">
@@ -214,7 +214,7 @@
                                                                 </div>
                                                             </div> -->
                                                         </div><!-- .nk-tb-item -->
-                                                        <div v-for="(item, index) in all_amenities" class="nk-tb-item">
+                                                        <div v-for="(item, index) in buildingTypes" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid1">
@@ -227,12 +227,12 @@
                                                             <div class="nk-tb-col">
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>{{item.icon}}</span>
+                                                            <div class="nk-tb-col tb-col-md tb-product">
+                                                                <img v-if='item.imageUrl' :src="item.imageUrl" alt="Apartment imgage" class="thumb">
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span v-if="item.status_code > 0" class="tb-status text-success">{{item.status}}</span>
-                                                                <span v-if="item.status_code < 1" class="tb-status text-danger">{{item.status}}</span>
+                                                                <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
+                                                                <span v-if="item.statusCode < 1" class="tb-status text-danger">{{item.status}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
@@ -241,7 +241,7 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
+                                                                                    <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
                                                                                     <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
@@ -254,12 +254,12 @@
                                                 </div><!-- .card-inner -->
 
                                                 <!-- Table when record not found -->
-                                                <div v-if="!all_amenities" class="card-inner p-0">
+                                                <div v-if="!buildingTypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Image</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
@@ -289,7 +289,7 @@
                                                                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
                                                             </ul><!-- .pagination -->
                                                         </div>
-                                                        <div class="g">
+                                                        <!-- <div class="g">
                                                             <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
                                                                 <div>Page</div>
                                                                 <div>
@@ -317,7 +317,7 @@
                                                                 </div>
                                                                 <div>OF 102</div>
                                                             </div>
-                                                        </div><!-- .pagination-goto -->
+                                                        </div>.pagination-goto -->
                                                     </div><!-- .nk-block-between -->
                                                 </div><!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
@@ -466,25 +466,31 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Amenities Details</h5>
-                        <form @submit.prevent="addamenity" class="mt-2">
+                        <h5 class="modal-title">Add Building Type</h5>
+                        <form @submit.prevent="addBuildingType" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">Amenity Name</label>
-                                        <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-add"> Name</label>
+                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Amenity Icon</label>
-                                        <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity">
+                                        <label class="form-label" for="quantity-add">Building Image</label>
+                                        <div class="form-control-wrap">        
+                                            <div class="form-file">            
+                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
+                                                <label class="form-file-label" for="customFile">Choose file</label>        
+                                            </div>    
+                                        </div>
+                                        <!-- <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity"> -->
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Stock</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Building Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -503,41 +509,30 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Stock Details</h5>
+                        <h5 class="modal-title">Edit Building Type</h5>
                         <form action="#" class="mt-2">
-                            <div class="row g-gs">
+                            <div v-if='itemDetails' class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Product Name</label>
-                                        <input type="text" class="form-control" id="product-name-edit" value="Soup spoon" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-edit">Type Name</label>
+                                        <input type="text" class="form-control" id="product-name-edit" v-model="itemDetails.name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-edit">Quantity</label>
-                                        <input type="text" class="form-control" id="quantity-edit" value="70 pcs" placeholder="Quantity">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="peice-edit">Price</label>
-                                        <input type="number" class="form-control" id="peice-edit" value="30.00" placeholder="300.99 USD">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="edit-status">Status</label>
-                                        <select class="form-select js-select2" id="edit-status">
-                                            <option>Available</option>
-                                            <option>Low</option>
-                                            <option>Out of Stock</option>
-                                        </select>
+                                        <label class="form-label" for="quantity-add">Building Image</label>
+                                        <div class="form-control-wrap">        
+                                            <div class="form-file">            
+                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
+                                                <label class="form-file-label" for="customFile">Choose file</label>        
+                                            </div>    
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Stock</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Building Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>

@@ -14,7 +14,7 @@ date_default_timezone_set("Africa/Lagos");
 $host = "localhost";
 $user = "root";
 $password = "1234";
-$dbName = "newcart";
+$dbName = "shortleters";
 $connect= mysqli_connect($host,$user,$password,$dbName);
 
 
