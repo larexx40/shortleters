@@ -28,22 +28,22 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-       //confirm if building id is passed
-       if(!isset($_POST['buildingTypeid'])){
-        $errordesc="Building type id required";
-        $linktosolve="htps://";
-        $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-        $errordata=returnError7003($errordesc,$linktosolve,$hint);
-        $text="Pass in building type  id";
-        $data=returnErrorArray($text,$method,$endpoint,$errordata);
-        respondBadRequest($data);
-        
+        //confirm if building id is passed
+        if(!isset($_POST['scenicViewid'])){
+            $errordesc="Scenic view id required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Pass in scenic view  id";
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+            
         }else {
-            $buildingTypeid = cleanme($_POST['buildingTypeid']); 
+            $scenicViewid = cleanme($_POST['scenicViewid']); 
         }
 
         //confirm if building type id is not empty
-        if(empty($buildingTypeid)){
+        if(empty($scenicViewid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
@@ -54,7 +54,7 @@
             respondBadRequest($data);
         }
         
-        $sqlQuery = "SELECT `build_id`,`name`,`image_url`,`status` FROM `building_types` WHERE `build_id` = ?";
+        $sqlQuery = "SELECT `id`,`scenicid`,`name`, `status` FROM `scenic_view` WHERE `scenicid` = ?";
         $stmt = $connect->prepare($sqlQuery);
         $stmt->bind_param("s",$buildingTypeid);
         $stmt->execute();  
@@ -77,15 +77,17 @@
             //pass fetched data as array maindata[]
             $row = $result->fetch_assoc();
             $id = $row['id'];
-            $buildingTypeid = $row['build_id'];
+            $scenicViewid = $row['scenicid'];
             $name = $row['name'];
-            $imageUrl = $row['image_url'];
             $statusCode = $row['status'];
-            $status =$statusCode;
-
+            if($statusCode == 1){
+                $status = "Active";
+            }else{
+                $status = "Inactive";
+            }
             $maindata=[
                 "id"=>$id,
-                "buildingTypeid"=>$buildingTypeid,
+                "enicViewid"=>$enicViewid,
                 "name"=>$name,
                 "status"=>$status,
                 "statusCode"=>$statusCode,

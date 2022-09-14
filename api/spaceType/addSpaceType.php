@@ -64,7 +64,8 @@
         $status =0;
         $typeid = generateUniqueShortKey($connect,'space_type','space_id');
         //SELECT `space_id`,`name`,`status` FROM `space_type`
-        $query = "INSERT INTO `space_type`(`type_id`, `name`, `status`) VALUES (?,?,?)";
+        //INSERT INTO `space_type`(`name`, `space_id`) VALUES ('Private', "SHL999")
+        $query = "INSERT INTO `space_type`(`space_id`, `name`, `status`) VALUES (?,?,?)";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("sss", $typeid, $name, $status);
 

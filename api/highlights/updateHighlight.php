@@ -89,9 +89,9 @@
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `highlights` SET name = ?, icon = ? WHERE `highlightid` = ?";
+        $sql = "UPDATE `highlights` SET `name` = ?, icon = ? WHERE `highlightid` = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ss', $name, $highlightid);
+        $stmt->bind_param('sss', $name, $icon, $highlightid);
         $update =$stmt->execute();
         if($update){
             $maindata=[];

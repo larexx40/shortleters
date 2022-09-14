@@ -67,7 +67,7 @@
         }
 
         //delete space type
-        $sqlQuery = "DELETE FROM `space_type` WHERE `type_id` =?";
+        $sqlQuery = "DELETE FROM `space_type` WHERE `space_id` =?";
         $stmt = $connect->prepare($sqlQuery);
         $stmt->bind_param("s",$spaceTypeid);
         $stmt->execute();

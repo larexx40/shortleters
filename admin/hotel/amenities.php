@@ -185,8 +185,8 @@
                                                             <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Icon</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
-                                                            <!-- <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <div class="dropdown">
+                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
+                                                                <!-- <div class="dropdown">
                                                                     <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-plus"></em></a>
                                                                     <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
                                                                         <ul class="link-tidy sm no-bdr">
@@ -210,8 +210,8 @@
                                                                             </li>
                                                                         </ul>
                                                                     </div>
-                                                                </div>
-                                                            </div> -->
+                                                                </div> -->
+                                                            </div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div v-for="(item, index) in all_amenities" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">

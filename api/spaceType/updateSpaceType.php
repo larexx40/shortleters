@@ -76,7 +76,7 @@
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `space_type` SET name = ? WHERE `type_id` = ?";
+        $sql = "UPDATE `space_type` SET name = ? WHERE `space_id` = ?";
         $stmt = $connect->prepare($sql);
         $stmt->bind_param('ss', $name, $spaceTypeid);
         $update =$stmt->execute();

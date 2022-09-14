@@ -83,7 +83,7 @@
             if($statusCode == 1){
                 $status = "Active";
             }else{
-                $status = "Inctive";
+                $status = "Inactive";
             }
             $maindata=[
                 "id"=>$id,
