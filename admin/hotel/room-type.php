@@ -103,27 +103,16 @@
                                                                                                     <div class="col-6">
                                                                                                         <div class="form-group">
                                                                                                             <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select v-model="sort" class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="null">Any Status</option>
+                                                                                                            <select v-model="addsort" @change="updateSort" class="form-select js-select2 js-select2-sm">
+                                                                                                                <option value="">Any Status</option>
                                                                                                                 <option value="1">Active</option>
                                                                                                                 <option value="0">Inactive</option>
                                                                                                             </select>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <!-- <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Date</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">All Time</option>
-                                                                                                                <option value="week">Last 7 Days</option>
-                                                                                                                <option value="month">Last 30 Days</option>
-                                                                                                                <option value="six">Last 6 Months</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div> -->
                                                                                                     <div class="col-12">
                                                                                                         <div class="form-group">
-                                                                                                            <button @click.prevent="getAllHosttype(4)" type="button" class="btn btn-secondary">Filter</button>
+                                                                                                            <button @click.prevent="getAllbuildingSubTypes(4)" type="button" class="btn btn-secondary">Filter</button>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
@@ -141,11 +130,14 @@
                                                                                             <em class="icon ni ni-setting"></em>
                                                                                         </a>
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                                                            <ul v-if="class" class="link-check">
+                                                                                            <ul class="link-check">
                                                                                                 <li><span>Show</span></li>
-                                                                                                <li @click.prevent="setPerPage(10)" class="" :class="{active: class_active}"><a href="#">10</a></li>
-                                                                                                <li  @click.prevent="setPerPage(20)" class="" :class="{active: class_active}" ><a href="#">20</a></li>
-                                                                                                <li  @click.prevent="setPerPage(50)" class="" :class="{active: class_active}"><a href="#">50</a></li>
+                                                                                                <li v-if="per_page == 10" class="" :class="{active: class_active}" @click.prevent="setPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page != 10" class=""  @click.prevent="setPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page == 20" :class="{active: class_active}"  @click.prevent="setPerPage(20)" class=""><a href="#">20</a></li>
+                                                                                                <li v-if="per_page != 20" class=""  @click.prevent="setPerPage(20)"><a href="#">20</a></li>
+                                                                                                <li v-if="per_page == 50" :class="{active: class_active}" @click.prevent="setPerPage(50)" class=""><a href="#">50</a></li>
+                                                                                                <li v-if="per_page != 50" class=""  @click.prevent="setPerPage(50)"><a href="#">50</a></li>
                                                                                             </ul>
                                                                                             <!-- <ul class="link-check">
                                                                                                 <li><span>Order</span></li>

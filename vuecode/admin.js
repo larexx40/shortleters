@@ -190,6 +190,7 @@ let admin = Vue.createApp({
             user_transaction: null,
             all_transactions: null,
             transaction: null,
+            addsort: ""
         }
     },
     async created() {
@@ -6100,6 +6101,10 @@ let admin = Vue.createApp({
                 this.per_page = ins;
                 await this.getAllbuildingSubTypes(4);
             }
+        },
+        async updateSort(){
+            this.sort = this.addsort;
+            console.log(this.sort);
         },
             // korede
         async setShopId(id){
