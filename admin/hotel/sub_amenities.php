@@ -91,7 +91,7 @@
                                                                                         </a>
                                                                                         <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
                                                                                             <div class="dropdown-head">
-                                                                                                <span class="sub-title dropdown-title">Filter Report</span>
+                                                                                                <span class="sub-title dropdown-title">Filter Result</span>
                                                                                                 <div class="dropdown">
                                                                                                     <a href="#" class="btn btn-sm btn-icon">
                                                                                                         <em class="icon ni ni-more-h"></em>
@@ -99,37 +99,14 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="dropdown-body dropdown-body-rg">
-                                                                                                <div class="row gx-6 gy-3">
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select v-model="kor_sort" class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="null">Any Status</option>
-                                                                                                                <option v-for="(item, index) in parseInt(1)" :key="index" :value="item">{{ (item < 1) ? 'Inactive' : 'Active'}}</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <!-- <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Date</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">All Time</option>
-                                                                                                                <option value="week">Last 7 Days</option>
-                                                                                                                <option value="month">Last 30 Days</option>
-                                                                                                                <option value="six">Last 6 Months</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div> -->
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="form-group">
-                                                                                                            <button @click.prevent="getAllsubAmenities(4)" type="button" class="btn btn-secondary">Filter</button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="dropdown-foot between">
-                                                                                                <a class="clickable" href="#">Reset Filter</a>
-                                                                                                <a href="#">Save Filter</a>
+                                                                                                <ul class="link-check">
+                                                                                                    <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
+                                                                                                </ul>
                                                                                             </div>
                                                                                         </div><!-- .filter-wg -->
                                                                                     </div><!-- .dropdown -->
@@ -159,7 +136,8 @@
                                                                                 </li><!-- li -->
                                                                             </ul><!-- .btn-toolbar -->
                                                                         </div><!-- .toggle-content -->
-                                                                    </div><!-- .toggle-wrap -->
+                                                                    </div>
+                                                                    <!-- .toggle-wrap -->
                                                                 </li><!-- li -->
                                                             </ul><!-- .btn-toolbar -->
                                                         </div><!-- .card-tools -->
@@ -174,7 +152,7 @@
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if="all_amenities" class="card-inner p-0">
+                                                <div v-if="all_sub_amenities" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">

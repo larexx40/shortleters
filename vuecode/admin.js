@@ -8553,8 +8553,27 @@ let admin = Vue.createApp({
             // // window.location.href="./login.php"
         }, 
         async setSort(value){
-            this.kor_sort = value;
-            console.log(this.kor_sort);
+            if ( webPage === "room-type.php"){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllbuildingSubTypes(4);
+            }
+            if ( webPage === "sub_amenities.php"){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllsubAmenities(4);
+            }
+            if ( webPage === "amenities.php"){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllAmenities(4);
+            }
+            if ( webPage === "host_type.php"){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllHosttype(4);
+            }    
+            
         }       
     },
     beforeMount(){

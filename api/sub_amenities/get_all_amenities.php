@@ -65,13 +65,13 @@
         if (isset($_GET['sortstatus'])) {
             $status = cleanme($_GET['sortstatus']); //sort result by status if > 0
         } else {
-            $status = false;
+            $status = "";
         }
 
         if (isset($_GET['sortessential'])) {
             $essential = cleanme($_GET['sortessential']); //sort result by status if > 0
         } else {
-            $essential = false;
+            $essential = "";
         }
         
         if (isset ($_GET['per_page']) ) {  
@@ -87,7 +87,7 @@
             $searching = "%{$search}%";
             if ($sort > 0){
                
-                if ( $status && $essential ){
+                if ( $status != ""  && $essential != "" ){
                     $query = "SELECT  sub_amenities.* FROM `sub_amenities` LEFT JOIN amenities ON amenities.amen_id = sub_amenities.amen_id WHERE sub_amenities.status = ? AND sub_amenities.essential = ? AND ( amenities.name LIKE ? OR amenities.name LIKE ? OR icon LIKE ?) ";
                     $queryStmt = $connect->prepare($query);
                     $queryStmt->bind_param("sssss", $status, $essential ,$searching ,$searching, $searching );
@@ -104,7 +104,7 @@
                     $num_row = $result->num_rows;
                 }
 
-                if ( $status && !$essential){
+                if ( $status != "" && $essential == ""){
                     // get the total number of pages
                     $query = "SELECT  sub_amenities.* FROM `sub_amenities` LEFT JOIN amenities ON amenities.amen_id = sub_amenities.amen_id WHERE sub_amenities.status = ? AND ( amenities.name LIKE ? OR amenities.name LIKE ? OR icon LIKE ?) ";
                     $queryStmt = $connect->prepare($query);
@@ -122,7 +122,7 @@
                     $num_row = $result->num_rows;
                 }
 
-                if ( $essential && !$status ){
+                if ( $essential != "" && $status == "" ){
                     $query = "SELECT  sub_amenities.* FROM `sub_amenities` LEFT JOIN amenities ON amenities.amen_id = sub_amenities.amen_id WHERE sub_amenities.essential = ? AND ( amenities.name LIKE ? OR amenities.name LIKE ? OR icon LIKE ?) ";
                     $queryStmt = $connect->prepare($query);
                     $queryStmt->bind_param("ssss", $essential, $searching ,$searching, $searching );
@@ -162,7 +162,7 @@
 
             if ($sort > 0){
                 // Get total number of complains in the system
-                if ( $status && $essential ){
+                if ( $status != ""  && $essential != "" ){
                     $query = "SELECT * FROM `sub_amenities` WHERE `essential` = ? AND `status` = ?";
                     $gtTotalPgs = $connect->prepare($query);
                     $gtTotalPgs->bind_param("ss", $essential, $status);
@@ -179,7 +179,7 @@
                     $num_row = $result->num_rows;
                 }
 
-                if ( $status && !$essential){
+                if ( $status != "" && $essential == ""){
                     // get the total number of pages
                     $query = "SELECT * FROM `sub_amenities` WHERE `status` = ?";
                     $gtTotalPgs = $connect->prepare($query);
@@ -197,7 +197,7 @@
                     $num_row = $result->num_rows;
                 }
 
-                if ( $essential && !$status ){
+                if ( $essential != "" && $status == "" ){
                     $query = "SELECT * FROM `sub_amenities` WHERE `essential` = ?";
                     $gtTotalPgs = $connect->prepare($query);
                     $gtTotalPgs->bind_param("s", $essential);
