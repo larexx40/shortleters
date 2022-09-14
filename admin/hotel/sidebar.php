@@ -86,8 +86,20 @@
                                         <span class="nk-menu-text">Apartment Features</span>
                                     </a>
                                     <ul class="nk-menu-sub">
-                                        <li class="nk-menu-item">
-                                            <a href="./amenities.php" class="nk-menu-link"><span class="nk-menu-text">Amenities</span></a>
+                                        <li class="nk-menu-item has-sub">
+                                        <a href="#"class="nk-menu-link nk-menu-toggle">
+                                            <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+                                            <span class="nk-menu-text">Amenities</span>
+                                        </a>
+                                        <ul class="nk-menu-sub">
+                                            <li class="nk-menu-item">
+                                                <a href="./amenities.php" class="nk-menu-link"><span class="nk-menu-text">All Amenities</span></a>
+                                            </li>
+                                            <li class="nk-menu-item">
+                                                <a href="./sub_amenities.php" class="nk-menu-link"><span class="nk-menu-text">All Sub Amenities</span></a>
+                                            </li>
+                                        </ul>
+                                            
                                         </li>
                                         <li class="nk-menu-item">
                                             <a href="./highlights.php" class="nk-menu-link"><span class="nk-menu-text">Highlights</span></a>

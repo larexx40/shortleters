@@ -164,6 +164,11 @@ let admin = Vue.createApp({
             all_amenities: null,
             amenities_name: null,
             amenities_icon: null,
+            all_sub_amenities : null,
+            sub_amenity: null,
+            amenity_id: null,
+            amenity_name: null,
+            amenity_icon: null,
             all_host_type: null,
             hosts: null,
             host_type_name: null,
@@ -190,7 +195,7 @@ let admin = Vue.createApp({
             user_transaction: null,
             all_transactions: null,
             transaction: null,
-            addsort: ""
+            
         }
     },
     async created() {
@@ -5158,6 +5163,9 @@ let admin = Vue.createApp({
             if (webPage == "amenities.php" ){
                 this.amenity = this.all_amenities[index];
             }
+            if (webPage == "sub_amenities.php" ){
+                this.sub_amenity = this.all_sub_amenities[index];
+            }
             if (webPage == "host_type.php" ){
                 this.hosts = this.all_host_type[index];
             }
@@ -5170,11 +5178,11 @@ let admin = Vue.createApp({
         async getAllAmenities( load = 1){
             console.log(this.sort);
             let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
+            let page = ( this.kor_page )? this.kor_page : 1;
+            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
     
-            const url = `${this.baseUrl}api/amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}api/amenities/get_all_amenities.php?per_page=${per_page}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -5188,9 +5196,10 @@ let admin = Vue.createApp({
                 const response = await axios(options);
                 if(response.data.status){
                     this.all_amenities = response.data.data.amenities;
-                    this.currentPage =response.data.data.page;
-                    this.totalData =response.data.data.total_data;
-                    this.totalPage =response.data.data.totalPage;
+                    this.kor_page = response.data.data.page;
+                    this.kor_total_page= response.data.data.totalPage;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.kor_total_data = response.data.data.total_data;
                     //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                 }else{
                     this.all_amenities = null;
@@ -5232,14 +5241,13 @@ let admin = Vue.createApp({
             }
         },
         async addamenity( load = 1){
-                if (!this.amenities_name ||  !this.amenities_icon){
+                if (!this.amenities_name ){
                     this.error = "Insert all Fields"
                     new Toasteur().error(this.error);
                     return;
                 }
                 const data = new FormData();
                 data.append("name", this.amenities_name);
-                data.append("icon", this.amenities_icon);
                 const url = `${this.baseUrl}api/amenities/add_amenities.php`;
                 const options = {
                     method: "POST",
@@ -5354,7 +5362,7 @@ let admin = Vue.createApp({
                 }
         },
         async updateAmenity(){
-            if (!this.amenity.name ||  !this.amenity.icon || !this.amenity.id){
+            if (!this.amenity.name  || !this.amenity.id){
                 this.error = "Insert all Fields"
                 new Toasteur().error(this.error);
                 return;
@@ -5362,7 +5370,6 @@ let admin = Vue.createApp({
             const data = new FormData();
             data.append("amenity_id", this.amenity.id);
             data.append("name", this.amenity.name);
-            data.append("icon", this.amenity.icon);
             const url = `${this.baseUrl}api/amenities/update_amenities.php`;
             const options = {
                     method: "POST",
@@ -5475,14 +5482,383 @@ let admin = Vue.createApp({
                     this.loading = false;
                 }
         },
+        async getAllsubAmenities( load = 1){
+            console.log(this.sort);
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
+            let page = ( this.kor_page )? this.kor_page : 1;
+            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
+    
+            const url = `${this.baseUrl}api/sub_amenities/get_all_amenities.php?per_page=${per_page}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.all_sub_amenities = response.data.data.amenities;
+                    this.kor_page = response.data.data.page;
+                    this.kor_total_page= response.data.data.totalPage;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.kor_total_data = response.data.data.total_data;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }else{
+                    this.all_sub_amenities = null;
+                }  
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async addSubAmenity( load = 1){
+                if (!this.amenity_id || !this.amenities_name || !this.amenities_icon ){
+                    this.error = "Insert all Fields"
+                    new Toasteur().error(this.error);
+                    return;
+                }
+                const data = new FormData();
+                data.append("amenity_id", this.amenity_id);
+                data.append("name", this.amenities_name);
+                data.append("icon", this.amenities_icon);
+                const url = `${this.baseUrl}api/sub_amenities/add_amenities.php`;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url,
+                    data
+                }
+                try {
+                    this.loading = true;
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        await this.getAllsubAmenities(6);
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+    
+                    new Toasteur().error(error.message || "Error processing request")
+    
+                    
+                }finally {
+                    this.loading = false;
+                }  
+        },
+        async changeSubAmenityEssential(id, status){
+            const data = new FormData();
+                data.append("amenity_id", id);
+                data.append("status", status);
+                const url = `${this.baseUrl}api/sub_amenities/change_essential_status.php`;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url,
+                    data
+                }
+                try {
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        await this.getAllsubAmenities(6);
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+    
+                    new Toasteur().error(error.message || "Error processing request")
+    
+                    
+                }finally {
+                    this.loading = false;
+                }
+        },
+        async changeSubAmenityStatus(id, status){
+            const data = new FormData();
+                data.append("amenity_id", id);
+                data.append("status", status);
+                const url = `${this.baseUrl}api/sub_amenities/change_status.php`;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url,
+                    data
+                }
+                try {
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        await this.getAllsubAmenities(6);
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+    
+                    new Toasteur().error(error.message || "Error processing request")
+    
+                    
+                }finally {
+                    this.loading = false;
+                }
+        },
+        async updatesubAmenity(){
+            if (!this.sub_amenity.name || !this.sub_amenity.icon || !this.sub_amenity.amen_id  || !this.sub_amenity.id){
+                this.error = "Insert all Fields"
+                new Toasteur().error(this.error);
+                return;
+            }
+            const data = new FormData();
+            data.append("sub_amenity_id", this.sub_amenity.id);
+            data.append("amenity_id", this.sub_amenity.amen_id);
+            data.append("name", this.sub_amenity.name);
+            data.append("icon", this.sub_amenity.icon);
+            const url = `${this.baseUrl}api/sub_amenities/update_amenities.php`;
+            const options = {
+                    method: "POST",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url,
+                    data
+            }
+            try {
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        await this.getAllsubAmenities(6);
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }
+            } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+    
+                    new Toasteur().error(error.message || "Error processing request")
+    
+                    
+            }finally {
+                    this.loading = false;
+            }
+        },
+        async deletesubAmenity(id){
+            const data = new FormData();
+                data.append("sub_amenity_id", id);
+                const url = `${this.baseUrl}api/sub_amenities/delete_amenities.php`;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url,
+                    data
+                }
+                try {
+                    this.loading = true;
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        await this.getAllsubAmenities();
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+    
+                    new Toasteur().error(error.message || "Error processing request")
+    
+                    
+                }finally {
+                    this.loading = false;
+                }
+        },
         async getAllHosttype( load = 1){
             console.log(this.sort);
             let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
+            let page = ( this.kor_page )? this.kor_page : 1;
+            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
     
-            const url = `${this.baseUrl}api/host_type/get_all_host_type.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}api/host_type/get_all_host_type.php?per_page=${per_page}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -5496,9 +5872,10 @@ let admin = Vue.createApp({
                 const response = await axios(options);
                 if(response.data.status){
                     this.all_host_type = response.data.data.host_types;
-                    this.currentPage =response.data.data.page;
-                    this.totalData =response.data.data.total_data;
-                    this.totalPage =response.data.data.totalPage;
+                    this.kor_page = response.data.data.page;
+                    this.kor_total_page= response.data.data.totalPage;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.kor_total_data = response.data.data.total_data;
                     //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                 }else{
                     this.all_host_type = null;
@@ -5786,11 +6163,11 @@ let admin = Vue.createApp({
         async getAllbuildingSubTypes( load = 1){
             console.log(this.sort);
             let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
+            let page = ( this.kor_page )? this.kor_page : 1;
+            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
     
-            const url = `${this.baseUrl}api/sub_building_type/get_all_sub_type.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const url = `${this.baseUrl}api/sub_building_type/get_all_sub_type.php?per_page=${per_page}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -5804,9 +6181,10 @@ let admin = Vue.createApp({
                 const response = await axios(options);
                 if(response.data.status){
                     this.all_sub_building_types = response.data.data.build_subtype;
-                    this.currentPage =response.data.data.page;
-                    this.totalData =response.data.data.total_data;
-                    this.totalPage =response.data.data.totalPage;
+                    this.kor_page = response.data.data.page;
+                    this.kor_total_page= response.data.data.totalPage;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.kor_total_data = response.data.data.total_data;
                     //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                 }else{
                     this.all_sub_building_types = null;
@@ -6098,13 +6476,29 @@ let admin = Vue.createApp({
         async setPerPage(ins){
             if ( webPage === "room-type.php"){
                 this.class_active = true;
-                this.per_page = ins;
+                this.kor_per_page = ins;
                 await this.getAllbuildingSubTypes(4);
+            }
+            if ( webPage === "sub_amenities.php"){
+                this.class_active = true;
+                this.kor_per_page = ins;
+                await this.getAllsubAmenities(4);
+            }
+            if ( webPage === "amenities.php"){
+                this.class_active = true;
+                this.kor_per_page = ins;
+                await this.getAllAmenities(4);
+            }
+            if ( webPage === "host_type.php"){
+                this.class_active = true;
+                this.kor_per_page = ins;
+                await this.getAllHosttype(4);
             }
         },
         async updateSort(){
-            this.sort = this.addsort;
-            console.log(this.sort);
+            // this.sort = this.addsort;
+            console.log(`${this.sort}`);
+            console.log("hdhdhdhhd");
         },
             // korede
         async setShopId(id){
@@ -7981,99 +8375,63 @@ let admin = Vue.createApp({
         },
         async kor_remove_sort(){
             this.kor_sort = null;
-            if ( webPage == "complaints.php"){
-                await this.comp_getAllComplains(5);
+            if ( webPage === "room-type.php"){
+                await this.getAllbuildingSubTypes(4);
             }
-            if ( webPage == "sliders.php"){
-                await this.getAllSliders(4);
+            if ( webPage === "sub_amenities.php"){
+                await this.getAllsubAmenities(4);
             }
-            if ( webPage == "shops.php"){
-                await this.getAllShops(3)
+            if ( webPage === "amenities.php"){
+                await this.getAllAmenities(4);
             }
-            if ( webPage == "customers.php"){
-                await this.getAllUsers(3)
-            }
-            if ( webPage == "transactions.php"){
-                await this.getAllTransactions(3);
-            }
-            if ( webPage == "products.php"){
-                await this.getAllProducts(3);
+            if ( webPage === "host_type.php"){
+                await this.getAllHosttype(4);
             }
         },
         async kor_add_sort(status){
             this.kor_sort = status;
-            if ( webPage == "complaints.php"){
-                await this.comp_getAllComplains(5);
+            if ( webPage === "room-type.php"){
+                await this.getAllbuildingSubTypes(4);
             }
-            if ( webPage == "sliders.php"){
-                await this.getAllSliders(4);
+            if ( webPage === "sub_amenities.php"){
+                await this.getAllsubAmenities(4);
             }
-            if ( webPage == "shops.php"){
-                await this.getAllShops(3)
+            if ( webPage === "amenities.php"){
+                await this.getAllAmenities(4);
             }
-            if ( webPage == "customers.php"){
-                await this.getAllUsers(3)
-            }
-            if ( webPage == "transactions.php"){
-                await this.getAllTransactions(3);
-            }
-            if ( webPage == "products.php"){
-                await this.getAllProducts(3);
+            if ( webPage === "host_type.php"){
+                await this.getAllHosttype(4);
             }
         },
         async nav_nextPage(){
             this.kor_page = parseInt(this.kor_page) + 1;
-            if (webPage === "complaints.php"){
-                this.comp_getAllComplains(2);
+            if ( webPage === "room-type.php"){
+                await this.getAllbuildingSubTypes(4);
             }
-            if ( webPage == "sliders.php"){
-                await this.getAllSliders(4);
+            if ( webPage === "sub_amenities.php"){
+                await this.getAllsubAmenities(4);
             }
-            if ( webPage == "shops.php"){
-                await this.getAllShops(3)
+            if ( webPage === "amenities.php"){
+                await this.getAllAmenities(4);
             }
-            if ( webPage == "customers.php"){
-                await this.getAllUsers(3)
-            }
-            if ( webPage == "products.php"){
-                await this.getAllProducts(4);
-            }
-            if ( webPage == "category.php"){
-                await this.getAllCategories(3)
-            }
-            if ( webPage == "sub_categories.php"){
-                await this.getAllSubCategories(3)
-            }
-            if ( webPage == "brands.php"){
-                await this.getAllBrands(5)
+            if ( webPage === "host_type.php"){
+                await this.getAllHosttype(4);
             }
 
         },
         async nav_previousPage(){
             this.kor_page = parseInt(this.kor_page) - 1;
-            if (webPage === "complaints.php"){
-                this.comp_getAllComplains(2);
+            if ( webPage === "room-type.php"){
+                await this.getAllbuildingSubTypes(4);
             }
-            if ( webPage == "sliders.php"){
-                await this.getAllSliders(4);
+            if ( webPage === "sub_amenities.php"){
+                await this.getAllsubAmenities(4);
             }
-            if ( webPage == "shops.php"){
-                await this.getAllShops(3)
+            if ( webPage === "amenities.php"){
+                await this.getAllAmenities(4);
             }
-            if ( webPage == "customers.php"){
-                await this.getAllUsers(3)
-            }
-            if ( webPage == "products.php"){
-                await this.getAllProducts(4);
-            }
-            if ( webPage == "category.php"){
-                await this.getAllCategories(3)
-            }
-            if ( webPage == "sub_categories.php"){
-                await this.getAllSubCategories(3)
-            }
-            if ( webPage == "brands.php"){
-                await this.getAllBrands(5)
+            if ( webPage === "host_type.php"){
+                await this.getAllHosttype(4);
             }
         },
         async nav_selectPage(page){
@@ -8106,89 +8464,49 @@ let admin = Vue.createApp({
         async nav_dynamic_nextPage(item){
             this.kor_page = parseInt(this.kor_page) + 1;
             
-            if (item == "shop_product"){
-                await this.getShopProducts(3);
+            if ( webPage === "room-type.php"){
+                await this.getAllbuildingSubTypes(4);
             }
-            if (item == "shop_location"){
-                await this.getShopLocations(3);
+            if ( webPage === "sub_amenities.php"){
+                await this.getAllsubAmenities(4);
             }
-
-            if ( item == "user_orders"){
-                await this.getUserOrders(3);
+            if ( webPage === "amenities.php"){
+                await this.getAllAmenities(4);
             }
-            if ( item == "user_notification"){
-                await this.getUserNotifications(3);
-            }
-            if ( item == "user_activity"){
-                await this.getUserActivities(3);
-            }
-            if ( item == "user_address"){
-                await this.getAllUserAddress(3);
-            }
-            if ( item == "user_transaction"){
-                await this.getUserTransactions(3);
-            }
-            if ( item == "user_complain"){
-                await this.getUserComplains(3);
+            if ( webPage === "host_type.php"){
+                await this.getAllHosttype(4);
             }
         },
         async nav_dynamic_previousPage(item){
             this.kor_page = parseInt(this.kor_page) - 1;
 
-            if (item == "shop_product"){
-                await this.getShopProducts(3);
+            if ( webPage === "room-type.php"){
+                await this.getAllbuildingSubTypes(4);
             }
-            if (item == "shop_location"){
-                await this.getShopLocations(3);
+            if ( webPage === "sub_amenities.php"){
+                await this.getAllsubAmenities(4);
             }
-
-            if ( item == "user_orders"){
-                await this.getUserOrders(3);
+            if ( webPage === "amenities.php"){
+                await this.getAllAmenities(4);
             }
-            if ( item == "user_notification"){
-                await this.getUserNotifications(3);
-            }
-            if ( item == "user_activity"){
-                await this.getUserActivities(3);
-            }
-            if ( item == "user_address"){
-                await this.getAllUserAddress(3);
-            }
-            if ( item == "user_transaction"){
-                await this.getUserTransactions(3);
-            }
-            if ( item == "user_complain"){
-                await this.getUserComplains(3);
+            if ( webPage === "host_type.php"){
+                await this.getAllHosttype(4);
             }
         },
         async nav_dynamic_selectPage(item ,page){
             this.kor_page = page;
             
-            if (item == "shop_product"){
-                await this.getShopProducts(3);
+            if ( webPage === "room-type.php"){
+                await this.getAllbuildingSubTypes(4);
             }
-
-            if (item == "shop_location"){
-                await this.getShopLocations(3);
+            if ( webPage === "sub_amenities.php"){
+                await this.getAllsubAmenities(4);
             }
-
-            if ( item == "user_orders"){
-                await this.getUserOrders(3);
+            if ( webPage === "amenities.php"){
+                await this.getAllAmenities(4);
             }
-            if ( item == "user_notification"){
-                await this.getUserNotifications(3);
-            }
-            if ( item == "user_activity"){
-                await this.getUserActivities(3);
-            }
-            if ( item == "user_address"){
-                await this.getAllUserAddress(3);
-            }
-            if ( item == "user_transaction"){
-                await this.getUserTransactions(3);
-            }
-            if ( item == "user_complain"){
-                await this.getUserComplains(3);
+            if ( webPage === "host_type.php"){
+                await this.getAllHosttype(4);
             }
             
         },
@@ -8212,6 +8530,10 @@ let admin = Vue.createApp({
         // this.getToken();
         if ( webPage === "amenities.php" ){
             await this.getAllAmenities(4)
+        }
+        if ( webPage === "sub_amenities.php" ){
+            await this.getAllsubAmenities(4);
+            await this.getAllAmenities(4);
         }
         if ( webPage === "host_type.php" ){
             await this.getAllHosttype(4)

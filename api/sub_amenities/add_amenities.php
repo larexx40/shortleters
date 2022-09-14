@@ -42,6 +42,17 @@
         }
 
         // Check if the recipient name field is passed
+        if (!isset($_POST['amenity_id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required name field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $amenity_id = cleanme($_POST['amenity_id']);
+        }
+
         if (!isset($_POST['name'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
@@ -53,10 +64,20 @@
             $name = cleanme($_POST['name']);
         }
 
-       
+        
+        if ( !isset($_POST['icon']) ){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required description field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $icon = cleanme($_POST['icon']);
+        }   
         
          // check if none of the field is empty
-        if ( empty($name) ){
+        if ( empty($amenity_id) || empty($name)  || empty($icon) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -67,15 +88,15 @@
         }
 
 
-        $amenities_id = generateUniqueShortKey($connect, "amenities", "amen_id ");
+        $amenities_id = generateUniqueShortKey($connect, "sub_amenities", "sub_amen_id ");
 
 
-        $query = 'INSERT INTO `amenities`(`amen_id`, `name`) VALUES (?, ?)';
+        $query = 'INSERT INTO `sub_amenities`(`sub_amen_id`, `amen_id`, `name`, `icon`) VALUES (?, ?, ?, ?)';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ss", $amenities_id, $name);
+        $slider_stmt->bind_param("ssss", $amenities_id  , $amenity_id , $name, $icon);
 
         if ( $slider_stmt->execute() ) {
-            $text= "Amenity successfully added";
+            $text= "Sub Amenity successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);

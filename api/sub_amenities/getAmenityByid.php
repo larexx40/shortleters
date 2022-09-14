@@ -78,18 +78,28 @@
 
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
+                $amen_id = $row['amen_id'];
+                $amen_name = getNameFromField($connect, "sub_amenities", "amen_id", $amen_id);
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
-                $created = gettheTimeAndDate($row['created_at']);
-                $updated = gettheTimeAndDate($row['updated_at']);
+                $essential_code = $row['essential'];
+                $essential_name = ($row['essential'] == 1) ? "Essential" : "Non-essential";
+                $icon = $row['icon'];
+                $created = gettheTimeAndDate(strtotime($row['created_at']));
+                $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
                 $allAmenity = array(
-                    'id' => $row['amen_id'],
+                    'id' => $row['sub_amen_id'],
                     'name' => $name,
+                    'amen_id' => $amen_id,
+                    'amenity_name' => ($amen_name)? $amen_name : false,
                     'status_code' => $status_code,
                     'status' => $status,
+                    'essential_code' => $essential_code,
+                    'essential' => $essential_name,
                     'created' => $created,
                     'updated' => $updated,
+                    'icon' => $icon
                 );
             }
             $data = array(

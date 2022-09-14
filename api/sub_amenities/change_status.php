@@ -97,7 +97,7 @@
         }
 
 
-        if ( $changeStatus > 0 && $changeStatus !== 1 && $changeStatus < 0){
+        if ( $changeStatus < 0 && $changeStatus !== 1 && $changeStatus > 0 ){
             $errordesc = "Status passed is invalid ";
             $linktosolve = 'https://';
             $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";
@@ -107,7 +107,7 @@
         }
 
         // check if product is valid
-        if ( !checkifFieldExist($connect, "amenities", "amen_id", $amenity_id) ) {
+        if ( !checkifFieldExist($connect, "sub_amenities", "sub_amen_id", $amenity_id) ) {
 
             $errordesc = "Amenity does not Exist ";
             $linktosolve = 'https://';
@@ -119,7 +119,7 @@
 
 
         // update status
-        $query = "UPDATE `amenities` SET `status` = ? WHERE amen_id = ?";
+        $query = "UPDATE `sub_amenities` SET `status` = ? WHERE amen_id = ?";
         $updateStatus = $connect->prepare($query);
         $updateStatus->bind_param("ss", $changeStatus, $amenity_id);
         $updateStatus->execute();
@@ -136,7 +136,7 @@
         if ( $updateStatus->execute()){
             
             $data = [];
-            $text= "Amenity successfully ". $changeStatusText;
+            $text= "Sub Amenity successfully ". $changeStatusText;
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);

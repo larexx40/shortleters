@@ -82,7 +82,7 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT  `amen_id`, `name`, `icon`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE status = ? AND ( name LIKE ? OR icon LIKE ?) ";
+                $query = "SELECT  `amen_id`, `name`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE status = ? AND ( name LIKE ? OR icon LIKE ?) ";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("sss", $status, $searching, $searching );
                 $queryStmt->execute();
@@ -98,7 +98,7 @@
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT  `amen_id`, `name`, `icon`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE name LIKE ? OR icon LIKE ?";
+                $query = "SELECT  `amen_id`, `name`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE name LIKE ? OR icon LIKE ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ss", $searching, $searching);
                 $queryStmt->execute();
@@ -161,7 +161,6 @@
                 $name =  $row['name'];
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
-                $icon = $row['icon'];
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
@@ -171,8 +170,7 @@
                     'status_code' => $status_code,
                     'status' => $status,
                     'created' => $created,
-                    'updated' => $updated,
-                    'icon' => $icon
+                    'updated' => $updated
                 ));
             }
             $data = array(

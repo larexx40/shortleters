@@ -24,9 +24,9 @@
                                     <div class="nk-block-head nk-block-head-sm">
                                         <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Sub Building Type Details</h3>
+                                                <h3 class="nk-block-title page-title">Sub Amenities Details</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Here is our various Sub Building Type.</p>
+                                                    <p>Here is our various sub amenities details.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
@@ -36,7 +36,7 @@
                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul class="link-list-opt no-bdr">
-                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Sub Building Type</span></a></li>
+                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Sub Amenities</span></a></li>
                                                                     <!-- <li><a href="#"><span>View Amenities</span></a></li>
                                                                     <li><a href="#"><span>Delete Amenities</span></a></li> -->
                                                                 </ul>
@@ -103,16 +103,27 @@
                                                                                                     <div class="col-6">
                                                                                                         <div class="form-group">
                                                                                                             <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select v-model="sort" @change="updateSort" class="form-select js-select2 js-select2-sm">
-                                                                                                                <option v-bind:value="null">Any Status</option>
-                                                                                                                <option v-bind:value="1">Active</option>
-                                                                                                                <option v-bind:value="0">Inactive</option>
+                                                                                                            <select v-model="sort" class="form-select js-select2 js-select2-sm">
+                                                                                                                <option value="null">Any Status</option>
+                                                                                                                <option value="1">Active</option>
+                                                                                                                <option value="0">Inactive</option>
                                                                                                             </select>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    <!-- <div class="col-6">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="overline-title overline-title-alt">Date</label>
+                                                                                                            <select class="form-select js-select2 js-select2-sm">
+                                                                                                                <option value="any">All Time</option>
+                                                                                                                <option value="week">Last 7 Days</option>
+                                                                                                                <option value="month">Last 30 Days</option>
+                                                                                                                <option value="six">Last 6 Months</option>
+                                                                                                            </select>
+                                                                                                        </div>
+                                                                                                    </div> -->
                                                                                                     <div class="col-12">
                                                                                                         <div class="form-group">
-                                                                                                            <button @click.prevent="getAllbuildingSubTypes(4)" type="button" class="btn btn-secondary">Filter</button>
+                                                                                                            <button @click.prevent="getAllsubAmenities(4)" type="button" class="btn btn-secondary">Filter</button>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
@@ -158,13 +169,13 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input @keyup="getAllbuildingSubTypes(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
+                                                                <input @keyup="getAllsubAmenities(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if="all_sub_building_types" class="card-inner p-0">
+                                                <div v-if="all_amenities" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -174,9 +185,10 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Building Sub Type Name</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Building Sub Type Description</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Sub Amenity Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Sub Amenity Icon</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Essential</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -206,7 +218,7 @@
                                                                 </div> -->
                                                             </div>
                                                         </div><!-- .nk-tb-item -->
-                                                        <div v-for="(item, index) in all_sub_building_types" class="nk-tb-item">
+                                                        <div v-for="(item, index) in all_sub_amenities" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid1">
@@ -217,13 +229,17 @@
                                                                 <span><a href="#">{{parseInt(index) + 1}}</a></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span>{{item.build_type_name}} <span class="dot dot-success d-md-none ms-1"></span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span>{{item.description}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                                <span>{{item.amenity_name}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <span><i :class="item.icon"></i>{{item.icon.split("-")[2]}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                <span v-if="item.essential_code > 0" class="tb-status text-success">{{item.essential}}</span>
+                                                                <span v-if="item.essential_code < 1" class="tb-status text-danger">{{item.essential}}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.status_code > 0" class="tb-status text-success">{{item.status}}</span>
@@ -236,8 +252,10 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li @click="changeBuildingSubType(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Deactivate</span></a></li>
-                                                                                    <li @click="changeBuildingSubType(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Activate</span></a></li>
+                                                                                    <li @click="changeSubAmenityEssential(item.id, 0)" v-if="item.essential_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Set as non-essential</span></a></li>
+                                                                                    <li @click="changeSubAmenityEssential(item.id, 1)" v-if="item.essential_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Set as essential</span></a></li>
+                                                                                    <li @click="changeSubAmenityStatus(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Deactivate</span></a></li>
+                                                                                    <li @click="changeSubAmenityStatus(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Activate</span></a></li>
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#modalDelete"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
@@ -251,16 +269,16 @@
                                                 </div><!-- .card-inner -->
 
                                                 <!-- Table when record not found -->
-                                                <div v-if="!all_sub_building_types" class="card-inner p-0">
+                                                <div v-if="!all_sub_amenities" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                         <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Building Sub Type Name</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Building Sub Type Description</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Sub Amenity Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Sub Amenity Icon</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Essential</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
-                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-tools text-end"></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -276,7 +294,7 @@
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
                                                 
-                                                <div v-if="all_sub_building_types" class="card">
+                                                <div v-if="all_sub_amenities" class="card">
                                                     <div class="card-inner">
                                                         <div class="nk-block-between-md g-3">
                                                             <div class="g">
@@ -464,33 +482,33 @@
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
                         <h5 class="modal-title">Add Amenities Details</h5>
-                        <form @submit.prevent="addBuildingSubType" class="mt-2">
+                        <form @submit.prevent="addSubAmenity" class="mt-2">
                             <div class="row g-gs">
-                                <div v-if="buildingTypes" class="col-12">
+                                <div v-if="all_amenities" class="col-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">SelectBuilding Type</label>
-                                        <select class="form-select js-select2 js-select2-sm" v-model="building_type_id" data-search="off" data-placeholder="Bulk Action">
+                                        <label class="form-label" for="product-name-add">Select Amenity</label>
+                                        <select class="form-select js-select2 js-select2-sm" v-model="amenity_id" data-search="off" data-placeholder="Bulk Action">
                                             <option value="null">Select Building Type</option>
-                                            <option v-for="(item, index) in buildingTypes" v-bind:value="item.buildingTypeid">{{item.name}}</option>
+                                            <option v-for="(item, index) in all_amenities" v-bind:value="item.id">{{item.name}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">Sub Building Type Name</label>
-                                        <input v-model="sub_building_type_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-add">Amenity Name</label>
+                                        <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">Sub Building Type Description</label>
-                                        <input v-model="sub_building_type_description" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <label class="form-label" for="quantity-add">Amenity Icon</label>
+                                        <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Host Type</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Stock</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -508,35 +526,35 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="sub_building_type" class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Sub Building Type Details</h5>
-                        <form @submit.prevent="updateBuildingSubType" class="mt-2">
+                    <div v-if="sub_amenity" class="modal-body modal-body-md">
+                        <h5 class="modal-title">Edit Amenity Details</h5>
+                        <form @submit.prevent="updatesubAmenity" class="mt-2">
                             <div class="row g-gs">
-                                <div v-if="buildingTypes" class="col-12">
+                                <div v-if="all_amenities" class="col-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">SelectBuilding Type</label>
-                                        <select class="form-select js-select2 js-select2-sm" v-model="sub_building_type.build_type" data-search="off" data-placeholder="Bulk Action">
-                                            <option value="null">Select Building Type</option>
-                                            <option v-for="(item, index) in buildingTypes" v-bind:value="item.buildingTypeid">{{item.name}}</option>
+                                        <label class="form-label" for="product-name-add">Select Amenity</label>
+                                        <select class="form-select js-select2 js-select2-sm" v-model="sub_amenity.amen_id" data-search="off" data-placeholder="Bulk Action">
+                                            <option value="null">Select Amenity</option>
+                                            <option v-for="(item, index) in all_amenities" v-bind:value="item.id">{{item.name}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Building Sub Type Name</label>
-                                        <input type="text" v-model="sub_building_type.name" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-edit">Sub Amenity Name</label>
+                                        <input type="text" v-model="sub_amenity.name" class="form-control" id="product-name-edit" placeholder="Product Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Building Sub Type Description</label>
-                                        <input type="text" v-model="sub_building_type.description" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <label class="form-label" for="quantity-edit">Amenity Icon</label>
+                                        <input type="text" v-model="sub_amenity.icon" class="form-control" id="quantity-edit" placeholder="Quantity">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Host Type</button>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Stock</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -552,15 +570,15 @@
         <div class="modal fade" id="modalDelete" style="display: none;" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content"> <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="sub_building_type" class="modal-body modal-body-lg text-center">
+                    <div v-if="sub_amenity" class="modal-body modal-body-lg text-center">
                         <div class="nk-modal py-4"> <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
                             <h4 class="nk-modal-title">Are You Sure ?</h4>
                             <div class="nk-modal-text mt-n2">
-                                <p class="text-soft">This Sub Category will be removed permanently.</p>
+                                <p class="text-soft">This Sub amenity will be removed permanently.</p>
                             </div>
                             <ul class="d-flex justify-content-center gx-4 mt-4">
                                 <li>
-                                    <button @click="deleteBuildingSubType(sub_building_type.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
+                                    <button @click="deletesubAmenity(sub_amenity.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
                                 </li>
                                 <li>
                                     <button data-bs-dismiss="modal" class="btn btn-danger btn-dim">Cancel</button>
