@@ -102,7 +102,7 @@
             $linktosolve = "htps://";
             $hint = [];
             $errordata = [];
-            $text = "Additional charges";
+            $text = "Building type Updated";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
