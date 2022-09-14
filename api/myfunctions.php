@@ -216,6 +216,7 @@
         }
 
         return false;
+        
     }
 
     function checkIfUserisInDB($connect, $user_id) {

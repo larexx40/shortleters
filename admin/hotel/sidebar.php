@@ -45,7 +45,7 @@
                                     </a>
                                     <ul class="nk-menu-sub">
                                         <li class="nk-menu-item">
-                                            <a href="./room-list.php" class="nk-menu-link"><span class="nk-menu-text">All Building Types</span></a>
+                                            <a href="./buildingType.php" class="nk-menu-link"><span class="nk-menu-text">All Building Types</span></a>
                                         </li>
                                         <li class="nk-menu-item">
                                             <a href="./room-type.php" class="nk-menu-link"><span class="nk-menu-text">All Sub Building Types</span></a>

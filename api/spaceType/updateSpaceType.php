@@ -40,17 +40,17 @@
             respondUnAuthorized($data);
         }
         //confirm how to pass in the id
-        if(!isset($_POST['guestSafetyid'])){
-            $errordesc="Guest safety id required";
+        if(!isset($_POST['spaceTypeid'])){
+            $errordesc="Space type id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in Guest safety  id";
+            $text="Pass in space type id";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
             
         }else {
-            $guestSafetyid = cleanme($_POST['guestSafetyid']); 
+            $spaceTypeid = cleanme($_POST['spaceTypeid']); 
         }
     
         if ( !isset($_POST['name']) ){

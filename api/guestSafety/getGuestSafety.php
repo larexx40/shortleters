@@ -190,7 +190,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'guestSafety'=> $allResponse
+                'guestSafeties'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

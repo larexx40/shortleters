@@ -75,7 +75,8 @@
             respondBadRequest($data);
         }
         $status =0;
-        $buildingTypeid = generateUniqueShortKey($connect,'building_types','build_id');
+        // $buildingTypeid = generateUniqueShortKey($connect,'building_types','build_id');
+        $buildingTypeid = "SHLEV6XM";
         
         $imageName = uploadImage($image, "buildingTypes", $endpoint, $method);
         $imageUrl = $imageurl."/buildingTypes/". $imageName;
