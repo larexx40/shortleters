@@ -103,15 +103,14 @@
                                                                                                     <div class="col-6">
                                                                                                         <div class="form-group">
                                                                                                             <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">Any Status</option>
-                                                                                                                <option value="available">Available</option>
-                                                                                                                <option value="low">Low</option>
-                                                                                                                <option value="out">Out of Stock</option>
+                                                                                                            <select v-model="sort" class="form-select js-select2 js-select2-sm">
+                                                                                                                <option value="null">Any Status</option>
+                                                                                                                <option value="1">Active</option>
+                                                                                                                <option value="0">Inactive</option>
                                                                                                             </select>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="col-6">
+                                                                                                    <!-- <div class="col-6">
                                                                                                         <div class="form-group">
                                                                                                             <label class="overline-title overline-title-alt">Date</label>
                                                                                                             <select class="form-select js-select2 js-select2-sm">
@@ -121,10 +120,10 @@
                                                                                                                 <option value="six">Last 6 Months</option>
                                                                                                             </select>
                                                                                                         </div>
-                                                                                                    </div>
+                                                                                                    </div> -->
                                                                                                     <div class="col-12">
                                                                                                         <div class="form-group">
-                                                                                                            <button type="button" class="btn btn-secondary">Filter</button>
+                                                                                                            <button @click.prevent="getAllAmenities(4)" type="button" class="btn btn-secondary">Filter</button>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
@@ -167,7 +166,7 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
+                                                                <input @keyup="getAllAmenities(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
@@ -241,8 +240,10 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                    <li @click="changeAmenityStatus(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Deactivate</span></a></li>
+                                                                                    <li @click="changeAmenityStatus(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Activate</span></a></li>
+                                                                                    <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
+                                                                                    <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#modalDelete"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -502,42 +503,26 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Stock Details</h5>
-                        <form action="#" class="mt-2">
+                    <div v-if="amenity" class="modal-body modal-body-md">
+                        <h5 class="modal-title">Edit Amenity Details</h5>
+                        <form @submit.prevent="updateAmenity" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Product Name</label>
-                                        <input type="text" class="form-control" id="product-name-edit" value="Soup spoon" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-edit">Amenity Name</label>
+                                        <input type="text" v-model="amenity.name" class="form-control" id="product-name-edit" placeholder="Product Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-edit">Quantity</label>
-                                        <input type="text" class="form-control" id="quantity-edit" value="70 pcs" placeholder="Quantity">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="peice-edit">Price</label>
-                                        <input type="number" class="form-control" id="peice-edit" value="30.00" placeholder="300.99 USD">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="edit-status">Status</label>
-                                        <select class="form-select js-select2" id="edit-status">
-                                            <option>Available</option>
-                                            <option>Low</option>
-                                            <option>Out of Stock</option>
-                                        </select>
+                                        <label class="form-label" for="quantity-edit">Amenity Icon</label>
+                                        <input type="text" v-model="amenity.icon" class="form-control" id="quantity-edit" placeholder="Quantity">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Stock</button>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Stock</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -550,6 +535,28 @@
                 </div><!-- .modal-content -->
             </div><!-- .modal-dialog -->
         </div><!-- .modal -->
+        <div class="modal fade" id="modalDelete" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content"> <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div v-if="amenity" class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal py-4"> <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
+                            <h4 class="nk-modal-title">Are You Sure ?</h4>
+                            <div class="nk-modal-text mt-n2">
+                                <p class="text-soft">This Sub Category will be removed permanently.</p>
+                            </div>
+                            <ul class="d-flex justify-content-center gx-4 mt-4">
+                                <li>
+                                    <button @click="deleteAmenity(amenity.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
+                                </li>
+                                <li>
+                                    <button data-bs-dismiss="modal" class="btn btn-danger btn-dim">Cancel</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>

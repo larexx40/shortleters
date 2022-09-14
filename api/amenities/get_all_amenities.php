@@ -98,7 +98,7 @@
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT  `amen_id`, `name`, `icon`, `status`, `created_at`, `updated_at` FROM `amenities` name LIKE ? OR icon LIKE ?";
+                $query = "SELECT  `amen_id`, `name`, `icon`, `status`, `created_at`, `updated_at` FROM `amenities` WHERE name LIKE ? OR icon LIKE ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ss", $searching, $searching);
                 $queryStmt->execute();
