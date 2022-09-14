@@ -8551,7 +8551,11 @@ let admin = Vue.createApp({
         async logout(){
             window.localStorage.removeItem("authToken");
             // // window.location.href="./login.php"
-        }        
+        }, 
+        async setSort(value){
+            this.kor_sort = value;
+            console.log(this.kor_sort);
+        }       
     },
     beforeMount(){
         this.loading = true;

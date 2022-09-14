@@ -103,10 +103,9 @@
                                                                                                     <div class="col-6">
                                                                                                         <div class="form-group">
                                                                                                             <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select v-model="sort" class="form-select js-select2 js-select2-sm">
+                                                                                                            <select v-model="kor_sort" class="form-select js-select2 js-select2-sm">
                                                                                                                 <option value="null">Any Status</option>
-                                                                                                                <option value="1">Active</option>
-                                                                                                                <option value="0">Inactive</option>
+                                                                                                                <option v-for="(item, index) in parseInt(1)" :key="index" :value="item">{{ (item < 1) ? 'Inactive' : 'Active'}}</option>
                                                                                                             </select>
                                                                                                         </div>
                                                                                                     </div>
