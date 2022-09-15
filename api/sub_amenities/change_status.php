@@ -119,7 +119,7 @@
 
 
         // update status
-        $query = "UPDATE `sub_amenities` SET `status` = ? WHERE amen_id = ?";
+        $query = "UPDATE `sub_amenities` SET `status` = ? WHERE sub_amen_id = ?";
         $updateStatus = $connect->prepare($query);
         $updateStatus->bind_param("ss", $changeStatus, $amenity_id);
         $updateStatus->execute();

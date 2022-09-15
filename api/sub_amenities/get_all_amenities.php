@@ -242,7 +242,7 @@
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
                 $amen_id = $row['amen_id'];
-                $amen_name = getNameFromField($connect, "sub_amenities", "amen_id", $amen_id);
+                $amen_name = getNameFromField($connect, "amenities", "amen_id", $amen_id);
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $essential_code = $row['essential'];

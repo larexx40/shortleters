@@ -445,13 +445,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add">Amenity Name</label>
-                                        <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Amenity Name">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Stock</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Amenity</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -476,13 +476,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-edit">Amenity Name</label>
-                                        <input type="text" v-model="amenity.name" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <input type="text" v-model="amenity.name" class="form-control" id="product-name-edit" placeholder="Amenity Name">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Stock</button>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Amenity</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>

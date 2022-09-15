@@ -164,8 +164,8 @@
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Host Type</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
-                                                            <!-- <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <div class="dropdown">
+                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
+                                                                <!-- <div class="dropdown">
                                                                     <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-plus"></em></a>
                                                                     <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
                                                                         <ul class="link-tidy sm no-bdr">
@@ -189,8 +189,8 @@
                                                                             </li>
                                                                         </ul>
                                                                     </div>
-                                                                </div>
-                                                            </div> -->
+                                                                </div> -->
+                                                            </div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div v-for="(item, index) in all_host_type" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -439,13 +439,13 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Amenities Details</h5>
+                        <h5 class="modal-title">Add Host Type Details</h5>
                         <form @submit.prevent="addHostType" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add">Host Type Name</label>
-                                        <input v-model="host_type_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <input v-model="host_type_name" type="text" class="form-control" id="product-name-add" placeholder="Host Type Name">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -476,7 +476,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-edit">Host Type Name</label>
-                                        <input type="text" v-model="hosts.name" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <input type="text" v-model="hosts.name" class="form-control" id="product-name-edit" placeholder="Host Type Name">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -502,7 +502,7 @@
                         <div class="nk-modal py-4"> <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
                             <h4 class="nk-modal-title">Are You Sure ?</h4>
                             <div class="nk-modal-text mt-n2">
-                                <p class="text-soft">This Sub Category will be removed permanently.</p>
+                                <p class="text-soft">This Host Type will be removed permanently.</p>
                             </div>
                             <ul class="d-flex justify-content-center gx-4 mt-4">
                                 <li>
