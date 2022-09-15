@@ -74,7 +74,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety` 
+                $searchQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description`, icon FROM `guest_safety` 
                                 WHERE (`name` like ? OR `description` like ? ) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("sss", $searchParam, $searchParam, $status);
@@ -92,7 +92,7 @@
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety`
+                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description`, icon FROM `guest_safety`
                             WHERE `status` =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
@@ -113,7 +113,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety`  
+                $searchQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description`, icon FROM `guest_safety`  
                                 WHERE `name` like ? OR  `description` like ?";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("ss",  $searchParam, $searchParam);
@@ -131,14 +131,14 @@
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety`";
+                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description`, icon FROM `guest_safety`";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description` FROM `guest_safety` ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT `id`,`name`,`status`,`guest_safetyid`,`description`, icon FROM `guest_safety` ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
@@ -167,6 +167,7 @@
                 $id = $row['id'];
                 $guestSafetyid = $row['guest_safetyid'];
                 $name = $row['name'];
+                $icon= $row['icon'];
                 $description = $row['description'];
                 $statusCode = $row['status'];
                 if($statusCode == 1){
@@ -179,6 +180,7 @@
                     "id"=>$id,
                     "guestSafetyid"=>$guestSafetyid,
                     "name"=>$name,
+                    "icon"=>$icon,
                     "description"=>$description,
                     "status"=>$status,
                     "statusCode"=>$statusCode,

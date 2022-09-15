@@ -166,8 +166,9 @@
             $allResponse = [];
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
-                $scenicViewid = $row['scenicid'];
+                $additionalChargeid = $row['add_chrg_id'];
                 $name = $row['name'];
+                $description = $row['description'];
                 $statusCode = $row['status'];
                 if($statusCode == 1){
                     $status = "Active";
@@ -177,8 +178,9 @@
 
             array_push($allResponse, array(
                 "id"=>$id,
-                "scenicViewid"=>$scenicViewid,
+                "additionalChargeid"=>$additionalChargeid,
                 "name"=>$name,
+                "description"=>$description,
                 "status"=>$status,
                 "statusCode"=>$statusCode,
             ));
@@ -189,7 +191,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'scenicView'=> $allResponse
+                'additionalCharges'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

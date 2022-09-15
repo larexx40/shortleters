@@ -1,9 +1,8 @@
 <?php
-
     // send some CORS headers so the API can be called from anywhere
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
-    header("Access-Control-Allow-Methods: GET");// OPTIONS,GET,POST,PUT,DELETE
+    header("Access-Control-Allow-Methods: POST");// OPTIONS,GET,POST,PUT,DELETE
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
     // header("Access-Control-Max-Age: 3600");//3600 seconds
@@ -14,7 +13,7 @@
     $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
 
-    if($method =='POST'){
+    if ($method == 'POST') {
         //get company details to decode usertoken
         $detailsID =1;
         $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
@@ -27,21 +26,21 @@
         $serverName = $companyDetails['servername'];
 
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
-        $adminpubkey = $decodeToken->usertoken;
-        $adminid =checkIfIsAdmin($connect, $adminpubkey);
+        $userpubkey = $decodeToken->usertoken;
 
-        //confirm adminkey from jwt
+        //check if isadmin
+        $adminid = checkIfIsAdmin($connect,$userpubkey);
         if(!$adminid){
-            //respond not admin
-            $errordesc =  "User not an Admin";
+            // send user not found response to the user
+            $errordesc =  "User not a admin";
             $linktosolve = 'https://';
-            $hint = "Only Admin can access this route";
+            $hint = "Only admin can access this route";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondBadRequest($data);
+            respondUnAuthorized($data);
         }
 
-        //confirm if building id is passed
+        //confirm how to pass in the id
         if(!isset($_POST['scenicViewid'])){
             $errordesc="Scenic view id required";
             $linktosolve="htps://";
@@ -50,65 +49,65 @@
             $text="Pass in scenic view  id";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-            
+        
         }else {
             $scenicViewid = cleanme($_POST['scenicViewid']); 
         }
 
-        //confirm if building type id is not empty
-        if(empty($scenicViewid)){
-            //all input required / bad request
-            $errordesc="Bad request";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the scienic view id ";
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+        
+        if ( !isset($_POST['name']) ){
+            // send error if howmanyminread field is not passed
+            $errordesc = "Scenic view name must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required field in this register endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data);
+
+        }else{
+            $name = cleanme($_POST['name']);
+        }
+
+        if (empty($name)){
+            // send error if inputs are empty
+            $errordesc = "Scenic View inputs are required";
+            $linktosolve = 'https://';
+            $hint = "Pass in scenic view name, it can't be empty";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
         }
-
         
-        $sqlQuery = "DELETE FROM `scenic_view` WHERE scenicid =?";
-        $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$scenicViewid);
-        $stmt->execute();
-        $affectedRow =$stmt->affected_rows;
-
-        if(!$stmt->execute()){
-            //DB error || invalid input
-            $errordesc=$stmt->error;
-            $linktosolve="htps://";
-            $hint=["Ensure database connection is on","Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Database comection error";
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondInternalError($data);
-        }
-        if($affectedRow > 0){
-            // return success message
+        $sql = "UPDATE `scenic_view` SET name = ? WHERE scenicid = ?";
+        $stmt = $connect->prepare($sql);
+        $stmt->bind_param('ss', $name, $scenicViewid);
+        $update =$stmt->execute();
+        if($update){
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = ["Scienic view deleted from the database"];
+            $hint = [];
             $errordata = [];
-            $text = "Scienic view successfully deleted";
+            $text = "Scenic View Updated charges";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
+
         }else{
-            //id not found response
-            $errordesc="Scienic view id not found";
+            //invalid input || server error
+            $errordesc=$stmt->error;
             $linktosolve="htps://";
-            $hint='Scienic view id not in database';
+            $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Scienic view not found";
+            $text="invalid api id or Check DB connection";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
+            respondInternalError($data);
         }
 
-        
-    }else {
+    
+
+    }else{
         // method not allowed
         $errordesc="Method not allowed";
         $linktosolve="htps://";
@@ -118,5 +117,5 @@
         $method=getenv('REQUEST_METHOD');
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondMethodNotAlowed($data);
-    }
+    }  
 ?>

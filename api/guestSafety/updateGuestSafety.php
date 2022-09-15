@@ -65,6 +65,18 @@
         }else{
             $name = cleanme($_POST['name']);
         }
+        if ( !isset($_POST['icon']) ){
+            // send error if name field is not passed
+            $errordesc = "Guest safety icon must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required field in this register endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data);
+
+        }else{
+            $icon = cleanme($_POST['icon']);
+        }
 
         if ( !isset($_POST['description']) ){
             // send error if description field is not passed
@@ -78,7 +90,7 @@
         }else{
             $description = cleanme($_POST['description']);
         }
-        if (empty($name) || empty($description)){
+        if (empty($name) || empty($description) || empty($icon)){
             // send error if inputs are empty
             $errordesc = "Guest safety inputs are required";
             $linktosolve = 'https://';
@@ -87,10 +99,9 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
         }
-        
-        $sql = "UPDATE `guest_safety` SET name = ?, description = ? WHERE `guest_safetyid` = ?";
+        $sql = "UPDATE `guest_safety` SET `name` = ?, `description` = ?, `icon` = ? WHERE `guest_safetyid` = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('sss', $name, $description, $guest_safetyid);
+        $stmt->bind_param('ssss', $name, $description, $icon, $guestSafetyid);
         $update =$stmt->execute();
         if($update){
             $maindata=[];

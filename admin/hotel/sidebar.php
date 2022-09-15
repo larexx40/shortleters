@@ -113,6 +113,15 @@
                                         <li class="nk-menu-item">
                                             <a href="./guest_features.php" class="nk-menu-link"><span class="nk-menu-text">Guest Features</span></a>
                                         </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./guestSafety.php" class="nk-menu-link"><span class="nk-menu-text">Guest Safety</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./scenic_view.php" class="nk-menu-link"><span class="nk-menu-text">Scenic View</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./additional_charges.php" class="nk-menu-link"><span class="nk-menu-text">Additional Charges</span></a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="nk-menu-item">

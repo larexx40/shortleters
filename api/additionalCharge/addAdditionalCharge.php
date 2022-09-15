@@ -54,7 +54,7 @@
 
         if ( !isset($_POST['description']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "Additional charges name must be passed";
+            $errordesc = "Additional charges description must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -79,7 +79,7 @@
 
         $query = "INSERT INTO `additional_charge`(`add_chrg_id`, `name`, `description`,`status`) VALUES (?,?,?,?)";
         $stmt = $connect->prepare($query);
-        $stmt->bind_param("sss", $scenicViewid, $name, $status);
+        $stmt->bind_param("sss", $additionalChargeid, $name, $status);
 
         if ( $stmt->execute() ){
             $text= "Additional charges successfully posted";

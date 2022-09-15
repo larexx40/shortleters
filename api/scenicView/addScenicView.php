@@ -62,7 +62,7 @@
             respondBadRequest($data);
         }
         $status =0;
-        $scenicViewid = generateUniqueShortKey($connect,'building_types','build_id');
+        $scenicViewid = generateUniqueShortKey($connect,'scenic_view','scenicid');
 
         $query = "INSERT INTO `scenic_view`(`scenicid`, `name`, `status`) VALUES (?,?,?)";
         $stmt = $connect->prepare($query);
