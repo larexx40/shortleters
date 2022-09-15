@@ -82,7 +82,7 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT sub_building_types.id, sub_building_types.build_type_id, sub_building_types.sub_build_id, sub_building_types.name, sub_building_types.description, sub_building_types.status, sub_building_types.description, sub_building_types.created_at FROM sub_building_types LEFT JOIN building_types ON building_types.build_id = sub_building_types.build_type_id WHERE sub_building_types.status = ? AND ( building_types.name LIKE ? OR sub_building_types.name LIKE ? OR sub_building_types.description LIKE ?) ";
+                $query = "SELECT apartment_additional_charge.* FROM `apartment_additional_charge`LEFT JOIN additional_charge ON additional_charge.add_chrg_id = apartment_additional_charge.add_charg_id LEFT JOIN apartments ON apartments.apartment_id = apartment_additional_charge.apartment_id WHERE apartment_additional_charge.status = ? AND ( apartments.name LIKE ? OR additional_charge.name LIKE ? OR apartment_additional_charge.price LIKE ? ) ";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ssss", $status, $searching, $searching, $searching );
                 $queryStmt->execute();
@@ -98,7 +98,7 @@
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT sub_building_types.id, sub_building_types.build_type_id, sub_building_types.sub_build_id, sub_building_types.name, sub_building_types.description, sub_building_types.status, sub_building_types.description, sub_building_types.created_at FROM sub_building_types LEFT JOIN building_types ON building_types.build_id = sub_building_types.build_type_id WHERE building_types.name LIKE ? OR sub_building_types.name LIKE ? OR sub_building_types.description LIKE ?";
+                $query = "SELECT apartment_additional_charge.* FROM `apartment_additional_charge`LEFT JOIN additional_charge ON additional_charge.add_chrg_id = apartment_additional_charge.add_charg_id LEFT JOIN apartments ON apartments.apartment_id = apartment_additional_charge.apartment_id WHERE apartments.name LIKE ? OR additional_charge.name LIKE ? OR apartment_additional_charge.price LIKE ? ";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("sss", $searching, $searching, $searching);
                 $queryStmt->execute();
@@ -119,7 +119,7 @@
 
             if ($sort > 0){
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `sub_building_types` WHERE status = ?";
+                $query = "SELECT * FROM `apartment_additional_charge` WHERE `status` = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $status);
                 $gtTotalPgs->execute();
@@ -135,7 +135,7 @@
                 $num_row = $result->num_rows;
             }else{
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `sub_building_types`";
+                $query = "SELECT * FROM `apartment_additional_charge`";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->execute();
                 $result = $gtTotalPgs->get_result();
@@ -158,25 +158,27 @@
             $allSubTypes = [];
 
             while($row = $result->fetch_assoc()){
-                $name =  $row['name'];
+                $price =  $row['price'];
                 $status_code = $row['status'];
-                $build_type_id = $row['build_type_id'];
-                $build_type_name = getNameFromField($connect, "building_types", "build_id", $build_type_id);
+                $add_charg_id = $row['add_charg_id'];
+                $add_charg_id_name = getNameFromField($connect, "additional_charge", "add_chrg_id", $add_charg_id);
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
-                $description = $row['description'];
+                $apartment_id = $row['apartment_id'];
+                $apartment_id_name = getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
                 array_push($allSubTypes, array(
-                    'id' => $row['sub_build_id'],
-                    'name' => $name,
+                    'id' => $row['apart_chrg_id'],
+                    'price' => $name,
                     'status_code' => $status_code,
-                    'build_type' => $build_type_id,
-                    'build_type_name' => $build_type_name,
+                    'add_charge' => $add_charg_id,
+                    'add_charge_name' => $add_charg_id_name,
+                    'apartment_id' => $apartment_id,
+                    'apartment_name' => $apartment_id_name,
                     'status' => $status,
                     'created' => $created,
                     'updated' => $updated,
-                    'description' => str_replace(array('\n','\r\n','\r'),array("\n","\r\n","\r"), $description)
                 ));
             }
             $data = array(
@@ -184,7 +186,7 @@
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'build_subtype' => $allSubTypes
+                'apartment_charges' => $allSubTypes
             );
             $text= "Fetch Successful";
             $status = true;

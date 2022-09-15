@@ -43,7 +43,7 @@
             respondUnAuthorized($data);
         }
 
-        if (!isset($_GET['sub_type_id'])){
+        if (!isset($_GET['apart_add_char_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required sub type id field in this endpoint";
@@ -51,10 +51,10 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $sub_building_type_id = cleanme($_GET['sub_type_id']);
+            $apart_add_char_id = cleanme($_GET['apart_add_char_id']);
         }
 
-        if ( empty($sub_building_type_id)){
+        if ( empty($apart_add_char_id)){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -66,9 +66,9 @@
 
                 
 
-        $query = "SELECT * FROM `sub_building_types` WHERE `sub_build_id` = ?";
+        $query = "SELECT * FROM `apartment_additional_charge` WHERE `apart_chrg_id` = ?";
         $gtTotalcomplains = $connect->prepare($query);
-        $gtTotalcomplains->bind_param("s", $sub_building_type_id);
+        $gtTotalcomplains->bind_param("s", $apart_add_char_id);
         $gtTotalcomplains->execute();
         $result = $gtTotalcomplains->get_result();
         $num_row = $result->num_rows;
@@ -77,29 +77,31 @@
         if ($num_row > 0){
 
             while($row = $result->fetch_assoc()){
-                $name =  $row['name'];
+                $price =  $row['price'];
                 $status_code = $row['status'];
-                $build_type_id = $row['build_type_id'];
-                $build_type_name = getNameFromField($connect, "building_types", "build_id", $build_type_id);
+                $add_charg_id = $row['add_charg_id'];
+                $add_charg_id_name = getNameFromField($connect, "additional_charge", "add_chrg_id", $add_charg_id);
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
-                $description = $row['description'];
-                $created = gettheTimeAndDate($row['created_at']);
-                $updated = gettheTimeAndDate($row['updated_at']);
+                $apartment_id = $row['apartment_id'];
+                $apartment_id_name = getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
+                $created = gettheTimeAndDate(strtotime($row['created_at']));
+                $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
                 $building_sub_type = array(
-                    'id' => $row['sub_build_id'],
-                    'name' => $name,
+                    'id' => $row['apart_chrg_id'],
+                    'price' => $name,
                     'status_code' => $status_code,
-                    'build_type' => $build_type_id,
-                    'build_type_name' => $build_type_name,
+                    'add_charge' => $add_charg_id,
+                    'add_charge_name' => $add_charg_id_name,
+                    'apartment_id' => $apartment_id,
+                    'apartment_name' => $apartment_id_name,
                     'status' => $status,
                     'created' => $created,
                     'updated' => $updated,
-                    'description' => str_replace(array('\n','\r\n','\r'),array("\n","\r\n","\r"), $description)
                 );
             }
             $data = array(
-                'build_subtype' => $building_sub_type
+                'apart_add_charges' => $building_sub_type
             );
             $text= "Fetch Successful";
             $status = true;

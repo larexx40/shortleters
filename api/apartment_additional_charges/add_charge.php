@@ -28,10 +28,10 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
+        $user =  checkIfUser($connect, $user_pubkey);
 
         // send error if ur is not in the database
-        if (!$admin){
+        if (!$user){
             // send user not found response to the user
             $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
@@ -43,18 +43,7 @@
 
         
         // Check if the email field is passed
-        if (!isset($_POST['sub_type_id'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required sub type id field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $sub_building_type_id = cleanme($_POST['sub_type_id']);
-        }
-
-        if (!isset($_POST['building_type_id'])){
+        if (!isset($_POST['apartment_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required building type field in this endpoint";
@@ -62,11 +51,22 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $building_type = cleanme($_POST['building_type_id']);
+            $apartment_id = cleanme($_POST['apartment_id']);
+        }
+
+        if (!isset($_POST['add_charg_id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required building type field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $add_charg_id = cleanme($_POST['add_charg_id']);
         }
 
         // Check if the recipient name field is passed
-        if (!isset($_POST['name'])){
+        if (!isset($_POST['price'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required name field in this endpoint";
@@ -74,22 +74,11 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $name = cleanme($_POST['name']);
-        }
-
-        if (!isset($_POST['description'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required description field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $description = cleanme($_POST['description']);
+            $price = cleanme($_POST['price']);
         }
         
          // check if none of the field is empty
-        if ( empty($sub_building_type_id) || empty($name)  || empty($description) || empty($building_type) ){
+        if ( empty($apartment_id)  || empty($price) || empty($add_charg_id) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -99,37 +88,23 @@
             respondBadRequest($data);
         }
 
-        if (!checkifFieldExist($connect, "building_types", "build_id", $building_type)){
-            $errordesc = "Invalid building Type";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass valid value to all the fields";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
+        $apart_chrg_id = generateUniqueShortKey($connect, "apartment_additional_charge", "apart_chrg_id ");
 
-        if (!checkifFieldExist($connect, "sub_building_types", "sub_build_id", $sub_building_type_id)){
-            $errordesc = "Sub Building Type not Found";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass valid value to all the fields";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
 
-        $query = 'UPDATE `sub_building_types` SET `build_type_id`= ?, `name`= ?, `description`= ? WHERE `sub_build_id` = ?';
-        $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("ssss", $building_type, $name, $description, $sub_building_type_id);
 
-        if ( $slider_update->execute() ) {
-            $text= "Slider successfully updated";
+        $query = 'INSERT INTO `apartment_additional_charge`(`apart_chrg_id`, `apartment_id`, `add_charg_id`, `price`) VALUES (? , ?, ?, ?)';
+        $slider_stmt = $connect->prepare($query);
+        $slider_stmt->bind_param("ssss", $apart_chrg_id, $apartment_id, $add_charg_id, $price);
+
+        if ( $slider_stmt->execute() ) {
+            $text= "Additional Charge successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
         }else{
-            $errordesc =  $slider_update->error;
+            $errordesc =  $slider_stmt->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);

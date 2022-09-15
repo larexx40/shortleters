@@ -40,7 +40,7 @@
         }
 
         // Check if the email field is passed
-        if (!isset($_POST['sub_type_id'])){
+        if (!isset($_POST['apart_char_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required sub type id field in this endpoint";
@@ -48,10 +48,10 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $sub_type_id = cleanme($_POST['sub_type_id']);
+            $apart_char_id = cleanme($_POST['apart_char_id']);
         }
         
-        if ( empty($sub_type_id) ){
+        if ( empty($apart_char_id) ){
             $errordesc = "Sub type id must be filled";
             $linktosolve = 'https://';
             $hint = "Kindly pass a valid slider id field in this endpoint";
@@ -60,16 +60,16 @@
             respondBadRequest($data);
         }
 
-        $query = 'DELETE FROM `sub_building_types` WHERE `sub_build_id` = ?';
+        $query = 'DELETE FROM `apartment_additional_charge` WHERE `apart_chrg_id` = ?';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("s", $sub_type_id);
+        $slider_stmt->bind_param("s", $apart_char_id);
         $slider_stmt->execute();
         $rows_affected = $slider_stmt->affected_rows;
 
         if ( $rows_affected > 0 ) {
             $slider_stmt->close();
 
-            $text= "Sub Type successfully deleted";
+            $text= "Apartment Charge successfully removed";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);

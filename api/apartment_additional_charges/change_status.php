@@ -42,9 +42,9 @@
         }
 
 
-        if ( !isset($_POST['sub_type_id']) ){
+        if ( !isset($_POST['apart_add_id']) ){
 
-            $errordesc="product id required";
+            $errordesc="apart additional charge id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
@@ -54,12 +54,12 @@
             respondBadRequest($data);
 
         }else{
-            $sub_type_id = cleanme($_POST['sub_type_id']);
+            $apart_add_id = cleanme($_POST['apart_add_id']);
         }
 
-        if ( empty($sub_type_id) ){
+        if ( empty($apart_add_id) ){
 
-            $errordesc = "Enter sub type id";
+            $errordesc = "Enter apart additional charge id";
             $linktosolve = 'https://';
             $hint = "Kindly ensure that a valid id is passed";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -107,7 +107,7 @@
         }
 
         // check if product is valid
-        if ( !checkifFieldExist($connect, "sub_building_types", "sub_build_id", $sub_type_id) ) {
+        if ( !checkifFieldExist($connect, "apartment_additional_charge", "apart_chrg_id", $apart_add_id) ) {
 
             $errordesc = "Sub Building Type does not Exist ";
             $linktosolve = 'https://';
@@ -119,7 +119,7 @@
 
 
         // update status
-        $query = "UPDATE `sub_building_types` SET `status` = ? WHERE sub_build_id = ?";
+        $query = "UPDATE `apartment_additional_charge` SET `status` = ? WHERE apart_chrg_id = ?";
         $updateStatus = $connect->prepare($query);
         $updateStatus->bind_param("ss", $changeStatus, $sub_type_id);
         $updateStatus->execute();
@@ -136,7 +136,7 @@
         if ( $updateStatus->execute()){
             
             $data = [];
-            $text= "Sub building Type successfully ". $changeStatusText;
+            $text= "Apartment additional charge successfully ". $changeStatusText;
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
