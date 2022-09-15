@@ -75,7 +75,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies`
+                $searchQuery = "SELECT id, `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies`
                                 WHERE (`name` like ? OR `description` like ?) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("sss", $searchParam, $searchParam, $status);
@@ -93,7 +93,7 @@
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies` 
+                $sqlQuery = "SELECT id, `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies` 
                             WHERE `status` =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
@@ -114,7 +114,7 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies` 
+                $searchQuery = "SELECT id, `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies` 
                                 WHERE (`name` like ? OR `description` like ?) ";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("ss",$searchParam,  $searchParam);
@@ -132,14 +132,14 @@
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies` ";
+                $sqlQuery = "SELECT id, `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies` ";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies`  ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT id, `policy_id`,`name`,`description`,`read_more_url`,`status` FROM `cancelation_policies`  ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();

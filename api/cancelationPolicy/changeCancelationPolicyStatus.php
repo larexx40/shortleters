@@ -40,27 +40,27 @@
         }
 
         //confirm if additionalcharge id is passed
-        if(!isset($_POST['additionalChargeid'])){
-            $errordesc="Additional charges id required";
+        if(!isset($_POST['policyid'])){
+            $errordesc="Cancelation policy id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in Additional charges  id";
+            $text="Pass in Cancelation policy  id";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
             
         }else {
-            $additionalChargeid = cleanme($_POST['additionalChargeid']); 
+            $policyid = cleanme($_POST['policyid']); 
         }
 
         //check status passed
         if ( !isset($_POST['status']) ){
-            $errordesc="Additional charges status required";
+            $errordesc="Cancelation policy status required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Additional charges status must be passed";
+            $text="Cancelation policy status must be passed";
             $method;
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -88,38 +88,38 @@
         }
 
         //confirm if building type id is not empty
-        if(empty($additionalChargeid)){
+        if(empty($policyid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the building type id ";
+            $text="Please pass in the cancelation policy id ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
         //`additional_charge`(`add_chrg_id`, `name`, `description`,`status`)
-        $sql = "UPDATE `additional_charge` SET `status`= ? WHERE add_chrg_id = ?";
+        $sql = "UPDATE `cancelation_policies` SET `status`= ? WHERE policy_id = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ss', $changeStatus, $additionalChargeid);
+        $stmt->bind_param('ss', $changeStatus, $policyid);
         $stmt->execute();
 
         if ( $stmt->affected_rows > 0 ){
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = "Additional charges status set to $message";
+            $hint = "Cancelation policy status set to $message";
             $errordata = [];
-            $text = "Additional charges set to $message";
+            $text = "Cancelation policy set to $message";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
         
         }else{
             //Building type not found
-            $errordesc = "Additional charges with id not found";
+            $errordesc = "Cancelation policy with id not found";
             $linktosolve = 'https://';
-            $hint = "Kindly pass valid Additional charges id";
+            $hint = "Kindly pass valid Cancelation policy id";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data); 

@@ -78,7 +78,7 @@
             respondBadRequest($data);
 
         }else{
-            $descripption = cleanme($_POST['description']);
+            $description = cleanme($_POST['description']);
         }
         if ( !isset($_POST['readMoreUrl']) ){
             // send error if howmanyminread field is not passed
@@ -93,7 +93,7 @@
             $readMoreUrl = cleanme($_POST['readMoreUrl']);
         }
 
-        if (empty($name) || empty($descripption) || empty($readMoreUrl)){
+        if (empty($name) || empty($description) || empty($readMoreUrl)){
             // send error if inputs are empty
             $errordesc = "Cancelation policy inputs are required";
             $linktosolve = 'https://';
@@ -105,7 +105,7 @@
         
         $sql = "UPDATE `cancelation_policies` SET name = ?, description = ?, read_more_url = ? WHERE policy_id = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ssss', $name, $description,$readMoreUrl, $policyid);
+        $stmt->bind_param('ssss', $name, $description, $readMoreUrl, $policyid);
         $update =$stmt->execute();
         if($update){
             $maindata=[];

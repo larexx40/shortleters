@@ -91,7 +91,7 @@
 
         $query = "INSERT INTO `cancelation_policies`(`policy_id`, `name`, `description`,`read_more_url`,`status`) VALUES (?,?,?,?,?)";
         $stmt = $connect->prepare($query);
-        $stmt->bind_param("sssss", $policyid, $descripption, $name, $readMoreUrl, $status);
+        $stmt->bind_param("sssss", $policyid, $name, $descripption,  $readMoreUrl, $status);
 
         if ( $stmt->execute() ){
             $text= "Cancelation policy successfully posted";

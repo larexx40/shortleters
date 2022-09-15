@@ -76,6 +76,8 @@ let admin = Vue.createApp({
             guestSafty_details: null,
             scenicViews: null,
             additionalCharges: null,
+            cancelationPolicies: null,
+            readMoreUrl: null,
             itemid: null,
             name: null,
             image: null,
@@ -256,7 +258,13 @@ let admin = Vue.createApp({
         if(webPage == 'cancelation_policy.php'){
             await this.getAllCancelationPolicy();
         }
-        
+        if(webPage == 'subBuilding_by_buildingTypeid.php'){
+            let buildingTypeid = (localStorage.getItem("buildingTypeid")) ? localStorage.getItem("buildingTypeid"): null;
+            if(!buildingTypeid){
+                window.location.href="./buildingType.php";
+            }
+            await this.getAllSubBuildingTypeByBuildingTypeid(buildingTypeid);
+        }
     },
     methods: {
         //LanreWaju Method
@@ -2492,6 +2500,323 @@ let admin = Vue.createApp({
 
         },
         
+        //cancelation policy
+        async getAllCancelationPolicy(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseUrl}api/cancelationPolicy/getAllCancelationPolicy.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.cancelationPolicies = response.data.data.cancelationPolicies;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.cancelationPolicies = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async addCancelationPolicy(){
+            if(this.name == null || this.description == null || this.readMoreUrl == null){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('name', this.name );
+            data.append('readMoreUrl', this.readMoreUrl );
+            data.append('description', this.description );
+
+            const url = `${this.baseUrl}api/cancelationPolicy/addCancelationPolicy.php`;
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    await this.getAllCancelationPolicy();
+                    new Toasteur().success(response.data.text);
+                    
+                }
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    // // window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }finally {
+                this.loading = false;
+            }
+
+        },
+        async deleteCancelationPolicy(id){
+            const url = `${this.baseUrl}api/cancelationPolicy/deleteCancelationPolicy.php?`;
+            if(id == null ){
+                new Toasteur().error("Undefined")
+            }
+
+            let data = new FormData();
+            data.append('policyid', id );
+            const options = {
+                method: "POST",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                data,
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.getAllCancelationPolicy();
+                }    
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                       new Toasteur().error(errorMsg);
+                       // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async changeCancelationPolicyStatus(id, status){
+            const url = `${this.baseUrl}api/cancelationPolicy/changeCancelationPolicyStatus.php?`;
+            //console.log('URL', url);
+            if(!id){
+                new Toasteur().error("undefined")
+            }else{
+                const data = new FormData();
+                data.append('policyid', id);
+                data.append('status', status);
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    data,
+                    url
+                }
+                try {
+                    this.loading = true
+                    const response = await axios(options);
+                    if(response.data.status){
+                        new Toasteur().success("Status Changed")
+                        this.getAllCancelationPolicy();      
+                    }else{
+                        this.getAllCancelationPolicy();
+                    }     
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+
+                    new Toasteur().error(error.message || "Error processing request")
+
+                    
+                }finally {
+                    this.loading = false;
+                }
+
+            }
+            
+        },
+        async updateCancelationPolicy(){
+            if(this.itemDetails.name == null || this.itemDetails.description == null || this.itemDetails.readMoreUrl ==null){
+                console.log("details not null");
+                new Toasteur().error("Kindly fill all fields")
+            }else{
+
+                let data = new FormData();
+                data.append('policyid', this.itemDetails.policyid );
+                data.append('name', this.itemDetails.name );
+                data.append('readMoreUrl', this.itemDetails.readMoreUrl );
+                data.append('description', this.itemDetails.description );
+
+                const url = `${this.baseUrl}api/cancelationPolicy/updateCancelationPolicy.php`;
+                
+                const options = {
+                    method: "POST",
+                    data,
+                    url,
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    }
+                }
+
+                try {
+                    this.loading = true;
+                    const response = await axios(options); 
+                    if(response.data.status){
+                        new Toasteur().success(response.data.text);
+                        await this.getAllCancelationPolicy();
+                        
+                    }
+                } catch (error) {
+                    ////console.log(error);
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }finally {
+                    this.loading = false;
+                }
+            }
+
+        },
         async getAllAddresses(){
             let search = (this.search)? `&search=${this.search}`: '';
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
@@ -2554,6 +2879,70 @@ let admin = Vue.createApp({
 
                 new Toasteur().error(error.message || "Error processing request")
 
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+
+        //subBuilding by building type
+        async getAllSubBuildingTypeByBuildingTypeid(id){
+            //const url = `${this.baseUrl}api/guestSafety/getGuestSafetyByid.php?guestSafetyid=${id}`;
+            const url = `${this.baseUrl}api/sub_building_type/getSubByBuildingid.php?buildingTypeid=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.addresses = response.data.data.build_subtype;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }else{
+                    this.addresses = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
                 
             }finally {
                 this.loading = false;
@@ -5213,7 +5602,7 @@ let admin = Vue.createApp({
             let search = (this.search)? `&search=${this.search}`: '';
             let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
             let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            let noPerPage = ( this.per_page ) ? this.per_page : 10;
             const url = `${this.baseUrl}api/thirdPartyApi/getAllTermiTable.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
             const options = {
                 method: "GET",
@@ -5586,6 +5975,11 @@ let admin = Vue.createApp({
         },
 
         //.....utilities..............
+        async getSubBuilding(id){
+            window.localStorage.setItem("buildingTypeid", id);
+            window.location.href='subBuilding_by_buildingTypeid.php';
+            
+        },
         async uploadImage(event){
             this.uploadImage = event.target.files[0];
             console.log("image", this.uploadImage);
@@ -5601,11 +5995,95 @@ let admin = Vue.createApp({
             this.currentPage = parseInt(this.currentPage) + 1;
             this.totalData =null;
             this.totalPage =null;
+            if(webPage =='monify.php'){
+                await this.getAllMonify()
+            }
+            if(webPage =='paystack.php'){
+                await this.getAllPaystack()
+            }
+            if(webPage =='kudi.php' ){
+                await this.getAllKudi();
+            }
+            if(webPage =='smartsolution.php'){
+                await this.getAllSmartSolution();
+            }
+            if(webPage =='sendgrid.php'){
+                await this.getAllSendGrid()
+            }
+            if(webPage == 'termiapi.php'){
+                await this.getTermiApi();
+            }
+            if(webPage == 'addresses.php'){
+                await this.getAllAddresses();
+            }
+            if(webPage == 'buildingType.php'){
+                await this.getAllBuildingType();
+            }
+            if(webPage == 'guestSafety.php'){
+                await this.getAllGuestSafety();
+            }
+            if(webPage == 'spaceType.php'){
+                await this.getAllSpaceType();
+            }
+            if(webPage == 'highlights.php'){
+                await this.getAllHighlight();
+            }
+            if(webPage == 'scenic_view.php'){
+                await this.getAllScenicView();
+            }
+            if(webPage == 'additional_charges.php'){
+                await this.getAllAdditionalCharge();
+            }
+            if(webPage == 'cancelation_policy.php'){
+                await this.getAllCancelationPolicy();
+            }
         },
         async previousPage(){
             this.currentPage = parseInt(this.currentPage) - 1;
             this.totalData =null;
             this.totalPage =null;
+            if(webPage =='monify.php'){
+                await this.getAllMonify()
+            }
+            if(webPage =='paystack.php'){
+                await this.getAllPaystack()
+            }
+            if(webPage =='kudi.php' ){
+                await this.getAllKudi();
+            }
+            if(webPage =='smartsolution.php'){
+                await this.getAllSmartSolution();
+            }
+            if(webPage =='sendgrid.php'){
+                await this.getAllSendGrid()
+            }
+            if(webPage == 'termiapi.php'){
+                await this.getTermiApi();
+            }
+            if(webPage == 'addresses.php'){
+                await this.getAllAddresses();
+            }
+            if(webPage == 'buildingType.php'){
+                await this.getAllBuildingType();
+            }
+            if(webPage == 'guestSafety.php'){
+                await this.getAllGuestSafety();
+            }
+            if(webPage == 'spaceType.php'){
+                await this.getAllSpaceType();
+            }
+            if(webPage == 'highlights.php'){
+                await this.getAllHighlight();
+            }
+            if(webPage == 'scenic_view.php'){
+                await this.getAllScenicView();
+            }
+            if(webPage == 'additional_charges.php'){
+                await this.getAllAdditionalCharge();
+            }
+            if(webPage == 'cancelation_policy.php'){
+                await this.getAllCancelationPolicy();
+            }
         },
         async tab_nextPage(item){
             let logisticid = (localStorage.getItem("logisticid")) ? localStorage.getItem("logisticid"): null;
@@ -5647,6 +6125,70 @@ let admin = Vue.createApp({
                 window.location.href = 'logistics.php'
             }
         },
+        async setNoPerPage(no){
+            this.per_page = no;
+            this.class_active = true;
+            if(webPage == "logistics.php"){
+                await this.getAllLogistics();
+            }
+            if(webPage == "admins.php"){
+                this.getAllAdmin();
+            }
+            if(webPage == 'location.php'){
+                this.getLogisticLocations();
+            }
+            if(webPage == "orders.php"){
+                await this.getAllCarts();
+            }
+            if(webPage == "orders.php"){
+                await this.getAllCarts();
+            }
+            if(webPage =='monify.php'){
+                await this.getAllMonify()
+            }
+            if(webPage =='paystack.php'){
+                await this.getAllPaystack()
+            }
+            if(webPage =='kudi.php' ){
+                await this.getAllKudi();
+            }
+            if(webPage =='smartsolution.php'){
+                await this.getAllSmartSolution();
+            }
+            if(webPage =='sendgrid.php'){
+                await this.getAllSendGrid()
+            }
+            if(webPage == 'termiapi.php'){
+                await this.getTermiApi();
+            }
+            if(webPage == 'posts.php'){
+                await this.getAllBlog();
+            }
+            if(webPage == 'addresses.php'){
+                await this.getAllAddresses();
+            }
+            if(webPage == 'buildingType.php'){
+                await this.getAllBuildingType();
+            }
+            if(webPage == 'guestSafety.php'){
+                await this.getAllGuestSafety();
+            }
+            if(webPage == 'spaceType.php'){
+                await this.getAllSpaceType();
+            }
+            if(webPage == 'highlights.php'){
+                await this.getAllHighlight();
+            }
+            if(webPage == 'scenic_view.php'){
+                await this.getAllScenicView();
+            }
+            if(webPage == 'additional_charges.php'){
+                await this.getAllAdditionalCharge();
+            }
+            if(webPage == 'cancelation_policy.php'){
+                await this.getAllCancelationPolicy();
+            }
+        },
         async noSort(){
             this.loading = true
             this.sort = null;
@@ -5655,6 +6197,7 @@ let admin = Vue.createApp({
             this.totalPage =null;
             this.sortDraft = null;
             this.sortDays = null;
+            this.class_active = true;
             if(webPage == "logistics.php"){
                 await this.getAllLogistics();
             }
@@ -5698,6 +6241,27 @@ let admin = Vue.createApp({
             if(webPage == 'addresses.php'){
                 await this.getAllAddresses();
             }
+            if(webPage == 'buildingType.php'){
+                await this.getAllBuildingType();
+            }
+            if(webPage == 'guestSafety.php'){
+                await this.getAllGuestSafety();
+            }
+            if(webPage == 'spaceType.php'){
+                await this.getAllSpaceType();
+            }
+            if(webPage == 'highlights.php'){
+                await this.getAllHighlight();
+            }
+            if(webPage == 'scenic_view.php'){
+                await this.getAllScenicView();
+            }
+            if(webPage == 'additional_charges.php'){
+                await this.getAllAdditionalCharge();
+            }
+            if(webPage == 'cancelation_policy.php'){
+                await this.getAllCancelationPolicy();
+            }
         }, 
         async sortByStatus(status){
             this.loading = true;
@@ -5705,6 +6269,7 @@ let admin = Vue.createApp({
             this.currentPage =null;
             this.totalData =null;
             this.totalPage =null;
+            this.class_active = true;
             //console.log('SortStatus', status);
             if(webPage == "logistics.php"){
                 await this.getAllLogistics();
@@ -5742,6 +6307,27 @@ let admin = Vue.createApp({
             }
             if(webPage == 'addresses.php'){
                 await this.getAllAddresses();
+            }
+            if(webPage == 'buildingType.php'){
+                await this.getAllBuildingType();
+            }
+            if(webPage == 'guestSafety.php'){
+                await this.getAllGuestSafety();
+            }
+            if(webPage == 'spaceType.php'){
+                await this.getAllSpaceType();
+            }
+            if(webPage == 'highlights.php'){
+                await this.getAllHighlight();
+            }
+            if(webPage == 'scenic_view.php'){
+                await this.getAllScenicView();
+            }
+            if(webPage == 'additional_charges.php'){
+                await this.getAllAdditionalCharge();
+            }
+            if(webPage == 'cancelation_policy.php'){
+                await this.getAllCancelationPolicy();
             }
             
         },
@@ -5949,6 +6535,9 @@ let admin = Vue.createApp({
             }
             if(webPage == 'additional_charges.php'){
                 this.itemDetails = this.additionalCharges[index];
+            }
+            if(webPage == 'cancelation_policy.php'){
+                this.itemDetails = this.cancelationPolicies[index];
             }
         },
         async generateUserPassword(){
@@ -9535,6 +10124,10 @@ let admin = Vue.createApp({
         this.loading = true;
     },
     async mounted(){
+        //lanre mount
+        if(webPage != "subBuilding_by_buildingTypeid.php"){
+            window.localStorage.removeItem("buildingTypeid");
+        }
         await this.getAdminDetails();
         // this.getToken();
         if ( webPage === "amenities.php" ){

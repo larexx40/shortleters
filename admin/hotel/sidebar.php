@@ -69,6 +69,7 @@
                                         </li>
                                     </ul>
                                 </li><!-- .nk-menu-item -->
+                                
                                 <li class="nk-menu-item has-sub">
                                      <a href="#"class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
@@ -124,6 +125,17 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li class="nk-menu-item has-sub">
+                                     <a href="#"class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="fas fa-shield"></em></span>
+                                        <span class="nk-menu-text">Policies</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="./cancelation_policy.php" class="nk-menu-link"><span class="nk-menu-text">Cancelation Policy</span></a>
+                                        </li>
+                                    </ul>
+                                </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item">
                                     <a href="./customers.php" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
