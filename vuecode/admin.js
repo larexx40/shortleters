@@ -134,7 +134,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMyMzI4MDIsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzIzMjgwMiwiZXhwIjoxNjYzMzA2NjAyLCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.9WGnXtg2lD8krebtCRLyKqiTkiLM-wkstk2CDwTK1diZ1zR_ZpVBBzFHRg9qNetrePNGvNHMJJ5Pg00iEqseMQ",
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMyNTg1MzMsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzI1ODUzMywiZXhwIjoxNjYzMzMyMzMzLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.WPcOrjcIFTu0xBA5pVGwc_dFpS8VeQFlAKrVK7FZbqdV2muXA6fbwSbuoNf9FOX0q71W_k0q5x9NnSImNFDcBw",
             email: null,
             ref_link: null,
             admin_details: null,
