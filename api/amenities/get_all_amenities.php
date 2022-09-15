@@ -178,7 +178,7 @@
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'amenities' => $allAmenities
+                'apart_add_charges' => $allAmenities
             );
             $text= "Fetch Successful";
             $status = true;
