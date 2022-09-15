@@ -212,7 +212,7 @@
                                                                 <span>{{item.amenity_name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span><em :class="item.icon"></em>{{item.icon.split("-")[2]}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                                <span><em :class="item.icon"></em> {{getlastElemnt(item.icon)}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.essential_code > 0" class="tb-status text-success">{{item.essential}}</span>
@@ -465,27 +465,27 @@
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add">Select Amenity</label>
                                         <select class="form-select js-select2 js-select2-sm" v-model="amenity_id" data-search="off" data-placeholder="Bulk Action">
-                                            <option value="null">Select Building Type</option>
+                                            <option value="null">Select Amenity Type</option>
                                             <option v-for="(item, index) in all_amenities" v-bind:value="item.id">{{item.name}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">Amenity Name</label>
-                                        <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-add">Sub Amenity Name</label>
+                                        <input v-model="amenities_name" type="text" class="form-control" id="product-name-add" placeholder="Sub Amenity Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Amenity Icon</label>
-                                        <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity">
+                                        <label class="form-label" for="quantity-add">Sub Amenity Icon</label>
+                                        <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Sub Amenity Icon">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Stock</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Sub Amenity</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -504,7 +504,7 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div v-if="sub_amenity" class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Amenity Details</h5>
+                        <h5 class="modal-title">Edit Sub Amenity Details</h5>
                         <form @submit.prevent="updatesubAmenity" class="mt-2">
                             <div class="row g-gs">
                                 <div v-if="all_amenities" class="col-12">
@@ -519,19 +519,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-edit">Sub Amenity Name</label>
-                                        <input type="text" v-model="sub_amenity.name" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <input type="text" v-model="sub_amenity.name" class="form-control" id="product-name-edit" placeholder="Sub Amenity Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-edit">Amenity Icon</label>
-                                        <input type="text" v-model="sub_amenity.icon" class="form-control" id="quantity-edit" placeholder="Quantity">
+                                        <label class="form-label" for="quantity-edit">Sub Amenity Icon</label>
+                                        <input type="text" v-model="sub_amenity.icon" class="form-control" id="quantity-edit" placeholder="Sub Amenity Icon">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Stock</button>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Sub Amenity</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>

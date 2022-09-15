@@ -7026,7 +7026,7 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async addBuildingSubType( load = 1){
+        async addBuildingSubType(load = 1){
                 if (!this.building_type_id || !this.sub_building_type_name || !this.sub_building_type_description){
                     this.error = "Insert all Fields"
                     new Toasteur().error(this.error);
@@ -7219,7 +7219,7 @@ let admin = Vue.createApp({
         async deleteBuildingSubType(id){
             const data = new FormData();
                 data.append("sub_type_id", id);
-                const url = `${this.baseUrl}api/host_type/delete_sub_building.php`;
+                const url = `${this.baseUrl}api/sub_building_type/delete_sub_building.php`;
                 const options = {
                     method: "POST",
                     headers: { 
@@ -9492,9 +9492,14 @@ let admin = Vue.createApp({
             }
             
         },
-        async wordCount(){
+        getlastElemnt(item){
+            const split_arr = item.split("-");
+            const len = split_arr.length;
+            return split_arr[len - 1]; 
+        },
+        async wordCount(length){
             this.length = WordCount(this.slider_desc);
-            if ( this.length == 15 ){
+            if ( this.length == length ){
                 new Toasteur().error("Maximum Words Reached");
             }
         },
@@ -9528,7 +9533,6 @@ let admin = Vue.createApp({
     },
     beforeMount(){
         this.loading = true;
-        console.log(this.authToken);
     },
     async mounted(){
         await this.getAdminDetails();

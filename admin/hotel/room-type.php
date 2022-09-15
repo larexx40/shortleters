@@ -450,7 +450,7 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Amenities Details</h5>
+                        <h5 class="modal-title">Add Sub Building Type Details</h5>
                         <form @submit.prevent="addBuildingSubType" class="mt-2">
                             <div class="row g-gs">
                                 <div v-if="buildingTypes" class="col-12">
@@ -465,13 +465,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add">Sub Building Type Name</label>
-                                        <input v-model="sub_building_type_name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <input v-model="sub_building_type_name" type="text" class="form-control" id="product-name-add" placeholder="Sub Building Type Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add">Sub Building Type Description</label>
-                                        <input v-model="sub_building_type_description" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <input v-model="sub_building_type_description" type="text" class="form-control" id="product-name-add" placeholder="Sub Building Description">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -501,7 +501,7 @@
                             <div class="row g-gs">
                                 <div v-if="buildingTypes" class="col-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">SelectBuilding Type</label>
+                                        <label class="form-label" for="product-name-add">Select Building Type</label>
                                         <select class="form-select js-select2 js-select2-sm" v-model="sub_building_type.build_type" data-search="off" data-placeholder="Bulk Action">
                                             <option value="null">Select Building Type</option>
                                             <option v-for="(item, index) in buildingTypes" v-bind:value="item.buildingTypeid">{{item.name}}</option>
@@ -511,19 +511,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-edit">Building Sub Type Name</label>
-                                        <input type="text" v-model="sub_building_type.name" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <input type="text" v-model="sub_building_type.name" class="form-control" id="product-name-edit" placeholder="Sub Building Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-edit">Building Sub Type Description</label>
-                                        <input type="text" v-model="sub_building_type.description" class="form-control" id="product-name-edit" placeholder="Product Name">
+                                        <input type="text" v-model="sub_building_type.description" class="form-control" id="product-name-edit" placeholder="Sub Building Description">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Host Type</button>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Sub Building Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -543,7 +543,7 @@
                         <div class="nk-modal py-4"> <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
                             <h4 class="nk-modal-title">Are You Sure ?</h4>
                             <div class="nk-modal-text mt-n2">
-                                <p class="text-soft">This Sub Category will be removed permanently.</p>
+                                <p class="text-soft">This Sub Building Type will be removed permanently.</p>
                             </div>
                             <ul class="d-flex justify-content-center gx-4 mt-4">
                                 <li>
