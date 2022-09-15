@@ -1,5 +1,5 @@
 <?php include "header.php"; ?>
-    <title>Stock Details</title>
+    <title>Sub Building Type</title>
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
@@ -24,27 +24,27 @@
                                     <div class="nk-block-head nk-block-head-sm">
                                         <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Host Type Details</h3>
+                                                <h3 class="nk-block-title page-title">Building Types</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Here is our various Hosts Type.</p>
+                                                    <p>Sub type under a building type.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
-                                            <div class="nk-block-head-content">
+                                            <!-- <div class="nk-block-head-content">
                                                 <ul class="nk-block-tools g-3">
                                                     <li>
                                                         <div class="drodown">
                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul class="link-list-opt no-bdr">
-                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Host Type</span></a></li>
-                                                                    <!-- <li><a href="#"><span>View Amenities</span></a></li>
-                                                                    <li><a href="#"><span>Delete Amenities</span></a></li> -->
+                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Sub type</span></a></li>
+                                                                    
                                                                 </ul>
                                                             </div>
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div><!-- .nk-block-head-content -->
+                                            </div> -->
+                                            <!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
                                     <div class="nk-block">
@@ -152,13 +152,13 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input @keyup="getAllHosttype(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
+                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllBuildingType(4)' v-model ='search' placeholder="Search by product name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if="all_host_type" class="card-inner p-0">
+                                                <div v-if="buildingTypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -168,7 +168,8 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Host Type</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Image</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -198,7 +199,7 @@
                                                                 </div> -->
                                                             </div>
                                                         </div><!-- .nk-tb-item -->
-                                                        <div v-for="(item, index) in all_host_type" class="nk-tb-item">
+                                                        <div v-for="(item, index) in buildingTypes" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid1">
@@ -211,9 +212,12 @@
                                                             <div class="nk-tb-col">
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
+                                                            <div class="nk-tb-col tb-col-md tb-product">
+                                                                <img v-if='item.imageUrl' :src="item.imageUrl" alt="Apartment imgage" class="thumb">
+                                                            </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span v-if="item.status_code > 0" class="tb-status text-success">{{item.status}}</span>
-                                                                <span v-if="item.status_code < 1" class="tb-status text-danger">{{item.status}}</span>
+                                                                <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
+                                                                <span v-if="item.statusCode < 1" class="tb-status text-danger">{{item.status}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
@@ -222,10 +226,10 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li @click="changeHostTypeStatus(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Deactivate</span></a></li>
-                                                                                    <li @click="changeHostTypeStatus(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Activate</span></a></li>
-                                                                                    <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#modalDelete"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                    <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
+                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
+                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
+                                                                                    <li @click.prevent= 'deleteByid(item.buildingTypeid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -237,11 +241,12 @@
                                                 </div><!-- .card-inner -->
 
                                                 <!-- Table when record not found -->
-                                                <div v-if="!all_host_type" class="card-inner p-0">
+                                                <div v-if="!buildingTypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Host Type</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Image</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
@@ -258,47 +263,56 @@
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
                                                 
-                                                <div v-if="all_host_type" class="card">
-                                                    <div class="card-inner">
-                                                        <div class="nk-block-between-md g-3">
-                                                            <div class="g">
-                                                                <ul class="pagination justify-content-center justify-content-md-start">
-                                                                    <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
-                                                                    <li v-if="kor_page > 1" @click="nav_previousPage" class="page-item"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
-                                                                    
-                                                                    <li class="page-item" v-for="page in kor_total_page">
-                                                                        <a v-if='page < 7'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        
-                                                                    </li>
-                                                                    <span v-if="kor_total_page > 7" class="page-link"><em class="icon ni ni-more-h"></em></span>
-                                                                    <li class="page-item" v-for="page in kor_total_page">
-                                                                        <a v-if='page > 13'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
-                                                                    </li>
-                                                                    
-                                                                    <li v-if="kor_page < kor_total_page"  class="page-item" @click="nav_nextPage"><a class="page-link"><em class="icon ni ni-chevrons-right"></em></a></li>
-                                                                    <li v-if="kor_page == kor_total_page" class="page-item disabled"><a  class="page-link" href="#"><em class="icon ni ni-chevrons-right"></em></a></li>
-                                                                </ul><!-- .pagination -->
-                                                            </div>
-                                                            <div class="g">
-                                                                <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                                                    <div>Page</div>
-                                                                    <div>
-                                                                        <select v-if="kor_total_page > 1" @change="selectPage(kor_page)" v-model="kor_page" class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                                                            <option v-for="page in kor_total_page" v-bind:value="page">{{page}}</option>
-                                                                        </select>
-                                                                        <select v-if="kor_total_page == 1" class="form-select js-select2 " data-search="on" data-dropdown="xs center">
-                                                                            <option value="1">1</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div>OF {{kor_total_page}}</div>
+                                                <div class="card-inner">
+                                                    <div class="nk-block-between-md g-3">
+                                                        <div class="g">
+                                                        <ul class="pagination justify-content-end">
+                                                            <li v-if="currentPage == 1" class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item">
+                                                                <a @click.prevent="previousPage()" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link">{{currentPage}} of {{totalPage}}</a></li>
+                                                            <li v-if="currentPage < totalPage" class="page-item">
+                                                                <a v-on:click.prevent="nextPage()" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                        </ul><!-- .pagination -->
+                                                        </div>
+                                                        <!-- <div class="g">
+                                                            <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+                                                                <div>Page</div>
+                                                                <div>
+                                                                    <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
+                                                                        <option value="page-1">1</option>
+                                                                        <option value="page-2">2</option>
+                                                                        <option value="page-4">4</option>
+                                                                        <option value="page-5">5</option>
+                                                                        <option value="page-6">6</option>
+                                                                        <option value="page-7">7</option>
+                                                                        <option value="page-8">8</option>
+                                                                        <option value="page-9">9</option>
+                                                                        <option value="page-10">10</option>
+                                                                        <option value="page-11">11</option>
+                                                                        <option value="page-12">12</option>
+                                                                        <option value="page-13">13</option>
+                                                                        <option value="page-14">14</option>
+                                                                        <option value="page-15">15</option>
+                                                                        <option value="page-16">16</option>
+                                                                        <option value="page-17">17</option>
+                                                                        <option value="page-18">18</option>
+                                                                        <option value="page-19">19</option>
+                                                                        <option value="page-20">20</option>
+                                                                    </select>
                                                                 </div>
-                                                            </div><!-- .pagination-goto -->
-                                                        </div><!-- .nk-block-between -->
-                                                    </div>
-                                                </div>
-                                                <!-- .card-inner -->
+                                                                <div>OF 102</div>
+                                                            </div>
+                                                        </div>.pagination-goto -->
+                                                    </div><!-- .nk-block-between -->
+                                                </div><!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
                                         </div><!-- .card -->
                                     </div><!-- .nk-block -->
@@ -445,19 +459,31 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Host Type Details</h5>
-                        <form @submit.prevent="addHostType" class="mt-2">
+                        <h5 class="modal-title">Add Building Type</h5>
+                        <form @submit.prevent="addBuildingType" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">Host Type Name</label>
-                                        <input v-model="host_type_name" type="text" class="form-control" id="product-name-add" placeholder="Host Type Name">
+                                        <label class="form-label" for="product-name-add"> Name</label>
+                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="quantity-add">Building Image</label>
+                                        <div class="form-control-wrap">        
+                                            <div class="form-file">            
+                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
+                                                <label class="form-file-label" for="customFile">Choose file</label>        
+                                            </div>    
+                                        </div>
+                                        <!-- <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity"> -->
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Host Type</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Building Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -475,20 +501,31 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="hosts" class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Host Type Details</h5>
-                        <form @submit.prevent="updateHostType" class="mt-2">
-                            <div class="row g-gs">
+                    <div class="modal-body modal-body-md">
+                        <h5 class="modal-title">Edit Building Type</h5>
+                        <form @submit.prevent="updateBuildingType"  action="#" class="mt-2">
+                            <div v-if='itemDetails' class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Host Type Name</label>
-                                        <input type="text" v-model="hosts.name" class="form-control" id="product-name-edit" placeholder="Host Type Name">
+                                        <label class="form-label" for="product-name-edit">Type Name</label>
+                                        <input type="text" class="form-control" id="product-name-edit" v-model="itemDetails.name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="quantity-add">Building Image</label>
+                                        <div class="form-control-wrap">        
+                                            <div class="form-file">            
+                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
+                                                <label class="form-file-label" for="customFile">Choose file</label>        
+                                            </div>    
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Host Type</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Building Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -501,28 +538,6 @@
                 </div><!-- .modal-content -->
             </div><!-- .modal-dialog -->
         </div><!-- .modal -->
-        <div class="modal fade" id="modalDelete" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content"> <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="hosts" class="modal-body modal-body-lg text-center">
-                        <div class="nk-modal py-4"> <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
-                            <h4 class="nk-modal-title">Are You Sure ?</h4>
-                            <div class="nk-modal-text mt-n2">
-                                <p class="text-soft">This Host Type will be removed permanently.</p>
-                            </div>
-                            <ul class="d-flex justify-content-center gx-4 mt-4">
-                                <li>
-                                    <button @click="deleteHostType(hosts.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
-                                </li>
-                                <li>
-                                    <button data-bs-dismiss="modal" class="btn btn-danger btn-dim">Cancel</button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>

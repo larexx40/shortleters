@@ -27,99 +27,103 @@
 
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
-
-        //check if isadmin
         $adminid = checkIfIsAdmin($connect,$userpubkey);
+
         if(!$adminid){
             // send user not found response to the user
             $errordesc =  "User not a admin";
             $linktosolve = 'https://';
-            $hint = "Only admin can access this route";
+            $hint = "Only admin access this route";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
         }
 
-        //confirm how to pass in the id
-        if(!isset($_POST['additionalChargeid'])){
-            $errordesc="Additional charges id required";
+        //confirm if additionalcharge id is passed
+        if(!isset($_POST['policyid'])){
+            $errordesc="Cancelation policy id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in Additional charges  id";
+            $text="Pass in Cancelation policy  id";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
             
         }else {
-            $additionalChargeid = cleanme($_POST['additionalChargeid']); 
+            $policyid = cleanme($_POST['policyid']); 
         }
 
-        if ( !isset($_POST['name']) ){
-            // send error if howmanyminread field is not passed
-            $errordesc = "Additional charges name must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+        //check status passed
+        if ( !isset($_POST['status']) ){
+            $errordesc="Cancelation policy status required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Cancelation policy status must be passed";
+            $method;
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-
         }else{
-            $name = cleanme($_POST['name']);
+            $status = cleanme($_POST['status']);
         }
 
-        if ( !isset($_POST['description']) ){
-            // send error if howmanyminread field is not passed
-            $errordesc = "Additional charges name must be passed";
+        if ($status == 0 || $status == "inactive"){
+            $changeStatus = 0;
+            $message = "Deactivated";
+        }elseif ($status == 1 || $status == 'active'){
+            $changeStatus = 1;
+            $message = "Activated";
+        }else{
+            $changeStatus = "";
+        }
+
+        if ( $changeStatus != 0 && $changeStatus !== 1){
+            $errordesc = "Status passed is invalid ";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required field in this register endpoint";
+            $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
-
-        }else{
-            $description = cleanme($_POST['description']);
         }
 
-        if (empty($name) || empty($description)){
-            // send error if inputs are empty
-            $errordesc = "Additional charges inputs are required";
-            $linktosolve = 'https://';
-            $hint = "Pass in Additional charges name, it can't be empty";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+        //confirm if building type id is not empty
+        if(empty($policyid)){
+            //all input required / bad request
+            $errordesc="Bad request";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Please pass in the cancelation policy id ";
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
         //`additional_charge`(`add_chrg_id`, `name`, `description`,`status`)
-        $sql = "UPDATE `additional_charge` SET name = ?, description = ? WHERE add_chrg_id = ?";
+        $sql = "UPDATE `cancelation_policies` SET `status`= ? WHERE policy_id = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('sss', $name, $description, $additionalChargeid);
-        $update =$stmt->execute();
-        if($update){
+        $stmt->bind_param('ss', $changeStatus, $policyid);
+        $stmt->execute();
+
+        if ( $stmt->affected_rows > 0 ){
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = [];
+            $hint = "Cancelation policy status set to $message";
             $errordata = [];
-            $text = "Additional charges";
+            $text = "Cancelation policy set to $message";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
-
+        
         }else{
-            //invalid input || server error
-            $errordesc=$stmt->error;
-            $linktosolve="htps://";
-            $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="invalid api id or Check DB connection";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondInternalError($data);
+            //Building type not found
+            $errordesc = "Cancelation policy with id not found";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass valid Cancelation policy id";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data); 
         }
-
-    
-
     }else{
         // method not allowed
         $errordesc="Method not allowed";
@@ -127,7 +131,6 @@
         $hint=["Ensure to use the method stated in the documentation."];
         $errordata=returnError7003($errordesc,$linktosolve,$hint);
         $text="Method used not allowed";
-        $method=getenv('REQUEST_METHOD');
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondMethodNotAlowed($data);
     }  

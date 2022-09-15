@@ -70,7 +70,7 @@
 
         $sqlQuery = "DELETE FROM `additional_charge` WHERE add_chrg_id =?";
         $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$scenicViewid);
+        $stmt->bind_param("s",$additionalChargeid);
         $stmt->execute();
         $affectedRow =$stmt->affected_rows;
 
