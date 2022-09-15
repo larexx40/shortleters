@@ -1,18 +1,17 @@
 <?php
-    // send some CORS headers so the API can be called from anywhere
+    // pass cors header to allow from cross-origin
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: POST");// OPTIONS,GET,POST,PUT,DELETE
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
-    // header("Access-Control-Max-Age: 3600");//3600 seconds
-    // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
     include "../cartsfunction.php";
 
-    $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
-
+    $method = getenv('REQUEST_METHOD');
+    $maindata= [];
+ 
     if ($method == 'POST') {
         //get company details to decode usertoken
         $detailsID =1;
@@ -40,24 +39,9 @@
             respondUnAuthorized($data);
         }
 
-        //confirm how to pass in the id
-        if(!isset($_POST['additionalChargeid'])){
-            $errordesc="Additional charges id required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in Additional charges  id";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-            
-        }else {
-            $additionalChargeid = cleanme($_POST['additionalChargeid']); 
-        }
-
         if ( !isset($_POST['name']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "Additional charges name must be passed";
+            $errordesc = "Cancelation policy name must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -70,7 +54,7 @@
 
         if ( !isset($_POST['description']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "Additional charges name must be passed";
+            $errordesc = "Cancelation policy description must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -78,47 +62,51 @@
             respondBadRequest($data);
 
         }else{
-            $description = cleanme($_POST['description']);
+            $descripption = cleanme($_POST['description']);
+        }
+        if ( !isset($_POST['readMoreUrl']) ){
+            // send error if howmanyminread field is not passed
+            $errordesc = "Cancelation policy read more url must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required field in this register endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data);
+
+        }else{
+            $readMoreUrl = cleanme($_POST['readMoreUrl']);
         }
 
-        if (empty($name) || empty($description)){
+        if (empty($name) || empty($descripption) || empty($readMoreUrl)){
             // send error if inputs are empty
-            $errordesc = "Additional charges inputs are required";
+            $errordesc = "Cancelation policy inputs are required";
             $linktosolve = 'https://';
-            $hint = "Pass in Additional charges name, it can't be empty";
+            $hint = "Pass in Cancelation policy name, it can't be empty";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
         }
-        //`additional_charge`(`add_chrg_id`, `name`, `description`,`status`)
-        $sql = "UPDATE `additional_charge` SET name = ?, description = ? WHERE add_chrg_id = ?";
-        $stmt = $connect->prepare($sql);
-        $stmt->bind_param('sss', $name, $description, $additionalChargeid);
-        $update =$stmt->execute();
-        if($update){
-            $maindata=[];
-            $errordesc = " ";
-            $linktosolve = "htps://";
-            $hint = [];
-            $errordata = [];
-            $text = "Additional charges";
+        $status =0;
+        $policyid = generateUniqueShortKey($connect,'cancelation_policies','policy_id');
+
+        $query = "INSERT INTO `cancelation_policies`(`policy_id`, `name`, `description`,`read_more_url`,`status`) VALUES (?,?,?,?,?)";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("sssss", $policyid, $descripption, $name, $readMoreUrl, $status);
+
+        if ( $stmt->execute() ){
+            $text= "Cancelation policy successfully posted";
             $status = true;
-            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-            respondOK($data);
-
+            $data = [];
+            $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
+            respondOK($successData);
         }else{
-            //invalid input || server error
-            $errordesc=$stmt->error;
-            $linktosolve="htps://";
-            $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="invalid api id or Check DB connection";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            $errordesc =  $stmt->error;
+            $linktosolve = 'https://';
+            $hint = "500 code internal error, check ur database connections";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondInternalError($data);
-        }
-
-    
+            }
 
     }else{
         // method not allowed
@@ -130,5 +118,6 @@
         $method=getenv('REQUEST_METHOD');
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondMethodNotAlowed($data);
-    }  
+    }
+ 
 ?>

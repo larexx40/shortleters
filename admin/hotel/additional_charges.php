@@ -184,32 +184,9 @@
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text"> Name</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Description</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <!-- <div class="dropdown">
-                                                                    <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-plus"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                                        <ul class="link-tidy sm no-bdr">
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" checked="" id="avil">
-                                                                                    <label class="custom-control-label" for="avil">Available</label>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" checked="" id="low">
-                                                                                    <label class="custom-control-label" for="low">Low</label>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" id="out">
-                                                                                    <label class="custom-control-label" for="out">Out of Stock</label>
-                                                                                </div>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div> -->
+                                                                
                                                             </div> 
                                                         </div><!-- .nk-tb-item -->
                                                         <div v-for="(item, index) in additionalCharges" class="nk-tb-item">
@@ -478,7 +455,12 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label class="form-label" for="product-name-add"> Name</label>
-                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Charge eg, parking fee">
+                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Charge fee eg, parking fee">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-add"> Description</label>
+                                        <input v-model="description" type="text" class="form-control" id="product-name-add" placeholder="Describe the charge">
                                     </div>
                                 </div>
                                 <div class="col-12">

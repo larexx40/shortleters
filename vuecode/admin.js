@@ -132,7 +132,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMyMjY2MjMsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzIyNjYyMywiZXhwIjoxNjYzMzAwNDIzLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.Fs7nT17lwGJ9zapq14pNVMWENTVLuW67utETrgPAvy-ka_ylPYDHpKd3EgJqoBCBl4JPnCQ_nN-ORXx3-hswIw",
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMyMzI4MDIsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzIzMjgwMiwiZXhwIjoxNjYzMzA2NjAyLCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.9WGnXtg2lD8krebtCRLyKqiTkiLM-wkstk2CDwTK1diZ1zR_ZpVBBzFHRg9qNetrePNGvNHMJJ5Pg00iEqseMQ",
             email: null,
             ref_link: null,
             admin_details: null,
@@ -252,6 +252,9 @@ let admin = Vue.createApp({
         }
         if(webPage == 'additional_charges.php'){
             await this.getAllAdditionalCharge();
+        }
+        if(webPage == 'cancelation_policy.php'){
+            await this.getAllCancelationPolicy();
         }
         
     },
@@ -2426,15 +2429,17 @@ let admin = Vue.createApp({
             
         },
         async updateAdditionalCharge(){
-            if(this.itemDetails.name == null || item.description == null){
+            if(this.itemDetails.name == null || this.itemDetails.description == null){
+                console.log("details not null");
                 new Toasteur().error("Kindly fill all fields")
             }else{
 
                 let data = new FormData();
                 data.append('additionalChargeid', this.itemDetails.additionalChargeid );
                 data.append('name', this.itemDetails.name );
+                data.append('description', this.itemDetails.description );
 
-                const url = `${this.baseUrl}api/additionalCharge/updateAdditionalCharge.php`;
+                const url = `${this.baseUrl}api/additionalCharge/updateAdditionalCharges.php`;
                 
                 const options = {
                     method: "POST",
@@ -5885,7 +5890,10 @@ let admin = Vue.createApp({
                     this.deleteScenicView(id);
                 }
                 if(webPage == 'additional_charges.php'){
-                    this.deleteAdditionalCharges(id);
+                    this.deleteAdditionalCharge(id);
+                }
+                if(webPage == 'cancelation_policy.php'){
+                    this.deleteCancelationPolicy(id);
                 }
                 swalWithBootstrapButtons.fire(
                 'Deleted!',

@@ -110,9 +110,9 @@
                                         <li class="nk-menu-item">
                                             <a href="./spaceType.php" class="nk-menu-link"><span class="nk-menu-text">Space Type</span></a>
                                         </li>
-                                        <li class="nk-menu-item">
+                                        <!-- <li class="nk-menu-item">
                                             <a href="./guest_features.php" class="nk-menu-link"><span class="nk-menu-text">Guest Features</span></a>
-                                        </li>
+                                        </li> -->
                                         <li class="nk-menu-item">
                                             <a href="./guestSafety.php" class="nk-menu-link"><span class="nk-menu-text">Guest Safety</span></a>
                                         </li>

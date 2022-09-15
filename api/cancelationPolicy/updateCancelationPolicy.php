@@ -41,23 +41,23 @@
         }
 
         //confirm how to pass in the id
-        if(!isset($_POST['additionalChargeid'])){
-            $errordesc="Additional charges id required";
+        if(!isset($_POST['policyid'])){
+            $errordesc="Cancelation policy id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in Additional charges  id";
+            $text="Pass in Cancelation policy  id";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
             
         }else {
-            $additionalChargeid = cleanme($_POST['additionalChargeid']); 
+            $policyid = cleanme($_POST['policyid']); 
         }
 
         if ( !isset($_POST['name']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "Additional charges name must be passed";
+            $errordesc = "Cancelation policy name must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -70,7 +70,7 @@
 
         if ( !isset($_POST['description']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "Additional charges name must be passed";
+            $errordesc = "Cancelation policy description must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -78,22 +78,34 @@
             respondBadRequest($data);
 
         }else{
-            $description = cleanme($_POST['description']);
+            $descripption = cleanme($_POST['description']);
+        }
+        if ( !isset($_POST['readMoreUrl']) ){
+            // send error if howmanyminread field is not passed
+            $errordesc = "Cancelation policy read more url must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required field in this register endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+            respondBadRequest($data);
+
+        }else{
+            $readMoreUrl = cleanme($_POST['readMoreUrl']);
         }
 
-        if (empty($name) || empty($description)){
+        if (empty($name) || empty($descripption) || empty($readMoreUrl)){
             // send error if inputs are empty
-            $errordesc = "Additional charges inputs are required";
+            $errordesc = "Cancelation policy inputs are required";
             $linktosolve = 'https://';
-            $hint = "Pass in Additional charges name, it can't be empty";
+            $hint = "Pass in Cancelation policy name, it can't be empty";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data);
         }
-        //`additional_charge`(`add_chrg_id`, `name`, `description`,`status`)
-        $sql = "UPDATE `additional_charge` SET name = ?, description = ? WHERE add_chrg_id = ?";
+        
+        $sql = "UPDATE `cancelation_policies` SET name = ?, description = ?, read_more_url = ? WHERE policy_id = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('sss', $name, $description, $additionalChargeid);
+        $stmt->bind_param('ssss', $name, $description,$readMoreUrl, $policyid);
         $update =$stmt->execute();
         if($update){
             $maindata=[];
@@ -101,7 +113,7 @@
             $linktosolve = "htps://";
             $hint = [];
             $errordata = [];
-            $text = "Additional charges";
+            $text = "Cancelation policy Updated";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);

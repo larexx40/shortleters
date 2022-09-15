@@ -79,7 +79,7 @@
 
         $query = "INSERT INTO `additional_charge`(`add_chrg_id`, `name`, `description`,`status`) VALUES (?,?,?,?)";
         $stmt = $connect->prepare($query);
-        $stmt->bind_param("sss", $additionalChargeid, $name, $status);
+        $stmt->bind_param("ssss", $additionalChargeid, $name, $descripption, $status);
 
         if ( $stmt->execute() ){
             $text= "Additional charges successfully posted";
