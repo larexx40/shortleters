@@ -78,6 +78,12 @@
                                         <li class="nk-menu-item">
                                             <a href="./all_apartments.php" class="nk-menu-link"><span class="nk-menu-text">All Apartments</span></a>
                                         </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./all_apartments.php" class="nk-menu-link"><span class="nk-menu-text">All Apartments Facilities</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./all_apartments.php" class="nk-menu-link"><span class="nk-menu-text">All Apartments Images</span></a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="nk-menu-item has-sub">

@@ -79,102 +79,63 @@
 
         if (!empty($search) && $search != "" && $search != " "){
             $searching = "%{$search}%";
-            if ($sort > 0){
-               
-                // get the total number of pages
-                $query = "SELECT apartment_facilities.* FROM `apartment_facilities` LEFT JOIN apartments ON apartments.apartment_id = apartment_facilities.apartment_id LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.status = ? AND ( facilities.name LIKE ? OR apartments.name LIKE ? ) ";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sss", $status, $searching, $searching );
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
-                $total_pg_found =  ceil($num_row / $no_per_page);
+            
+            // get the total number of pages
+            $query = "SELECT apartment_facilities_img.* FROM `apartment_facilities_img` LEFT JOIN facilities ON facilities.facility_id = apartment_facilities_img.facility_id LEFT JOIN apartments ON apartments.apartment_id = apartment_facilities_img.apartment_id WHERE apartments.name LIKE ? OR facilities.name LIKE ?";
+            $queryStmt = $connect->prepare($query);
+            $queryStmt->bind_param("ss", $searching, $searching);
+            $queryStmt->execute();
+            $result = $queryStmt->get_result();
+            $total_num_row = $result->num_rows;
+            $total_pg_found =  ceil($total_num_row / $no_per_page); 
 
-                $query = "$query LIMIT ?, ?";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sssss", $status, $searching, $searching , $offset, $no_per_page);
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $num_row = $result->num_rows; 
-            }else{
-                // get the total number of pages
-                $query = "SELECT apartment_facilities.* FROM `apartment_facilities` LEFT JOIN apartments ON apartments.apartment_id = apartment_facilities.apartment_id LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.name LIKE ? OR apartments.name LIKE ? ";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ss", $searching, $searching);
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $total_num_row = $result->num_rows;
-                $total_pg_found =  ceil($total_num_row / $no_per_page); 
-
-                $query = "$query LIMIT ?, ?";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ssss", $searching, $searching, $offset, $no_per_page);
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
-
-            }            
+            $query = "$query LIMIT ?, ?";
+            $queryStmt = $connect->prepare($query);
+            $queryStmt->bind_param("ssss", $searching, $searching, $offset, $no_per_page);
+            $queryStmt->execute();
+            $result = $queryStmt->get_result();
+            $num_row = $result->num_rows;         
 
         }else{
 
-            if ($sort > 0){
-                // Get total number of complains in the system
-                $query = "SELECT * FROM `apartment_facilities` LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.status = ?";
-                $gtTotalPgs = $connect->prepare($query);
-                $gtTotalPgs->bind_param("s", $status);
-                $gtTotalPgs->execute();
-                $result = $gtTotalPgs->get_result();
-                $total_num_row = $result->num_rows;
-                $total_pg_found =  ceil($total_num_row / $no_per_page); 
+            
+            // Get total number of complains in the system
+            $query = "SELECT * FROM `apartment_facilities_img`";
+            $gtTotalPgs = $connect->prepare($query);
+            $gtTotalPgs->execute();
+            $result = $gtTotalPgs->get_result();
+            $total_num_row = $result->num_rows;
+            $total_pg_found =  ceil($total_num_row / $no_per_page); 
 
-                $query = "$query LIMIT ?, ?";
-                $gtTotalcomplains = $connect->prepare($query);
-                $gtTotalcomplains->bind_param("sss", $status ,$offset, $no_per_page);
-                $gtTotalcomplains->execute();
-                $result = $gtTotalcomplains->get_result();
-                $num_row = $result->num_rows;
-            }else{
-                // Get total number of complains in the system
-                $query = "SELECT * FROM `apartment_facilities`";
-                $gtTotalPgs = $connect->prepare($query);
-                $gtTotalPgs->execute();
-                $result = $gtTotalPgs->get_result();
-                $total_num_row = $result->num_rows;
-                $total_pg_found =  ceil($total_num_row / $no_per_page); 
-
-                $query = "$query LIMIT ?, ?";
-                $gtTotalcomplains = $connect->prepare($query);
-                $gtTotalcomplains->bind_param("ss", $offset, $no_per_page);
-                $gtTotalcomplains->execute();
-                $result = $gtTotalcomplains->get_result();
-                $num_row = $result->num_rows;
-                
-            }
+            $query = "$query LIMIT ?, ?";
+            $gtTotalcomplains = $connect->prepare($query);
+            $gtTotalcomplains->bind_param("ss", $offset, $no_per_page);
+            $gtTotalcomplains->execute();
+            $result = $gtTotalcomplains->get_result();
+            $num_row = $result->num_rows;
             
 
         }
 
         if ($num_row > 0){
-            $allFacilities = [];
+            $allFacilities_images = [];
 
             while($row = $result->fetch_assoc()){
                 $aprtment_id = $row['apartment_id'];
                 $aprtment_name =  getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
                 $facility_id = $row['facility_id'];
                 $facility_name =  getNameFromField($connect, "facilities", "facility_id", $facility_id);
-                $img_url = $row['image_url'];
+                $images = $row['images'];
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
-                array_push($allFacilities, array(
-                    'id' => $row['apart_facility_id'],
+                array_push($allFacilities_images, array(
+                    'id' => $row['apart_fac_img_id'],
                     'aprtment_id' => $aprtment_id,
                     'aprtment_name' => ( $aprtment_name )? $aprtment_name: null,
                     'facility_id' => $facility_id,
                     'facility_name' => ( $facility_name )? $facility_name: null,
-                    'status_code' => $status_code,
-                    'status' => $status,
-                    "total_number" => $row['total_number'],
+                    'images' => $images,
                     'created' => $created,
                     'updated' => $updated
                 ));
@@ -184,7 +145,7 @@
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'facilities' => $allFacilities
+                'amenities' => $allFacilities_images
             );
             $text= "Fetch Successful";
             $status = true;

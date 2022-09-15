@@ -106,7 +106,7 @@
         }
 
 
-        $amenities_id = generateUniqueShortKey($connect, "amenities", "amen_id ");
+        $apartment_id = generateUniqueShortKey($connect, "apartments", "apartment_id ");
 
 
         $query = 'INSERT INTO `amenities`(`amen_id`, `name`) VALUES (?, ?)';
