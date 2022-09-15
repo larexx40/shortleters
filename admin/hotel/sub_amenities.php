@@ -212,7 +212,7 @@
                                                                 <span>{{item.amenity_name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span><i :class="item.icon"></i>{{item.icon.split("-")[2]}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                                <span><em :class="item.icon"></em>{{item.icon.split("-")[2]}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.essential_code > 0" class="tb-status text-success">{{item.essential}}</span>
