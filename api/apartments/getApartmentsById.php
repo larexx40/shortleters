@@ -97,10 +97,10 @@
                 $safety_id_name = [];
                 if ($safety_ids){
                     for ($i = 0; $i < count($safety_ids); $i++){
-                        $id_name = getNameFromField($connect, "guest_safety", "guest_safetyid", $safety_ids[$i]);
+                        $id_name = getFieldsDetails($connect, "guest_safety", "guest_safetyid", $safety_ids[$i]);
                         array_push($safety_id_name, array(
                             'safety_id' => $safety_ids[$i],
-                            'name' => ($id_name)? $id_name : null
+                            'details' => ($id_name)? $id_name['details'] : null
                         ));
                     }
                 }

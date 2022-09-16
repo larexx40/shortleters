@@ -43,14 +43,14 @@
                                                     <a @click="getOrderAndTransaction" class="nav-link" data-bs-toggle="tab" href="#profile-overview"><span>Overview</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a @click="getUserOrders(3)" class="nav-link" data-bs-toggle="tab" href="#profile-orders"><span>Orders</span></a>
+                                                    <a @click="getUserOrders(3)" class="nav-link" data-bs-toggle="tab" href="#profile-orders"><span>Bookings</span></a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a @click="getUserNotifications(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Apartment Images</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @click="getUserActivities(3)" class="nav-link" data-bs-toggle="tab" href="#profile-activity"><span>Apartment Safety Features</span> </a>
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#profile-activity"><span>Apartment Safety Features</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
@@ -367,50 +367,57 @@
                                                         </nav>
                                                     </div>
                                                     <!--tab pane-->
-                                                    <div class="tab-pane" id="profile-activity">
-                                                        <div v-if="user_activities" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                    <div v-if="apartment_details" class="tab-pane" id="profile-activity">
+                                                        <div v-if="apartment_details.safety_ids" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Activity</span>
+                                                                    <span class="lead-text">Safety Feature</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Time</span>
+                                                                    <span class="lead-text">Icon</span>
                                                                 </div>
                                                                 <div class="nk-tb-col nk-tb-col-tools">
-                                                                    <span class="lead-text">Preview</span>
+                                                                    <span class="lead-text">Description</span>
                                                                 </div>
                                                             </div>
-                                                            <div v-for="(item, index) in user_activities" class="nk-tb-item">
+                                                            <div v-for="(item, index) in apartment_details.safety_ids" class="nk-tb-item">
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1}} </div>
-                                                                <div class="nk-tb-col"> {{item.activity}} </div>
+                                                                <div class="nk-tb-col"> {{item.details.name}} </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">{{item.date}}</span>
+                                                                    <span class="lead-text"><em :class="item.details.icon" ></em></span>
                                                                 </div>
                                                                 <div class="nk-tb-col nk-tb-col-tools">
                                                                     <ul class="nk-tb-actions gx-1">
-                                                                        <li @click="getActivity(index)" data-bs-toggle="modal" data-bs-target="#modal-activity">
-                                                                            <a href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
+                                                                        <li>
+                                                                            <a href="#" class="btn btn-sm btn-icon btn-trigger me-n1">{{item.details.description}}</a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div v-if="!user_activities" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
-                                                            No Record
+                                                        <div v-if="!apartment_details.safety_ids" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                            <div class="nk-tb-item nk-tb-head">
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">#</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Safety Feature</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Icon</span>
+                                                                </div>
+                                                                <div class="nk-tb-col nk-tb-col-tools">
+                                                                    <span class="lead-text">Description</span>
+                                                                </div>
+                                                            </div>
+                                                            <div v-for="(item, index) in user_activities" class="nk-tb-item">
+                                                                No Record
+                                                            </div>
                                                         </div>
                                                         <br><br>
-                                                        <nav>
-                                                            <ul v-if="user_activities" class="pagination justify-content-end">
-                                                                <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
-                                                                <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_activity')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
-                                                                <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_activity', page)" class="page-link" href="#">{{page}}</a></li>
-                                                                <li v-if="kor_page < kor_total_page" @click="nav_dynamic_nextPage('user_activity')" class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                                <li v-if="kor_page == kor_total_page" class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                                                            </ul>
-                                                        </nav>
                                                     </div>
                                                     <!--tab pane-->
 
