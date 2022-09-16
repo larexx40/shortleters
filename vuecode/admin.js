@@ -184,7 +184,9 @@ let admin = Vue.createApp({
             amenity: null,
             all_apart_charges: null,
             all_apartments: null,
+            apartment_charges: null,
             apartment_details: null,
+            apartment_facilities: null,
             apartment: null,
             users: null,
             user: null,
@@ -8139,6 +8141,132 @@ let admin = Vue.createApp({
                         //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                     }else{
                         this.apartment_details = null;
+                    }  
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // window.location.href="/login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+        
+                    new Toasteur().error(error.message || "Error processing request")
+        
+                    
+                }finally {
+                    this.loading = false;
+                }
+            }else{
+                window.location.href="./all_apartments.php"
+            }
+        },
+        async getApartmentFacilitiesById(load = 1){
+            let id = (window.localStorage.getItem("apart_id")) ? window.localStorage.getItem("apart_id") : null 
+            
+            if (id){
+                const url = `${this.baseUrl}api/apartments/get_apartment_facilitiesByApartment.php?apartment_id=${id}`;
+                const options = {
+                    method: "GET",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url
+                }
+                try {
+                    if (load == 1){
+                        this.loading = true;
+                    } 
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.apartment_facilities = response.data.data.facilities;
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }else{
+                        this.apartment_facilities = null;
+                    }  
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // window.location.href="/login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+        
+                    new Toasteur().error(error.message || "Error processing request")
+        
+                    
+                }finally {
+                    this.loading = false;
+                }
+            }else{
+                window.location.href="./all_apartments.php"
+            }
+        },
+        async getApartmentAdditionalChargesById(load = 1){
+            let id = (window.localStorage.getItem("apart_id")) ? window.localStorage.getItem("apart_id") : null 
+            
+            if (id){
+                const url = `${this.baseUrl}api/apartment_additional_charges/get_add_chargeByApartment.php?apartment_id=${id}`;
+                const options = {
+                    method: "GET",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url
+                }
+                try {
+                    if (load == 1){
+                        this.loading = true;
+                    } 
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.apartment_charges = response.data.data.apartment_charges;
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }else{
+                        this.apartment_charges = null;
                     }  
                 } catch (error) {
                     // //console.log(error);

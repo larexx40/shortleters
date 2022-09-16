@@ -46,15 +46,15 @@
                                                     <a @click="getUserOrders(3)" class="nav-link" data-bs-toggle="tab" href="#profile-orders"><span>Orders</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a @click="getUserNotifications(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Notifications</span> </a>
+                                                    <a @click="getUserNotifications(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Apartment Images</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @click="getUserActivities(3)" class="nav-link" data-bs-toggle="tab" href="#profile-activity"><span>Activity</span> </a>
+                                                    <a @click="getUserActivities(3)" class="nav-link" data-bs-toggle="tab" href="#profile-activity"><span>Apartment Safety Features</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @click="getAllUserAddress(3)" class="nav-link" data-bs-toggle="tab" href="#profile-address"><span>Address</span> </a>
+                                                    <a @click="getApartmentFacilitiesById(3)" class="nav-link" data-bs-toggle="tab" href="#profile-address"><span>Apartment Facilities</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
@@ -62,7 +62,7 @@
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @click="getUserComplains(3)" class="nav-link" data-bs-toggle="tab" href="#profile-complains"><span>Complains</span> </a>
+                                                    <a @click="getApartmentAdditionalChargesById(3)" class="nav-link" data-bs-toggle="tab" href="#profile-complains"><span>Additional Charges</span> </a>
                                                 </li>
                                             </ul>
                                             <div class="card-inner">
