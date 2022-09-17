@@ -97,7 +97,7 @@
         $slider_stmt->bind_param("ssss", $building_type, $sub_building_id, $name, $description);
 
         if ( $slider_stmt->execute() ) {
-            $text= "Slider successfully added";
+            $text= "Building subtype successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);

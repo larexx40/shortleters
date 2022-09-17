@@ -16,6 +16,19 @@
     $maindata=[];
 
     if($method =='GET'){
+        //get company details to decode usertoken
+        $detailsID =1;
+        $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
+        $getCompanyDetails->bind_param('i', $detailsID);
+        $getCompanyDetails->execute();
+        $result = $getCompanyDetails->get_result();
+        $companyDetails = $result->fetch_assoc();
+        $companyprivateKey = $companyDetails['privatekey'];
+        $minutetoend = $companyDetails['tokenexpiremin'];
+        $serverName = $companyDetails['servername'];
+
+        $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
+        $userPubKey = $decodeToken->usertoken;
 
         if (isset($_GET['sort'])) {
             $sort = cleanme($_GET['sort']); //sort if > 0
@@ -57,14 +70,15 @@
 
 
         if($status > 0){
+            
             //sort with default address
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
-                $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` 
-                                WHERE (`name` like ? ) AND `status` =?";
+                $searchParam = "%{$search}%"; 
+                $searchQuery = "SELECT id, `house_rule_id`,`name`,`description`,`read_more_url`,`status` FROM `house_rule`
+                                WHERE (`name` like ? OR `description` like ?) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("ss", $searchParam, $status);
+                $stmt->bind_param("sss", $searchParam, $searchParam, $status);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
@@ -72,14 +86,14 @@
 
                 $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("ssss", $searchParam, $status, $offset, $noPerPage);
+                $stmt->bind_param("sssss",$searchParam, $searchParam, $status, $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $numRow = $result->num_rows;  
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` 
+                $sqlQuery = "SELECT id, `house_rule_id`,`name`,`description`,`read_more_url`,`status` FROM `house_rule`
                             WHERE `status` =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
@@ -100,10 +114,10 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` 
-                                WHERE `name` like ? ";
+                $searchQuery = "SELECT id, `house_rule_id`,`name`,`description`,`read_more_url`,`status` FROM `house_rule`
+                                WHERE (`name` like ? OR `description` like ?) ";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("s",  $searchParam);
+                $stmt->bind_param("ss",$searchParam,  $searchParam);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
@@ -112,20 +126,20 @@
                 //paginate the fetch data
                 $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("sss", $searchParam, $offset, $noPerPage);
+                $stmt->bind_param("ssss",$searchParam, $searchParam, $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types`";
+                $sqlQuery = "SELECT id, `house_rule_id`,`name`,`description`,`read_more_url`,`status` FROM `house_rule`";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `id`, `build_id`,`name`,`image_url`,`status` FROM `building_types` ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT id, `house_rule_id`,`name`,`description`,`read_more_url`,`status` FROM `house_rule`  ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
@@ -150,13 +164,12 @@
         
         if($numRow > 0){
             $allResponse = [];
-            $stmt->close();
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
-                $buildingTypeid = $row['build_id'];
-                $subTypes = countRowWithParam($connect,'sub_building_types', 'build_type_id', $buildingTypeid);
+                $houseRuleid = $row['house_rule_id'];
                 $name = $row['name'];
-                $imageUrl = $row['image_url'];
+                $description = $row['description'];
+                $readMoreUrl = $row['read_more_url'];
                 $statusCode = $row['status'];
                 if($statusCode == 1){
                     $status = "Active";
@@ -166,10 +179,10 @@
 
             array_push($allResponse, array(
                 "id"=>$id,
-                "buildingTypeid"=>$buildingTypeid,
+                "houseRuleid"=>$houseRuleid,
                 "name"=>$name,
-                "imageUrl"=>$imageUrl,
-                "subTypes"=>$subTypes,
+                "description"=>$description,
+                "readMoreUrl"=>$readMoreUrl,
                 "status"=>$status,
                 "statusCode"=>$statusCode,
             ));
@@ -180,7 +193,7 @@
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'buildingTypes'=> $allResponse
+                'houseRules'=> $allResponse
             ];
             $linktosolve = "htps://";
             $hint = [];

@@ -1,10 +1,10 @@
 <?php include "header.php"; ?>
-    <title>Bookings Dashboard</title>
+    <title>House Rule</title>
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
     <div id="admin" v-cloak>
-        <?php include "loading.php"; ?>
+        <?php include "./loading.php" ?>
         <div class="nk-app-root">
             <!-- main @s -->
             <div class="nk-main ">
@@ -22,33 +22,28 @@
                             <div class="nk-content-inner">
                                 <div class="nk-content-body">
                                     <div class="nk-block-head nk-block-head-sm">
-                                        <div class="nk-block-between">
+                                        <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Booking Lists</h3>
+                                                <h3 class="nk-block-title page-title">House Rule</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>You have total 2,595 booking's.</p>
+                                                    <p>Here are rules to abide at shortlet.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
-                                                <div class="toggle-wrap nk-block-tools-toggle">
-                                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
-                                                    <div class="toggle-expand-content" data-content="pageMenu">
-                                                        <ul class="nk-block-tools g-3">
-                                                            <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
-                                                            <li class="nk-block-tools-opt">
-                                                                <div class="drodown">
-                                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a href="./booking-add.php"><span>Add Booking</span></a></li>
-                                                                            <li><a href="#"><span>Import Booking</span></a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div><!-- .toggle-wrap -->
+                                                <ul class="nk-block-tools g-3">
+                                                    <li>
+                                                        <div class="drodown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add House Rule</span></a></li>
+                                                                    <!-- <li><a href="#"><span>View Amenities</span></a></li>
+                                                                    <li><a href="#"><span>Delete Amenities</span></a></li> -->
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div><!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
@@ -58,20 +53,22 @@
                                                 <div class="card-inner position-relative card-tools-toggle">
                                                     <div class="card-title-group">
                                                         <div class="card-tools">
-                                                            <div class="form-inline flex-nowrap gx-3">
-                                                                <!-- <div class="form-wrap w-150px">
+                                                            <!-- <div class="form-inline flex-nowrap gx-3">
+                                                                <div class="form-wrap w-150px">
                                                                     <select class="form-select js-select2 js-select2-sm" data-search="off" data-placeholder="Bulk Action">
                                                                         <option value="">Bulk Action</option>
-                                                                        <option value="email">Send Email</option>
-                                                                        <option value="delete">Delete Booking</option>
+                                                                        <option value="edit">Edit Selected</option>
+                                                                        <option value="delete">Delete Selected</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="btn-wrap">
                                                                     <span class="d-none d-md-block"><button class="btn btn-dim btn-outline-light disabled">Apply</button></span>
                                                                     <span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span>
-                                                                </div> -->
-                                                            </div><!-- .form-inline -->
-                                                        </div><!-- .card-tools -->
+                                                                </div>
+                                                            </div> -->
+                                                        </div>
+                                                        <!-- .form-inline -->
+                                                        <!-- .card-tools -->
                                                         <div class="card-tools me-n1">
                                                             <ul class="btn-toolbar gx-1">
                                                                 <li>
@@ -94,50 +91,25 @@
                                                                                         </a>
                                                                                         <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
                                                                                             <div class="dropdown-head">
-                                                                                                <span class="sub-title dropdown-title">Filter Bookings</span>
+                                                                                                <span class="sub-title dropdown-title">Filter Report</span>
                                                                                                 <div class="dropdown">
                                                                                                     <a href="#" class="btn btn-sm btn-icon">
                                                                                                         <em class="icon ni ni-more-h"></em>
                                                                                                     </a>
                                                                                                 </div>
                                                                                             </div>
+
                                                                                             <div class="dropdown-body dropdown-body-rg">
-                                                                                                <div class="row gx-6 gy-3">
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                                            <input type="checkbox" class="custom-control-input" id="hasEmail">
-                                                                                                            <label class="custom-control-label" for="hasEmail"> Email Verified</label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">Any Status</option>
-                                                                                                                <option value="paid">Paid</option>
-                                                                                                                <option value="due">Due</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Room Type</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">Any Type</option>
-                                                                                                                <option value="single">Single</option>
-                                                                                                                <option value="double">Double</option>
-                                                                                                                <option value="delux">Delux</option>
-                                                                                                                <option value="sdelux">Super Delux</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="form-group">
-                                                                                                            <button type="button" class="btn btn-secondary">Filter</button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
+                                                                                                <ul class="link-check">
+                                                                                                    <li v-if="sort == null" class="" :class="{active: class_active}" @click.prevent ="noSort(0)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="sort != null" class=""  @click.prevent="noSort(0)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="sort == 1" :class="{active: class_active}"  @click.prevent="sortByStatus(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="sort != 1" class=""  @click.prevent="sortByStatus(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="sort == 0" :class="{active: class_active}" @click.prevent="sortByStatus(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="sort != 0" class=""  @click.prevent="sortByStatus(0)"><a href="#">Inactive</a></li>
+                                                                                                </ul>
                                                                                             </div>
+
                                                                                             <div class="dropdown-foot between">
                                                                                                 <a class="clickable" href="#">Reset Filter</a>
                                                                                                 <a href="#">Save Filter</a>
@@ -151,17 +123,21 @@
                                                                                             <em class="icon ni ni-setting"></em>
                                                                                         </a>
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
+                                                                                            
                                                                                             <ul class="link-check">
                                                                                                 <li><span>Show</span></li>
-                                                                                                <li class="active"><a href="#">10</a></li>
-                                                                                                <li><a href="#">20</a></li>
-                                                                                                <li><a href="#">50</a></li>
+                                                                                                <li v-if="per_page == 10" class="" :class="{active: class_active}" @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page != 10" class=""  @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page == 20" :class="{active: class_active}"  @click.prevent="setNoPerPage(20)" class=""><a href="#">20</a></li>
+                                                                                                <li v-if="per_page != 20" class=""  @click.prevent="setNoPerPage(20)"><a href="#">20</a></li>
+                                                                                                <li v-if="per_page == 50" :class="{active: class_active}" @click.prevent="setNoPerPage(50)" class=""><a href="#">50</a></li>
+                                                                                                <li v-if="per_page != 50" class=""  @click.prevent="setNoPerPage(50)"><a href="#">50</a></li>
                                                                                             </ul>
-                                                                                            <ul class="link-check">
+                                                                                            <!-- <ul class="link-check">
                                                                                                 <li><span>Order</span></li>
                                                                                                 <li class="active"><a href="#">DESC</a></li>
                                                                                                 <li><a href="#">ASC</a></li>
-                                                                                            </ul>
+                                                                                            </ul> -->
                                                                                         </div>
                                                                                     </div><!-- .dropdown -->
                                                                                 </li><!-- li -->
@@ -176,102 +152,52 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by user or email">
+                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllHouseRules(4)' v-model ='search' placeholder="Search by rule name">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div class="card-inner p-0">
+                                                <div v-if="houseRules" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <!-- <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
+                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid">
                                                                     <label class="custom-control-label" for="uid"></label>
-                                                                </div> -->
-                                                            </div>
-                                                            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Customer</span></div>
-                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">Package</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Booking</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Room Type</span></div>
-                                                            <div class="nk-tb-col tb-col-xxl"><span class="sub-text">Mobile</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Arrive</span></div>
-                                                            <div class="nk-tb-col tb-col-xxl"><span class="sub-text">Depart</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
+                                                                </div>
+                                                            </div> -->
+                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text"> Name</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Description</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Read more url</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <!-- <div class="dropdown">
-                                                                    <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-plus"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                                        <ul class="link-tidy sm no-bdr">
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" checked="" id="bo">
-                                                                                    <label class="custom-control-label" for="bo">Booking</label>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" checked="" id="ph">
-                                                                                    <label class="custom-control-label" for="ph">Phone</label>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" id="pay">
-                                                                                    <label class="custom-control-label" for="pay">Payment</label>
-                                                                                </div>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div> -->
-                                                            </div>
+                                                                
+                                                            </div> 
                                                         </div><!-- .nk-tb-item -->
-                                                        
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <!-- <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid10">
-                                                                    <label class="custom-control-label" for="uid10"></label>
-                                                                </div> -->
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="text-primary">AB-605</span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <a href="#">
-                                                                    <div class="user-card">
-                                                                        <div class="user-avatar bg-danger">
-                                                                            <span>MY</span>
-                                                                        </div>
-                                                                        <div class="user-info">
-                                                                            <span class="tb-lead">Makiyah Yeager<span class="dot dot-success d-md-none ms-1"></span></span>
-                                                                            <span>makiyah@niosoft.com</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
+                                                        <div v-for="(item, index) in houseRules" class="nk-tb-item">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
+                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                                    <input type="checkbox" class="custom-control-input" id="uid1">
+                                                                    <label class="custom-control-label" for="uid1"></label>
+                                                                </div>
+                                                            </div> -->
                                                             <div class="nk-tb-col tb-col-mb">
-                                                                <span>Honeymoon</span>
+                                                                <span><a href="#">{{parseInt(index) + 1}}</a></span>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>{{item.description}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>{{item.readMoreUrl}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Active</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                <span>Delux</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-xxl">
-                                                                <span>+811 569-6523</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                <span>02 May 2021</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-xxl">
-                                                                <span>04 May 2021</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Paid</span>
+                                                                <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
+                                                                <span v-if="item.statusCode < 1" class="tb-status text-danger">{{item.status}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
@@ -280,33 +206,64 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li><a href="./booking-edit.php"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-money"></em><span>Mark as Paid</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-report-profit"></em><span>Receipt</span></a></li>
-                                                                                    <li><a href="./booking-edit.php"><em class="icon ni ni-report"></em><span>Invoice</span></a></li>
+                                                                                    <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
+                                                                                    <li @click.prevent = 'changeHouseRuleStatus(item.house_rule_id, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
+                                                                                    <li @click.prevent = 'changeHouseRuleStatus(item.house_rule_id, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
+                                                                                    <li @click.prevent= 'deleteByid(item.house_rule_id)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
                                                                     </li>
                                                                 </ul>
                                                             </div>
-                                                        </div><!-- .nk-tb-item -->
+                                                        </div><!-- .nk-tb-item  -->
                                                     </div><!-- .nk-tb-list -->
                                                 </div><!-- .card-inner -->
+
+                                                <!-- Table when record not found -->
+                                                <div v-if="!houseRules" class="card-inner p-0">
+                                                    <div class="nk-tb-list nk-tb-ulist">
+                                                        <div class="nk-tb-item nk-tb-head">
+                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Description</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Read More Url</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
+                                                        </div><!-- .nk-tb-item -->
+                                                        <div  class="nk-tb-item">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
+                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                                    <input type="checkbox" class="custom-control-input" id="uid1">
+                                                                    <label class="custom-control-label" for="uid1"></label>
+                                                                </div>
+                                                            </div> -->
+                                                            <div class="nk-tb-col">
+                                                                <span>No records Found <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
+                                                        </div><!-- .nk-tb-item  -->
+                                                    </div><!-- .nk-tb-list -->
+                                                </div>
+                                                
                                                 <div class="card-inner">
                                                     <div class="nk-block-between-md g-3">
                                                         <div class="g">
-                                                            <ul class="pagination justify-content-center justify-content-md-start">
-                                                                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                                <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                            </ul><!-- .pagination -->
+                                                        <ul class="pagination justify-content-end">
+                                                            <li v-if="currentPage == 1" class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item">
+                                                                <a @click.prevent="previousPage()" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link">{{currentPage}} of {{totalPage}}</a></li>
+                                                            <li v-if="currentPage < totalPage" class="page-item">
+                                                                <a v-on:click.prevent="nextPage()" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                        </ul><!-- .pagination -->
                                                         </div>
-                                                        <div class="g">
+                                                        <!-- <div class="g">
                                                             <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
                                                                 <div>Page</div>
                                                                 <div>
@@ -334,7 +291,7 @@
                                                                 </div>
                                                                 <div>OF 102</div>
                                                             </div>
-                                                        </div><!-- .pagination-goto -->
+                                                        </div>.pagination-goto -->
                                                     </div><!-- .nk-block-between -->
                                                 </div><!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
@@ -365,109 +322,109 @@
                             <ul class="country-list text-center gy-2">
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/arg.png" alt="" class="country-flag">
+                                        <img src="../images/flags/arg.png" alt="" class="country-flag">
                                         <span class="country-name">Argentina</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/aus.png" alt="" class="country-flag">
+                                        <img src="../images/flags/aus.png" alt="" class="country-flag">
                                         <span class="country-name">Australia</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/bangladesh.png" alt="" class="country-flag">
+                                        <img src="../images/flags/bangladesh.png" alt="" class="country-flag">
                                         <span class="country-name">Bangladesh</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/canada.png" alt="" class="country-flag">
+                                        <img src="../images/flags/canada.png" alt="" class="country-flag">
                                         <span class="country-name">Canada <small>(English)</small></span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/china.png" alt="" class="country-flag">
+                                        <img src="../images/flags/china.png" alt="" class="country-flag">
                                         <span class="country-name">Centrafricaine</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/china.png" alt="" class="country-flag">
+                                        <img src="../images/flags/china.png" alt="" class="country-flag">
                                         <span class="country-name">China</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/french.png" alt="" class="country-flag">
+                                        <img src="../images/flags/french.png" alt="" class="country-flag">
                                         <span class="country-name">France</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/germany.png" alt="" class="country-flag">
+                                        <img src="../images/flags/germany.png" alt="" class="country-flag">
                                         <span class="country-name">Germany</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/iran.png" alt="" class="country-flag">
+                                        <img src="../images/flags/iran.png" alt="" class="country-flag">
                                         <span class="country-name">Iran</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/italy.png" alt="" class="country-flag">
+                                        <img src="../images/flags/italy.png" alt="" class="country-flag">
                                         <span class="country-name">Italy</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/mexico.png" alt="" class="country-flag">
+                                        <img src="../images/flags/mexico.png" alt="" class="country-flag">
                                         <span class="country-name">México</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/philipine.png" alt="" class="country-flag">
+                                        <img src="../images/flags/philipine.png" alt="" class="country-flag">
                                         <span class="country-name">Philippines</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/portugal.png" alt="" class="country-flag">
+                                        <img src="../images/flags/portugal.png" alt="" class="country-flag">
                                         <span class="country-name">Portugal</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/s-africa.png" alt="" class="country-flag">
+                                        <img src="../images/flags/s-africa.png" alt="" class="country-flag">
                                         <span class="country-name">South Africa</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/spanish.png" alt="" class="country-flag">
+                                        <img src="../images/flags/spanish.png" alt="" class="country-flag">
                                         <span class="country-name">Spain</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/switzerland.png" alt="" class="country-flag">
+                                        <img src="../images/flags/switzerland.png" alt="" class="country-flag">
                                         <span class="country-name">Switzerland</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/uk.png" alt="" class="country-flag">
+                                        <img src="../images/flags/uk.png" alt="" class="country-flag">
                                         <span class="country-name">United Kingdom</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/english.png" alt="" class="country-flag">
+                                        <img src="../images/flags/english.png" alt="" class="country-flag">
                                         <span class="country-name">United State</span>
                                     </a>
                                 </li>
@@ -477,10 +434,88 @@
                 </div><!-- .modal-content -->
             </div><!-- .modla-dialog -->
         </div><!-- .modal -->
+        <!-- Add Stock-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="add-stock">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div class="modal-body modal-body-md">
+                        <h5 class="modal-title">Add Rule</h5>
+                        <form @submit.prevent="addHouseRule" class="mt-2">
+                            <div class="row g-gs">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-add"> Name</label>
+                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="house rule name eg, smoking">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-add"> Description</label>
+                                        <input v-model="description" type="text" class="form-control" id="product-name-add" placeholder="Describe the rule">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-add"> Readmore url</label>
+                                        <input v-model="readMoreUrl" type="text" class="form-control" id="product-name-add" placeholder="url to read more">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                        <li>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Policy</button>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- .modal-body -->
+                </div><!-- .modal-content -->
+            </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
+        <!-- Edit Stock-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="edit-stock">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div class="modal-body modal-body-md">
+                        <h5 class="modal-title">Edit House Rule</h5>
+                        <form @submit.prevent="updateCancelationPolicy"  action="#" class="mt-2">
+                            <div v-if='itemDetails' class="row g-gs">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-edit"> Name</label>
+                                        <input type="text" class="form-control" id="name-edit" v-model="itemDetails.name">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="product-name-edit"> Description</label>
+                                    <input type="text" class="form-control" id="name-edit" v-model="itemDetails.description">
+                                </div>
 
-
+                                <div class="form-group">
+                                    <label class="form-label" for="product-name-edit"> Read More Url</label>
+                                    <input type="text" class="form-control" id="name-edit" v-model="itemDetails.readMoreUrl" >
+                                </div>
+                                <div class="col-12">
+                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                        <li>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Policy</button>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- .modal-body -->
+                </div><!-- .modal-content -->
+            </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
     </div>
-    
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>
     <script src="../assets/js/scripts.js?ver=3.0.3"></script>

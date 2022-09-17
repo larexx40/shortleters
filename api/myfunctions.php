@@ -946,9 +946,9 @@
     function countRow($connect, $table, $field){
         // check field
         $query = "SELECT $field FROM $table";
-        $stmt = $connect->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $countRow = $connect->prepare($query);
+        $countRow->execute();
+        $result = $countRow->get_result();
         $num_row = $result->num_rows;
 
         if ($num_row > 0){
@@ -959,6 +959,7 @@
     }
     function countRowWithParam($connect, $table, $field, $data){
         // check field
+        // $query = "SELECT id FROM `sub_building_types` WHERE `build_type_id` = ?";
         $query = "SELECT id FROM $table WHERE $field = ?";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("s", $data);
@@ -970,7 +971,7 @@
            return $num_row;
         }
 
-        return false;
+        return "0";
     }
 
     function resizeImage($fileName,$new_width, $new_height, $directory){

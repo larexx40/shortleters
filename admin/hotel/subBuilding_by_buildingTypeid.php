@@ -20,16 +20,16 @@
                     <div class="nk-content ">
                         <div class="container-fluid">
                             <div class="nk-content-inner">
-                                <div class="nk-content-body">
+                                <div v-if='subTypesByBuildingid' class="nk-content-body">
                                     <div class="nk-block-head nk-block-head-sm">
                                         <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Building Types</h3>
+                                                <h3 class="nk-block-title page-title"> {{subTypesByBuildingid.build_type_name}}</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Sub type under a building type.</p>
+                                                    <p>Sub building type under {{subTypesByBuildingid.build_type_name}}.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
-                                            <!-- <div class="nk-block-head-content">
+                                            <div class="nk-block-head-content">
                                                 <ul class="nk-block-tools g-3">
                                                     <li>
                                                         <div class="drodown">
@@ -43,7 +43,7 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div> -->
+                                            </div>
                                             <!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
@@ -152,13 +152,13 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllBuildingType(4)' v-model ='search' placeholder="Search by product name or id">
+                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllSubBuildingTypeByBuildingTypeid(subTypesByBuildingid.buildingTypeid, 4)' v-model ='search' placeholder="Search by name eg duplex">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if="buildingTypes" class="card-inner p-0">
+                                                <div v-if="subTypesByBuildingid.buildingSubtypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -168,8 +168,8 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Image</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Sub Type</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Description</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -199,7 +199,7 @@
                                                                 </div> -->
                                                             </div>
                                                         </div><!-- .nk-tb-item -->
-                                                        <div v-for="(item, index) in buildingTypes" class="nk-tb-item">
+                                                        <div v-for="(item, index) in subTypesByBuildingid.buildingSubtypes" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid1">
@@ -213,7 +213,7 @@
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md tb-product">
-                                                                <img v-if='item.imageUrl' :src="item.imageUrl" alt="Apartment imgage" class="thumb">
+                                                                <span>{{item.description}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
@@ -227,9 +227,9 @@
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
                                                                                     <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
-                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
-                                                                                    <li @click.prevent= 'deleteByid(item.buildingTypeid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                    <li @click.prevent = 'changeSubTypeByBuildingidStatus(item.sub_type_id, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
+                                                                                    <li @click.prevent = 'changeSubTypeByBuildingidStatus(item.sub_type_id, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
+                                                                                    <li @click.prevent= 'deleteByid(item.sub_type_id)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -241,7 +241,7 @@
                                                 </div><!-- .card-inner -->
 
                                                 <!-- Table when record not found -->
-                                                <div v-if="!buildingTypes" class="card-inner p-0">
+                                                <div v-if="!subTypesByBuildingid.buildingSubtypes" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
@@ -459,31 +459,26 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Building Type</h5>
-                        <form @submit.prevent="addBuildingType" class="mt-2">
+                        <h5 class="modal-title">Add Sub Building Type Details</h5>
+                        <form @submit.prevent="addSubTypeByBuildingid" class="mt-2">
                             <div class="row g-gs">
-                                <div class="col-md-6">
+                                
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add"> Name</label>
-                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                        <label class="form-label" for="product-name-add">Sub Building Type Name</label>
+                                        <input v-model="sub_building_type_name" type="text" class="form-control" id="product-name-add" placeholder="Sub Building Type Name">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Building Image</label>
-                                        <div class="form-control-wrap">        
-                                            <div class="form-file">            
-                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
-                                                <label class="form-file-label" for="customFile">Choose file</label>        
-                                            </div>    
-                                        </div>
-                                        <!-- <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity"> -->
+                                        <label class="form-label" for="product-name-add">Sub Building Type Description</label>
+                                        <input v-model="sub_building_type_description" type="text" class="form-control" id="product-name-add" placeholder="Sub Building Description">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Building Type</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Sub Building Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -502,30 +497,26 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Building Type</h5>
-                        <form @submit.prevent="updateBuildingType"  action="#" class="mt-2">
+                        <h5 class="modal-title">Edit Sub Building Type Details</h5>
+                        <form @submit.prevent="updateSubTypeByBuildingid" class="mt-2">
                             <div v-if='itemDetails' class="row g-gs">
-                                <div class="col-md-6">
+                                
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Type Name</label>
-                                        <input type="text" class="form-control" id="product-name-edit" v-model="itemDetails.name">
+                                        <label class="form-label" for="product-name-edit">Building Sub Type Name</label>
+                                        <input type="text" v-model="itemDetails.name" class="form-control" id="product-name-edit" placeholder="Sub Building Name">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Building Image</label>
-                                        <div class="form-control-wrap">        
-                                            <div class="form-file">            
-                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
-                                                <label class="form-file-label" for="customFile">Choose file</label>        
-                                            </div>    
-                                        </div>
+                                        <label class="form-label" for="product-name-edit">Building Sub Type Description</label>
+                                        <input type="text" v-model="itemDetails.description" class="form-control" id="product-name-edit" placeholder="Sub Building Description">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Building Type</button>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Sub Building Type</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>

@@ -170,6 +170,7 @@
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Building Type</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Image</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Sub Type</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -215,6 +216,9 @@
                                                             <div class="nk-tb-col tb-col-md tb-product">
                                                                 <img v-if='item.imageUrl' :src="item.imageUrl" alt="Apartment imgage" class="thumb">
                                                             </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>{{item.subTypes}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
                                                                 <span v-if="item.statusCode < 1" class="tb-status text-danger">{{item.status}}</span>
@@ -227,7 +231,7 @@
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
                                                                                     <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <!-- <li @click.prevent= getSubBuilding(item.buildingTypeid)><a href=""><em class="icon ni ni-eye"></em><span>Sub type</span></a></li> -->
+                                                                                    <li @click.prevent= getSubBuilding(item.buildingTypeid) v-if='item.subTypes > 0 '><a href=""><em class="icon ni ni-eye"></em><span>Sub type</span></a></li>
                                                                                     <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
                                                                                     <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
                                                                                     <li @click.prevent= 'deleteByid(item.buildingTypeid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>

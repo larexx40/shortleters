@@ -3,7 +3,7 @@
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
-    <div id="admin">
+    <div id="admin" v-cloak>
         <?php include "loading.php"; ?>
         <div class="nk-app-root">
             <!-- main @s -->
@@ -309,6 +309,7 @@
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>
     <script src="../assets/js/scripts.js?ver=3.0.3"></script>
+    <?php include "./vue-script.php" ?>
 </body>
 
 </html>
