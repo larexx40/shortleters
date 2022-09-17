@@ -248,13 +248,16 @@
             respondBadRequest($data);
         }
 
+        $identification_img_name = uploadImage($identification_img, "identity", $endpoint, $method);
+        $identification_img_link = $imageurl . "identity/". $identification_img_name;
+
 
         $booking_id = generateUniqueShortKey($connect, "bookings", "booking_id ");
 
 
         $query = 'INSERT INTO `bookings`(`booking_id`, `user_id`, `admin_id`, `first_name`, `last_name`, `gender`, `phone`, `email`, `apartment_id`, `address`, `occupation_or_workplace`, `preferred_check_in`, `prefferred_check_out`, `min_people`, `max_people`, `identification_type`, `identification_img`, `paid`) VALUES (? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("sssssssssssssss", $booking_id, $user_id, $admin, $first_name, $last_name, $gender, $phone, $email, $apartment_id, $address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $min_people, $max_people, $identification_type, $identification_img, $payment_status);
+        $slider_stmt->bind_param("sssssssssssssss", $booking_id, $user_id, $admin, $first_name, $last_name, $gender, $phone, $email, $apartment_id, $address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $min_people, $max_people, $identification_type, $identification_img_link, $payment_status);
 
         if ( $slider_stmt->execute() ) {
             $text= "Booking successfully added";
