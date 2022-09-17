@@ -155,33 +155,56 @@
         }
 
         if ($num_row > 0){
-            $allAmenities = [];
+            $allImages = [];
+            $apartments_ids = [];
 
             while($row = $result->fetch_assoc()){
                 $aprtment_id = $row['apartment_id'];
-                $aprtment_name =  getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
+                array_push($apartments_ids, $aprtment_id);
                 $status_code = $row['cover_photo'];
                 $status = ($row['cover_photo'] == 1) ? "Cover Photo" : "Not Cover Photo";
                 $img_url = $row['image_url'];
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
-                array_push($allAmenities, array(
+                array_push($allImages, array(
                     'id' => $row['apartment_img_id'],
                     'aprtment_id' => $aprtment_id,
-                    'aprtment_name' => ( $aprtment_name )? $aprtment_name: null,
-                    'status_code' => $status_code,
-                    'status' => $status,
+                    'cover_code' => $status_code,
+                    'cover' => $status,
+                    'img' => $img_url,
                     'created' => $created,
                     'updated' => $updated
                 ));
             }
+            $final_result = [];
+            $details = [];
+            $unique = array_unique($apartments_ids);
+            for ($i=0; $i < count($unique); $i++){
+                $has_cover_photo = null;
+                $aprtment_name =  getNameFromField($connect, "apartments", "apartment_id", $unique[$i]);
+                for ($j=0; $j < count($allImages); $j++){
+                    if ( $allImages[$j]['aprtment_id'] == $unique[$i] ){
+                        array_push($details, $allImages[$j]);
+                    }
+                    if ($allImages[$j]['cover_code'] > 0){
+                        $has_cover_photo = "yes";
+                    }
+                }
+                array_push($final_result, array(
+                    'apartment_id' => $unique[$i],
+                    'aprtment_name' => ( $aprtment_name )? $aprtment_name: null,
+                    'has_cover' => ( $has_cover_photo )? $has_cover_photo : null,
+                    'details' => $details
+                ));
+            }
+
             $data = array(
                 'page' => $page_no,
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'amenities' => $allAmenities
+                'images' => $final_result
             );
             $text= "Fetch Successful";
             $status = true;

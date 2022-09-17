@@ -28,21 +28,20 @@
                                                     <p>Here is our various Apartments.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
-                                            <!-- <div class="nk-block-head-content">
+                                            <div class="nk-block-head-content">
                                                 <ul class="nk-block-tools g-3">
                                                     <li>
-                                                        <div class="drodown">
-                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <ul class="link-list-opt no-bdr">
-                                                                    <li><a data-bs-toggle="modal" href="#add-room"><span>Add Room</span></a></li>
-                                                                    <li><a href="#"><span>Import Room</span></a></li>
-                                                                </ul>
-                                                            </div>
+                                                        <div>
+                                                            <a href="./facilities.php" class="btn btn-primary"><em class="icon ni ni-eye"></em>View Facilities</a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div>
+                                                            <a href="./apartment_images.php" class="btn btn-primary"><em class="icon ni ni-eye"></em>View All Apartment Images</a>
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div> -->
+                                            </div>
                                             <!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->

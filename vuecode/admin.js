@@ -134,7 +134,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMzMzc1MTgsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzMzNzUxOCwiZXhwIjoxNjYzNDExMzE4LCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.LQ0BL5FRzX3RQvtDshruqpNeJEiqIoyGdB8mHYHFM1vvEAL04tlbrP1Vw9eQSrEFqXxLzEghI72psMsv50-Liw",
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM0MzA0OTIsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzQzMDQ5MiwiZXhwIjoxNjYzNTA0MjkyLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.i1JTEVyzx5qUHBWUjqYB5lSg2FZBU25h40DBtATpQL5Xpkt_cdQMi3SrMARycyvQMG09xP4mLuJl3mrKj0CKaA",
             email: null,
             ref_link: null,
             admin_details: null,
@@ -194,6 +194,7 @@ let admin = Vue.createApp({
             apartment_images: null,
             apartment_img: null,
             apartment: null,
+            apartments_and_images: null,
             users: null,
             user: null,
             user_details: null,
@@ -8506,6 +8507,72 @@ let admin = Vue.createApp({
                 window.location.href="./all_apartments.php"
             }
         },
+        async getAllApartmentAndImages(load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
+            let page = ( this.kor_page )? this.kor_page : 1;
+            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
+    
+            const url = `${this.baseUrl}api/apartments/get_apartment_images.php?per_page=${per_page}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if (load == 1){
+                    this.loading = true;
+                } 
+                const response = await axios(options);
+                if(response.data.status){
+                    this.apartments_and_images = response.data.data.images;
+                    this.kor_page = response.data.data.page;
+                    this.kor_total_page= response.data.data.totalPage;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.kor_total_data = response.data.data.total_data;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }else{
+                    this.apartments_and_images = null;
+                }  
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
+                
+            }finally {
+                this.loading = false;
+            }
+        },
         async getApartmentImagesById(load = 1){
             let id = (window.localStorage.getItem("apart_id")) ? window.localStorage.getItem("apart_id") : null 
             
@@ -8784,6 +8851,11 @@ let admin = Vue.createApp({
                 this.class_active = true;
                 this.kor_per_page = ins;
                 await this.getAllFacilities(4);
+            }
+            if ( webPage === "apartment_images.php" ){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllApartmentAndImages();
             }
             
         },
@@ -10009,6 +10081,9 @@ let admin = Vue.createApp({
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
             }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
+            }
         },
         async kor_add_sort(status){
             this.kor_sort = status;
@@ -10030,6 +10105,9 @@ let admin = Vue.createApp({
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
             }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
+            }
         },
         async nav_nextPage(){
             this.kor_page = parseInt(this.kor_page) + 1;
@@ -10050,6 +10128,9 @@ let admin = Vue.createApp({
             }
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
+            }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
             }
 
         },
@@ -10073,6 +10154,9 @@ let admin = Vue.createApp({
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
             }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
+            }
         },
         async nav_selectPage(page){
             this.kor_page = page;
@@ -10093,6 +10177,9 @@ let admin = Vue.createApp({
             }
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
+            }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
             }
         },
         async nav_dynamic_nextPage(item){
@@ -10116,6 +10203,9 @@ let admin = Vue.createApp({
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
             }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
+            }
         },
         async nav_dynamic_previousPage(item){
             this.kor_page = parseInt(this.kor_page) - 1;
@@ -10138,6 +10228,9 @@ let admin = Vue.createApp({
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
             }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
+            }
         },
         async nav_dynamic_selectPage(item ,page){
             this.kor_page = page;
@@ -10159,6 +10252,9 @@ let admin = Vue.createApp({
             }
             if ( webPage === "facilities.php" ){
                 await this.getAllFacilities();
+            }
+            if ( webPage === "apartment_images.php" ){
+                await this.getAllApartmentAndImages();
             }
             
         },
@@ -10207,6 +10303,11 @@ let admin = Vue.createApp({
                 this.class_active = true;
                 this.kor_sort = value;
                 await this.getAllFacilities();
+            }
+            if ( webPage === "apartment_images.php" ){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllApartmentAndImages();
             }    
             
         },
@@ -10249,6 +10350,9 @@ let admin = Vue.createApp({
         }
         if ( webPage === "facilities.php" ){
             await this.getAllFacilities();
+        }
+        if ( webPage === "apartment_images.php" ){
+            await this.getAllApartmentAndImages();
         }
 
         if (webPage !== "all_apartments.php" && webPage !== "apartment-details.php"){
