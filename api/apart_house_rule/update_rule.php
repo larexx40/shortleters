@@ -25,8 +25,37 @@
         $servername = $row['servername'];
         $expiresIn = $row['tokenexpiremin'];
 
+        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        $user_pubkey = $decodedToken->usertoken;
+
+        $admin =  checkIfIsAdmin($connect, $user_pubkey);
+
+        // send error if ur is not in the database
+        if (!$admin){
+            // send user not found response to the user
+            $errordesc =  "User not Authorized";
+            $linktosolve = 'https://';
+            $hint = "User is not in the database ensure the user is in the database";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondUnAuthorized($data);
+        }
+
+        
+        // Check if the email field is passed
+        if (!isset($_POST['apart_rule_id'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required amenity id field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $apart_rule_id = cleanme($_POST['apart_rule_id']);
+        }
+
         // Check if the recipient name field is passed
-        if (!isset($_POST['name'])){
+        if (!isset($_POST['house_rule_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required name field in this endpoint";
@@ -34,68 +63,22 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $name = cleanme($_POST['name']);
+            $house_rule_id = cleanme($_POST['house_rule_id']);
         }
 
-
-        if (!isset($_POST['title'])){
+        if (!isset($_POST['apart_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required title field in this endpoint";
+            $hint = "Kindly pass the required name field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $title = cleanme($_POST['title']);
-        }
-
-        if (!isset($_POST['description'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required description field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $description = cleanme($_POST['description']);
-        }
-
-        if (!isset($_POST['building_type_id'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required description field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $building_type_id = cleanme($_POST['building_type_id']);
-        }
-
-        if (!isset($_POST['sub_build_type'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required description field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $sub_build_type = cleanme($_POST['sub_build_type']);
-        }
-
-        if (!isset($_POST['space_type'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required description field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $space_type = cleanme($_POST['space_type']);
+            $apart_id = cleanme($_POST['apart_id']);
         }
         
          // check if none of the field is empty
-        if ( empty($name) || empty($title) || empty($description) || empty($building_type_id) || empty($sub_build_type) 
-                || empty($space_type) ){
+        if ( empty($apart_rule_id) || empty($house_rule_id) || empty($apart_id) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -105,23 +88,28 @@
             respondBadRequest($data);
         }
 
+        if (!checkifFieldExist($connect, "apartment_house_rule", "apart_rule_id", $apart_rule_id)){
+            $errordesc = "Amenity id not Found";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass valid value to all the fields";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
 
-        $apartment_id = generateUniqueShortKey($connect, "apartments", "apartment_id ");
+        $query = 'UPDATE `apartment_house_rule` SET `house_rule_id`= ?, `apart_id`= ? WHERE `apart_rule_id` = ?';
+        $slider_update = $connect->prepare($query);
+        $slider_update->bind_param("sss", $house_rule_id, $house_rule_id ,$apart_rule_id);
 
-
-        $query = 'INSERT INTO `amenities`(`amen_id`, `name`) VALUES (?, ?)';
-        $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ss", $amenities_id, $name);
-
-        if ( $slider_stmt->execute() ) {
-            $text= "Amenity successfully added";
+        if ( $slider_update->execute() ) {
+            $text= "Apartment Rule successfully updated";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
         }else{
-            $errordesc =  $slider_stmt->error;
+            $errordesc =  $slider_update->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);

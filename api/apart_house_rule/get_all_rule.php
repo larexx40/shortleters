@@ -82,9 +82,9 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT apartment_facilities.* FROM `apartment_facilities` LEFT JOIN apartments ON apartments.apartment_id = apartment_facilities.apartment_id LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.status = ? AND ( facilities.name LIKE ? OR apartments.name LIKE ? ) ";
+                $query = " SELECT apartment_house_rule.* FROM `apartment_house_rule` LEFT JOIN apartments ON apartments.apartment_id = apartment_house_rule.apart_id LEFT JOIN house_rule ON house_rule.house_rule_id = apartment_house_rule.house_rule_id WHERE apartment_house_rule.status = ? AND ( apartments.name LIKE ? OR apartments.title LIKE ? OR house_rule.name LIKE ? OR house_rule.description LIKE ? ) ";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sss", $status, $searching, $searching );
+                $queryStmt->bind_param("sssss", $status, $searching, $searching, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -92,15 +92,15 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sssss", $status, $searching, $searching , $offset, $no_per_page);
+                $queryStmt->bind_param("sssssss", $status, $searching, $searching , $searching, $searching , $offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT apartment_facilities.* FROM `apartment_facilities` LEFT JOIN apartments ON apartments.apartment_id = apartment_facilities.apartment_id LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.name LIKE ? OR apartments.name LIKE ? ";
+                $query = "SELECT apartment_house_rule.* FROM `apartment_house_rule` LEFT JOIN apartments ON apartments.apartment_id = apartment_house_rule.apart_id LEFT JOIN house_rule ON house_rule.house_rule_id = apartment_house_rule.house_rule_id WHERE apartments.name LIKE ? OR apartments.title LIKE ? OR house_rule.name LIKE ? OR house_rule.description LIKE ? ";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ss", $searching, $searching);
+                $queryStmt->bind_param("ssss", $searching, $searching, $searching, $searching);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $total_num_row = $result->num_rows;
@@ -108,7 +108,7 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ssss", $searching, $searching, $offset, $no_per_page);
+                $queryStmt->bind_param("ssssss", $searching, $searching, $searching, $searching ,$offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -119,7 +119,7 @@
 
             if ($sort > 0){
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `apartment_facilities` LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.status = ?";
+                $query = "SELECT * FROM `apartment_house_rule` WHERE `status` = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $status);
                 $gtTotalPgs->execute();
@@ -135,7 +135,7 @@
                 $num_row = $result->num_rows;
             }else{
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `apartment_facilities`";
+                $query = "SELECT * FROM `apartment_house_rule`";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->execute();
                 $result = $gtTotalPgs->get_result();
@@ -155,26 +155,26 @@
         }
 
         if ($num_row > 0){
-            $allFacilities = [];
+            $allRules = [];
 
             while($row = $result->fetch_assoc()){
-                $aprtment_id = $row['apartment_id'];
-                $aprtment_name =  getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
-                $facility_id = $row['facility_id'];
-                $facility_name =  getNameFromField($connect, "facilities", "facility_id", $facility_id);
-                $img_url = $row['image_url'];
+                $apartment_id =  $row['apart_id'];
+                $apartment_name = getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
+                $house_rule = $row['house_rule_id'];
+                $house_rule_details = getFieldsDetails($connect, "house_rule", "house_rule_id", $house_rule);
+                $status_code = $row['status'];
+                $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
-                array_push($allFacilities, array(
-                    'id' => $row['apart_facility_id'],
-                    'aprtment_id' => $aprtment_id,
-                    'aprtment_name' => ( $aprtment_name )? $aprtment_name: null,
-                    'facility_id' => $facility_id,
-                    'facility_name' => ( $facility_name )? $facility_name: null,
+                array_push($allRules, array(
+                    'id' => $row['apart_rule_id'],
+                    'apartment_id' => $apartment_id,
+                    'apartment_name' => ($apartment_name) ? $apartment_name : null,
+                    'house_rule' => $house_rule,
+                    'house_rule_details' => $house_rule_details,
                     'status_code' => $status_code,
                     'status' => $status,
-                    "total_number" => $row['total_number'],
                     'created' => $created,
                     'updated' => $updated
                 ));
@@ -184,7 +184,7 @@
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'facilities' => $allFacilities
+                'apart_rule' => $allRules
             );
             $text= "Fetch Successful";
             $status = true;

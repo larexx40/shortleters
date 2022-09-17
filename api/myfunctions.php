@@ -799,6 +799,25 @@
         return false;
     }
 
+    function getFieldsDetails($connect, $table, $field, $data){
+        $query = "SELECT * FROM $table WHERE $field = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $value = [];
+            while ($row = $result->fetch_assoc()){
+                $value = array('details' => $row);
+            }
+           return $value;
+        }
+
+        return false;
+    }
+
 
     function getProductDetails($connect, $table , $field ,$data){
         // check field
@@ -889,7 +908,7 @@
                 $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
                 $img_ex_lc = strtolower($img_ex);
 
-                $allowed_exs = array("jpg", "jpeg", "png");
+                $allowed_exs = array("jpg", "jpeg", "png", "webp");
 
                
                 if (in_array($img_ex_lc, $allowed_exs)) {

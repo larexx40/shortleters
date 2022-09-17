@@ -82,7 +82,7 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT apartment_facilities.* FROM `apartment_facilities` LEFT JOIN apartments ON apartments.apartment_id = apartment_facilities.apartment_id LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.status = ? AND ( facilities.name LIKE ? OR apartments.name LIKE ? ) ";
+                $query = "SELECT  `facility_id`, `name`, `description`, `created_at`, `updated_at`, `status` FROM `facilities` WHERE status = ? AND ( name LIKE ? OR description LIKE ?) ";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("sss", $status, $searching, $searching );
                 $queryStmt->execute();
@@ -98,7 +98,7 @@
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT apartment_facilities.* FROM `apartment_facilities` LEFT JOIN apartments ON apartments.apartment_id = apartment_facilities.apartment_id LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.name LIKE ? OR apartments.name LIKE ? ";
+                $query = "SELECT  `facility_id`, `name`, `description`, `created_at`, `updated_at`, `status` FROM `facilities` WHERE name LIKE ? OR icon LIKE ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ss", $searching, $searching);
                 $queryStmt->execute();
@@ -119,7 +119,7 @@
 
             if ($sort > 0){
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `apartment_facilities` LEFT JOIN facilities ON facilities.facility_id = apartment_facilities.facility_id WHERE facilities.status = ?";
+                $query = "SELECT * FROM `facilities` WHERE `status` = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $status);
                 $gtTotalPgs->execute();
@@ -135,7 +135,7 @@
                 $num_row = $result->num_rows;
             }else{
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `apartment_facilities`";
+                $query = "SELECT * FROM `facilities`";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->execute();
                 $result = $gtTotalPgs->get_result();
@@ -158,23 +158,19 @@
             $allFacilities = [];
 
             while($row = $result->fetch_assoc()){
-                $aprtment_id = $row['apartment_id'];
-                $aprtment_name =  getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
-                $facility_id = $row['facility_id'];
-                $facility_name =  getNameFromField($connect, "facilities", "facility_id", $facility_id);
-                $img_url = $row['image_url'];
+                $name =  $row['name'];
+                $description = $row['description'];
+                $status_code = $row['status'];
+                $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
                 array_push($allFacilities, array(
-                    'id' => $row['apart_facility_id'],
-                    'aprtment_id' => $aprtment_id,
-                    'aprtment_name' => ( $aprtment_name )? $aprtment_name: null,
-                    'facility_id' => $facility_id,
-                    'facility_name' => ( $facility_name )? $facility_name: null,
+                    'id' => $row['facility_id'],
+                    'name' => $name,
+                    'description' => $description,
                     'status_code' => $status_code,
                     'status' => $status,
-                    "total_number" => $row['total_number'],
                     'created' => $created,
                     'updated' => $updated
                 ));
