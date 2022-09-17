@@ -28,22 +28,19 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
-
         // send error if ur is not in the database
-        if (!$admin){
+        if (!checkIfIsAdmin($connect, $user_pubkey)){
             // send user not found response to the user
             $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
             $hint = "User is not in the database ensure the user is in the database";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
+            respondBadRequest($data);
         }
 
-        
         // Check if the email field is passed
-        if (!isset($_POST['facility_id'])){
+        if (!isset($_POST['apart_rule_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required amenity id field in this endpoint";
@@ -51,71 +48,48 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $facility_id = cleanme($_POST['facility_id']);
-        }
-
-        // Check if the recipient name field is passed
-        if (!isset($_POST['name'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required name field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $name = cleanme($_POST['name']);
-        }
-
-        if (!isset($_POST['description'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required name field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $description = cleanme($_POST['description']);
+            $apart_rule_id = cleanme($_POST['apart_rule_id']);
         }
         
-         // check if none of the field is empty
-        if ( empty($facility_id) || empty($name) || empty($description) ){
-
-            $errordesc = "Insert all fields";
+        if ( empty($apart_rule_id) ){
+            $errordesc = "Apartment Rule id must be filled";
             $linktosolve = 'https://';
-            $hint = "Kindly pass value to all the fields";
+            $hint = "Kindly pass a valid slider id field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
 
-        if (!checkifFieldExist($connect, "facilities", "facility_id", $facility_id)){
-            $errordesc = "Amenity id not Found";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass valid value to all the fields";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
+        $query = 'DELETE FROM `apartment_house_rule` WHERE `apart_rule_id` = ?';
+        $slider_stmt = $connect->prepare($query);
+        $slider_stmt->bind_param("s", $apart_rule_id);
+        $slider_stmt->execute();
+        $rows_affected = $slider_stmt->affected_rows;
 
-        $query = 'UPDATE `facilities` SET `name`= ?, `description`= ? WHERE `facility_id` = ?';
-        $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("sss", $name, $description ,$facility_id);
+        if ( $rows_affected > 0 ) {
+            $slider_stmt->close();
 
-        if ( $slider_update->execute() ) {
-            $text= "Facility successfully updated";
+            $text= "Apart Rule successfully deleted";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
         }else{
-            $errordesc =  $slider_update->error;
+            $errordesc = "Apartment Rule not Found";
             $linktosolve = 'https://';
-            $hint = "500 code internal error, check ur database connections";
+            $hint = "Kindly pass a slider that exist in the database";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondInternalError($data);
+            respondBadRequest($data);
         }
+
+        $errordesc =  $slider_stmt->error;
+        $linktosolve = 'https://';
+        $hint = "500 code internal error, check ur database connections";
+        $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        respondInternalError($data);
 
     }else{
 

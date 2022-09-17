@@ -134,7 +134,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMyNTg1MzMsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzI1ODUzMywiZXhwIjoxNjYzMzMyMzMzLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.WPcOrjcIFTu0xBA5pVGwc_dFpS8VeQFlAKrVK7FZbqdV2muXA6fbwSbuoNf9FOX0q71W_k0q5x9NnSImNFDcBw",
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjMzMzc1MTgsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzMzNzUxOCwiZXhwIjoxNjYzNDExMzE4LCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.LQ0BL5FRzX3RQvtDshruqpNeJEiqIoyGdB8mHYHFM1vvEAL04tlbrP1Vw9eQSrEFqXxLzEghI72psMsv50-Liw",
             email: null,
             ref_link: null,
             admin_details: null,
@@ -191,6 +191,8 @@ let admin = Vue.createApp({
             apartment_charges: null,
             apartment_details: null,
             apartment_facilities: null,
+            apartment_images: null,
+            apartment_img: null,
             apartment: null,
             users: null,
             user: null,
@@ -6579,6 +6581,9 @@ let admin = Vue.createApp({
             if ( webPage === "facilities.php" ){
                 this.facility = this.all_facilities[index];
             }
+            if ( webPage === "apartment-details.php"){
+                this.apartment_img = this.apartment_images[index];
+            }
             //console.log(this.shop_product)
         },
         // korede
@@ -7077,13 +7082,14 @@ let admin = Vue.createApp({
                 }
         },
         async updateFacility(){
+            console.log("i reach here nw");
             if (!this.facility.name || !this.facility.description  || !this.facility.id){
                 this.error = "Insert all Fields"
                 new Toasteur().error(this.error);
                 return;
             }
             const data = new FormData();
-            data.append("facility_id", this.amenity.id);
+            data.append("facility_id", this.facility.id);
             data.append("name", this.facility.name);
             data.append("description", this.facility.description);
             const url = `${this.baseUrl}api/facility/update_facility.php`;
@@ -8460,6 +8466,69 @@ let admin = Vue.createApp({
                         //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                     }else{
                         this.apartment_details = null;
+                    }  
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // window.location.href="/login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+        
+                    new Toasteur().error(error.message || "Error processing request")
+        
+                    
+                }finally {
+                    this.loading = false;
+                }
+            }else{
+                window.location.href="./all_apartments.php"
+            }
+        },
+        async getApartmentImagesById(load = 1){
+            let id = (window.localStorage.getItem("apart_id")) ? window.localStorage.getItem("apart_id") : null 
+            
+            if (id){
+                const url = `${this.baseUrl}api/apartments/get_apartment_imagesByApartment.php?apartment_id=${id}`;
+                const options = {
+                    method: "GET",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url
+                }
+                try {
+                    if (load == 1){
+                        this.loading = true;
+                    } 
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.apartment_images = response.data.data.images;
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }else{
+                        this.apartment_images = null;
                     }  
                 } catch (error) {
                     // //console.log(error);

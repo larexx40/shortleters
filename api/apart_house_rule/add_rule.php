@@ -28,34 +28,21 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
+        // $admin =  checkIfIsAdmin($connect, $user_pubkey);
 
-        // send error if ur is not in the database
-        if (!$admin){
-            // send user not found response to the user
-            $errordesc =  "User not Authorized";
-            $linktosolve = 'https://';
-            $hint = "User is not in the database ensure the user is in the database";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
-        }
-
-        
-        // Check if the email field is passed
-        if (!isset($_POST['facility_id'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required amenity id field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $facility_id = cleanme($_POST['facility_id']);
-        }
+        // // send error if ur is not in the database
+        // if (!$admin){
+        //     // send user not found response to the user
+        //     $errordesc =  "User not Authorized";
+        //     $linktosolve = 'https://';
+        //     $hint = "User is not in the database ensure the user is in the database";
+        //     $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //     respondUnAuthorized($data);
+        // }
 
         // Check if the recipient name field is passed
-        if (!isset($_POST['name'])){
+        if (!isset($_POST['house_rule_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required name field in this endpoint";
@@ -63,10 +50,10 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $name = cleanme($_POST['name']);
+            $house_rule_id = cleanme($_POST['house_rule_id']);
         }
 
-        if (!isset($_POST['description'])){
+        if (!isset($_POST['apart_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required name field in this endpoint";
@@ -74,11 +61,11 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $description = cleanme($_POST['description']);
+            $apart_id = cleanme($_POST['apart_id']);
         }
         
          // check if none of the field is empty
-        if ( empty($facility_id) || empty($name) || empty($description) ){
+        if ( empty($house_rule_id) || empty($apart_id) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -88,28 +75,23 @@
             respondBadRequest($data);
         }
 
-        if (!checkifFieldExist($connect, "facilities", "facility_id", $facility_id)){
-            $errordesc = "Amenity id not Found";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass valid value to all the fields";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
 
-        $query = 'UPDATE `facilities` SET `name`= ?, `description`= ? WHERE `facility_id` = ?';
-        $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("sss", $name, $description ,$facility_id);
+        $apart_rule_id = generateUniqueShortKey($connect, "apartment_house_rule", "apart_rule_id ");
 
-        if ( $slider_update->execute() ) {
-            $text= "Facility successfully updated";
+
+        $query = 'INSERT INTO `apartment_house_rule`(`apart_rule_id`, `house_rule_id`, `apart_id`) VALUES (?, ?, ?)';
+        $slider_stmt = $connect->prepare($query);
+        $slider_stmt->bind_param("sss", $apart_rule_id, $house_rule_id, $apart_id);
+
+        if ( $slider_stmt->execute() ) {
+            $text= "Apartment House Rule successfully added";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
         }else{
-            $errordesc =  $slider_update->error;
+            $errordesc =  $slider_stmt->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);

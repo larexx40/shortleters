@@ -43,7 +43,7 @@
 
         
         // Check if the email field is passed
-        if (!isset($_POST['facility_id'])){
+        if (!isset($_POST['apart_rule_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required amenity id field in this endpoint";
@@ -51,11 +51,11 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $facility_id = cleanme($_POST['facility_id']);
+            $apart_rule_id = cleanme($_POST['apart_rule_id']);
         }
 
         // Check if the recipient name field is passed
-        if (!isset($_POST['name'])){
+        if (!isset($_POST['house_rule_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required name field in this endpoint";
@@ -63,10 +63,10 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $name = cleanme($_POST['name']);
+            $house_rule_id = cleanme($_POST['house_rule_id']);
         }
 
-        if (!isset($_POST['description'])){
+        if (!isset($_POST['apart_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required name field in this endpoint";
@@ -74,11 +74,11 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $description = cleanme($_POST['description']);
+            $apart_id = cleanme($_POST['apart_id']);
         }
         
          // check if none of the field is empty
-        if ( empty($facility_id) || empty($name) || empty($description) ){
+        if ( empty($apart_rule_id) || empty($house_rule_id) || empty($apart_id) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -88,7 +88,7 @@
             respondBadRequest($data);
         }
 
-        if (!checkifFieldExist($connect, "facilities", "facility_id", $facility_id)){
+        if (!checkifFieldExist($connect, "apartment_house_rule", "apart_rule_id", $apart_rule_id)){
             $errordesc = "Amenity id not Found";
             $linktosolve = 'https://';
             $hint = "Kindly pass valid value to all the fields";
@@ -97,12 +97,12 @@
             respondBadRequest($data);
         }
 
-        $query = 'UPDATE `facilities` SET `name`= ?, `description`= ? WHERE `facility_id` = ?';
+        $query = 'UPDATE `apartment_house_rule` SET `house_rule_id`= ?, `apart_id`= ? WHERE `apart_rule_id` = ?';
         $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("sss", $name, $description ,$facility_id);
+        $slider_update->bind_param("sss", $house_rule_id, $house_rule_id ,$apart_rule_id);
 
         if ( $slider_update->execute() ) {
-            $text= "Facility successfully updated";
+            $text= "Apartment Rule successfully updated";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);

@@ -46,7 +46,7 @@
                                                     <a @click="getUserOrders(3)" class="nav-link" data-bs-toggle="tab" href="#profile-orders"><span>Bookings</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a @click="getUserNotifications(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Apartment Images</span> </a>
+                                                    <a @click="getApartmentImagesById(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Apartment Images</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
@@ -63,6 +63,10 @@
 
                                                 <li class="nav-item">
                                                     <a @click="getApartmentAdditionalChargesById(3)" class="nav-link" data-bs-toggle="tab" href="#profile-complains"><span>Additional Charges</span> </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a @click="getApartmentAdditionalChargesById(3)" class="nav-link" data-bs-toggle="tab" href="#house_rules"><span>House Rules</span> </a>
                                                 </li>
                                             </ul>
                                             <div class="card-inner">
@@ -138,6 +142,18 @@
                                                                         <span v-if="apartment_details.apartment_status_code === 1" class="profile-ud-value text-success">{{apartment_details.apartment_status}}</span>
                                                                         <span v-if="apartment_details.apartment_status_code === 2" class="profile-ud-value text-warning">{{apartment_details.apartment_status}}</span>
                                                                         <span v-if="apartment_details.apartment_status_code === 3" class="profile-ud-value text-light">{{apartment_details.apartment_status}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">Apartment Address</span>
+                                                                        <span class="profile-ud-value">{{apartment_details.apartment_address}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">Apartment Local Government</span>
+                                                                        <span class="profile-ud-value">{{apartment_details.apartment_lga}}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item">
@@ -322,42 +338,42 @@
                                                     </div>
                                                     <!--tab pane-->
                                                     <div class="tab-pane" id="profile-notifications">
-                                                        <div v-if="user_notifications" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="apartment_images" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Notifications</span>
+                                                                    <span class="lead-text">Image</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Time</span>
+                                                                    <span class="lead-text">Cover Photo</span>
                                                                 </div>
                                                                 <div class="nk-tb-col nk-tb-col-tools">
                                                                     <span class="lead-text">Preview</span>
                                                                 </div>
                                                             </div>
-                                                            <div v-for="(item, index) in user_notifications" class="nk-tb-item">
+                                                            <div v-for="(item, index) in apartment_images" class="nk-tb-item">
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1}} </div>
-                                                                <div class="nk-tb-col"> {{item.text}} </div>
+                                                                <div class="nk-tb-col tb-product"> <img class="thumb" :src="item.img" alt="apartment image"> </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">{{item.date}}</span>
+                                                                    <span class="lead-text">{{item.cover}}</span>
                                                                 </div>
                                                                 <div class="nk-tb-col nk-tb-col-tools">
                                                                     <ul class="nk-tb-actions gx-1">
                                                                         <li data-bs-toggle="modal" data-bs-target="#modal_notification">
-                                                                            <a @click="getNotification(index)" href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
+                                                                            <a @click="getItemIndex(index)" href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div v-if="!user_notifications" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="!apartment_images" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             No Records Found
                                                         </div>
                                                         <br><br>
                                                         <nav>
-                                                            <ul v-if="user_notifications" class="pagination justify-content-end">
+                                                            <ul v-if="apartment_images" class="pagination justify-content-end">
                                                                 <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_notification')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_notification', page)" class="page-link" href="#">{{page}}</a></li>
@@ -387,7 +403,7 @@
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1}} </div>
                                                                 <div class="nk-tb-col"> {{item.details.name}} </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text"><em :class="item.details.icon" ></em></span>
+                                                                    <span class="lead-text"><em :class="'icon ' + item.details.icon" ></em></span>
                                                                 </div>
                                                                 <div class="nk-tb-col nk-tb-col-tools">
                                                                     <ul class="nk-tb-actions gx-1">
@@ -422,42 +438,39 @@
                                                     <!--tab pane-->
 
                                                     <div class="tab-pane" id="profile-address">
-                                                        <div v-if="user_addresses" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="apartment_facilities"  class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Address</span>
+                                                                    <span class="lead-text">Facilities</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Phone No:</span>
-                                                                </div>
-                                                                <div class="nk-tb-col nk-tb-col-tools">
-                                                                    <span class="lead-text">Preview</span>
+                                                                    <span class="lead-text">Total Number</span>
                                                                 </div>
                                                             </div>
-                                                            <div v-for="(item, index) in user_addresses" class="nk-tb-item">
+                                                            <div v-for="(item, index) in apartment_facilities" class="nk-tb-item">
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1}}  </div>
-                                                                <div class="nk-tb-col"> {{item.address}} </div>
+                                                                <div class="nk-tb-col"> {{item.facility_name}} </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">{{item.phoneno}}</span>
+                                                                    <span class="lead-text">{{item.total_number}}</span>
                                                                 </div>
-                                                                <div class="nk-tb-col nk-tb-col-tools">
+                                                                <!-- <div class="nk-tb-col nk-tb-col-tools">
                                                                     <ul class="nk-tb-actions gx-1">
                                                                         <li @click="getAddress(index)" data-bs-toggle="modal" data-bs-target="#modal-address">
                                                                             <a href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
                                                                         </li>
                                                                     </ul>
-                                                                </div>
+                                                                </div> -->
                                                             </div>
                                                         </div>
-                                                        <div v-if="!user_addresses" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="!apartment_facilities" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                                 No Records Found
                                                         </div>
                                                         <br><br>
                                                         <nav>
-                                                            <ul v-if="user_addresses" class="pagination justify-content-end">
+                                                            <ul v-if="apartment_facilities" class="pagination justify-content-end">
                                                                 <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_address')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_address', page)" class="page-link" href="#">{{page}}</a></li>
@@ -516,39 +529,124 @@
                                                     <!--tab pane-->
 
                                                     <div class="tab-pane" id="profile-complains">
-                                                        <div v-if="user_complains" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="apartment_charges" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Complaint</span>
+                                                                    <span class="lead-text">Apartment Additional Charge</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Time</span>
+                                                                    <span class="lead-text">Additional Charge Rate/Price</span>
                                                                 </div>
-                                                                <div class="nk-tb-col nk-tb-col-tools">
+                                                                <!-- <div class="nk-tb-col nk-tb-col-tools">
                                                                     <span class="lead-text">Preview</span>
-                                                                </div>
+                                                                </div> -->
                                                             </div>
-                                                            <div v-for="(item, index) in user_complains" class="nk-tb-item">
+                                                            <div v-for="(item, index) in apartment_charges" class="nk-tb-item">
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1}} </div>
-                                                                <div class="nk-tb-col"> {{item.complain}}  </div>
+                                                                <div class="nk-tb-col"> {{item.add_charge_name}}  </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">{{item.date}}</span>
+                                                                    <span class="lead-text">{{item.price}}</span>
                                                                 </div>
-                                                                <div class="nk-tb-col nk-tb-col-tools">
+                                                                <!-- <div class="nk-tb-col nk-tb-col-tools">
                                                                     <ul class="nk-tb-actions gx-1">
                                                                         <li @click="getUserComplain(index)" data-bs-toggle="modal" data-bs-target="#modal-complains">
                                                                             <a href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
                                                                         </li>
                                                                     </ul>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="!apartment_charges" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                            <div class="nk-tb-item nk-tb-head">
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">#</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Apartment Additional Charge</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Additional Charge Rate/Price</span>
+                                                                </div>
+                                                                <!-- <div class="nk-tb-col nk-tb-col-tools">
+                                                                    <span class="lead-text">Preview</span>
+                                                                </div> -->
+                                                            </div>
+                                                            <div class="nk-tb-item">
+                                                                <div class="text-center">
+                                                                    No Records Found    
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <br><br>
                                                         <nav>
-                                                            <ul v-if="user_complains" class="pagination justify-content-end">
+                                                            <ul v-if="apartment_charges" class="pagination justify-content-end">
+                                                                <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
+                                                                <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_complain')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
+                                                                <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_complain', page)" class="page-link" href="#">{{page}}</a></li>
+                                                                <li v-if="kor_page < kor_total_page" @click="nav_dynamic_nextPage('user_complain')" class="page-item"><a class="page-link" href="#">Next</a></li>
+                                                                <li v-if="kor_page == kor_total_page" class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+
+                                                    <div class="tab-pane" id="house_rules">
+                                                        <div v-if="apartment_charges" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                            <div class="nk-tb-item nk-tb-head">
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">#</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Apartment Additional Charge</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Additional Charge Rate/Price</span>
+                                                                </div>
+                                                                <!-- <div class="nk-tb-col nk-tb-col-tools">
+                                                                    <span class="lead-text">Preview</span>
+                                                                </div> -->
+                                                            </div>
+                                                            <div v-for="(item, index) in apartment_charges" class="nk-tb-item">
+                                                                <div class="nk-tb-col"> {{parseInt(index) + 1}} </div>
+                                                                <div class="nk-tb-col"> {{item.add_charge_name}}  </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">{{item.price}}</span>
+                                                                </div>
+                                                                <!-- <div class="nk-tb-col nk-tb-col-tools">
+                                                                    <ul class="nk-tb-actions gx-1">
+                                                                        <li @click="getUserComplain(index)" data-bs-toggle="modal" data-bs-target="#modal-complains">
+                                                                            <a href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="!apartment_charges" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                            <div class="nk-tb-item nk-tb-head">
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">#</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Apartment Additional Charge</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Additional Charge Rate/Price</span>
+                                                                </div>
+                                                                <!-- <div class="nk-tb-col nk-tb-col-tools">
+                                                                    <span class="lead-text">Preview</span>
+                                                                </div> -->
+                                                            </div>
+                                                            <div class="nk-tb-item">
+                                                                <div class="text-center">
+                                                                    No Records Found    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br><br>
+                                                        <nav>
+                                                            <ul v-if="apartment_charges" class="pagination justify-content-end">
                                                                 <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_complain')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_complain', page)" class="page-link" href="#">{{page}}</a></li>
@@ -645,50 +743,34 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Notification Details</h5>
+                        <h5 class="modal-title">Apartment Details</h5>
                         <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <em class="icon ni ni-cross"></em>
                         </a>
                     </div>
-                    <div v-if="user_notification" class="modal-body">
+                    <div v-if="apartment_img" class="modal-body">
                         <div class="card h-100">
                                                     
                             <div class="nk-tb-list is-compact">
                                 <div class="nk-tb-item nk-tb-head">
-                                    <div class="nk-tb-col"><span>Name</span></div>
-                                    <div class="nk-tb-col text-end"><span>{{user_notification.name}}</span></div>
+                                    <div class="nk-tb-col"><span>Apartment Name</span></div>
+                                    <div class="nk-tb-col text-center"><span>{{apartment_img.aprtment_name}}</span></div>
                                 </div><!-- .nk-tb-head -->
                                 
                                 <div class="nk-tb-item">
                                     <div class="nk-tb-col">
-                                        <span class="tb-sub"><span>Notification Text</span></span>
+                                        <span class="tb-sub"><span>Apartment Image</span></span>
                                     </div>
                                     <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.text}}</span></span>
+                                        <span class="tb-sub tb-amount dz-image"><img :src="apartment_img.img" alt="apartment image"></span>
                                     </div>
                                 </div><!-- .nk-tb-item -->
                                 <div class="nk-tb-item">
                                     <div class="nk-tb-col">
-                                        <span class="tb-sub"><span>notification Type</span></span>
+                                        <span class="tb-sub"><span>Cover Image?</span></span>
                                     </div>
                                     <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.type}}</span></span>
-                                    </div>
-                                </div><!-- .nk-tb-item -->
-                                <div class="nk-tb-item">
-                                    <div class="nk-tb-col">
-                                        <span class="tb-sub"><span>order Ref Id</span></span>
-                                    </div>
-                                    <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.orderId}}</span></span>
-                                    </div>
-                                </div><!-- .nk-tb-item -->
-                                <div class="nk-tb-item">
-                                    <div class="nk-tb-col">
-                                        <span class="tb-sub"><span>Notification Status</span></span>
-                                    </div>
-                                    <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.status}}</span></span>
+                                        <span class="tb-sub tb-amount"><span>{{apartment_img.cover}}</span></span>
                                     </div>
                                 </div><!-- .nk-tb-item -->
                                 <div class="nk-tb-item">
@@ -696,22 +778,14 @@
                                         <span class="tb-sub"><span>Date</span></span>
                                     </div>
                                     <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.date}}</span></span>
-                                    </div>
-                                </div><!-- .nk-tb-item -->
-                                <div class="nk-tb-item">
-                                    <div class="nk-tb-col">
-                                        <span class="tb-sub"><span>Read Status</span></span>
-                                    </div>
-                                    <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.read_status}}</span></span>
+                                        <span class="tb-sub tb-amount"><span>{{apartment_img.created}}</span></span>
                                     </div>
                                 </div><!-- .nk-tb-item -->
                             </div><!-- .nk-tb-list -->
                         </div></div>
-                    <div class="modal-footer bg-light">
+                    <!-- <div class="modal-footer bg-light">
                         <span class="sub-text">Modal Footer Text</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

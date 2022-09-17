@@ -150,7 +150,7 @@
                 
                 array_push($allSubTypes, array(
                     'id' => $row['apart_chrg_id'],
-                    'price' => $name,
+                    'price' => $price,
                     'status_code' => $status_code,
                     'add_charge' => $add_charg_id,
                     'add_charge_name' => $add_charg_id_name,

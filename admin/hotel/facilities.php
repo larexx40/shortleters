@@ -162,8 +162,8 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Description</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Facility Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Facility Description</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -220,8 +220,8 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li @click="changeFacilityStatus(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Deactivate</span></a></li>
-                                                                                    <li @click="changeFacilityStatus(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Activate</span></a></li>
+                                                                                    <li @click="changeFacilityStatus(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon fa-solid fa-toggle-on"></em><span>Deactivate</span></a></li>
+                                                                                    <li @click="changeFacilityStatus(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon fa-solid fa-toggle-off"></em><span>Activate</span></a></li>
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#modalDelete"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
@@ -239,7 +239,8 @@
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Amenity Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Facility Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Facility Description</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
