@@ -108,6 +108,17 @@
             $apartment_id = cleanme($_POST['apartment_id']);
         }
 
+        if (!isset($_POST['apartment_price'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required name field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $apartment_price = cleanme($_POST['apartment_price']);
+        }
+
         if (!isset($_POST['address'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
@@ -152,7 +163,7 @@
             $prefferred_check_out = cleanme($_POST['prefferred_check_out']);
         }
 
-        if (!isset($_POST['min_people'])){
+        if (!isset($_POST['no_of_people'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required name field in this endpoint";
@@ -160,19 +171,19 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $min_people = cleanme($_POST['min_people']);
+            $no_of_people = cleanme($_POST['no_of_people']);
         }
 
-        if (!isset($_POST['max_people'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required name field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $max_people = cleanme($_POST['max_people']);
-        }
+        // if (!isset($_POST['max_people'])){
+        //     $errordesc = "All fields must be passed";
+        //     $linktosolve = 'https://';
+        //     $hint = "Kindly pass the required name field in this endpoint";
+        //     $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //     respondBadRequest($data);
+        // }else{
+        //     $max_people = cleanme($_POST['max_people']);
+        // }
 
         if (!isset($_POST['payment_status'])){
             $errordesc = "All fields must be passed";
@@ -183,6 +194,17 @@
             respondBadRequest($data);
         }else{
             $payment_status = cleanme($_POST['payment_status']);
+        }
+
+        if (!isset($_POST['customer_note'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required customer note field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $customer_note = cleanme($_POST['customer_note']);
         }
 
         if (!isset($_POST['identification_type'])){
@@ -204,14 +226,14 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $identification_img = cleanme($_FILES['identification_img']);
+            $identification_img = $_FILES['identification_img'];
         }
    
         
          // check if none of the field is empty
         if ( empty($first_name) || empty($last_name) || empty($gender) || empty($phone) || empty($email) || empty($apartment_id) || empty($occupation_or_workplace) 
-            || empty($preferred_check_in) || empty($prefferred_check_out) || empty($min_people) || empty($max_people) 
-            ||  empty($identification_type) || empty($payment_status) ){
+            || empty($preferred_check_in) || empty($prefferred_check_out) || empty($no_of_people) 
+            ||  empty($identification_type) || empty($payment_status) || empty($apartment_price) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -255,9 +277,9 @@
         $booking_id = generateUniqueShortKey($connect, "bookings", "booking_id ");
 
 
-        $query = 'INSERT INTO `bookings`(`booking_id`, `user_id`, `admin_id`, `first_name`, `last_name`, `gender`, `phone`, `email`, `apartment_id`, `address`, `occupation_or_workplace`, `preferred_check_in`, `prefferred_check_out`, `min_people`, `max_people`, `identification_type`, `identification_img`, `paid`) VALUES (? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)';
+        $query = 'INSERT INTO `bookings`(`booking_id`, `user_id`, `admin_id`, `first_name`, `last_name`, `gender`, `phone`, `email`, `apartment_id`, `apartment_price` ,`address`, `occupation_or_workplace`, `preferred_check_in`, `prefferred_check_out`, `no_of_people`, `identification_type`, `identification_img`, `paid`, `customer_note`) VALUES (? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("sssssssssssssss", $booking_id, $user_id, $admin, $first_name, $last_name, $gender, $phone, $email, $apartment_id, $address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $min_people, $max_people, $identification_type, $identification_img_link, $payment_status);
+        $slider_stmt->bind_param("sssssssssssssssssss", $booking_id, $user_id, $admin, $first_name, $last_name, $gender, $phone, $email, $apartment_id, $apartment_price ,$address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $no_of_people, $identification_type, $identification_img_link, $payment_status, $customer_note);
 
         if ( $slider_stmt->execute() ) {
             $text= "Booking successfully added";

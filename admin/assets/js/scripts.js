@@ -200,22 +200,24 @@
       NioApp.Toggle.trigger($(this).data('target'), attr);
       e.preventDefault();
     });
-    $doc.on('mouseup', function (e) {
-      if (toggleCurrent) {
-        var $toggleCurrent = $(toggleCurrent),
-            currentTarget = $(toggleCurrent).data('target'),
-            $contentCurrent = $("[data-content=\"".concat(currentTarget, "\"]")),
-            $s2c = $('.select2-container'),
-            $dpd = $('.datepicker-dropdown'),
-            $tpc = $('.ui-timepicker-container'),
-            $mdl = $('.modal');
-
-        if (!$toggleCurrent.is(e.target) && $toggleCurrent.has(e.target).length === 0 && !$contentCurrent.is(e.target) && $contentCurrent.has(e.target).length === 0 && !$s2c.is(e.target) && $s2c.has(e.target).length === 0 && !$dpd.is(e.target) && $dpd.has(e.target).length === 0 && !$tpc.is(e.target) && $tpc.has(e.target).length === 0 && !$mdl.is(e.target) && $mdl.has(e.target).length === 0) {
-          NioApp.Toggle.removed($toggleCurrent.data('target'), attr);
-          toggleCurrent = false;
+    setTimeout(() => {
+      $doc.on('mouseup', function (e) {
+        if (toggleCurrent) {
+          var $toggleCurrent = $(toggleCurrent),
+              currentTarget = $(toggleCurrent).data('target'),
+              $contentCurrent = $("[data-content=\"".concat(currentTarget, "\"]")),
+              $s2c = $('.select2-container'),
+              $dpd = $('.datepicker-dropdown'),
+              $tpc = $('.ui-timepicker-container'),
+              $mdl = $('.modal');
+  
+          if (!$toggleCurrent.is(e.target) && $toggleCurrent.has(e.target).length === 0 && !$contentCurrent.is(e.target) && $contentCurrent.has(e.target).length === 0 && !$s2c.is(e.target) && $s2c.has(e.target).length === 0 && !$dpd.is(e.target) && $dpd.has(e.target).length === 0 && !$tpc.is(e.target) && $tpc.has(e.target).length === 0 && !$mdl.is(e.target) && $mdl.has(e.target).length === 0) {
+            NioApp.Toggle.removed($toggleCurrent.data('target'), attr);
+            toggleCurrent = false;
+          }
         }
-      }
-    });
+      });
+    }, 6000);
     $win.on('resize', function () {
       $contentD.each(function () {
         var content = $(this).data('content'),

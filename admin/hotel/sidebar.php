@@ -30,12 +30,12 @@
                                         <li class="nk-menu-item">
                                             <a href="./bookings.php" class="nk-menu-link"><span class="nk-menu-text">All Bookings</span></a>
                                         </li>
-                                        <li class="nk-menu-item">
+                                        <!-- <li class="nk-menu-item">
                                             <a href="./booking-add.php" class="nk-menu-link"><span class="nk-menu-text">Add Booking</span></a>
                                         </li>
                                         <li class="nk-menu-item">
                                             <a href="./booking-edit.php" class="nk-menu-link"><span class="nk-menu-text">Edit Booking</span></a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item has-sub">
@@ -47,9 +47,9 @@
                                         <li class="nk-menu-item">
                                             <a href="./buildingType.php" class="nk-menu-link"><span class="nk-menu-text">All Building Types</span></a>
                                         </li>
-                                        <li class="nk-menu-item">
+                                        <!-- <li class="nk-menu-item">
                                             <a href="./room-type.php" class="nk-menu-link"><span class="nk-menu-text">All Sub Building Types</span></a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item has-sub">

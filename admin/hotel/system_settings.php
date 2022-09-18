@@ -171,34 +171,24 @@
                                                                     <div class="form-group">
                                                                         <label class="form-label"  for="full-name">Active SMS System: {{systemSettings.smsApi}}</label>
                                                                         <div class="form-control-wrap">
-                                                                            <select class="form-select" v-model='systemSettings.activeSmsCode' aria-label="Default select example">{{systemSettings.smsApi}}
-                                                                            <option value="systemSettings.activeSmsCode" selected>{{systemSettings.smsApi}}</option>
-                                                                                <option v-if='systemSettings.activeSmsCode != 1' v-bind:value="1">Termi</option>
-                                                                                <option v-if='systemSettings.activeSmsCode != 2' v-bind:value="2">Kudi</option>
-                                                                                <option v-if='systemSettings.activeSmsCode != 3' v-bind:value="3">Smart Solution</option>
-                                                                                <option v-if='systemSettings.activeSmsCode != 3' v-bind:value="99">Selected</option>
-                                                                                <option  value="3">Three</option>
+                                                                            <select class="form-select" v-model='systemSettings.activeSmsCode' aria-label="Default select example">
+                                                                                <option value="0">None</option>
+                                                                                <option value="1">Termi</option>
+                                                                                <option value="2">Kudi</option>
+                                                                                <option  value="3">Smart Solution</option>
+                                                                                <!-- <option  v-bind:value="99">Selected</option>
+                                                                                <option  value="3">Three</option> -->
                                                                             </select>
                                                                         </div>
-                                                                        <!-- <div class="form-control-wrap">
-                                                                            <select for='select' class="form-select js-select2 js-select2-sm" v-model="name">
-                                                                                <option v-bind:value="systemSettings.activesmssystemCode" selected>{{systemSettings.activesmssystem}}</option>
-                                                                                <option v-if='systemSettings.activesmssystemCode != 1' :value="{name: 'termi'}">Termi</option>
-                                                                                <option v-if='systemSettings.activesmssystemCode != 2' :value="{name: 'Kudi'}">Kudi</option>
-                                                                                <option v-if='systemSettings.activesmssystemCode != 3' :value="{name: 'Smart'}">Smart Solution</option>
-                                                                            </select>
-                                                                        </div> -->
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-label"  for="full-name">Active Email System : {{systemSettings.emailApi}}</label>
                                                                         <div class="form-control-wrap">
-                                                                            <select class="form-select" v-model='systemSettings.activeEmailCode' aria-label="Default select example">{{systemSettings.emailApi}}
-                                                                                <option value="systemSettings.activeEmailCode" selected>{{systemSettings.emailApi}}</option>
-                                                                                <option v-if='systemSettings.activeEmailCode != 1' v-bind:value="1">SendGrid</option>
-                                                                                <option v-if='systemSettings.activeEmailCode != 2' v-bind:value="2">Twilo</option>
-                                                                                <option v-if='systemSettings.activeEmailCode != 3' v-bind:value="3">African Talking</option>
-                                                                                <option v-if='systemSettings.activeEmailCode != 3' v-bind:value="99">Selected</option>
-                                                                                <option  value="3">Three</option>
+                                                                            <select class="form-select" v-model='systemSettings.activeEmailCode' aria-label="Default select example">
+                                                                                <option value="0">None</option>
+                                                                                <option value="1">SendGrid</option>
+                                                                                <option value="2">Twilo</option>
+                                                                                <option value="3">African Talking</option>
                                                                             </select>
                                                                         </div>
                                                                         <!-- <div class="form-control-wrap">
@@ -215,13 +205,12 @@
                                                                         <label class="form-label"  for="full-name">Active Payment System
                                                                             </label>
                                                                         <div class="form-control-wrap">
-                                                                            <select class="form-select" v-model='systemSettings.activePaymentCode' aria-label="Default select example" >{{systemSettings.paymentApi}}
-                                                                                <option value="systemSettings.activePaymentCode" selected>{{systemSettings.paymentApi}}</option>
-                                                                                <option v-if='systemSettings.activePaymentCode != 1' v-bind:value="1">PayStack</option>
-                                                                                <option v-if='systemSettings.activePaymentCode != 2' v-bind:value="2">Monify</option>
-                                                                                <option v-if='systemSettings.activePaymentCode != 3' v-bind:value="3">OneApp</option>
-                                                                                <option v-if='systemSettings.activePaymentCode != 3' v-bind:value="99">Select</option>
-                                                                                <option  value="3">Three</option>
+                                                                            <select class="form-select" v-model='systemSettings.activePaymentCode' @change="logResponse" aria-label="Default select example" >{{systemSettings.paymentApi}}
+                                                                                <option value="">None</option>
+                                                                                <option value="1">PayStack</option>
+                                                                                <option value="2">Monify</option>
+                                                                                <option value="3">OneApp</option>
+                                                                                <!-- <option v-if='systemSettings.activePaymentCode != 3' v-bind:value="99">Select</option> -->
                                                                             </select>
                                                                         </div>
                                                                     </div>
