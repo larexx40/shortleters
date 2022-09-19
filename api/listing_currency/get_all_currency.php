@@ -82,7 +82,7 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT `currency_id`, `name`, `status`, `created_at`, `updated_at` FROM `listing_currency` WHERE `status` = ? AND ( name LIKE ? )";
+                $query = "SELECT * FROM `listing_currency` WHERE `status` = ? AND ( name LIKE ? )";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ss", $status, $searching );
                 $queryStmt->execute();
@@ -98,7 +98,7 @@
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT `currency_id`, `name`, `status`, `created_at`, `updated_at` FROM `listing_currency` WHERE name LIKE ?";
+                $query = "SELECT * FROM `listing_currency` WHERE name LIKE ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("s", $searching);
                 $queryStmt->execute();

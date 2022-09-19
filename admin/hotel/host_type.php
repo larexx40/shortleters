@@ -101,12 +101,12 @@
 
                                                                                             <div class="dropdown-body dropdown-body-rg">
                                                                                                 <ul class="link-check">
-                                                                                                    <li v-if="sort == null" class="" :class="{active: class_active}" @click.prevent ="noSort(0)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="sort != null" class=""  @click.prevent="noSort(0)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="sort == 1" :class="{active: class_active}"  @click.prevent="sortByStatus(1)" class=""><a href="#">Active</a></li>
-                                                                                                    <li v-if="sort != 1" class=""  @click.prevent="sortByStatus(1)"><a href="#">Active</a></li>
-                                                                                                    <li v-if="sort == 0" :class="{active: class_active}" @click.prevent="sortByStatus(0)" class=""><a href="#">Inactive</a></li>
-                                                                                                    <li v-if="sort != 0" class=""  @click.prevent="sortByStatus(0)"><a href="#">Inactive</a></li>
+                                                                                                <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
                                                                                                 </ul>
                                                                                             </div>
 

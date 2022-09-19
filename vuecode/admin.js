@@ -7703,6 +7703,9 @@ let admin = Vue.createApp({
             if ( webPage === "apartment-details.php"){
                 this.apartment_img = this.apartment_images[index];
             }
+            if (webPage === "currency.php"){
+                this.currency = this.all_currencies[index];
+            }
             //console.log(this.shop_product)
         },
         // korede
@@ -9775,17 +9778,16 @@ let admin = Vue.createApp({
             }
         },
         async addCurrency(load = 1){
-                if (!this.building_type_id || !this.sub_building_type_name || !this.sub_building_type_description){
+                if (!this.currency_name|| !this.currency_symbol){
                     this.error = "Insert all Fields"
                     new Toasteur().error(this.error);
                     return;
                 }
                 const data = new FormData();
-                data.append("building_type_id", this.building_type_id);
-                data.append("name", this.sub_building_type_name);
-                data.append("description", this.sub_building_type_description);
+                data.append("name", this.currency_name);
+                data.append("currency_symbol", this.currency_symbol);
                 
-                const url = `${this.baseUrl}api/sub_building_type/add_sub_building_type.php`;
+                const url = `${this.baseUrl}api/listing_currency/add_currency.php`;
                 const options = {
                     method: "POST",
                     headers: { 
@@ -9801,7 +9803,7 @@ let admin = Vue.createApp({
                     if(response.data.status){
                         this.success = response.data.text;
                         new Toasteur().success(this.success);
-                        await this.getAllbuildingSubTypes(6);
+                        await this.getAllCurrency(6);
                         //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                     }
                 } catch (error) {
@@ -9842,9 +9844,9 @@ let admin = Vue.createApp({
         },
         async changeCurrencyStatus(id, status){
             const data = new FormData();
-                data.append("sub_type_id", id);
+                data.append("currency_id", id);
                 data.append("status", status);
-                const url = `${this.baseUrl}api/sub_building_type/change_status.php`;
+                const url = `${this.baseUrl}api/listing_currency/change_currency_status.php`;
                 const options = {
                     method: "POST",
                     headers: { 
@@ -9859,7 +9861,7 @@ let admin = Vue.createApp({
                     if(response.data.status){
                         this.success = response.data.text;
                         new Toasteur().success(this.success);
-                        await this.getAllbuildingSubTypes(6);
+                        await this.getAllCurrency(6);
                         //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                     }
                 } catch (error) {
@@ -9899,18 +9901,17 @@ let admin = Vue.createApp({
                 }
         },
         async updateCurrency(){
-            if (!this.sub_building_type.name ||  !this.sub_building_type.build_type ||  !this.sub_building_type.description ){
+            if (!this.currency.id ||  !this.currency.name ||  !this.currency.symbol ){
                 this.error = "Insert all Fields"
                 new Toasteur().error(this.error);
                 return;
             }
             const data = new FormData();
-            data.append("sub_type_id", this.sub_building_type.id);
-            data.append("building_type_id", this.sub_building_type.build_type);
-            data.append("name", this.sub_building_type.name);
-            data.append("description", this.sub_building_type.description);
+            data.append("currency_id", this.currency.id);
+            data.append("name", this.currency.name);
+            data.append("currency_symbol", this.currency.symbol);
             
-            const url = `${this.baseUrl}api/sub_building_type/update_sub_building_type.php`;
+            const url = `${this.baseUrl}api/listing_currency/update_currency.php`;
             const options = {
                     method: "POST",
                     headers: { 
@@ -9925,7 +9926,7 @@ let admin = Vue.createApp({
                     if(response.data.status){
                         this.success = response.data.text;
                         new Toasteur().success(this.success);
-                        await this.getAllbuildingSubTypes(6);
+                        await this.getAllCurrency(6);
                         //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                     }
             } catch (error) {
@@ -10739,6 +10740,11 @@ let admin = Vue.createApp({
                 this.class_active = true;
                 this.kor_sort = value;
                 await this.getAllApartmentAndImages();
+            }
+            if (webPage === "currency.php"){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllCurrency(3);
             }
             
         },
@@ -11597,7 +11603,10 @@ let admin = Vue.createApp({
                 await this.getAllApartmentAndImages();
             }
             if (webPage === "customers.php"){
-                await this.getAllUsers();
+                await this.getAllUsers(3);
+            }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
             }
         },
         async kor_add_sort(status){
@@ -11624,7 +11633,10 @@ let admin = Vue.createApp({
                 await this.getAllApartmentAndImages();
             }
             if (webPage === "customers.php"){
-                await this.getAllUsers();
+                await this.getAllUsers(3);
+            }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
             }
         },
         async nav_nextPage(){
@@ -11652,6 +11664,9 @@ let admin = Vue.createApp({
             }
             if (webPage === "customers.php"){
                 await this.getAllUsers();
+            }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
             }
 
         },
@@ -11681,6 +11696,9 @@ let admin = Vue.createApp({
             if (webPage === "customers.php"){
                 await this.getAllUsers();
             }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
+            }
         },
         async nav_selectPage(page){
             this.kor_page = page;
@@ -11707,6 +11725,9 @@ let admin = Vue.createApp({
             }
             if (webPage === "customers.php"){
                 await this.getAllUsers();
+            }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
             }
         },
         async nav_dynamic_nextPage(item){
@@ -11736,6 +11757,9 @@ let admin = Vue.createApp({
             if (webPage === "customers.php"){
                 await this.getAllUsers();
             }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
+            }
         },
         async nav_dynamic_previousPage(item){
             this.kor_page = parseInt(this.kor_page) - 1;
@@ -11764,6 +11788,9 @@ let admin = Vue.createApp({
             if (webPage === "customers.php"){
                 await this.getAllUsers();
             }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
+            }
         },
         async nav_dynamic_selectPage(item ,page){
             this.kor_page = page;
@@ -11790,7 +11817,10 @@ let admin = Vue.createApp({
                 await this.getAllApartmentAndImages();
             }
             if (webPage === "customers.php"){
-                await this.getAllUsers();
+                await this.getAllUsers(3);
+            }
+            if (webPage === "currency.php"){
+                await this.getAllCurrency(3);
             }
             
         },
@@ -11843,8 +11873,13 @@ let admin = Vue.createApp({
             if ( webPage === "apartment_images.php" ){
                 this.class_active = true;
                 this.kor_sort = value;
-                await this.getAllApartmentAndImages();
-            }    
+                await this.getAllApartmentAndImages(5);
+            }   
+            if (webPage === "currency.php"){
+                this.class_active = true;
+                this.kor_sort = value;
+                await this.getAllCurrency(3);
+            } 
             
         },
         setApartId(id){
@@ -11909,6 +11944,9 @@ let admin = Vue.createApp({
         }
         if (webPage === "customer-details.php"){
             await this.getUserDetails();
+        }
+        if (webPage === "currency.php"){
+            await this.getAllCurrency();
         }
 
     }
