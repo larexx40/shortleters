@@ -173,7 +173,6 @@
                 $preferred_check_in = $row["preferred_check_in"];
                 $prefferred_check_out = $row["prefferred_check_out"];
                 $no_of_people = $row["no_of_people"];
-                // $max_people = $row["max_people"];
                 $identification_type = $row["identification_type"];
                 $identification_img = $row["identification_img"];
                 $customer_note = $row["customer_note"];
@@ -197,7 +196,6 @@
                     'preferred_check_in' => $preferred_check_in,
                     'prefferred_check_out' => $prefferred_check_out,
                     'no_of_people' => $no_of_people,
-                    // 'max_people' => $max_people,
                     'identification_type' => $identification_type,
                     'identification_img' => $identification_img,
                     'customer_note' => $customer_note,
