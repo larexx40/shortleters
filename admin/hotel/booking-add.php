@@ -156,9 +156,9 @@
                                                             <label class="form-label">Arrived Date</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-icon form-icon-right">
-                                                                    <em class="icon ni ni-calendar"></em>
+                                                                    <em class="icon"></em>
                                                                 </div>
-                                                                <input type="text" v-model="preferred_check_in" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                                                                <input type="date" v-model="preferred_check_in" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -167,9 +167,9 @@
                                                             <label class="form-label">Depart Date</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-icon form-icon-right">
-                                                                    <em class="icon ni ni-calendar"></em>
+                                                                    <em class="icon"></em>
                                                                 </div>
-                                                                <input type="text" v-model="prefferred_check_out" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                                                                <input type="date" v-model="prefferred_check_out" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
                                                             </div>
                                                         </div>
                                                     </div>

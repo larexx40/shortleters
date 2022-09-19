@@ -40,8 +40,7 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondUnAuthorized($data);
         }
-
-
+        //no
         if ( !isset($_POST['booking_id']) ){
 
             $errordesc="booking id required";
