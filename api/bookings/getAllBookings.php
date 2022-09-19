@@ -158,10 +158,13 @@
             while($row = $result->fetch_assoc()){
                 $paid_code = $row['paid'];
                 $paid_status = ($row['paid'] == 1) ? "Paid" : "Not Paid";
-                $admin_id =  $row['admin_id'];
-                $admin_name =  ( $admin_id )? getNameFromField($connect, "admin ", "id", $admin_id) : null;
+                // $admin_id =  $row['admin_id'];
+                // $admin_name =  ( $admin_id )? getNameFromField($connect, "admin ", "id", $admin_id) : null;
                 $first_name =  $row['first_name'];
+                $f_initials = ($first_name)? strtoupper(substr("$first_name",0,1)) : null;
                 $last_name =  $row['last_name'];
+                $l_initials = ($last_name)? strtoupper(substr("$last_name", 0, 1)): null;
+                $initials = $f_initials.$l_initials;
                 $gender = $row['gender'];
                 $phone = $row['phone'];
                 $email = $row["email"];
@@ -171,8 +174,8 @@
                 $occupation_or_workplace = $row["occupation_or_workplace"];
                 $preferred_check_in = $row["preferred_check_in"];
                 $prefferred_check_out = $row["prefferred_check_out"];
-                $min_people = $row["min_people"];
-                $max_people = $row["max_people"];
+                // $min_people = $row["min_people"];
+                // $max_people = $row["max_people"];
                 $identification_type = $row["identification_type"];
                 $identification_img = $row["identification_img"];
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
@@ -180,10 +183,11 @@
                 
                 array_push($allBookings, array(
                     'id' => $row['booking_id'],
-                    'admin_id' => $admin_id,
-                    'admin_name' => ($admin_name) ? $admin_name : null,
+                    // 'admin_id' => $admin_id,
+                    // 'admin_name' => ($admin_name) ? $admin_name : null,
                     'first_name' => $first_name,
                     'last_name' => $last_name,
+                    'initials'=>$initials,
                     'gender' => $gender,
                     'phone' => $phone,
                     'email' => $email,
@@ -193,8 +197,8 @@
                     'occupation_or_workplace' => $occupation_or_workplace,
                     'preferred_check_in' => $preferred_check_in,
                     'prefferred_check_out' => $prefferred_check_out,
-                    'min_people' => $min_people,
-                    'max_people' => $max_people,
+                    // 'min_people' => $min_people,
+                    // 'max_people' => $max_people,
                     'identification_type' => $identification_type,
                     'identification_img' => $identification_img,
                     'paid_code' => $paid_code,

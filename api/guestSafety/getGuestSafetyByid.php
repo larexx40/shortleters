@@ -110,7 +110,6 @@
             $hint=["pass in valid id"];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
             $text="data with id not found";
-            $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }

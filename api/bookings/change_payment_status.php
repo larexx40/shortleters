@@ -44,11 +44,11 @@
 
         if ( !isset($_POST['booking_id']) ){
 
-            $errordesc="product id required";
+            $errordesc="booking id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="host type id must be passed";
+            $text="booking id must be passed";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -68,11 +68,11 @@
         }
 
         if ( !isset($_POST['status']) ){
-            $errordesc="Product status required";
+            $errordesc="booking status required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Product status must be passed";
+            $text="booking status must be passed";
             $method;
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -108,9 +108,9 @@
         // check if product is valid
         if ( !checkifFieldExist($connect, "host_type", "host_type_id", $host_type_id) ) {
 
-            $errordesc = "host Type does not Exist ";
+            $errordesc = "booking does not Exist ";
             $linktosolve = 'https://';
-            $hint = "Kindly ensure the product id passed is for an existing product";
+            $hint = "Kindly ensure the booking id passed is for an existing product";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
