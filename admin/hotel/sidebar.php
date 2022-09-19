@@ -143,12 +143,21 @@
                                         <li class="nk-menu-item">
                                             <a href="./cancelation_policy.php" class="nk-menu-link"><span class="nk-menu-text">Cancelation Policy</span></a>
                                         </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./house_rule.php" class="nk-menu-link"><span class="nk-menu-text">House Rule</span></a>
+                                        </li>
                                     </ul>
                                 </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item">
                                     <a href="./customers.php" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
                                         <span class="nk-menu-text">Customers</span>
+                                    </a>
+                                </li><!-- .nk-menu-item -->
+                                <li v-if= 'superAdmin' class="nk-menu-item">
+                                    <a href="./admins.php" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
+                                        <span class="nk-menu-text">Admin</span>
                                     </a>
                                 </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item has-sub">

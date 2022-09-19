@@ -152,7 +152,7 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllSpaceType(4)' v-model ='search' placeholder="Search by product name or id">
+                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllSpaceType(4)' v-model ='search' placeholder="Search by space name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
@@ -258,7 +258,7 @@
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
                                                 
-                                                <div class="card-inner">
+                                                <div v-if="spaceTypes" class="card-inner">
                                                     <div class="nk-block-between-md g-3">
                                                         <div class="g">
                                                         <ul class="pagination justify-content-end">

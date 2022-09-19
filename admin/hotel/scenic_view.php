@@ -258,7 +258,7 @@
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
                                                 
-                                                <div class="card-inner">
+                                                <div v-if="scenicViews" class="card-inner">
                                                     <div class="nk-block-between-md g-3">
                                                         <div class="g">
                                                         <ul class="pagination justify-content-end">
