@@ -66,7 +66,6 @@
         $gt_booking->execute();
         $result = $gt_booking->get_result();
         $num_row = $result->num_rows;   
-
         if ($num_row > 0){
             $row = $result->fetch_assoc();
             $paid_code = $row['paid'];
@@ -91,8 +90,8 @@
             $identification_img = $row["identification_img"];
             $created = gettheTimeAndDate(strtotime($row['created_at']));
             $updated = gettheTimeAndDate(strtotime($row['updated_at']));
-            
-            $maindata =[
+                
+            $data = [
                 'id' => $row['booking_id'],
                 'admin_id' => $admin_id,
                 'admin_name' => ($admin_name) ? $admin_name : null,
@@ -119,16 +118,16 @@
             ];
             $text= "Fetch Successful";
             $status = true;
-            $successData = returnSuccessArray($text, $method, $endpoint, [], $maindata, $status);
+            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
+        }else{
+            $errordesc = "No Records found";
+            $linktosolve = 'https://';
+            $hint = "Kindly make sure the table has been populated";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondOK($data);
         }
-
-        $errordesc = "No Records found";
-        $linktosolve = 'https://';
-        $hint = "Kindly make sure the table has been populated";
-        $errorData = returnError7003($errordesc, $linktosolve, $hint);
-        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-        respondOK($data);
 
     }else{
 

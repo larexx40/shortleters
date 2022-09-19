@@ -83,6 +83,8 @@ let admin = Vue.createApp({
             cancelationPolicies: null,
             systemSettings: null,
             houseRules: null,
+            bookings: null,
+            booking: null,
             iosversion: null,
             androidversion: null,
             webversion: null,
@@ -328,7 +330,13 @@ let admin = Vue.createApp({
             }
             await this.getBookingByid(bookingid);
         }
-        
+        if(webPage == 'receipt.php'){
+            let bookingid = (localStorage.getItem("bookingid")) ? localStorage.getItem("bookingid"): null;
+            if(!bookingid){
+                window.location.href="./bookings.php";
+            }
+            await this.getBookingByid(bookingid);
+        }
     },
     methods: {
         async changeGender(){
@@ -3820,6 +3828,7 @@ let admin = Vue.createApp({
                 const response = await axios(options);
                 if(response.data.status){
                     this.booking = response.data.data;
+                    console.log("booking_details", this.booking);
                     
                 }else{
                     this.booking = null;

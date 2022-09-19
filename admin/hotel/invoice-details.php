@@ -62,8 +62,8 @@
                                                         <div class="invoice-contact-info">
                                                             <h4 class="title">{{booking.first_name}} {{booking.last_name}}</h4>
                                                             <ul class="list-plain">
-                                                                <li><em class="icon ni ni-map-pin-fill"></em><span>House #65, 4328 Marion Street<br>Newbury, VT 05051</span></li>
-                                                                <li><em class="icon ni ni-call-fill"></em><span>+012 8764 556</span></li>
+                                                                <li><em class="icon ni ni-map-pin-fill"></em><span>{{booking.address}}</span></li>
+                                                                <li><em class="icon ni ni-call-fill"></em><span>{{booking.phone}}</span></li>
                                                             </ul>
                                                         </div>
                                                     </div>
