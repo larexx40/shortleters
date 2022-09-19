@@ -8,13 +8,12 @@
     Header("Cache-Control: no-cache");
     // header("Access-Control-Max-Age: 3600");//3600 seconds
     // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
-    
+
     include "../cartsfunction.php";
 
     $method = getenv('REQUEST_METHOD');
     $endpoint = basename($_SERVER['PHP_SELF']);
-    $maindata= [];
-
+    $maindata=[];
 
     if($method =='GET'){
         //get company details to decode usertoken
@@ -29,47 +28,17 @@
         $serverName = $companyDetails['servername'];
 
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
-        $userpubkey = $decodeToken->usertoken;
-
-        if(!checkIfIsSuperAdmin($connect, $userpubkey)){
-            // send Admin not found response
-            $errordesc =  "Admin  not found";
-            $linktosolve = 'https://';
-            $hint = "Only Super Admin can access this route";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-            respondUnAuthorized($data);
-        }
+        $userPubKey = $decodeToken->usertoken;
 
         if (isset($_GET['sort'])) {
             $sort = cleanme($_GET['sort']); //sort if > 0
         } else {
             $sort = "";
         }
-        if (isset($_GET['sortStatus'])) {
-            if(!empty($_GET['sortStatus']) && is_numeric($_GET['sortStatus']) ){//status =1 or 0
-                $status = cleanme($_GET['sortStatus']);
-            }else{     
-                $status = 0;
-            }
+        if (isset($_GET['sortStatus']) && is_numeric($_GET['sortStatus'])) {
+            $status = cleanme($_GET['sortStatus']); //status =0-6
         } else {
-            $status = 0;
-        }
-
-        // check the status passed
-        if ($status == 0 || $status == "banned"){
-            $sortStatus = 0;
-        }
-
-        if ($status == 1 || $status == 'active'){
-            $sortStatus = 1;
-        }
-
-        if ($status == 2 || $status == "suspended" ){
-            $sortStatus = 2;
-        }
-        if ( $status == 3 || $status == "frozen"){
-            $sortStatus = 3;
+            $status = "";
         }
 
         if (isset($_GET['search'])) {
@@ -96,18 +65,60 @@
             }
         } else {  
             $noPerPage =4;  
-        }
+        } 
         $offset = ($page_no - 1) * $noPerPage;
 
-        if($sort > 0){
-            //sort with status
+
+        if($status > 0){
+            
+            //sort with default address
             if (!empty($search) && $search!="" && $search!=' '){
-                //search for data in database 
-                $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `email`, `username`, `password`, `name`, `status`, `superadmin` FROM `admin`
-                 WHERE (`name` like ? OR `username` like ? ) AND `status` = ?";
+                //search productCategory from database 
+                $searchParam = "%{$search}%"; 
+                //SELECT `id`, `userid`, `orderid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`, `created_at`, `updated_at`, `amttopay` FROM `user_transactions` 
+                $searchQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions` 
+                                WHERE (`userid` like ? OR `transactionid` like ?) AND `status` =?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("sss", $searchParam, $searchParam, $sortStatus);
+                $stmt->bind_param("sss", $searchParam, $searchParam, $status);
+                $stmt->execute();
+                $result= $stmt->get_result();
+                $total_numRow = $result->num_rows;
+                $pages = ceil($total_numRow / $noPerPage);
+
+                $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
+                $stmt= $connect->prepare($searchQuery);
+                $stmt->bind_param("sssss",$searchParam, $searchParam, $status, $offset, $noPerPage);
+                $stmt->execute();
+                $result= $stmt->get_result();
+                $numRow = $result->num_rows;  
+
+            }else{
+                //get without search
+                $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions`
+                            WHERE `status` =?";
+                $stmt= $connect->prepare($sqlQuery);
+                $stmt->bind_param("s", $status);
+                $stmt->execute();
+                $result= $stmt->get_result();
+                $total_numRow = $result->num_rows;
+                $pages = ceil($total_numRow / $noPerPage);
+
+                $sqlQuery = "$sqlQuery ORDER BY id DESC LIMIT ?,?";
+                $stmt= $connect->prepare($sqlQuery);
+                $stmt->bind_param("sss", $status, $offset, $noPerPage);
+                $stmt->execute();
+                $result= $stmt->get_result();
+                $numRow = $result->num_rows;
+            }
+        }else{
+            //no need to sort
+            if (!empty($search) && $search!="" && $search!=' '){
+                //search productCategory from database 
+                $searchParam = "%{$search}%";
+                $searchQuery = "SELECT SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions`
+                                WHERE (`userid` like ? OR `transactionid` like ?) ";
+                $stmt= $connect->prepare($searchQuery);
+                $stmt->bind_param("ss",$searchParam,  $searchParam);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
@@ -116,73 +127,29 @@
                 //paginate the fetch data
                 $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("sssss", $searchParam, $searchParam, $sortStatus, $offset, $noPerPage);
+                $stmt->bind_param("ssss",$searchParam, $searchParam, $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
-                $numRow = $result->num_rows;
-    
+                $numRow = $result->num_rows;  
             }else {
-                //get all data in database
-                $sqlQuery = "SELECT `id`, `email`, `username`, `password`, `name`, `status`, `superadmin`  FROM `admin` WHERE `status` = ?";
-                $stmt= $connect->prepare($sqlQuery);
-                $stmt->bind_param("s", $sortStatus);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
-                $pages = ceil($total_numRow / $noPerPage);
-    
-                $sqlQuery = "$sqlQuery ORDER BY id DESC LIMIT ?,?";
-                $stmt= $connect->prepare($sqlQuery);
-                $stmt->bind_param("sss", $sortStatus, $offset, $noPerPage);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $numRow = $result->num_rows;
-            } 
-
-        }else{
-            //else no need to sort
-            if (!empty($search) && $search!="" && $search!=' '){
-                //search for data in database 
-                $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `email`, `username`, `password`, `name`, `status`, `superadmin`  FROM `admin` 
-                WHERE (`name` like ? OR `username` like ?) ";
-                $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("ss", $searchParam, $searchParam);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
-                $pages = ceil($total_numRow / $noPerPage);
-    
-                //paginate the fetch data
-                $searchQuery = "SELECT `id`, `email`, `username`, `password`, `name`, `status`, `superadmin`  FROM `admin` 
-                WHERE (`name` like ? OR `username` like ?) ORDER BY id DESC LIMIT ?,?";
-                $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("ssss", $searchParam, $searchParam, $offset, $noPerPage);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $numRow = $result->num_rows;
-    
-            }else {
-                //get all data in database
-                $sqlQuery = "SELECT `id`, `email`, `username`, `password`, `name`, `status`, `superadmin` FROM `admin` ORDER BY id ";
+                //get all data
+                $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions`";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `id`, `email`, `username`, `password`, `name`, `status`, `superadmin` FROM `admin` ORDER BY id DESC LIMIT ?,?";
+                $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions` ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
                 $result= $stmt->get_result();
                 $numRow = $result->num_rows;
-            } 
-
+            }
         }
-    
-         
-        //check for database connection
+        
+        //check for database connection 
         if(!$stmt->execute()){
             //DB error || invalid input
             $errordesc=$stmt->error;
@@ -195,55 +162,54 @@
             respondInternalError($data);
         }
         //return fetched data as array
+        
         if($numRow > 0){
             $allResponse = [];
             while($row = $result->fetch_assoc()){
+                //SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, 
+                //`approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions`
                 $id = $row['id'];
-                $email = $row['email'];
-                $name = $row['name'];
-                $strings = explode(" ", $name);
-                $initials = '';
-                foreach($strings as $string){
-                    $initials.=strtoupper(substr($string,0,1));
-                }
-                $username = $row['username'];
+                $userid = $row['userid'];
+                $transactionid = $row['transactionid'];
+                $transaction_type = $row['transaction_type'];
+                $booking_id = $row['booking_id'];
+                $ordertime = $row['ordertime'];
+                $approvedby = $row['approvedby'];
+                $approvaltype = $row['approvaltype'];
+                $amttopay = $row['amttopay'];
                 $statusCode = $row['status'];
-                $status = $row['status'];
-                if($status == 0){
-                    $status = 'Banned';
+
+                if($statusCode == 1){
+                    $status = "Active";
+                }else{
+                    $status = "Inactive";
                 }
-                if($status == 1){
-                    $status = 'Active';
-                }
-                if($status == 2){
-                    $status = 'Suspended';
-                }
-                if($status == 3){
-                    $status = 'Frozen';
-                }
-                $superAdmin =$row['superadmin'];
-                if($superAdmin == 0){
-                    $superAdmin = 'No';
-                }
-                if($superAdmin == 1){
-                    $superAdmin = 'Yes';
-                }
-    
-                array_push($allResponse,array("id"=>$id, "email"=>$email, "initials"=>$initials, "name"=>$name, "username"=>$username, "statusCode"=>$statusCode, "status"=>$status, "superAdmin"=>$superAdmin));
+
+            array_push($allResponse, array(
+                "id"=>$id,
+                "userid"=>$userid,
+                "transactionid"=>$transactionid,
+                "transaction_type"=>$transaction_type,
+                "booking_id"=>$booking_id,
+                "ordertime"=>$ordertime,
+                "approvedby"=>$approvedby,
+                "approvaltype"=>$approvaltype,
+                "status"=>$status,
+                "amttopay"=>$amttopay,
+            ));
+
             }
             $maindata = [
                 'page' => $page_no,
                 'per_page' => $noPerPage,
                 'total_data' => $total_numRow,
                 'totalPage' => $pages,
-                'admins'=> $allResponse
+                'transactions'=> $allResponse
             ];
-            $errordesc = " ";
             $linktosolve = "htps://";
             $hint = [];
             $errordata = [];
             $text = "Data found";
-            $method = getenv('REQUEST_METHOD');
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
@@ -254,11 +220,11 @@
             $hint = [];
             $errordata = [];
             $text = "Record Not Found";
-            $method = getenv('REQUEST_METHOD');
             $status = false;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
         }
+
 
     }else {
         // method not allowed

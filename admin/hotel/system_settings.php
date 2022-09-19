@@ -78,14 +78,21 @@
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">Active SMS System
                                                                             </span>
-                                                                        <span class="profile-ud-value">{{systemSettings.activesmssystem}}</span>
+                                                                        <span class="profile-ud-value">{{systemSettings.smsApi}}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">Active Email System
                                                                             </span>
-                                                                        <span class="profile-ud-value">{{systemSettings.activemailsystem}}</span>
+                                                                        <span class="profile-ud-value">{{systemSettings.emailApi}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">Active Payment System
+                                                                            </span>
+                                                                        <span class="profile-ud-value">{{systemSettings.paymentApi}}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item">
@@ -133,7 +140,7 @@
                  
                                                         <div class="card h-100">
                                                             <div v-if='systemSettings' class="card-inner">
-                                                                <form @submit.prevent='log()' action="#" method="POST" id="changePwdForm">
+                                                                <form @submit.prevent='updateSystemSettings()' action="#" method="POST" id="changePwdForm">
                                                                     <input type="hidden" name="_token"
                                                                         value="E1eXAuR00KyTa6nB1BSSMDTvt4AN5GlPsj81YgAo" />
                                                                     <div id="formStatus"></div>
@@ -169,20 +176,19 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label class="form-label"  for="full-name">Active SMS System: {{systemSettings.smsApi}}</label>
+                                                                        <label class="form-label"  for="full-name">Active SMS System</label>
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select" v-model='systemSettings.activeSmsCode' aria-label="Default select example">
                                                                                 <option value="0">None</option>
                                                                                 <option value="1">Termi</option>
                                                                                 <option value="2">Kudi</option>
                                                                                 <option  value="3">Smart Solution</option>
-                                                                                <!-- <option  v-bind:value="99">Selected</option>
-                                                                                <option  value="3">Three</option> -->
+                                                                                
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label class="form-label"  for="full-name">Active Email System : {{systemSettings.emailApi}}</label>
+                                                                        <label class="form-label"  for="full-name">Active Email System </label>
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select" v-model='systemSettings.activeEmailCode' aria-label="Default select example">
                                                                                 <option value="0">None</option>
@@ -191,15 +197,6 @@
                                                                                 <option value="3">African Talking</option>
                                                                             </select>
                                                                         </div>
-                                                                        <!-- <div class="form-control-wrap">
-                                                                            <select class="form-select js-select2 js-select2-sm" v-model="image">
-                                                                                <option v-bind:value="systemSettings.activemailsystemCode" selected>{{systemSettings.activemailsystem}}</option>
-                                                                                <option >PayStack</option>
-                                                                                <option >Monify</option>
-                                                                                <option >OneApp</option>
-                                                                            </select>
-                                                                        </div> -->
-                                                                        
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="form-label"  for="full-name">Active Payment System
@@ -210,7 +207,6 @@
                                                                                 <option value="1">PayStack</option>
                                                                                 <option value="2">Monify</option>
                                                                                 <option value="3">OneApp</option>
-                                                                                <!-- <option v-if='systemSettings.activePaymentCode != 3' v-bind:value="99">Select</option> -->
                                                                             </select>
                                                                         </div>
                                                                     </div>

@@ -101,6 +101,7 @@
                 $email = $row['email'];
                 $name = $row['name'];
                 $username = $row['username'];
+                $statusCode = $row['status'];
                 $status = $row['status'];
                 if($status == 0){
                     $status = 'Banned';
@@ -129,6 +130,7 @@
                     "name"=>$name,  
                     "username"=>$username, 
                     "superAdmin"=>$superAdmin,
+                    "statusCode"=>$statusCode,
                     "status"=>$status
                 ];
                 $errordesc = " ";

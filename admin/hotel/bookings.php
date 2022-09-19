@@ -153,15 +153,18 @@
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
                                                                                             <ul class="link-check">
                                                                                                 <li><span>Show</span></li>
-                                                                                                <li class="active"><a href="#">10</a></li>
-                                                                                                <li><a href="#">20</a></li>
-                                                                                                <li><a href="#">50</a></li>
+                                                                                                <li v-if="per_page == 10" class="" :class="{active: class_active}" @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page != 10" class=""  @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page == 20" :class="{active: class_active}"  @click.prevent="setNoPerPage(20)" class=""><a href="#">20</a></li>
+                                                                                                <li v-if="per_page != 20" class=""  @click.prevent="setNoPerPage(20)"><a href="#">20</a></li>
+                                                                                                <li v-if="per_page == 50" :class="{active: class_active}" @click.prevent="setNoPerPage(50)" class=""><a href="#">50</a></li>
+                                                                                                <li v-if="per_page != 50" class=""  @click.prevent="setNoPerPage(50)"><a href="#">50</a></li>
                                                                                             </ul>
-                                                                                            <ul class="link-check">
+                                                                                            <!-- <ul class="link-check">
                                                                                                 <li><span>Order</span></li>
                                                                                                 <li class="active"><a href="#">DESC</a></li>
                                                                                                 <li><a href="#">ASC</a></li>
-                                                                                            </ul>
+                                                                                            </ul> -->
                                                                                         </div>
                                                                                     </div><!-- .dropdown -->
                                                                                 </li><!-- li -->
@@ -176,7 +179,7 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by user or email">
+                                                                <input type="text" class="form-control border-transparent form-focus-none" @keyup='getAllBookings(4)' v-model ='search' placeholder="Search by space name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
@@ -290,7 +293,7 @@
                                                     </div><!-- .nk-tb-list -->
                                                 </div><!-- .card-inner -->
 
-                                                <div v-if= '!bookings' class="card-inner p-0">
+                                                <div v-if='!bookings' class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col nk-tb-col-check">
@@ -301,12 +304,11 @@
                                                             </div>
                                                             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
                                                             <div class="nk-tb-col"><span class="sub-text">Customer</span></div>
-                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">Package</span></div>
+                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">Apartment</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Booking</span></div>
                                                             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Room Type</span></div>
-                                                            <div class="nk-tb-col tb-col-xxl"><span class="sub-text">Mobile</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Arrive</span></div>
-                                                            <div class="nk-tb-col tb-col-xxl"><span class="sub-text">Depart</span></div>
+                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check in </span></div>
+                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check out</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -335,25 +337,36 @@
                                                                     </div>
                                                                 </div> -->
                                                             </div>
-                                                        </div>
+                                                        </div><!-- .nk-tb-item -->
+                                                        <div  class="nk-tb-item">
+                                                            <div class="nk-tb-col">
+                                                                <span>No records Found <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
+                                                        </div><!-- .nk-tb-item  -->
                                                     </div>
                                                 </div>
 
 
-                                                <div class="card-inner">
+                                                <div v-if='bookings' class="card-inner">
                                                     <div class="nk-block-between-md g-3">
                                                         <div class="g">
-                                                            <ul class="pagination justify-content-center justify-content-md-start">
-                                                                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                                <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                            </ul><!-- .pagination -->
+                                                        <ul class="pagination justify-content-end">
+                                                            <li v-if="currentPage == 1" class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item">
+                                                                <a @click.prevent="previousPage()" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link">{{currentPage}} of {{totalPage}}</a></li>
+                                                            <li v-if="currentPage < totalPage" class="page-item">
+                                                                <a v-on:click.prevent="nextPage()" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                        </ul><!-- .pagination -->
                                                         </div>
-                                                        <div class="g">
+                                                        <!-- <div class="g">
                                                             <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
                                                                 <div>Page</div>
                                                                 <div>
@@ -381,7 +394,7 @@
                                                                 </div>
                                                                 <div>OF 102</div>
                                                             </div>
-                                                        </div><!-- .pagination-goto -->
+                                                        </div>.pagination-goto -->
                                                     </div><!-- .nk-block-between -->
                                                 </div><!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
