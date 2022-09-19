@@ -39,6 +39,16 @@ const validatePhoneNumber = (input) => {
     }
 }
 
+const days_difference = (day1, day2) => {
+    var day1 = new Date(day1);
+    var day2 = new Date(day2);
+
+    var differnce_in_time = day2.getTime() - day1.getTime();
+    var days_difference = differnce_in_time / (1000 * 3600 * 24);
+    
+    return days_difference;
+}
+
 function WordCount(str) {
     return str.split(' ')
            .filter(function(n) { return n != '' })
@@ -8747,21 +8757,7 @@ let admin = Vue.createApp({
             }
         },
         async addBooking( load = 1){
-            console.log(this.first_name);
-            console.log(this.last_name);
-            console.log(this.gender);
-            console.log(this.phone);
-            console.log(this.email);
-            console.log(this.apartment_booked);
-            console.log(this.apartment_price);
-            console.log(this.address);
-            console.log(this.occupation_or_work);
-            console.log(this.preferred_check_in);
-            console.log(this.prefferred_check_out);
-            console.log(this.no_of_people);
-            console.log(this.payment_status);
-            console.log(this.identification_type);
-            console.log(this.kor_file);
+            
             if (!this.first_name || !this.last_name || !this.gender || !this.phone || !this.email || !this.apartment_booked || !this.apartment_price
                  || !this.address || !this.occupation_or_work || !this.preferred_check_in || !this.prefferred_check_out || !this.no_of_people
                  || !this.payment_status || !this.identification_type || !this.kor_file ){
