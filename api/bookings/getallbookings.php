@@ -82,9 +82,9 @@
             if ($sort > 0){
                
                 // get the total number of pages
-                $query = "SELECT `currency_id`, `name`, `status`, `created_at`, `updated_at` FROM `listing_currency` WHERE `status` = ? AND ( name LIKE ? )";
+                $query = "SELECT bookings.* FROM `bookings` LEFT JOIN admin ON admin.id = bookings.booking_id LEFT JOIN apartments ON apartments.apartment_id = bookings.apartment_id WHERE paid = ? AND ( apartments.name LIKE ? OR admin.name LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR gender LIKE ? OR phone LIKE ? OR bookings.email LIKE ? OR identification_type LIKE ? )";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ss", $status, $searching );
+                $queryStmt->bind_param("sssssssss", $status ,$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -92,15 +92,15 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ssss", $status, $searching , $offset, $no_per_page);
+                $queryStmt->bind_param("sssssssssss", $status,$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT `currency_id`, `name`, `status`, `created_at`, `updated_at` FROM `listing_currency` WHERE name LIKE ?";
+                $query = "SELECT bookings.* FROM `bookings` LEFT JOIN admin ON admin.id = bookings.booking_id LEFT JOIN apartments ON apartments.apartment_id = bookings.apartment_id WHERE apartments.name LIKE ? OR admin.name LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR gender LIKE ? OR phone LIKE ? OR bookings.email LIKE ? OR identification_type LIKE ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("s", $searching);
+                $queryStmt->bind_param("ssssssss", $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $total_num_row = $result->num_rows;
@@ -108,7 +108,7 @@
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sss", $searching, $offset, $no_per_page);
+                $queryStmt->bind_param("ssssssssss", $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
                 $num_row = $result->num_rows;
@@ -119,7 +119,7 @@
 
             if ($sort > 0){
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `listing_currency` WHERE status = ?";
+                $query = "SELECT * FROM `bookings` WHERE paid = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $status);
                 $gtTotalPgs->execute();
@@ -135,7 +135,7 @@
                 $num_row = $result->num_rows;
             }else{
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `listing_currency`";
+                $query = "SELECT * FROM `bookings`";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->execute();
                 $result = $gtTotalPgs->get_result();
@@ -147,28 +147,60 @@
                 $gtTotalcomplains->bind_param("ss", $offset, $no_per_page);
                 $gtTotalcomplains->execute();
                 $result = $gtTotalcomplains->get_result();
-                $num_row = $result->num_rows;
-                
+                $num_row = $result->num_rows;   
             }
-            
 
         }
 
         if ($num_row > 0){
-            $allCurrency = [];
+            $allBookings = [];
 
             while($row = $result->fetch_assoc()){
-                $name =  $row['name'];
-                $status_code = $row['status'];
-                $status = ($row['status'] == 1) ? "Active" : "Inactive";
+                $paid_code = $row['paid'];
+                $paid_status = ($row['paid'] == 1) ? "Paid" : "Not Paid";
+                $admin_id =  $row['admin_id'];
+                $admin_name =  ( $admin_id )? getNameFromField($connect, "admin ", "id", $admin_id) : null;
+                $first_name =  $row['first_name'];
+                $last_name =  $row['last_name'];
+                $gender = $row['gender'];
+                $phone = $row['phone'];
+                $email = $row["email"];
+                $apartment_id = $row["apartment_id"];
+                $apartment_price = $row["apartment_price"];
+                $apartment_name = getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
+                $address = $row["address"];
+                $occupation_or_workplace = $row["occupation_or_workplace"];
+                $preferred_check_in = $row["preferred_check_in"];
+                $prefferred_check_out = $row["prefferred_check_out"];
+                $no_of_people = $row["no_of_people"];
+                $identification_type = $row["identification_type"];
+                $identification_img = $row["identification_img"];
+                $customer_note = $row["customer_note"];
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
-                array_push($allCurrency, array(
-                    'id' => $row['currency_id'],
-                    'name' => $name,
-                    'status_code' => $status_code,
-                    'status' => $status,
+                array_push($allBookings, array(
+                    'id' => $row['booking_id'],
+                    'admin_id' => $admin_id,
+                    'admin_name' => ($admin_name) ? $admin_name : null,
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'gender' => $gender,
+                    'phone' => $phone,
+                    'email' => $email,
+                    'apartment_id' => $apartment_id,
+                    'apartment_price' => $apartment_price,
+                    'apartment_name' => ($apartment_name) ? $apartment_name : null,
+                    'address' => $address,
+                    'occupation_or_workplace' => $occupation_or_workplace,
+                    'preferred_check_in' => $preferred_check_in,
+                    'prefferred_check_out' => $prefferred_check_out,
+                    'no_of_people' => $no_of_people,
+                    'identification_type' => $identification_type,
+                    'identification_img' => $identification_img,
+                    'customer_note' => $customer_note,
+                    'paid_code' => $paid_code,
+                    'paid_status' => $paid_status,
                     'created' => $created,
                     'updated' => $updated,
                 ));
@@ -178,7 +210,7 @@
                 'per_page' => $no_per_page,
                 'total_data' => $total_num_row,
                 'totalPage' => $total_pg_found,
-                'all_currencies' => $allCurrency
+                'bookings' => $allBookings
             );
             $text= "Fetch Successful";
             $status = true;

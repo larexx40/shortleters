@@ -42,7 +42,7 @@
         }
 
 
-        if ( !isset($_POST['currency_id']) ){
+        if ( !isset($_POST['booking_id']) ){
 
             $errordesc="product id required";
             $linktosolve="htps://";
@@ -54,12 +54,12 @@
             respondBadRequest($data);
 
         }else{
-            $currency_id = cleanme($_POST['currency_id']);
+            $booking_id = cleanme($_POST['booking_id']);
         }
 
-        if ( empty($currency_id) ){
+        if ( empty($booking_id) ){
 
-            $errordesc = "Enter host type id";
+            $errordesc = "Enter booking id";
             $linktosolve = 'https://';
             $hint = "Kindly ensure that a valid id is passed";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -84,14 +84,14 @@
         // check the status passed
         if ($status == 0 || $status === "inactive"){
             $changeStatus = 0;
-            $changeStatusText = "Deactivated";
+            $changeStatusText = "set to unpaid";
         }else{
             $changeStatus = "";
         }
 
         if ($status == 1 || $status === 'active'){
             $changeStatus = 1;
-            $changeStatusText = "activated";
+            $changeStatusText = "set to Paid";
         }else{
             $changeStatus = "";
         }
@@ -106,9 +106,9 @@
         }
 
         // check if product is valid
-        if ( !checkifFieldExist($connect, "listing_currency", "currency_id", $currency_id) ) {
+        if ( !checkifFieldExist($connect, "host_type", "host_type_id", $host_type_id) ) {
 
-            $errordesc = "Currency does not Exist ";
+            $errordesc = "host Type does not Exist ";
             $linktosolve = 'https://';
             $hint = "Kindly ensure the product id passed is for an existing product";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -118,9 +118,9 @@
 
 
         // update status
-        $query = "UPDATE `listing_currency` SET `status` = ? WHERE currency_id = ?";
+        $query = "UPDATE `bookings` SET `paid` = ? WHERE booking_id = ?";
         $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("ss", $changeStatus, $currency_id);
+        $updateStatus->bind_param("ss", $changeStatus, $host_type_id);
         $updateStatus->execute();
 
         if ($updateStatus->error){
@@ -135,7 +135,7 @@
         if ( $updateStatus->execute()){
             
             $data = [];
-            $text= "Currency successfully ". $changeStatusText;
+            $text= "Host Type successfully ". $changeStatusText;
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
