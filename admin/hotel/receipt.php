@@ -20,11 +20,11 @@
                     <div class="nk-content ">
                         <div class="container-fluid">
                             <div class="nk-content-inner">
-                                <div v-if='booking' class="nk-content-body">
+                                <div class="nk-content-body">
                                     <div class="nk-block-head">
                                         <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Invoice <strong class="text-primary small">#{{booking.id}}</strong></h3>
+                                                <h3 class="nk-block-title page-title">Invoice <strong class="text-primary small">#746F5K2</strong></h3>
                                                 <div class="nk-block-des text-soft">
                                                     <ul class="list-inline">
                                                         <li>Created At: <span class="text-base">18 Dec, 2019 01:02 PM</span></li>
@@ -47,25 +47,22 @@
                                                     <img src="../imagess/logo-dark.png" srcset="./images/logo-dark2x.png 2x" alt="">
                                                 </div>
                                                 <div class="invoice-head">
-                                                    <div class="invoice-desc">
-                                                        <h3 class="title">Invoice</h3>
-                                                        <ul class="list-plain">
-                                                            <li class="invoice-id"><span>Invoice ID</span>:<span>{{booking.id}}</span></li>
-                                                            <li class="invoice-date"><span>Date</span>:<span>26 Jan, 2020</span></li>
-                                                            <li class="invoice-id"><span>Account No.</span>:<span>0900999933</span></li>
-                                                            <li class="invoice-id"><span>Bank Name</span>:<span>GTBank</span></li>
-                                                            <li class="invoice-id"><span>Payment link</span>:<span></span></li>
-                                                        </ul>
-                                                    </div>
                                                     <div class="invoice-contact">
                                                         <span class="overline-title">Invoice To</span>
                                                         <div class="invoice-contact-info">
-                                                            <h4 class="title">{{booking.first_name}} {{booking.last_name}}</h4>
+                                                            <h4 class="title">Gregory Ander son</h4>
                                                             <ul class="list-plain">
                                                                 <li><em class="icon ni ni-map-pin-fill"></em><span>House #65, 4328 Marion Street<br>Newbury, VT 05051</span></li>
                                                                 <li><em class="icon ni ni-call-fill"></em><span>+012 8764 556</span></li>
                                                             </ul>
                                                         </div>
+                                                    </div>
+                                                    <div class="invoice-desc">
+                                                        <h3 class="title">Invoice</h3>
+                                                        <ul class="list-plain">
+                                                            <li class="invoice-id"><span>Invoice ID</span>:<span>66K5W3</span></li>
+                                                            <li class="invoice-date"><span>Date</span>:<span>26 Jan, 2020</span></li>
+                                                        </ul>
                                                     </div>
                                                 </div><!-- .invoice-head -->
                                                 <div class="invoice-bills">
@@ -76,7 +73,7 @@
                                                                     <th class="w-150px">Item ID</th>
                                                                     <th class="w-60">Description</th>
                                                                     <th>Price</th>
-                                                                    <th>Qty/Days</th>
+                                                                    <th>Qty</th>
                                                                     <th>Amount</th>
                                                                 </tr>
                                                             </thead>
@@ -88,7 +85,27 @@
                                                                     <td>5</td>
                                                                     <td>$200.00</td>
                                                                 </tr>
-                                                               
+                                                                <tr>
+                                                                    <td>24108054</td>
+                                                                    <td>6 months premium support</td>
+                                                                    <td>$25.00</td>
+                                                                    <td>1</td>
+                                                                    <td>$25.00</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>23604094</td>
+                                                                    <td>Invest Management Dashboard - Regular License</td>
+                                                                    <td>$131.25</td>
+                                                                    <td>1</td>
+                                                                    <td>$131.25</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>23604094</td>
+                                                                    <td>6 months premium support</td>
+                                                                    <td>$78.75</td>
+                                                                    <td>1</td>
+                                                                    <td>$78.75</td>
+                                                                </tr>
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr>
