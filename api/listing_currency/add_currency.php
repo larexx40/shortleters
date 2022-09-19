@@ -52,10 +52,21 @@
         }else{
             $name = cleanme($_POST['name']);
         }
+
+        if (!isset($_POST['currency_symbol'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required currency symbol field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $currency_symbol = $_POST['currency_symbol'];
+        }
    
         
          // check if none of the field is empty
-        if ( empty($name) ){
+        if ( empty($name) || empty($currency_symbol) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -69,9 +80,9 @@
         $currency_id = generateUniqueShortKey($connect, "listing_currency", "currency_id");
 
 
-        $query = 'INSERT INTO `listing_currency` (`currency_id`, `name`) VALUES (?, ?)';
+        $query = 'INSERT INTO `listing_currency` (`currency_id`, `name`, `currency_symbol`) VALUES (?, ?, ?)';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ss", $currency_id, $name);
+        $slider_stmt->bind_param("sss", $currency_id, $name, $currency_symbol);
 
         if ( $slider_stmt->execute() ) {
             $text= "Currency successfully added";

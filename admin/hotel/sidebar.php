@@ -93,20 +93,23 @@
                                         <span class="nk-menu-text">Apartment Features</span>
                                     </a>
                                     <ul class="nk-menu-sub">
-                                        <li class="nk-menu-item has-sub">
-                                        <a href="#"class="nk-menu-link nk-menu-toggle">
-                                            <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
-                                            <span class="nk-menu-text">Amenities</span>
-                                        </a>
-                                        <ul class="nk-menu-sub">
-                                            <li class="nk-menu-item">
-                                                <a href="./amenities.php" class="nk-menu-link"><span class="nk-menu-text">All Amenities</span></a>
-                                            </li>
-                                            <li class="nk-menu-item">
-                                                <a href="./sub_amenities.php" class="nk-menu-link"><span class="nk-menu-text">All Sub Amenities</span></a>
-                                            </li>
-                                        </ul>
+                                        <!-- <li class="nk-menu-item has-sub">
+                                            <a href="./amenities.php"class="nk-menu-link nk-menu-toggle">
+                                                <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+                                                <span class="nk-menu-text">Amenities</span>
+                                            </a>
+                                            <ul class="nk-menu-sub">
+                                                <li class="nk-menu-item">
+                                                    <a href="./amenities.php" class="nk-menu-link"><span class="nk-menu-text">All Amenities</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="./sub_amenities.php" class="nk-menu-link"><span class="nk-menu-text">All Sub Amenities</span></a>
+                                                </li>
+                                            </ul>
                                             
+                                        </li> -->
+                                        <li class="nk-menu-item">
+                                            <a href="./amenities.php" class="nk-menu-link"><span class="nk-menu-text">Amenities</span></a>
                                         </li>
                                         <li class="nk-menu-item">
                                             <a href="./highlights.php" class="nk-menu-link"><span class="nk-menu-text">Highlights</span></a>
@@ -166,9 +169,9 @@
                                         <li class="nk-menu-item">
                                             <a href="./payment-methods.php" class="nk-menu-link"><span class="nk-menu-text">Payment Methods</span></a>
                                         </li>
-                                        <li class="nk-menu-item">
+                                        <!-- <li class="nk-menu-item">
                                             <a href="./invoice-list.php" class="nk-menu-link"><span class="nk-menu-text">Invocie List</span></a>
-                                        </li>
+                                        </li> -->
                                         <li class="nk-menu-item">
                                             <a href="./invoice-details.php" class="nk-menu-link"><span class="nk-menu-text">Invocie Details</span></a>
                                         </li>
@@ -203,12 +206,19 @@
                                         </li>
                                     </ul><!-- .nk-menu-sub -->
                                 </li>
-                                <li class="nk-menu-item">
+                                <!-- <li class="nk-menu-item">
                                     <a href="./support.php" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-chat-circle-fill"></em></span>
                                         <span class="nk-menu-text">Support</span>
                                     </a>
-                                </li><!-- .nk-menu-item -->
+                                </li> -->
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="./currency.php" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon fas fa-money-bill-alt"></em></span>
+                                        <span class="nk-menu-text">Currencies</span>
+                                    </a>
+                                </li>
                                 <li class="nk-menu-item">
                                     <a href="./settings.php" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-setting-alt-fill"></em></span>

@@ -105,7 +105,7 @@
         }
 
         // check if product is valid
-        if ( !checkifFieldExist($connect, "host_type", "host_type_id", $host_type_id) ) {
+        if ( !checkifFieldExist($connect, "bookings", "booking_id", $booking_id) ) {
 
             $errordesc = "booking does not Exist ";
             $linktosolve = 'https://';
@@ -119,7 +119,7 @@
         // update status
         $query = "UPDATE `bookings` SET `paid` = ? WHERE booking_id = ?";
         $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("ss", $changeStatus, $host_type_id);
+        $updateStatus->bind_param("ss", $changeStatus, $booking_id);
         $updateStatus->execute();
 
         if ($updateStatus->error){
@@ -134,7 +134,7 @@
         if ( $updateStatus->execute()){
             
             $data = [];
-            $text= "Host Type successfully ". $changeStatusText;
+            $text= "Booking successfully ". $changeStatusText;
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
