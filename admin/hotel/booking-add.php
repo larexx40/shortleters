@@ -169,7 +169,19 @@
                                                                 <div class="form-icon form-icon-right">
                                                                     <em class="icon"></em>
                                                                 </div>
-                                                                <input type="date" v-model="prefferred_check_out" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                                                                <input type="date" @change="fetchPriceAndId" v-model="prefferred_check_out" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-lg-4 col-xxl-3">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Total Cost</label>
+                                                            <div class="form-control-wrap">
+                                                                <div class="form-icon form-icon-right">
+                                                                    <em class="icon"></em>
+                                                                </div>
+                                                                <input type="text" readonly v-model="total_payment" class="form-control" placeholder="Total Amount">
                                                             </div>
                                                         </div>
                                                     </div>

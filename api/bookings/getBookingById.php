@@ -84,10 +84,12 @@
             $occupation_or_workplace = $row["occupation_or_workplace"];
             $preferred_check_in = $row["preferred_check_in"];
             $prefferred_check_out = $row["prefferred_check_out"];
+            $total_amount_paid = $row['total_amount_paid'];
             $no_of_people = $row["no_of_people"];
             // $max_people = $row["max_people"];
             $identification_type = $row["identification_type"];
             $identification_img = $row["identification_img"];
+            $customer_note = $row["customer_note"];
             $created = gettheTimeAndDate(strtotime($row['created_at']));
             $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
@@ -107,12 +109,14 @@
                 'occupation_or_workplace' => $occupation_or_workplace,
                 'preferred_check_in' => $preferred_check_in,
                 'prefferred_check_out' => $prefferred_check_out,
+                'total_amount_paid' => $total_amount_paid,
                 'no_of_people' => $no_of_people,
                 // 'max_people' => $max_people,
                 'identification_type' => $identification_type,
                 'identification_img' => $identification_img,
                 'paid_code' => $paid_code,
                 'paid_status' => $paid_status,
+                'customer_note' => $customer_note,
                 'created' => $created,
                 'updated' => $updated,
             ];

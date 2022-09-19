@@ -175,6 +175,7 @@
                 $occupation_or_workplace = $row["occupation_or_workplace"];
                 $preferred_check_in = $row["preferred_check_in"];
                 $prefferred_check_out = $row["prefferred_check_out"];
+                $total_amount_paid = $row['total_amount_paid'];
                 // $min_people = $row["min_people"];
                 $no_of_people = $row["no_of_people"];
                 // $max_people = $row["max_people"];
@@ -201,6 +202,7 @@
                     'occupation_or_workplace' => $occupation_or_workplace,
                     'preferred_check_in' => $preferred_check_in,
                     'prefferred_check_out' => $prefferred_check_out,
+                    'total_amount_paid' => $total_amount_paid,
                     // 'min_people' => $min_people,
                     'no_of_people' => $no_of_people,
                     // 'max_people' => $max_people,

@@ -178,6 +178,17 @@
             $prefferred_check_out = cleanme($_POST['prefferred_check_out']);
         }
 
+        if (!isset($_POST['total_amount_paid'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required total amount paid field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $total_amount_paid = cleanme($_POST['total_amount_paid']);
+        }
+
         if (!isset($_POST['no_of_people'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
@@ -240,7 +251,7 @@
         
          // check if none of the field is empty
         if ( empty($first_name) || empty($last_name) || empty($gender) || empty($phone) || empty($email) || empty($apartment_id) || empty($occupation_or_workplace) 
-            || empty($preferred_check_in) || empty($prefferred_check_out) || empty($no_of_people)  
+            || empty($preferred_check_in) || empty($prefferred_check_out)|| empty($total_amount_paid) || empty($no_of_people)  
             ||  empty($identification_type) || empty($payment_status) || empty($apartment_price) ){
 
             $errordesc = "Insert all fields";
@@ -287,9 +298,9 @@
 
 
 
-        $query = 'UPDATE `bookings` SET `first_name`= ?,`last_name`= ?,`gender`= ?,`phone`= ?,`email`= ?,`apartment_id`= ?, `apartment_price` = ? ,`address`= ?,`occupation_or_workplace`= ?,`preferred_check_in`= ?,`prefferred_check_out`= ?,`no_of_people`= ?, `identification_type`= ?,`identification_img`= ?, `customer_note` = ? WHERE `booking_id` = ?';
+        $query = 'UPDATE `bookings` SET `first_name`= ?,`last_name`= ?,`gender`= ?,`phone`= ?,`email`= ?,`apartment_id`= ?, `apartment_price` = ? ,`address`= ?,`occupation_or_workplace`= ?,`preferred_check_in`= ?,`prefferred_check_out`= ?, `total_amount_paid` = ? ,`no_of_people`= ?, `identification_type`= ?,`identification_img`= ?, `customer_note` = ? WHERE `booking_id` = ?';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("sssssssssssssss", $first_name, $last_name, $gender, $phone, $email, $apartment_id, $apartment_price ,$address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $no_of_people, $identification_type, $identification_img_link, $customer_note ,$booking_id);
+        $slider_stmt->bind_param("ssssssssssssssss", $first_name, $last_name, $gender, $phone, $email, $apartment_id, $apartment_price ,$address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $total_amount_paid ,$no_of_people, $identification_type, $identification_img_link, $customer_note ,$booking_id);
 
         if ( $slider_stmt->execute() ) {
             $text= "Booking successfully updated";

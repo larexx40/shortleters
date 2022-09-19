@@ -28,21 +28,21 @@
                                             </div><!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
-                                    <div class="nk-block">
+                                    <div v-if="booking_details" class="nk-block">
                                         <div class="card card-bordered">
                                             <div class="card-inner">
                                                 <div class="row gy-4">
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="first-name">First Name</label>
-                                                            <input type="text" class="form-control" id="first-name" placeholder="First Name" value="Abu Bin">
+                                                            <input type="text" v-model="booking_details.first_name" class="form-control" id="first-name" placeholder="First Name">
                                                         </div>
                                                     </div>
                                                     <!--col-->
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="last-name">Last Name</label>
-                                                            <input type="text" class="form-control" id="last-name" placeholder="Last Name" value="Ishtiyak">
+                                                            <input type="text" v-model="booking_details.last_name" class="form-control" id="last-name" placeholder="Last Name" value="Ishtiyak">
                                                         </div>
                                                     </div>
                                                     <!--col-->
@@ -50,10 +50,10 @@
                                                         <div class="form-group">
                                                             <label class="form-label">Gender</label>
                                                             <div class="form-control-wrap">
-                                                                <select class="form-select js-select2" data-placeholder="Select multiple options">
-                                                                    <option value="option_select_gender">Male</option>
-                                                                    <option value="option_select_gender">Female</option>
-                                                                    <option value="option_select_gender">Other</option>
+                                                                <select v-model="booking_details.gender" class="form-select" data-placeholder="">
+                                                                    <option value="null">Select Gender</option>
+                                                                    <option value="Male">Male</option>
+                                                                    <option value="Female">Female</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -61,30 +61,36 @@
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="phone-no">Phone</label>
-                                                            <input type="text" class="form-control" id="phone-no" placeholder="Phone no" value="+811 847-4958">
+                                                            <input type="tel" v-model="booking_details.phone" class="form-control" id="phone-no" placeholder="Phone no" value="+811 847-4958">
                                                         </div>
                                                     </div>
                                                     <!--col-->
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="email">Email Address</label>
-                                                            <input type="email" class="form-control" id="email" placeholder="Email Address" value="info@softnio.com">
+                                                            <input type="email" v-model="booking_details.email" class="form-control" id="email" placeholder="Email Address">
                                                         </div>
                                                     </div>
                                                     <!--col-->
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="address">Adddress</label>
-                                                            <input type="text" class="form-control" id="address" placeholder="Address" value="102 Cherry Ridge Drive, Detroit">
+                                                            <input type="text"v-model="booking_details.address" class="form-control" id="address" placeholder="Address">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-4 col-xxl-3">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="occupation_or_work">Occupation / WorkPlace</label>
+                                                            <input type="text" v-model="booking_details.occupation_or_work" class="form-control" id="occupation_or_work" placeholder="Occupation / Workplace">
                                                         </div>
                                                     </div>
                                                     <!--col-->
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
-                                                            <label class="form-label">Upload Photo</label>
+                                                            <label class="form-label">Upload Photo of I.d</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-file">
-                                                                    <input type="file" multiple class="form-file-input" id="customFile">
+                                                                    <input type="file" @change="changeImage($event)" class="form-file-input" id="customFile">
                                                                     <label class="form-file-label" for="customFile">Choose file</label>
                                                                 </div>
                                                             </div>
@@ -93,29 +99,56 @@
                                                     <!--col-->
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
-                                                            <label class="form-label">Select an package</label>
+                                                            <label class="form-label">Select an Verification Type</label>
                                                             <div class="form-control-wrap">
-                                                                <select class="form-select js-select2" data-placeholder="Select multiple options">
-                                                                    <option value="option_select_name">Continental</option>
-                                                                    <option value="option_select_name">Honeymoon Package</option>
-                                                                    <option value="option_select_name">Vacation Package</option>
-                                                                    <option value="option_select_name">Spring Package</option>
+                                                                <select v-model="booking_details.identification_type" class="form-select" data-placeholder="Select multiple options">
+                                                                    <option value="null">Select an Identity Card</option>
+                                                                    <option value="NIMC">NIN Slip / Card</option>
+                                                                    <option value="Voters Card">Voters Card</option>
+                                                                    <option value="Valid Id card">Valid Id card</option>
+                                                                    <option value="International Passport">International Passport</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-4 col-xxl-3">
+                                                        <div v-if="all_apartments" class="form-group">
+                                                            <label class="form-label">Select Apartment</label>
+                                                            <div class="form-control-wrap">
+                                                                <select v-model="booking_details.apartment_id" @change="fetchPriceAndId" class="form-select js-select2">
+                                                                    <option value="null">Select Preffered Apartment</option>
+                                                                    <option v-for="(item, index) in all_apartments" v-bind:value="item.id">{{item.name}}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
-                                                            <label class="form-label">Select Room Type</label>
+                                                            <label class="form-label">Apartment Price</label>
                                                             <div class="form-control-wrap">
-                                                                <select class="form-select js-select2">
-                                                                    <option value="default_option">Super Delux</option>
-                                                                    <option value="option_select_room_type">Delux</option>
-                                                                    <option value="option_select_room_type">Super Delux</option>
-                                                                    <option value="option_select_room_type">Single</option>
-                                                                    <option value="option_select_room_type">Double</option>
+                                                                <div class="form-icon form-icon-right">
+                                                                    <em class="icon ni ni-money"></em>
+                                                                </div>
+                                                                <input type="text" v-model="booking_details.apartment_price" class="form-control" readonly placeholder="Select an Apartment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-4 col-xxl-3">
+                                                        <div v-if="all_apartments" class="form-group">
+                                                            <label class="form-label">Payment Status</label>
+                                                            <div class="form-control-wrap">
+                                                                <select v-model="booking_details.paid_code" class="form-select js-select2">
+                                                                    <option value="null">Select Payment Status</option>
+                                                                    <option value="0">Not Paid</option>
+                                                                    <option value="1">Paid</option>
                                                                 </select>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-4 col-xxl-3">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="total-person">Total Person</label>
+                                                            <input type="number" v-model="booking_details.no_of_people" class="form-control" id="total-person" placeholder="Total Person">
                                                         </div>
                                                     </div>
                                                     <!--col-->
@@ -124,9 +157,9 @@
                                                             <label class="form-label">Arrived Date</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-icon form-icon-right">
-                                                                    <em class="icon ni ni-calendar"></em>
+                                                                    <em class="icon"></em>
                                                                 </div>
-                                                                <input type="text" class="form-control date-picker" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="10 Feb 2020">
+                                                                <input type="date" v-model="booking_details.preferred_check_in" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -135,30 +168,36 @@
                                                             <label class="form-label">Depart Date</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-icon form-icon-right">
-                                                                    <em class="icon ni ni-calendar"></em>
+                                                                    <em class="icon"></em>
                                                                 </div>
-                                                                <input type="text" class="form-control date-picker" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="12 Feb 2020">
+                                                                <input type="date" v-model="booking_details.prefferred_check_out" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
-                                                            <label class="form-label" for="total-person">Total Person</label>
-                                                            <input type="number" class="form-control" id="total-person" placeholder="Total Person" value="02">
+                                                            <label class="form-label">Total Cost</label>
+                                                            <div class="form-control-wrap">
+                                                                <div class="form-icon form-icon-right">
+                                                                    <em class="icon"></em>
+                                                                </div>
+                                                                <input type="text" readonly v-model="booking_details.total_amount_paid" class="form-control" placeholder="Total Amount">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <!--col-->
                                                     <div class="col-md-12">
-                                                        <div class="form-gupro">
+                                                        <div class="form-group">
                                                             <label class="form-label" for="default-textarea">Note</label>
                                                             <div class="form-control-wrap">
-                                                                <textarea class="form-control no-resize" id="default-textarea">Large text area content</textarea>
+                                                                <textarea v-model="booking_details.customer_note" class="form-control no-resize" id="default-textarea">Large text area content</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
-                                                            <button type="submit" class="btn btn-primary">Update Booking</button>
+                                                            <button @click="updateBooking" type="submit" class="btn btn-primary">Update Booking</button>
                                                         </div>
                                                     </div>
                                                     <!--col-->

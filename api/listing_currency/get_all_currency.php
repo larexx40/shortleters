@@ -159,6 +159,7 @@
 
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
+                $symbol =  $row['currency_symbol'];
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
@@ -167,6 +168,7 @@
                 array_push($allCurrency, array(
                     'id' => $row['currency_id'],
                     'name' => $name,
+                    'symbol' => $symbol,
                     'status_code' => $status_code,
                     'status' => $status,
                     'created' => $created,

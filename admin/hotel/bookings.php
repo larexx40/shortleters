@@ -250,10 +250,10 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li><a href="./booking-edit.php"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
-                                                                                    <li v-if='item.paid_code != 1' @click.prevent='changePaymentStatus(1)'><a href="#"><em class="icon ni ni-money"></em><span>Mark as Paid</span></a></li>
+                                                                                    <li @click="setBookingId(item.id)"><a href="./booking-edit.php"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                                                    <li v-if='item.paid_code != 1' @click.prevent='changePaymentStatus(item.id,1)'><a href="#"><em class="icon ni ni-money"></em><span>Mark as Paid</span></a></li>
                                                                                     <li v-if='item.paid_code == 1' @click='setBookingid(item.id)'><a href="./receipt.php"><em class="icon ni ni-report-profit"></em><span>Receipt</span></a></li>
-                                                                                    <li v-if='item.paid_code != 1' @click='setBookingid(item.id)' ><a :href="'./invoice-details' +item.id"><em class="icon ni ni-report"></em><span>Invoice</span></a></li>
+                                                                                    <li v-if='item.paid_code != 1' @click='setBookingid(item.id)' ><a href="./invoice-details.php"><em class="icon ni ni-report"></em><span>Invoice</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>

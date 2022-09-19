@@ -69,9 +69,20 @@
         }else{
             $name = cleanme($_POST['name']);
         }
+
+        if (!isset($_POST['currency_symbol'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required currency symbol field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $currency_symbol = $_POST['currency_symbol'];
+        }
         
          // check if none of the field is empty
-        if ( empty($currency_id) || empty($name) ){
+        if ( empty($currency_id) || empty($name) || empty($currency_symbol) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -90,9 +101,9 @@
             respondBadRequest($data);
         }
 
-        $query = 'UPDATE `listing_currency` SET `name`= ? WHERE `currency_id` = ?';
+        $query = 'UPDATE `listing_currency` SET `name`= ?, `currency_symbol` = ? WHERE `currency_id` = ?';
         $slider_update = $connect->prepare($query);
-        $slider_update->bind_param("ss", $name, $currency_id);
+        $slider_update->bind_param("sss", $name, $currency_symbol ,$currency_id);
 
         if ( $slider_update->execute() ) {
             $text= "Currency successfully updated";
