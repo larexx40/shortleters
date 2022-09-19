@@ -32,10 +32,14 @@
                                             <div class="nk-block-head-content">
                                                 <ul class="nk-block-tools g-3">
                                                     <li>
+                                                        <a href="./room-type.php" class="btn btn-primary"><em class="icon ni ni-eye"></em>View All Sub Building Types</a>
+                                                    </li>
+                                                    <li>
                                                         <div class="drodown">
                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul class="link-list-opt no-bdr">
+                                                                    
                                                                     <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Building</span></a></li>
                                                                     <!-- <li><a href="#"><span>View Amenities</span></a></li>
                                                                     <li><a href="#"><span>Delete Amenities</span></a></li> -->
