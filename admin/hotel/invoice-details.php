@@ -73,7 +73,7 @@
                                                         <table class="table table-striped">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="w-150px">Item ID</th>
+                                                                    <th class="w-150px">Apartment ID</th>
                                                                     <th class="w-60">Description</th>
                                                                     <th>Price</th>
                                                                     <th>Qty/Days</th>
@@ -82,10 +82,10 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>24108054</td>
-                                                                    <td>Dashlite - Conceptual App Dashboard - Regular License</td>
-                                                                    <td>$40.00</td>
-                                                                    <td>5</td>
+                                                                    <td>{{booking.apartment_id}}</td>
+                                                                    <td>{{booking.apartment_name}}</td>
+                                                                    <td>${{booking.apartment_price}}</td>
+                                                                    <td>{{booking.noOfDays}}</td>
                                                                     <td>$200.00</td>
                                                                 </tr>
                                                                

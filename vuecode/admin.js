@@ -3828,7 +3828,12 @@ let admin = Vue.createApp({
                 const response = await axios(options);
                 if(response.data.status){
                     this.booking = response.data.data;
-                    console.log("booking_details", this.booking);
+                    let day1= new Date(this.booking.preferred_check_in);
+                    let day2= new Date(this.booking.prefferred_check_out)
+                    var timeDifference = day2.getTime() - day1.getTime();
+                    var noOfDays = timeDifference / (1000 * 3600 * 24);
+                    noOfDays = (noOfDays) ? noOfDays : 1;
+                    this.booking.noOfDays = noOfDays;
                     
                 }else{
                     this.booking = null;
