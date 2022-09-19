@@ -70,45 +70,47 @@
                                                         <table class="table table-striped">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="w-150px">Item ID</th>
+                                                                    <th class="w-150px">Apartment</th>
                                                                     <th class="w-60">Description</th>
                                                                     <th>Price</th>
-                                                                    <th>Qty/days</th>
+                                                                    <th>Qty/Days</th>
                                                                     <th>Amount</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>23604094</td>
-                                                                    <td>6 months premium support</td>
-                                                                    <td>$78.75</td>
-                                                                    <td>1</td>
-                                                                    <td>$78.75</td>
+                                                                    <td>{{booking.apartment_id}}</td>
+                                                                    <td>{{booking.apartment_name}}</td>
+                                                                    <td>${{booking.apartment_price}}</td>
+                                                                    <td>{{booking.noOfDays}}</td>
+                                                                    <td>${{booking.apartment_price * booking.noOfDays}}</td>
                                                                 </tr>
+                                                               
                                                             </tbody>
                                                             <tfoot>
-                                                                <tr>
+                                                                <!-- <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Subtotal</td>
                                                                     <td>$435.00</td>
-                                                                </tr>
+                                                                </tr> -->
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Processing fee</td>
-                                                                    <td>$10.00</td>
+                                                                    <td>$100.00</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">TAX</td>
-                                                                    <td>$43.50</td>
+                                                                    <td>$0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Grand Total</td>
-                                                                    <td>$478.50</td>
+                                                                    <td>${{(booking.apartment_price * booking.noOfDays) + 100}}</td>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
+
                                                         <div class="nk-notes ff-italic fs-12px text-soft"> Invoice was created on a computer and is valid without the signature and seal. </div>
                                                     </div>
                                                 </div><!-- .invoice-bills -->

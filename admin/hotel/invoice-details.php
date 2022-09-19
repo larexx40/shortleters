@@ -73,7 +73,7 @@
                                                         <table class="table table-striped">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="w-150px">Apartment ID</th>
+                                                                    <th class="w-150px">Apartment</th>
                                                                     <th class="w-60">Description</th>
                                                                     <th>Price</th>
                                                                     <th>Qty/Days</th>
@@ -86,34 +86,43 @@
                                                                     <td>{{booking.apartment_name}}</td>
                                                                     <td>${{booking.apartment_price}}</td>
                                                                     <td>{{booking.noOfDays}}</td>
-                                                                    <td>$200.00</td>
+                                                                    <td>${{booking.apartment_price * booking.noOfDays}}</td>
                                                                 </tr>
                                                                
                                                             </tbody>
                                                             <tfoot>
-                                                                <tr>
+                                                                <!-- <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Subtotal</td>
                                                                     <td>$435.00</td>
-                                                                </tr>
+                                                                </tr> -->
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Processing fee</td>
-                                                                    <td>$10.00</td>
+                                                                    <td>$100.00</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">TAX</td>
-                                                                    <td>$43.50</td>
+                                                                    <td>$0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Grand Total</td>
-                                                                    <td>$478.50</td>
+                                                                    <td>${{(booking.apartment_price * booking.noOfDays) + 100}}</td>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
+
                                                         <div class="nk-notes ff-italic fs-12px text-soft"> Invoice was created on a computer and is valid without the signature and seal. </div>
+                                                    </div>
+                                                    <div>
+                                                        <span>
+                                                            Kindly note that this booking request form does not reflect availability. <br> Also note
+                                                            that filling this form does not guarantee booking, bookings are only guaranteed <br>
+                                                            with an issued receipt after payment is fully acknowledged. A receipt is the only <br>
+                                                            binding document between Shortleters Limited and Victor.
+                                                        </span>
                                                     </div>
                                                 </div><!-- .invoice-bills -->
                                             </div><!-- .invoice-wrap -->
