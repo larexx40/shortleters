@@ -66,67 +66,6 @@
         $gt_booking->execute();
         $result = $gt_booking->get_result();
         $num_row = $result->num_rows;   
-<<<<<<< HEAD
-            
-
-        
-
-        if ($num_row > 0){
-
-            while($row = $result->fetch_assoc()){
-                $paid_code = $row['paid'];
-                $paid_status = ($row['paid'] == 1) ? "Paid" : "Not Paid";
-                $admin_id =  $row['admin_id'];
-                $admin_name =  ( $admin_id )? getNameFromField($connect, "admin ", "id", $admin_id) : null;
-                $first_name =  $row['first_name'];
-                $last_name =  $row['last_name'];
-                $gender = $row['gender'];
-                $phone = $row['phone'];
-                $email = $row["email"];
-                $apartment_id = $row["apartment_id"];
-                $apartment_price = $row["apartment_price"];
-                $apartment_name = getNameFromField($connect, "apartments", "apartment_id", $apartment_id);
-                $address = $row["address"];
-                $occupation_or_workplace = $row["occupation_or_workplace"];
-                $preferred_check_in = $row["preferred_check_in"];
-                $prefferred_check_out = $row["prefferred_check_out"];
-                $no_of_people = $row["no_of_people"];
-                // $max_people = $row["max_people"];
-                $identification_type = $row["identification_type"];
-                $identification_img = $row["identification_img"];
-                $created = gettheTimeAndDate(strtotime($row['created_at']));
-                $updated = gettheTimeAndDate(strtotime($row['updated_at']));
-                
-                $booking = array(
-                    'id' => $row['booking_id'],
-                    'admin_id' => $admin_id,
-                    'admin_name' => ($admin_name) ? $admin_name : null,
-                    'first_name' => $first_name,
-                    'last_name' => $last_name,
-                    'gender' => $gender,
-                    'phone' => $phone,
-                    'email' => $email,
-                    'apartment_id' => $apartment_id,
-                    'apartment_price' => $apartment_price,
-                    'apartment_name' => ($apartment_name) ? $apartment_name : null,
-                    'address' => $address,
-                    'occupation_or_workplace' => $occupation_or_workplace,
-                    'preferred_check_in' => $preferred_check_in,
-                    'prefferred_check_out' => $prefferred_check_out,
-                    'no_of_people' => $no_of_people,
-                    // 'max_people' => $max_people,
-                    'identification_type' => $identification_type,
-                    'identification_img' => $identification_img,
-                    'paid_code' => $paid_code,
-                    'paid_status' => $paid_status,
-                    'created' => $created,
-                    'updated' => $updated,
-                );
-            }
-            $data = array(
-                'booking' => $booking
-            );
-=======
         if ($num_row > 0){
             $row = $result->fetch_assoc();
             $paid_code = $row['paid'];
@@ -177,22 +116,10 @@
                 'created' => $created,
                 'updated' => $updated,
             ];
->>>>>>> afa849960690b62b7b4cb4f66bf381e969c70bcf
             $text= "Fetch Successful";
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
-<<<<<<< HEAD
-        }
-
-        $errordesc = "No Records found";
-        $linktosolve = 'https://';
-        $hint = "Kindly make sure the table has been populated";
-        $errorData = returnError7003($errordesc, $linktosolve, $hint);
-        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-        respondOK($data);
-
-=======
         }else{
             $errordesc = "No Records found";
             $linktosolve = 'https://';
@@ -202,7 +129,6 @@
             respondOK($data);
         }
 
->>>>>>> afa849960690b62b7b4cb4f66bf381e969c70bcf
     }else{
 
         // Send an error response because a wrong method was passed 

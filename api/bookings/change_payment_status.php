@@ -40,17 +40,6 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondUnAuthorized($data);
         }
-<<<<<<< HEAD
-
-
-        if ( !isset($_POST['booking_id']) ){
-
-            $errordesc="product id required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="host type id must be passed";
-=======
         //no
         if ( !isset($_POST['booking_id']) ){
 
@@ -59,7 +48,6 @@
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
             $text="booking id must be passed";
->>>>>>> afa849960690b62b7b4cb4f66bf381e969c70bcf
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -79,19 +67,11 @@
         }
 
         if ( !isset($_POST['status']) ){
-<<<<<<< HEAD
-            $errordesc="Product status required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Product status must be passed";
-=======
             $errordesc="booking status required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
             $text="booking status must be passed";
->>>>>>> afa849960690b62b7b4cb4f66bf381e969c70bcf
             $method;
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -127,15 +107,9 @@
         // check if product is valid
         if ( !checkifFieldExist($connect, "host_type", "host_type_id", $host_type_id) ) {
 
-<<<<<<< HEAD
-            $errordesc = "host Type does not Exist ";
-            $linktosolve = 'https://';
-            $hint = "Kindly ensure the product id passed is for an existing product";
-=======
             $errordesc = "booking does not Exist ";
             $linktosolve = 'https://';
             $hint = "Kindly ensure the booking id passed is for an existing product";
->>>>>>> afa849960690b62b7b4cb4f66bf381e969c70bcf
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
