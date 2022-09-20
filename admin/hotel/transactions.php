@@ -1,5 +1,5 @@
 <?php include "header.php"; ?>
-    <title>Stock Details</title>
+    <title>Transaction Details</title>
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
@@ -221,16 +221,20 @@
                                                                 <span><a href="#">{{parseInt(index) + 1}}</a></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span>Soup spoon<span class="dot dot-success d-md-none ms-1"></span></span>
+                                                                <span>{{item.username}}<span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span>70 pcs</span>
+                                                                <span>{{item.transactionid}}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-sm" data-order="30.00">
-                                                                <span class="tb-amount">$30.00<span class="currency">USD</span></span>
+                                                                <span class="tb-amount text-success">{{item.type}}<span class="currency"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">Available</span>
+                                                                <span class="tb-status">{{item.amttopay}}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
+                                                                <span v-if="item.statusCode < 1" class="tb-status text-success">{{item.status}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
@@ -239,8 +243,7 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                                    <li><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                    <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -300,50 +303,47 @@
                                                         </div><!-- .nk-tb-item  -->
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
-                                                <div v-if="transactions" class="card-inner">
-                                                    <div class="nk-block-between-md g-3">
-                                                        <div class="g">
-                                                            <ul class="pagination justify-content-center justify-content-md-start">
-                                                                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                                <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                            </ul><!-- .pagination -->
-                                                        </div>
-                                                        <div class="g">
-                                                            <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                                                <div>Page</div>
-                                                                <div>
-                                                                    <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                                                        <option value="page-1">1</option>
-                                                                        <option value="page-2">2</option>
-                                                                        <option value="page-4">4</option>
-                                                                        <option value="page-5">5</option>
-                                                                        <option value="page-6">6</option>
-                                                                        <option value="page-7">7</option>
-                                                                        <option value="page-8">8</option>
-                                                                        <option value="page-9">9</option>
-                                                                        <option value="page-10">10</option>
-                                                                        <option value="page-11">11</option>
-                                                                        <option value="page-12">12</option>
-                                                                        <option value="page-13">13</option>
-                                                                        <option value="page-14">14</option>
-                                                                        <option value="page-15">15</option>
-                                                                        <option value="page-16">16</option>
-                                                                        <option value="page-17">17</option>
-                                                                        <option value="page-18">18</option>
-                                                                        <option value="page-19">19</option>
-                                                                        <option value="page-20">20</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div>OF 102</div>
+                                                <div v-if="transactions" class="card">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block-between-md g-3">
+                                                            <div class="g">
+                                                                <ul class="pagination justify-content-center justify-content-md-start">
+                                                                    <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
+                                                                    <li v-if="kor_page > 1" @click="nav_previousPage" class="page-item"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
+                                                                    
+                                                                    <li class="page-item" v-for="page in kor_total_page">
+                                                                        <a v-if='page < 7'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        
+                                                                    </li>
+                                                                    <span v-if="kor_total_page > 7" class="page-link"><em class="icon ni ni-more-h"></em></span>
+                                                                    <li class="page-item" v-for="page in kor_total_page">
+                                                                        <a v-if='page > 13'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
+                                                                    </li>
+                                                                    
+                                                                    <li v-if="kor_page < kor_total_page"  class="page-item" @click="nav_nextPage"><a class="page-link"><em class="icon ni ni-chevrons-right"></em></a></li>
+                                                                    <li v-if="kor_page == kor_total_page" class="page-item disabled"><a  class="page-link" href="#"><em class="icon ni ni-chevrons-right"></em></a></li>
+                                                                </ul><!-- .pagination -->
                                                             </div>
-                                                        </div><!-- .pagination-goto -->
-                                                    </div><!-- .nk-block-between -->
-                                                </div><!-- .card-inner -->
+                                                            <div class="g">
+                                                                <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+                                                                    <div>Page</div>
+                                                                    <div>
+                                                                        <select v-if="kor_total_page > 1" @change="selectPage(kor_page)" v-model="kor_page" class="form-select js-select2" data-search="on" data-dropdown="xs center">
+                                                                            <option v-for="page in kor_total_page" v-bind:value="page">{{page}}</option>
+                                                                        </select>
+                                                                        <select v-if="kor_total_page == 1" class="form-select js-select2 " data-search="on" data-dropdown="xs center">
+                                                                            <option value="1">1</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div>OF {{kor_total_page}}</div>
+                                                                </div>
+                                                            </div><!-- .pagination-goto -->
+                                                        </div><!-- .nk-block-between -->
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
                                         </div><!-- .card -->
                                     </div><!-- .nk-block -->
@@ -484,6 +484,94 @@
                 </div><!-- .modal-content -->
             </div><!-- .modla-dialog -->
         </div><!-- .modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="edit-stock">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div v-if="transaction" class="modal-body modal-body-md">
+                        <h5 class="modal-title">View Transaction Details</h5>
+
+                        <div v-if="transaction" class="modal-body">
+                            <div class="card h-100">
+                                <div class="nk-tb-list is-compact">
+                                    <div class="nk-tb-item nk-tb-head">
+                                        <div class="nk-tb-col"><span>User Fullname</span></div>
+                                        <div class="nk-tb-col text-end"><span>{{transaction.username}}</span></div>
+                                    </div>
+                                                                        
+                                    <div class="nk-tb-item">
+                                        <div class="nk-tb-col">
+                                            <span class="tb-sub"><span>Transaction ID</span></span>
+                                        </div>
+                                        <div class="nk-tb-col text-end">
+                                            <span class="tb-sub tb-amount"><span>{{transaction.transactionid}}</span></span>
+                                        </div>
+                                    </div><!-- .nk-tb-item -->
+                                    
+                                    <div class="nk-tb-item">
+                                        <div class="nk-tb-col">
+                                            <span class="tb-sub"><span>Transaction Type</span></span>
+                                        </div>
+                                        <div class="nk-tb-col text-end">
+                                            <span class="tb-sub tb-amount"><span>{{transaction.type  }}</span></span>
+                                        </div>
+                                    </div><!-- .nk-tb-item -->
+
+                                    <div v-if="transaction.transaction_type == 3" class="nk-tb-item">
+                                        <div class="nk-tb-col">
+                                            <span class="tb-sub"><span>Booking ID</span></span>
+                                        </div>
+                                        <div class="nk-tb-col text-end">
+                                            <span class="tb-sub tb-amount"><span>{{transaction.booking_id}}</span></span>
+                                        </div>
+                                    </div><!-- .nk-tb-item -->
+
+                                    <div class="nk-tb-item">
+                                        <div class="nk-tb-col">
+                                            <span class="tb-sub"><span>Approval Type</span></span>
+                                        </div>
+                                        <div class="nk-tb-col text-end">
+                                            <span class="tb-sub tb-amount"><span>{{transaction.approvaltypeName}}</span></span>
+                                        </div>
+                                    </div>
+                                                        
+                                    <div v-if="transaction.approvaltype == 1" class="nk-tb-item">
+                                        <div class="nk-tb-col">
+                                            <span class="tb-sub"><span>Approved By</span></span>
+                                        </div>
+                                        <div class="nk-tb-col text-end">
+                                            <span class="tb-sub tb-amount"><span>{{transaction.adminname}}</span></span>
+                                        </div>
+                                    </div><!-- .nk-tb-item -->
+                                    
+                                    <div class="nk-tb-item">
+                                        <div class="nk-tb-col">
+                                            <span class="tb-sub"><span>Order time</span></span>
+                                        </div>
+                                        <div class="nk-tb-col text-end">
+                                            <span class="tb-sub tb-amount"><span>{{transaction.ordertime}}</span></span>
+                                        </div>
+                                    </div><!-- .nk-tb-item -->
+                                    
+                                    <div class="nk-tb-item">
+                                        <div class="nk-tb-col">
+                                            <span class="tb-sub"><span>Transaction Amount</span></span>
+                                        </div>
+                                        <div class="nk-tb-col text-end">
+                                            <span class="tb-sub tb-amount"><span>{{transaction.amttopay}}</span></span>
+                                        </div>
+                                    </div><!-- .nk-tb-item -->
+                                    
+                                </div>                                            
+                                                    
+                            <!-- .nk-tb-list -->
+                            </div>
+                        </div>
+                        
+                    </div><!-- .modal-body -->
+                </div><!-- .modal-content -->
+            </div><!-- .modal-dialog -->
+        </div>
     </div>
     <!-- Add Stock-->
     <!-- JavaScript -->
