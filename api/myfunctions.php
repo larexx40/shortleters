@@ -965,8 +965,8 @@
             
         }
 
-        $marin_right = 10;
-        $margin_bottom = 10;
+        $marin_right = 20;
+        $margin_bottom = 80;
 
         $sx = imagesx($waterImage);
         $sy = imagesy($waterImage);
