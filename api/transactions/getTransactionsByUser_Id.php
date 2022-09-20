@@ -77,12 +77,30 @@
             //pass fetched data as array maindata[]
             $id = $row['id'];
             $userid = $row['userid'];
+            $username = getUserFullname($connect, $userid);
             $transactionid = $row['transactionid'];
             $transaction_type = $row['transaction_type'];
+            if ( $transaction_type == 1){
+                $type = "Fund  Wallet";
+            }
+            if ( $transaction_type == 2){
+                $type = "Agent Payment";
+            }
+            if ( $transaction_type == 3){
+                $type = "Payment for Apartment";
+            }
+
             $booking_id = $row['booking_id'];
             $ordertime = $row['ordertime'];
             $approvedby = $row['approvedby'];
+            $getAdminName = ($approvedby) ? getNameFromField($connect, "admin", "id", $approvedby) : null;
             $approvaltype = $row['approvaltype'];
+            if ($approvaltype == 1){
+                $approvaltypeName = "Manual";
+            }
+            if ($approvaltype == 2){
+                $approvaltypeName = "Automatic";
+            }
             $amttopay = $row['amttopay'];
             $statusCode = $row['status'];
 
@@ -94,12 +112,15 @@
             $maindata=[
                 "id"=>$id,
                 "userid"=>$userid,
+                'userfullname' => ($username) ? $username : null,
                 "transactionid"=>$transactionid,
                 "transaction_type"=>$transaction_type,
                 "booking_id"=>$booking_id,
                 "ordertime"=>$ordertime,
                 "approvedby"=>$approvedby,
+                'admin_name' => ($getAdminName)? $getAdminName : null,
                 "approvaltype"=>$approvaltype,
+                'approval_type_name' => $approvaltypeName,
                 "status"=>$status,
                 "amttopay"=>$amttopay,
             ];
