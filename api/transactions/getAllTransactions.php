@@ -83,9 +83,9 @@
                 if (!empty($search) && $search!="" && $search!=' '){
                     //search user_transactions from database 
                     $searchParam = "%{$search}%"; 
-                    $searchQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                    $searchQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                     LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                    WHERE (users.fname like ? OR users.lname  like ? OR `transactionid` like ?) AND `status` =?";
+                                    WHERE (users.fname like ? OR users.lname  like ?) AND user_transactions.status =?";
                     $stmt= $connect->prepare($searchQuery);
                     $stmt->bind_param("sss", $searchParam, $searchParam, $status);
                     $stmt->execute();
@@ -102,9 +102,9 @@
 
                 }else{
                     //get without search
-                    $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                    $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin ON admin.id = user_transactions.approvedby
-                                WHERE `status` =?";
+                                WHERE user_transactions.status =?";
                     $stmt= $connect->prepare($sqlQuery);
                     $stmt->bind_param("s", $status);
                     $stmt->execute();
@@ -125,9 +125,9 @@
                 if (!empty($search) && $search!="" && $search!=' '){
                     //search user_transactions from database 
                     $searchParam = "%{$search}%"; 
-                    $searchQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                    $searchQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                     LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                    WHERE (users.fname like ? OR users.lname  like ? OR `transactionid` like ?) AND `transaction_type` =?";
+                                    WHERE (users.fname like ? OR users.lname  like ?) AND `transaction_type` =?";
                     $stmt= $connect->prepare($searchQuery);
                     $stmt->bind_param("sss", $searchParam, $searchParam, $transactionType);
                     $stmt->execute();
@@ -144,7 +144,7 @@
 
                 }else{
                     //get without search
-                    $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                    $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
                                 WHERE `transaction_type` =?";
                     $stmt= $connect->prepare($sqlQuery);
@@ -167,9 +167,9 @@
                 if (!empty($search) && $search!="" && $search!=' '){
                     //search user_transactions from database 
                     $searchParam = "%{$search}%"; 
-                    $searchQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                    $searchQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                     LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                    WHERE (users.fname like ? OR users.lname  like ? OR `transactionid` like ?) AND `transaction_type` =? AND `status` = ?";
+                                    WHERE (users.fname like ? OR users.lname  like ?) AND `transaction_type` =? AND user_transactions.status = ?";
                     $stmt= $connect->prepare($searchQuery);
                     $stmt->bind_param("ssss", $searchParam, $searchParam, $transactionType, $status);
                     $stmt->execute();
@@ -186,9 +186,9 @@
 
                 }else{
                     //get without search
-                    $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                    $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                WHERE `transaction_type` =? AND `status` = ?";
+                                WHERE `transaction_type` =? AND user_transactions.status = ?";
                     $stmt= $connect->prepare($sqlQuery);
                     $stmt->bind_param("ss", $transactionType, $status);
                     $stmt->execute();
@@ -219,9 +219,9 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search user_transactions from database 
                 $searchParam = "%{$search}%"; 
-                $searchQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                $searchQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                WHERE (users.fname like ? OR users.lname  like ? OR `transactionid` like ?) AND `status` =?";
+                                WHERE (users.fname like ? OR users.lname  like ?) AND user_transactions.status =?";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("sss", $searchParam, $searchParam, $status);
                 $stmt->execute();
@@ -238,9 +238,9 @@
 
             }else{
                 //get without search
-                $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                             LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                            WHERE `status` =?";
+                            WHERE user_transactions.status =?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
                 $stmt->execute();
@@ -260,9 +260,9 @@
             if (!empty($search) && $search!="" && $search!=' '){
                 //search productCategory from database 
                 $searchParam = "%{$search}%";
-                $searchQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                $searchQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                WHERE (`userid` like ? OR `transactionid` like ?) ";
+                                WHERE (users.fname like ? OR users.lname  like ?) ";
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("ss",$searchParam,  $searchParam);
                 $stmt->execute();
@@ -279,7 +279,7 @@
                 $numRow = $result->num_rows;  
             }else {
                 //get all data
-                $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
+                $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                             LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
@@ -287,8 +287,7 @@
                 $total_numRow = $result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
-                $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name, `status`, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
-                            LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby";
+                $sqlQuery = "$sqlQuery ORDER BY id DESC LIMIT ?,?";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("ss", $offset, $noPerPage);
                 $stmt->execute();
@@ -314,16 +313,31 @@
         if($numRow > 0){
             $allResponse = [];
             while($row = $result->fetch_assoc()){
-                //SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, 
-                //`approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions`
                 $id = $row['id'];
                 $userid = $row['userid'];
+                $username = $row['fname']. $row['lname'];
                 $transactionid = $row['transactionid'];
                 $transaction_type = $row['transaction_type'];
+                if ( $transaction_type == 1){
+                    $type = "Fund  Wallet";
+                }
+                if ( $transaction_type == 2){
+                    $type = "Agent Payment";
+                }
+                if ( $transaction_type == 3){
+                    $type = "Payment for Apartment";
+                }
                 $booking_id = $row['booking_id'];
                 $ordertime = $row['ordertime'];
                 $approvedby = $row['approvedby'];
+                $adminname = $row['admin_name'];
                 $approvaltype = $row['approvaltype'];
+                if ($approvaltype == 1){
+                    $approvaltypeName = "Manual";
+                }
+                if ($approvaltype == 2){
+                    $approvaltypeName = "Automatic";
+                }
                 $amttopay = $row['amttopay'];
                 $statusCode = $row['status'];
 
@@ -336,12 +350,17 @@
             array_push($allResponse, array(
                 "id"=>$id,
                 "userid"=>$userid,
+                "username"=>$username,
                 "transactionid"=>$transactionid,
                 "transaction_type"=>$transaction_type,
+                "type"=>$type,
                 "booking_id"=>$booking_id,
                 "ordertime"=>$ordertime,
                 "approvedby"=>$approvedby,
+                "adminname"=>$adminname,
                 "approvaltype"=>$approvaltype,
+                "approvaltypeName"=>$approvaltypeName,
+                "statusCode"=>$statusCode,
                 "status"=>$status,
                 "amttopay"=>$amttopay,
             ));
