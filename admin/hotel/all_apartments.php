@@ -32,6 +32,11 @@
                                                 <ul class="nk-block-tools g-3">
                                                     <li>
                                                         <div>
+                                                            <a href="./features.php" class="btn btn-primary"><em class="icon ni ni-eye"></em>Features</a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div>
                                                             <a href="./facilities.php" class="btn btn-primary"><em class="icon ni ni-eye"></em>View Facilities</a>
                                                         </div>
                                                     </li>
