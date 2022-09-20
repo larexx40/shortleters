@@ -165,6 +165,7 @@
                 $state = $row['state'];
                 $country = $row['country'];
                 $username = $row['username'];
+                $agent = $row["is_agent"];
                 $dob = $row['dob'];
                 $sex = $row['sex'];
                 $referredBy = ( getUserFullname($connect, $row['referby']) ) ? getUserFullname($connect, $row['referby']) : "";
@@ -199,6 +200,7 @@
                     'status_code' => $statusCode,
                     'status' => $userStatus,
                     'status' => $userStatus,
+                    'agent' => $agent,
                     'admin_seen_code' => $adminSeen,
                     'admin_seen' => $adminCheck,
                     'username' => $username,
