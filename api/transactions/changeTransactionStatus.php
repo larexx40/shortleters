@@ -70,10 +70,10 @@
 
         if ($status == 0 || $status == "inactive"){
             $changeStatus = 0;
-            $message = "Deactivated";
+            $message = "Not Paid";
         }elseif ($status == 1 || $status == 'active'){
             $changeStatus = 1;
-            $message = "Activated";
+            $message = "Paid";
         }else{
             $changeStatus = "";
         }
@@ -99,27 +99,27 @@
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `house_rule` SET `status`= ? WHERE house_rule_id = ?";
+        $sql = "UPDATE `user_transactions` SET `status` = ? , approvedby = ? WHERE transactionid = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ss', $changeStatus, $transactionid);
+        $stmt->bind_param('sss', $changeStatus, $adminid, $transactionid);
         $stmt->execute();
 
         if ( $stmt->affected_rows > 0 ){
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = "House rule status set to $message";
+            $hint = "Transaction status set to $message";
             $errordata = [];
-            $text = "House rule $message";
+            $text = "Transaction $message";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
         
         }else{
             //Building type not found
-            $errordesc = "House rule with id not found";
+            $errordesc = "transactions with id not found";
             $linktosolve = 'https://';
-            $hint = "Kindly pass valid House rule id";
+            $hint = "Kindly pass valid transactions id";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data); 

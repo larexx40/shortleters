@@ -42,13 +42,11 @@
         }
         //no
         if ( !isset($_POST['booking_id']) ){
-
             $errordesc="booking id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
             $text="booking id must be passed";
-            $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
 
@@ -57,7 +55,6 @@
         }
 
         if ( empty($booking_id) ){
-
             $errordesc = "Enter booking id";
             $linktosolve = 'https://';
             $hint = "Kindly ensure that a valid id is passed";
@@ -80,8 +77,28 @@
         }
 
         //check if payment transaction exist
-        $isTransaction = checkIfExist($connect, "")
-
+        $userTransaction = getTransaction($connect, "booking_id", $booking_id);
+        if(!$userTransaction){
+            $errordesc = "Transaction not found";
+            $linktosolve = 'https://';
+            $hint = "Kindly ensure that the payment is made";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+        //`ordertime``amttopay``status`
+        //get payment/transaction status 
+        $amount =$userTransaction['amttopay'];
+        $timePaid= $userTransaction['ordertime'];
+        $paymentStatus = $userTransaction['status'];
+        if($paymentStatus != 1){
+            $errordesc = "Payment not approved by admin";
+            $linktosolve = 'https://';
+            $hint = "Kindly ensure that the user transaction is validated";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
 
         // check the status passed
         if ($status == 0 || $status === "inactive"){
@@ -117,8 +134,7 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
-
-
+        
         // update status
         $query = "UPDATE `bookings` SET `paid` = ? WHERE booking_id = ?";
         $updateStatus = $connect->prepare($query);

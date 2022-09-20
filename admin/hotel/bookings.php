@@ -198,9 +198,9 @@
                                                             <div class="nk-tb-col"><span class="sub-text">Customer</span></div>
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">Apartment</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Verification Type</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Room Type</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check in </span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check out</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Room Type</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Check in </span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Check out</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
                                                         </div><!-- .nk-tb-item -->
@@ -240,7 +240,7 @@
                                                             <div class="nk-tb-col tb-col-mb">
                                                                 <span>{{item.preferred_check_in}}</span>
                                                             </div>
-                                                            <div class="nk-tb-col tb-col-lg">
+                                                            <div class="nk-tb-col tb-col-md">
                                                                 <span>{{item.prefferred_check_out}}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
