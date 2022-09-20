@@ -4686,9 +4686,9 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
-        async getTransactionByid(adminid){
+        async getTransactionByid(id){
             //console.log("adminid",adminid);
-            const url = `${this.baseUrl}api/transactions/getTransactionByid.php?id=${adminid}`;
+            const url = `${this.baseUrl}api/transactions/getTransactionByid.php?transactionid=${id}`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -4699,24 +4699,19 @@ let admin = Vue.createApp({
             }
 
             try {
-                this.getAdmin_details = null;
+                this.loading = true;
+                this.transaction = null;
                 this.loading = true;
                 let response = await axios(options)
                 if ( response.data.status ){
-                    //console.log('getAdmin_details', response.data.data);
-                    this.getAdmin_details = response.data.data;
-                    const strings = this.getAdmin_details.name.split(" ");
-                    const initials = `${strings[0].charAt(0)} ${strings[1].charAt(0)}`;
-                    this.getAdmin_details.initials = initials.toUpperCase();
-                    //console.log("initials", this.getAdmin_details.initials);
+                    this.transaction = response.data.data;
                 }
                 
             } catch (error) {
                 if (error.response){
                     if (error.response.status === 400){
                         this.error = error.response.data.error.text
-                        new Toasteur().error(this.error);;
-                        //console.log("error", this.error);
+                        new Toasteur().error(this.error);
                     }
                     if (error.response.status === 405){
                         this.error = error.response.data.error.text
