@@ -4792,7 +4792,7 @@ let admin = Vue.createApp({
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('booking_id', id);
+                data.append('transactionid', id);
                 data.append('status', status);
                 const options = {
                     method: "POST",
@@ -4807,10 +4807,10 @@ let admin = Vue.createApp({
                     this.loading = true
                     const response = await axios(options);
                     if(response.data.status){
-                        new Toasteur().success("Status Changed")
-                        this.getAllBookings();      
+                        new Toasteur().success(response.data.text);
+                        await this.getAllTransactions(4);     
                     }else{
-                        this.getAllBookings();
+                        await this.getAllTransactions(4);
                     }     
                 } catch (error) {
                     // //console.log(error);

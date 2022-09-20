@@ -2,6 +2,12 @@
     <title>Transaction Details</title>
 </head>
 
+<style>
+    :hover{
+        color: var(--hover-color);
+    }
+</style>
+
 <body class="nk-body bg-lighter npc-general has-sidebar ">
     <div id="admin" v-cloak>
         <?php include "./loading.php" ?>
@@ -26,7 +32,7 @@
                                             <div class="nk-block-head-content">
                                                 <h3 class="nk-block-title page-title">Transaction Details</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>Here is our various stock list.</p>
+                                                    <p>Here is our various Transaction.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
@@ -234,7 +240,7 @@
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.statusCode > 0" class="tb-status text-success">{{item.status}}</span>
-                                                                <span v-if="item.statusCode < 1" class="tb-status text-success">{{item.status}}</span>
+                                                                <span v-if="item.statusCode < 1" class="tb-status text-warning">{{item.status}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
@@ -243,6 +249,7 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
+                                                                                    <li style="--hover-color: var(--bs-success)" v-if="item.statusCode < 1" @click="changeTransactionStatus(item.transactionid, 1)"><a><em class="icon fa-solid fa-toggle-on"></em><span>Approve Transaction</span></a></li>
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
                                                                                 </ul>
                                                                             </div>

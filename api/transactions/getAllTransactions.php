@@ -342,9 +342,9 @@
                 $statusCode = $row['status'];
 
                 if($statusCode == 1){
-                    $status = "Active";
+                    $status = "Completed";
                 }else{
-                    $status = "Inactive";
+                    $status = "Pending";
                 }
 
             array_push($allResponse, array(
