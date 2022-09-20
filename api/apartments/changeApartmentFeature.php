@@ -40,22 +40,26 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondUnAuthorized($data);
         }
-        //no
-        if ( !isset($_POST['booking_id']) ){
-            $errordesc="booking id required";
+
+
+        if ( !isset($_POST['apartment_id']) ){
+
+            $errordesc="product id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="booking id must be passed";
+            $text="amenity id must be passed";
+            $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
 
         }else{
-            $booking_id = cleanme($_POST['booking_id']);
+            $apartment_id = cleanme($_POST['apartment_id']);
         }
 
-        if ( empty($booking_id) ){
-            $errordesc = "Enter booking id";
+        if ( empty($apartment_id) ){
+
+            $errordesc = "Enter amenity id";
             $linktosolve = 'https://';
             $hint = "Kindly ensure that a valid id is passed";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -63,60 +67,32 @@
             respondBadRequest($data);
         }
 
-        if ( !isset($_POST['status']) ){
-            $errordesc="booking status required";
+        if ( !isset($_POST['feature']) ){
+            $errordesc="Apartment feature required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="booking status must be passed";
+            $text="Apartment feature must be passed";
             $method;
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }else{
-            $status = cleanme($_POST['status']);
+            $feature = cleanme($_POST['feature']);
         }
+        
 
-        //check if payment transaction exist
-        $userTransaction = getTransaction($connect, "booking_id", $booking_id);
-        if(!$userTransaction){
-            $errordesc = "Transaction not found";
-            $linktosolve = 'https://';
-            $hint = "Kindly ensure that the payment is made";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
-        //`ordertime``amttopay``status`
-        //get payment/transaction status 
-        $amount =$userTransaction['amttopay'];
-        $timePaid= $userTransaction['ordertime'];
-        $paymentStatus = $userTransaction['status'];
-        if($paymentStatus != 1){
-            $errordesc = "Payment not approved by admin";
-            $linktosolve = 'https://';
-            $hint = "Kindly ensure that the user transaction is validated";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
-
-        // check the status passed
-        if ($status == 0 || $status === "inactive"){
-            $changeStatus = 0;
-            $changeStatusText = "set to unpaid";
+        if ($feature == 0 || $feature == "inactive"){
+            $changeFeature = 0;
+            $message = "Deactivated";
+        }elseif ($feature == 1 || $feature == 'active'){
+            $changeFeature = 1;
+            $message = "Activated";
         }else{
-            $changeStatus = "";
+            $changeFeature = "";
         }
 
-        if ($status == 1 || $status === 'active'){
-            $changeStatus = 1;
-            $changeStatusText = "set to Paid";
-        }else{
-            $changeStatus = "";
-        }
-
-        if (  $changeStatus > 0  && $changeStatus != 1 && $changeStatus < 0 ){
-            $errordesc = "Status passed is invalid ";
+        if ( $feature != 0 && $feature != 1){
+            $errordesc = "Feature passed is invalid ";
             $linktosolve = 'https://';
             $hint = "Kindly ensure the status passed is either active or inactive which is 1 and 0 respectively";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -124,21 +100,11 @@
             respondBadRequest($data);
         }
 
-        // check if product is valid
-        if ( !checkifFieldExist($connect, "bookings", "booking_id", $booking_id) ) {
 
-            $errordesc = "booking does not Exist ";
-            $linktosolve = 'https://';
-            $hint = "Kindly ensure the booking id passed is for an existing product";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
-        
-        // update status
-        $query = "UPDATE `bookings` SET `paid` = ? WHERE booking_id = ?";
+        // update feature
+        $query = "UPDATE `apartments` SET `feature` = ? WHERE apartment_id = ?";
         $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("ss", $changeStatus, $booking_id);
+        $updateStatus->bind_param("ss", $feature, $apartment_id);
         $updateStatus->execute();
 
         if ($updateStatus->error){
@@ -153,7 +119,7 @@
         if ( $updateStatus->execute()){
             
             $data = [];
-            $text= "Booking successfully ". $changeStatusText;
+            $text= "Apartment Feature ". $changeStatusText;
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);

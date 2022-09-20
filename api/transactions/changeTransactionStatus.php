@@ -70,10 +70,10 @@
 
         if ($status == 0 || $status == "inactive"){
             $changeStatus = 0;
-            $message = "Deactivated";
+            $message = "Not Paid";
         }elseif ($status == 1 || $status == 'active'){
             $changeStatus = 1;
-            $message = "Approved";
+            $message = "Paid";
         }else{
             $changeStatus = "";
         }
@@ -99,9 +99,9 @@
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `user_transactions` SET `status`= ? WHERE transactionid = ?";
+        $sql = "UPDATE `user_transactions` SET `status` = ? , approvedby = ? WHERE transactionid = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ss', $changeStatus, $transactionid);
+        $stmt->bind_param('sss', $changeStatus, $adminid, $transactionid);
         $stmt->execute();
 
         if ( $stmt->affected_rows > 0 ){
@@ -117,9 +117,9 @@
         
         }else{
             //Building type not found
-            $errordesc = "Transaction with id not found";
+            $errordesc = "transactions with id not found";
             $linktosolve = 'https://';
-            $hint = "Kindly pass valid House rule id";
+            $hint = "Kindly pass valid transactions id";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data); 

@@ -1,10 +1,10 @@
 <?php include "header.php"; ?>
-    <title>Bookings Dashboard</title>
+    <title>Feature Apartment</title>
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
     <div id="admin" v-cloak>
-        <?php include "loading.php"; ?>
+        <?php include "./loading.php" ?>
         <div class="nk-app-root">
             <!-- main @s -->
             <div class="nk-main ">
@@ -22,33 +22,29 @@
                             <div class="nk-content-inner">
                                 <div class="nk-content-body">
                                     <div class="nk-block-head nk-block-head-sm">
-                                        <div class="nk-block-between">
+                                        <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Booking Lists</h3>
+                                                <h3 class="nk-block-title page-title">Feature Apartments</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>You have total {{}} booking's.</p>
+                                                    <p>Here are aprtments on feature list.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
-                                                <div class="toggle-wrap nk-block-tools-toggle">
-                                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
-                                                    <div class="toggle-expand-content" data-content="pageMenu">
-                                                        <ul class="nk-block-tools g-3">
-                                                            <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
-                                                            <li class="nk-block-tools-opt">
-                                                                <div class="drodown">
-                                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a href="./booking-add.php"><span>Add Booking</span></a></li>
-                                                                            <li><a href="#"><span>Import Booking</span></a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div><!-- .toggle-wrap -->
+                                                <ul class="nk-block-tools g-3">
+                                                    <li>
+                                                        <div class="drodown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    
+                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Feature</span></a></li>
+                                                                    <!-- <li><a href="#"><span>View Amenities</span></a></li>
+                                                                    <li><a href="#"><span>Delete Amenities</span></a></li> -->
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div><!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
@@ -58,20 +54,22 @@
                                                 <div class="card-inner position-relative card-tools-toggle">
                                                     <div class="card-title-group">
                                                         <div class="card-tools">
-                                                            <div class="form-inline flex-nowrap gx-3">
-                                                                <!-- <div class="form-wrap w-150px">
+                                                            <!-- <div class="form-inline flex-nowrap gx-3">
+                                                                <div class="form-wrap w-150px">
                                                                     <select class="form-select js-select2 js-select2-sm" data-search="off" data-placeholder="Bulk Action">
                                                                         <option value="">Bulk Action</option>
-                                                                        <option value="email">Send Email</option>
-                                                                        <option value="delete">Delete Booking</option>
+                                                                        <option value="edit">Edit Selected</option>
+                                                                        <option value="delete">Delete Selected</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="btn-wrap">
                                                                     <span class="d-none d-md-block"><button class="btn btn-dim btn-outline-light disabled">Apply</button></span>
                                                                     <span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span>
-                                                                </div> -->
-                                                            </div><!-- .form-inline -->
-                                                        </div><!-- .card-tools -->
+                                                                </div>
+                                                            </div> -->
+                                                        </div>
+                                                        <!-- .form-inline -->
+                                                        <!-- .card-tools -->
                                                         <div class="card-tools me-n1">
                                                             <ul class="btn-toolbar gx-1">
                                                                 <li>
@@ -106,10 +104,10 @@
                                                                                                 <ul class="link-check">
                                                                                                     <li v-if="sort == null" class="" :class="{active: class_active}" @click.prevent ="noSort(0)"><a href="#">Show All</a></li>
                                                                                                     <li v-if="sort != null" class=""  @click.prevent="noSort(0)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="sort == 1" :class="{active: class_active}"  @click.prevent="sortByStatus(1)" class=""><a href="#">Active</a></li>
-                                                                                                    <li v-if="sort != 1" class=""  @click.prevent="sortByStatus(1)"><a href="#">Active</a></li>
-                                                                                                    <li v-if="sort == 0" :class="{active: class_active}" @click.prevent="sortByStatus(0)" class=""><a href="#">Inactive</a></li>
-                                                                                                    <li v-if="sort != 0" class=""  @click.prevent="sortByStatus(0)"><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="sort == 1" :class="{active: class_active}"  @click.prevent="sortByStatus(1)" class=""><a href="#">Available</a></li>
+                                                                                                    <li v-if="sort != 1" class=""  @click.prevent="sortByStatus(1)"><a href="#">Available</a></li>
+                                                                                                    <li v-if="sort == 0" :class="{active: class_active}" @click.prevent="sortByStatus(0)" class=""><a href="#">Booked</a></li>
+                                                                                                    <li v-if="sort != 0" class=""  @click.prevent="sortByStatus(0)"><a href="#">Booked</a></li>
                                                                                                 </ul>
                                                                                             </div>
 
@@ -126,6 +124,7 @@
                                                                                             <em class="icon ni ni-setting"></em>
                                                                                         </a>
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
+                                                                                            
                                                                                             <ul class="link-check">
                                                                                                 <li><span>Show</span></li>
                                                                                                 <li v-if="per_page == 10" class="" :class="{active: class_active}" @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
@@ -154,72 +153,46 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none" @keyup='getAllBookings(4)' v-model ='search' placeholder="Search by space name or id">
+                                                                <input type="text" class="form-control border-transparent form-focus-none"  @keyup='getAllBuildingType(4)' v-model ='search' placeholder="Search by product name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if='bookings' class="card-inner p-0">
+                                                <div v-if="features" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <!-- <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
+                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid">
                                                                     <label class="custom-control-label" for="uid"></label>
-                                                                </div> -->
-                                                            </div>
-                                                            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Customer</span></div>
-                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">Apartment</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Verification Type</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Room Type</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Check in </span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Check out</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
+                                                                </div>
+                                                            </div> -->
+                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Apartment name</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Price</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Availability</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
                                                         </div><!-- .nk-tb-item -->
-                                                        
-                                                        <div v-for='(item, index) in bookings' class="nk-tb-item">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <!-- <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid10">
-                                                                    <label class="custom-control-label" for="uid10"></label>
-                                                                </div> -->
+                                                        <div v-for="(item, index) in features" class="nk-tb-item">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
+                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                                    <input type="checkbox" class="custom-control-input" id="uid1">
+                                                                    <label class="custom-control-label" for="uid1"></label>
+                                                                </div>
+                                                            </div> -->
+                                                            <div class="nk-tb-col tb-col-mb">
+                                                                <span><a href="#">{{parseInt(index) + 1}}</a></span>
                                                             </div>
                                                             <div class="nk-tb-col">
-                                                                <span class="text-primary">{{parseInt(index) + 1}}</span>
+                                                                <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
-                                                            <div class="nk-tb-col">
-                                                                <a href="#">
-                                                                    <div class="user-card">
-                                                                        <div class="user-avatar bg-danger">
-                                                                            <span>{{item.initials}}</span>
-                                                                        </div>
-                                                                        <div class="user-info">
-                                                                            <span class="tb-lead">{{item.first_name}} {{item.last_name}}<span class="dot dot-success d-md-none ms-1"></span></span>
-                                                                            <span>{{item.email}}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span>{{item.apartment_name}}</span>
+                                                            <div class="nk-tb-col tb-col-md tb-product">
+                                                                <span>{{item.price}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">{{item.identification_type}}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span>Room Type</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb">
-                                                                <span>{{item.preferred_check_in}}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>{{item.prefferred_check_out}}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">{{item.paid_status}}</span>
+                                                                <span v-if="item.availabilityCode > 0" class="tb-status text-success">{{item.availability}}</span>
+                                                                <span v-if="item.availabilityCode < 1" class="tb-status text-danger">{{item.availability}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
@@ -228,75 +201,46 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li @click="setBookingId(item.id)"><a href="./booking-edit.php"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
-                                                                                    <li v-if='item.paid_code != 1' @click.prevent='changePaymentStatus(item.id,1)'><a href="#"><em class="icon ni ni-money"></em><span>Mark as Paid</span></a></li>
-                                                                                    <li v-if='item.paid_code == 1' @click='setBookingid(item.id)'><a href="./receipt.php"><em class="icon ni ni-report-profit"></em><span>Receipt</span></a></li>
-                                                                                    <li v-if='item.paid_code != 1' @click='setBookingid(item.id)' ><a href="./invoice-details.php"><em class="icon ni ni-report"></em><span>Invoice</span></a></li>
+                                                                                    <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Unfeature</span></a></li>
+                                                                                    <li @click.prevent= getSubBuilding(item.buildingTypeid) v-if='item.subTypes > 0 '><a href=""><em class="icon ni ni-eye"></em><span>Sub type</span></a></li>
+                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
+                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
+                                                                                    <li @click.prevent= 'deleteByid(item.buildingTypeid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
                                                                     </li>
                                                                 </ul>
                                                             </div>
-                                                        </div><!-- .nk-tb-item -->
+                                                        </div><!-- .nk-tb-item  -->
                                                     </div><!-- .nk-tb-list -->
                                                 </div><!-- .card-inner -->
 
-                                                <div v-if='!bookings' class="card-inner p-0">
+                                                <!-- Table when record not found -->
+                                                <div v-if="!features" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
-                                                            <div class="nk-tb-col nk-tb-col-check">
-                                                                <!-- <div class="custom-control custom-control-sm custom-checkbox notext">
-                                                                    <input type="checkbox" class="custom-control-input" id="uid">
-                                                                    <label class="custom-control-label" for="uid"></label>
-                                                                </div> -->
-                                                            </div>
-                                                            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Customer</span></div>
-                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">Apartment</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Booking</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Room Type</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check in </span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check out</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
-                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <!-- <div class="dropdown">
-                                                                    <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-plus"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                                        <ul class="link-tidy sm no-bdr">
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" checked="" id="bo">
-                                                                                    <label class="custom-control-label" for="bo">Booking</label>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" checked="" id="ph">
-                                                                                    <label class="custom-control-label" for="ph">Phone</label>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                    <input type="checkbox" class="custom-control-input" id="pay">
-                                                                                    <label class="custom-control-label" for="pay">Payment</label>
-                                                                                </div>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div> -->
-                                                            </div>
+                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Apartment name</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Price</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Availability</span></div>
+                                                            <div class="nk-tb-col nk-tb-col-tools text-end"></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
+                                                            <!-- <div class="nk-tb-col nk-tb-col-check">
+                                                                <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                                    <input type="checkbox" class="custom-control-input" id="uid1">
+                                                                    <label class="custom-control-label" for="uid1"></label>
+                                                                </div>
+                                                            </div> -->
                                                             <div class="nk-tb-col">
                                                                 <span>No records Found <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
                                                         </div><!-- .nk-tb-item  -->
-                                                    </div>
+                                                    </div><!-- .nk-tb-list -->
                                                 </div>
-
-
-                                                <div v-if='bookings' class="card-inner">
+                                                
+                                                <div v-if="features" class="card-inner">
                                                     <div class="nk-block-between-md g-3">
                                                         <div class="g">
                                                         <ul class="pagination justify-content-end">
@@ -486,10 +430,92 @@
                 </div><!-- .modal-content -->
             </div><!-- .modla-dialog -->
         </div><!-- .modal -->
-
-
+        <!-- Add Stock-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="add-stock">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div class="modal-body modal-body-md">
+                        <h5 class="modal-title">Add Building Type</h5>
+                        <form @submit.prevent="addBuildingType" class="mt-2">
+                            <div class="row g-gs">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-add"> Name</label>
+                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="quantity-add">Building Image</label>
+                                        <div class="form-control-wrap">        
+                                            <div class="form-file">            
+                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
+                                                <label class="form-file-label" for="customFile">Choose file</label>        
+                                            </div>    
+                                        </div>
+                                        <!-- <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity"> -->
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                        <li>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Building Type</button>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- .modal-body -->
+                </div><!-- .modal-content -->
+            </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
+        <!-- Edit Stock-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="edit-stock">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div class="modal-body modal-body-md">
+                        <h5 class="modal-title">Edit Building Type</h5>
+                        <form @submit.prevent="updateBuildingType"  action="#" class="mt-2">
+                            <div v-if='itemDetails' class="row g-gs">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-name-edit">Type Name</label>
+                                        <input type="text" class="form-control" id="product-name-edit" v-model="itemDetails.name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="quantity-add">Building Image</label>
+                                        <div class="form-control-wrap">        
+                                            <div class="form-file">            
+                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
+                                                <label class="form-file-label" for="customFile">Choose file</label>        
+                                            </div>    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                        <li>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Building Type</button>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- .modal-body -->
+                </div><!-- .modal-content -->
+            </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
     </div>
-    
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>
     <script src="../assets/js/scripts.js?ver=3.0.3"></script>

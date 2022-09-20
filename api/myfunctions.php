@@ -1276,4 +1276,22 @@
         } 
         return $temp_array; 
     }
+
+    function getTransaction($connect, $field, $data){
+        // check field
+        $active = 1;
+        $query = "SELECT * FROM user_transactions WHERE $field = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+           $row = $result->fetch_assoc();
+           return $row;
+        }
+
+        return false;
+    }
 ?>
