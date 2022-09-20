@@ -79,6 +79,9 @@
             $status = cleanme($_POST['status']);
         }
 
+        //check if payment transaction exist
+        $isTransaction = checkIfExist($connect, "")
+
 
         // check the status passed
         if ($status == 0 || $status === "inactive"){
