@@ -244,6 +244,7 @@
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
+                                                                                    <li v-if='item.paid_code != 1' @click.prevent='changePaymentStatus(item.id,1)'><a href="#"><em class="icon ni ni-money"></em><span>Approve</span></a></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>

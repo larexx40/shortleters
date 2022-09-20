@@ -4785,6 +4785,7 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
+        
         async changeTransactionStatus(id, status){
             const url = `${this.baseUrl}api/transactions/changeTransactionStatus.php?`;
             //console.log('URL', url);
@@ -4792,7 +4793,7 @@ let admin = Vue.createApp({
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
-                data.append('booking_id', id);
+                data.append('transactionid', id);
                 data.append('status', status);
                 const options = {
                     method: "POST",

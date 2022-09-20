@@ -342,9 +342,9 @@
                 $statusCode = $row['status'];
 
                 if($statusCode == 1){
-                    $status = "Active";
+                    $status = "Paid";
                 }else{
-                    $status = "Inactive";
+                    $status = "Not Paid";
                 }
 
             array_push($allResponse, array(
