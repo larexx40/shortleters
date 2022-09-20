@@ -235,6 +235,7 @@ let admin = Vue.createApp({
             gender: null,
             gender_options: ["Male", "Female"],
             transactions: null,
+            transaction: null,
             phone: null,
             email: null,
             apartment_booked: null,
@@ -8036,6 +8037,9 @@ let admin = Vue.createApp({
             }
             if (webPage === "currency.php"){
                 this.currency = this.all_currencies[index];
+            }
+            if (webPage === "transactions.php"){
+                this.transaction = this.transactions[index];
             }
             //console.log(this.shop_product)
         },
