@@ -219,7 +219,8 @@
                                                                 <span>{{item.prefferred_check_out}}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-status text-success">{{item.paid_status}}</span>
+                                                                <span v-if="item.paid_code > 0" class="tb-status text-success">{{item.paid_status}}</span>
+                                                                <span v-if="item.paid_code < 1" class="tb-status text-warning">{{item.paid_status}}</span>
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">

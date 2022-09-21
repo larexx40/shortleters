@@ -287,6 +287,27 @@
 
         $booking_id = generateUniqueShortKey($connect, "bookings", "booking_id ");
 
+        if ( $payment_status > 0){
+            $trans_id = generateUniqueShortKey($connect, "user_transactions", "transactionid");
+            $trans_type = "3";
+            $approval_type = "1";
+            $ordertime = time();
+            $status = "1";
+            
+            $addQuery =  "INSERT INTO `user_transactions`(`transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`, `amttopay`) VALUES (?,?,?,?,?,?,?,?)";
+            $addTrans = $connect->prepare($addQuery);
+            $addTrans->bind_param("ssssssss", $trans_id, $trans_type, $booking_id, $ordertime, $admin, $status, $approval_type, $total_amount_paid);
+            $addTrans->execute();
+
+            if ($addTrans->error){
+                $errordesc =  $addTrans->error;
+                $linktosolve = 'https://';
+                $hint = "500 code internal error, check ur database connections";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondInternalError($data);
+            }
+        }
 
         $query = 'INSERT INTO `bookings`(`booking_id`, `user_id`, `admin_id`, `first_name`, `last_name`, `gender`, `phone`, `email`, `apartment_id`, `apartment_price` ,`address`, `occupation_or_workplace`, `preferred_check_in`, `prefferred_check_out`, `total_amount_paid` ,`no_of_people`, `identification_type`, `identification_img`, `paid`, `customer_note`) VALUES (? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)';
         $slider_stmt = $connect->prepare($query);

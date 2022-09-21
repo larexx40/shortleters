@@ -107,7 +107,7 @@
                 $total_num_row = $result->num_rows;
                 $totalPage = ceil($total_num_row / $no_per_page);
 
-                $query = "SELECT `id`, `email`, `fname`, `lname`, `phoneno`, `location`, `bal`, `refcode`, `referby`, `fcm`, `adminseen`, status, `userpubkey`, `created_at`, `updated_at`, `state`, `country`, `username`, `dob`, `sex` FROM `users` WHERE email LIKE ? OR fname LIKE ? OR lname LIKE ? OR state LIKE ? OR state LIKE ? OR country LIKE ? LIMIT ?, ?";
+                $query = "SELECT `id`, `email`, `fname`, `lname`, `phoneno`, `location`, `bal`, `refcode`, `referby`, `fcm`, `adminseen`, status, `userpubkey`, `created_at`, `updated_at`, `state`, `country`, `username`, `dob`, `sex` FROM `users` WHERE email LIKE ? OR fname LIKE ? OR lname LIKE ? OR state LIKE ? OR state LIKE ? OR country LIKE ? ORDER BY id DESC LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ssssssss", $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
@@ -118,7 +118,7 @@
         }else{
             if ($sort > 0){
                 // Get total number of complains in the system
-                $query = "SELECT * FROM `users` WHERE `status` = ?";
+                $query = "SELECT * FROM `users` WHERE `status` = ? ORDER BY id DESC";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $status);
                 $gtTotalPgs->execute();
@@ -126,7 +126,7 @@
                 $total_num_row = $result->num_rows;
                 $totalPage = ceil($total_num_row / $no_per_page);
 
-                $query = "SELECT * FROM `users` WHERE `status` = ? LIMIT ?, ?";
+                $query = "SELECT * FROM `users` WHERE `status` = ? ORDER BY id DESC LIMIT ?, ?";
                 $gtTotalcomplains = $connect->prepare($query);
                 $gtTotalcomplains->bind_param("sss", $status ,$offset, $no_per_page);
                 $gtTotalcomplains->execute();
@@ -134,14 +134,14 @@
                 $num_row = $result->num_rows;
             }else{
                  // Get total number of complains in the system
-                    $query = "SELECT * FROM `users`";
+                    $query = "SELECT * FROM `users` ORDER BY id DESC";
                     $gtTotalPgs = $connect->prepare($query);
                     $gtTotalPgs->execute();
                     $result = $gtTotalPgs->get_result();
                     $total_num_row = $result->num_rows;
                     $totalPage = ceil($total_num_row / $no_per_page);
 
-                    $query = "SELECT * FROM `users` LIMIT ?, ?";
+                    $query = "SELECT * FROM `users` ORDER BY id DESC LIMIT ?, ?";
                     $gtTotalcomplains = $connect->prepare($query);
                     $gtTotalcomplains->bind_param("ss", $offset, $no_per_page);
                     $gtTotalcomplains->execute();

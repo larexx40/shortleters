@@ -54,9 +54,9 @@
             respondBadRequest($data);
         }
         
-        $sqlQuery = "SELECT * FROM `user_transactions`";
+        $sqlQuery = "SELECT * FROM `user_transactions` WHERE userid = ?";
         $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$transactionid);
+        $stmt->bind_param("s", $userid);
         $stmt->execute();  
         $result = $stmt->get_result();
         $numRow = $result->num_rows;
@@ -73,66 +73,70 @@
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondInternalError($data);
         }
+        
         if($numRow > 0){
             //pass fetched data as array maindata[]
-            $id = $row['id'];
-            $userid = $row['userid'];
-            $username = getUserFullname($connect, $userid);
-            $transactionid = $row['transactionid'];
-            $transaction_type = $row['transaction_type'];
-            if ( $transaction_type == 1){
-                $type = "Fund  Wallet";
-            }
-            if ( $transaction_type == 2){
-                $type = "Agent Payment";
-            }
-            if ( $transaction_type == 3){
-                $type = "Payment for Apartment";
-            }
+            $allTransactions = [];
+            while($row = $result->fetch_assoc()){
+                $id = $row['id'];
+                $userid = $row['userid'];
+                $username = getUserFullname($connect, $userid);
+                $transactionid = $row['transactionid'];
+                $transaction_type = $row['transaction_type'];
+                if ( $transaction_type == 1){
+                    $type = "Fund  Wallet";
+                }
+                if ( $transaction_type == 2){
+                    $type = "Agent Payment";
+                }
+                if ( $transaction_type == 3){
+                    $type = "Payment for Apartment";
+                }
 
-            $booking_id = $row['booking_id'];
-            $ordertime = $row['ordertime'];
-            $approvedby = $row['approvedby'];
-            $getAdminName = ($approvedby) ? getNameFromField($connect, "admin", "id", $approvedby) : null;
-            $approvaltype = $row['approvaltype'];
-            if ($approvaltype == 1){
-                $approvaltypeName = "Manual";
-            }
-            if ($approvaltype == 2){
-                $approvaltypeName = "Automatic";
-            }
-            $amttopay = $row['amttopay'];
-            $statusCode = $row['status'];
+                $booking_id = $row['booking_id'];
+                $ordertime = $row['ordertime'];
+                $approvedby = $row['approvedby'];
+                $getAdminName = ($approvedby) ? getNameFromField($connect, "admin", "id", $approvedby) : null;
+                $approvaltype = $row['approvaltype'];
+                if ($approvaltype == 1){
+                    $approvaltypeName = "Manual";
+                }
+                if ($approvaltype == 2){
+                    $approvaltypeName = "Automatic";
+                }
+                $amttopay = $row['amttopay'];
+                $statusCode = $row['status'];
 
-            if($statusCode == 1){
-                $status = "Paid";
-            }else{
-                $status = "Not Paid";
+                if($statusCode == 1){
+                    $status = "Paid";
+                }else{
+                    $status = "Not Paid";
+                }
+
+                array_push($allTransactions, array(
+                    "id"=>$id,
+                    "userid"=>$userid,
+                    'userfullname' => ($username) ? $username : null,
+                    "transactionid"=>$transactionid,
+                    "transaction_type"=>$transaction_type,
+                    "booking_id"=>$booking_id,
+                    "ordertime"=>$ordertime,
+                    "approvedby"=>$approvedby,
+                    'admin_name' => ($getAdminName)? $getAdminName : null,
+                    "approvaltype"=>$approvaltype,
+                    'approval_type_name' => $approvaltypeName,
+                    "status"=>$status,
+                    "amttopay"=>$amttopay,
+                ));
             }
-            $maindata=[
-                "id"=>$id,
-                "userid"=>$userid,
-                'userfullname' => ($username) ? $username : null,
-                "transactionid"=>$transactionid,
-                "transaction_type"=>$transaction_type,
-                "booking_id"=>$booking_id,
-                "ordertime"=>$ordertime,
-                "approvedby"=>$approvedby,
-                'admin_name' => ($getAdminName)? $getAdminName : null,
-                "approvaltype"=>$approvaltype,
-                'approval_type_name' => $approvaltypeName,
-                "status"=>$status,
-                "amttopay"=>$amttopay,
+            
+            $data = [
+                "transactions" => $allTransactions
             ];
-            $errordesc = " ";
-            $linktosolve = "htps://";
-            $hint = [];
-            $errordata = [];
-            $text = "Data found";
-            $method = getenv('REQUEST_METHOD');
+            $text= "Fetch Successful";
             $status = true;
-            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-            respondOK($data);
+            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+            respondOK($successData);
 
         }else{
             // incorrect building id
@@ -143,7 +147,7 @@
             $text="data with id not found";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
+            respondOK($data);
         }
         
         

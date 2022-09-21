@@ -226,6 +226,9 @@ let admin = Vue.createApp({
             apartment: null,
             apartments_and_images: null,
             apartment_transactions: null,
+            agent_apartments: null,
+            agent_bookings: null,
+            agent_transactions: null,
             // currency
             all_currencies: null,
             currency: null,
@@ -347,7 +350,7 @@ let admin = Vue.createApp({
         if (webPage === "index.php"){
             await this.getAllBookings();
             await this.getAllApartments(3,3);
-            await this.getAllUsers();
+            await this.getLatestUsers();
         }
         if(webPage == 'bookings.php'){
             await this.getAllBookings();
@@ -11507,6 +11510,66 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
+        async getLatestUsers(load = 1){    
+            const headers = {
+                "Authorization": `Bearer ${this.authToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseUrl}api/accounts/getAllUsers.php?&per_page=5`;
+
+            this.kor_total_page = null
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    if (response.data.data.page){
+                        this.users = response.data.data.users;
+                        this.kor_page = response.data.data.page;
+                        this.kor_total_page= response.data.data.totalPage;
+                        this.kor_per_page = response.data.data.per_page;
+                        this.kor_total_data = response.data.data.total_data;
+                    }
+                }else{
+                    this.users = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+        },
         async getUser(index){
             this.user = this.users[index]
         },
@@ -11535,6 +11598,183 @@ let admin = Vue.createApp({
                     //console.log(this.user_details);
                 }else{
                     this.user_details = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+
+
+        },
+        async getAgentApartments(load = 1){
+            let agent_id = (window.localStorage.getItem("user_id"))? window.localStorage.getItem("user_id") : "";
+
+            const headers = {
+                "Authorization": `Bearer ${this.authToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseUrl}api/apartments/getApartmentByAgentId.php?agent_id=${agent_id}`;
+
+            this.kor_total_page = null
+            try {
+                if (load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    this.agent_apartments = response.data.data.apartment;
+                    //console.log(this.user_details);
+                }else{
+                    this.agent_apartment = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+
+
+        },
+        async getAgentBookings(load = 1){
+            let agent_id = (window.localStorage.getItem("user_id"))? window.localStorage.getItem("user_id") : "";
+
+            const headers = {
+                "Authorization": `Bearer ${this.authToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseUrl}api/bookings/getBookingByAgentId.php?user_id=${agent_id}`;
+
+            this.kor_total_page = null
+            try {
+                if (load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    this.agent_bookings = response.data.data.bookings;
+                    console.log(this.agent_bookings);
+                }else{
+                    this.agent_bookings = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+
+
+        },
+        async getAgentTransactions(load = 1){
+            let agent_id = (window.localStorage.getItem("user_id"))? window.localStorage.getItem("user_id") : "";
+
+            const headers = {
+                "Authorization": `Bearer ${this.authToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseUrl}api/transactions/getAgentTransactions.php?userid=${agent_id}`;
+
+            this.kor_total_page = null
+            try {
+                if (load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    this.agent_transactions = response.data.data.transactions;
+                    console.log(this.agent_transactions);
+                }else{
+                    this.agent_transactions = null
                 }          
             } catch (error) {
                 if (error.response){

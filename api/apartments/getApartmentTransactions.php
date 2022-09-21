@@ -115,7 +115,7 @@
                 
                 $transactionid = $row['transactionid'];
                 $booking_id = $row['booking_id'];
-                $ordertime = $row['ordertime'];
+                $ordertime = gettheTimeAndDate(strtotime($row['ordertime']));
                 $amttopay = $row['amttopay'];
                 $statusCode = $row['status'];
 

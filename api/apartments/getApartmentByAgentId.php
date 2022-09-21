@@ -72,7 +72,7 @@
 
 
         if ($num_row > 0){
-
+            $apartment = [];
 
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
@@ -182,7 +182,7 @@
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
-                $apartment = array(
+                array_push($apartment, array(
                     'id' => $row['apartment_id'],
                     'name' => $name,
                     'status_code' => $status_code,
@@ -235,7 +235,7 @@
                     'check_in_day' => $check_in_day,
                     'created' => $created,
                     'updated' => $updated,
-                );
+                ));
             }
             $data = array(
                 'apartment' => $apartment,

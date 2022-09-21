@@ -163,8 +163,8 @@
                                             </div> -->
                                             <!-- .col -->
                                             <div class="col-xxl-4">
-                                                <div class="card card-bordered card-full">
-                                                    <div class="card-inner d-flex flex-column h-100">
+                                                <div v-if="users" class="card card-bordered card-full">
+                                                    <!-- <div class="card-inner d-flex flex-column h-100">
                                                         <div class="card-title-group mb-3">
                                                             <div class="card-title me-1">
                                                                 <h6 class="title">Top Selected Package</h6>
@@ -239,11 +239,47 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div> -->
+                                                    <div class="card-inner-group">
+                                                        <div class="card-inner">
+                                                            <div class="card-title-group">
+                                                                <div class="card-title">
+                                                                    <h6 class="title">New Customer</h6>
+                                                                </div>
+                                                                <div class="card-tools">
+                                                                    <a href="./customers.php" class="link">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div v-for="(item, index) in users" class="card-inner card-inner-md">
+                                                            <div class="user-card">
+                                                                <div class="user-avatar bg-primary-dim">
+                                                                    <span>{{item.firstname.charAt(0)}}{{item.lastname.charAt(0)}}</span>
+                                                                </div>
+                                                                <div class="user-info">
+                                                                    <span class="lead-text">{{item.firstname}} {{item.lastname}}</span>
+                                                                    <span class="sub-text">{{item.email}}</span>
+                                                                </div>
+                                                                <div class="user-action">
+                                                                    <div class="drodown">
+                                                                        <a href="#" class="dropdown-toggle btn btn-icon btn-trigger me-n1" data-bs-toggle="dropdown" aria-expanded="false"><em class="icon ni ni-more-h"></em></a>
+                                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                                            <ul class="link-list-opt no-bdr">
+                                                                                <li><a href="#"><em class="icon ni ni-setting"></em><span>Action Settings</span></a></li>
+                                                                                <li><a href="#"><em class="icon ni ni-notify"></em><span>Push Notification</span></a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                             <!-- .col -->
-                                            <div class="col-md-6 col-xxl-5">
+                                            <!-- <div class="col-md-6 col-xxl-5">
                                                 <div class="card card-bordered h-100">
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start pb-3 g-2">
@@ -282,9 +318,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-md-6 col-xxl-3">
+                                                </div>
+                                            </div> -->
+                                            <!-- .col -->
+                                            <!-- <div class="col-md-6 col-xxl-3">
                                                 <div class="card card-bordered h-100">
                                                     <div class="card-inner">
                                                         <div class="card-title-group">
@@ -325,11 +362,12 @@
                                                                     <div class="title"><span class="dot dot-lg sq" data-bg="#ffa353"></span><span>Suit</span></div>
                                                                     <div class="amount">138 <small>4.49%</small></div>
                                                                 </div>
-                                                            </div><!-- .traffic-channel-group -->
-                                                        </div><!-- .traffic-channel -->
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
+                                                </div>
+                                            </div> -->
+                                            <!-- .col -->
                                             <div class="col-xxl-5">
                                                 <div class="card card-bordered h-100">
                                                     <div class="card-inner">
@@ -371,7 +409,7 @@
                                                     </div>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
-                                            <div class="col-md-6 col-xxl-3">
+                                            <!-- <div class="col-md-6 col-xxl-3">
                                                 <div class="card card-bordered card-full">
                                                     <div class="card-inner-group">
                                                         <div class="card-inner">
@@ -380,7 +418,7 @@
                                                                     <h6 class="title">New Customer</h6>
                                                                 </div>
                                                                 <div class="card-tools">
-                                                                    <a href="html/hotel/customers.html" class="link">View All</a>
+                                                                    <a href="./customers.php" class="link">View All</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -495,9 +533,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-md-6 col-xxl-4">
+                                                </div>
+                                                
+                                            </div> -->
+                                            <!-- .col -->
+                                            <!-- <div class="col-md-6 col-xxl-4">
                                                 <div class="card card-bordered card-full">
                                                     <div class="card-inner border-bottom">
                                                         <div class="card-title-group">
@@ -549,8 +589,9 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
+                                                </div>
+                                            </div> -->
+                                            <!-- .col -->
                                         </div><!-- .row -->
                                     </div><!-- .nk-block -->
                                 </div>
