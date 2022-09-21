@@ -94,50 +94,25 @@
                                                                                         </a>
                                                                                         <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
                                                                                             <div class="dropdown-head">
-                                                                                                <span class="sub-title dropdown-title">Filter Bookings</span>
+                                                                                                <span class="sub-title dropdown-title">Filter Report</span>
                                                                                                 <div class="dropdown">
                                                                                                     <a href="#" class="btn btn-sm btn-icon">
                                                                                                         <em class="icon ni ni-more-h"></em>
                                                                                                     </a>
                                                                                                 </div>
                                                                                             </div>
+
                                                                                             <div class="dropdown-body dropdown-body-rg">
-                                                                                                <div class="row gx-6 gy-3">
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="custom-control custom-control-sm custom-checkbox">
-                                                                                                            <input type="checkbox" class="custom-control-input" id="hasEmail">
-                                                                                                            <label class="custom-control-label" for="hasEmail"> Email Verified</label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">Any Status</option>
-                                                                                                                <option value="paid">Paid</option>
-                                                                                                                <option value="due">Due</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Room Type</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">Any Type</option>
-                                                                                                                <option value="single">Single</option>
-                                                                                                                <option value="double">Double</option>
-                                                                                                                <option value="delux">Delux</option>
-                                                                                                                <option value="sdelux">Super Delux</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="form-group">
-                                                                                                            <button type="button" class="btn btn-secondary">Filter</button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
+                                                                                                <ul class="link-check">
+                                                                                                    <li v-if="sort == null" class="" :class="{active: class_active}" @click.prevent ="noSort(0)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="sort != null" class=""  @click.prevent="noSort(0)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="sort == 1" :class="{active: class_active}"  @click.prevent="sortByStatus(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="sort != 1" class=""  @click.prevent="sortByStatus(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="sort == 0" :class="{active: class_active}" @click.prevent="sortByStatus(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="sort != 0" class=""  @click.prevent="sortByStatus(0)"><a href="#">Inactive</a></li>
+                                                                                                </ul>
                                                                                             </div>
+
                                                                                             <div class="dropdown-foot between">
                                                                                                 <a class="clickable" href="#">Reset Filter</a>
                                                                                                 <a href="#">Save Filter</a>
@@ -198,9 +173,9 @@
                                                             <div class="nk-tb-col"><span class="sub-text">Customer</span></div>
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">Apartment</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Verification Type</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Room Type</span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check in </span></div>
-                                                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Check out</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Room Type</span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Check in </span></div>
+                                                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Check out</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
                                                         </div><!-- .nk-tb-item -->
@@ -240,7 +215,7 @@
                                                             <div class="nk-tb-col tb-col-mb">
                                                                 <span>{{item.preferred_check_in}}</span>
                                                             </div>
-                                                            <div class="nk-tb-col tb-col-lg">
+                                                            <div class="nk-tb-col tb-col-md">
                                                                 <span>{{item.prefferred_check_out}}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">

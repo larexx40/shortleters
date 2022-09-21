@@ -42,11 +42,11 @@
                                                 <li class="nav-item">
                                                     <a @click="getOrderAndTransaction" class="nav-link" data-bs-toggle="tab" href="#profile-overview"><span>Overview</span></a>
                                                 </li>
-                                                <li class="nav-item">
+                                                <li v-if="user_details.agent > 0" class="nav-item">
                                                     <a @click="getUserOrders(3)" class="nav-link" data-bs-toggle="tab" href="#profile-orders"><span>Orders</span></a>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <a @click="getUserNotifications(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Notifications</span> </a>
+                                                <li v-if="user_details.agent > 0" class="nav-item">
+                                                    <a @click="getUserNotifications(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Apartments</span></a>
                                                 </li>
 
                                                 <li class="nav-item">
@@ -54,16 +54,16 @@
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @click="getAllUserAddress(3)" class="nav-link" data-bs-toggle="tab" href="#profile-address"><span>Address</span> </a>
+                                                    <a @click="getBookingByUserid(3)" class="nav-link" data-bs-toggle="tab" href="#profile-address"><span>Bookings</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
                                                     <a @click="getUserTransactions(3)" class="nav-link" data-bs-toggle="tab" href="#profile-transactions"><span>Transactions</span> </a>
                                                 </li>
 
-                                                <li class="nav-item">
+                                                <!-- <li class="nav-item">
                                                     <a @click="getUserComplains(3)" class="nav-link" data-bs-toggle="tab" href="#profile-complains"><span>Complains</span> </a>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                             <div class="card-inner">
                                                 <div class="tab-content">
@@ -415,13 +415,13 @@
                                                     <!--tab pane-->
 
                                                     <div class="tab-pane" id="profile-address">
-                                                        <div v-if="user_addresses" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="user_booking" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Address</span>
+                                                                    <span class="lead-text">Booking Address</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">Phone No:</span>
@@ -430,7 +430,7 @@
                                                                     <span class="lead-text">Preview</span>
                                                                 </div>
                                                             </div>
-                                                            <div v-for="(item, index) in user_addresses" class="nk-tb-item">
+                                                            <div v-for="(item, index) in user_booking" class="nk-tb-item">
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1}}  </div>
                                                                 <div class="nk-tb-col"> {{item.address}} </div>
                                                                 <div class="nk-tb-col">
@@ -442,15 +442,15 @@
                                                                             <a href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
                                                                         </li>
                                                                     </ul>
-                                                                </div>
+                                                                </div>                                                                                                                                           
                                                             </div>
                                                         </div>
-                                                        <div v-if="!user_addresses" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="!user_booking" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                                 No Records Found
                                                         </div>
                                                         <br><br>
                                                         <nav>
-                                                            <ul v-if="user_addresses" class="pagination justify-content-end">
+                                                            <ul v-if="user_booking" class="pagination justify-content-end">
                                                                 <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_address')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_address', page)" class="page-link" href="#">{{page}}</a></li>

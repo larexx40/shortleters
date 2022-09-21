@@ -28,16 +28,30 @@
         }else{
             // echo json_encode($_FILES['image']);
             $file = $_FILES['image'];
-            $path = "products";
+            $path = "test";
 
             $response = uploadImage($file, $path, $endpoint, $method);
 
+
             if ( $response ){
-                $text= "Image Uploaded";
-                $status = true;
-                $data = [];
-                $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
-                respondOK($successData);
+                $split = explode(".", $response);
+                $length = count($split);
+                $type = $split[$length - 1];
+                $imagePath = "../../assets/images/" ."$path/". $response;
+
+                $watermark_image = "../../assets/images/watermarks/2dd467ded4e0e048c34d83065fdaabac.png";
+                $watermarkedImage = waterMarkImage($imagePath, $type, $watermark_image, $endpoint, $method);
+
+                if ($watermarkedImage){
+                    $text= "Image Uploaded";
+                    $status = true;
+                    $data = [$imagePath];
+                    $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+                    respondOK($successData);
+                }
+                
+
+                
             }
         }
 

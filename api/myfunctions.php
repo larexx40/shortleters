@@ -945,6 +945,55 @@
         }
     }
 
+    function waterMarkImage($image, $image_type, $waterImagePath,$endpoint, $method){
+        $waterImage = imagecreatefrompng($waterImagePath);
+        switch($image_type){
+            case 'jpg':
+                $img = imagecreatefromjpeg($image);
+                break;
+            case 'jpeg':
+                $img = imagecreatefromjpeg($image);
+                break;
+            case 'png':
+                $img = imagecreatefrompng($image);
+                break;
+            case 'webp':
+                $img = imagecreatefromwebp($image);
+                break;
+            default:
+                $img = imagecreatefromjpeg($image);
+            
+        }
+
+        $marin_right = 20;
+        $margin_bottom = 80;
+
+        $sx = imagesx($waterImage);
+        $sy = imagesy($waterImage);
+
+        imagecopy($img, $waterImage, imagesx($img) - $sx - $marin_right, imagesy($img) - $sy - $margin_bottom, 0, 0, imagesx($waterImage ), imagesy($waterImage
+        ) );
+
+
+        imagepng($img, $image);
+        imagedestroy($img);
+
+        if ( file_exists($image) ){
+            return true;
+        }else{
+            $errordesc= "Image upload failed, please try again.";
+            $linktosolve="htps://";
+            $hint=["Ensure to use the method stated in the documentation."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text= "Image upload failed, please try again.";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+        }
+
+
+    }
+
     function countActiveLocations($connect, $id){
         // check field
         //SELECT * FROM `logistic_locations` WHERE `logistic_id` = 1 AND `status` = 1
@@ -1226,5 +1275,23 @@
             $i++; 
         } 
         return $temp_array; 
+    }
+
+    function getTransaction($connect, $field, $data){
+        // check field
+        $active = 1;
+        $query = "SELECT * FROM user_transactions WHERE $field = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+           $row = $result->fetch_assoc();
+           return $row;
+        }
+
+        return false;
     }
 ?>

@@ -85,9 +85,9 @@
                                                             </div>
                                                             <div class="nk-tb-col"><span class="sub-text">User Fullname</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Username</span></div>
+                                                            <div class="nk-tb-col tb-col-mb"><span class="sub-text"></span>Agent</div>
                                                             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Phone</span></div>
                                                             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Country</span></div>
-                                                            <!-- <div class="nk-tb-col tb-col-mb"><span class="sub-text"></span>Active courses</div> -->
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1 my-n1">
@@ -132,6 +132,10 @@
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span>{{item.username}}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                <span v-if="item.agent < 1" class="text-danger">Not an Agent</span>
+                                                                <span v-if="item.agent == 1" class="text-success">Is an Agent</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-lg">
                                                                 <span>{{item.phoneno}}</span>

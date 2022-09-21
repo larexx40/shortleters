@@ -55,18 +55,18 @@
                                 <li class="nk-menu-item has-sub">
                                      <a href="#"class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
-                                        <span class="nk-menu-text">Reports</span>
+                                        <span class="nk-menu-text">Transactions</span>
                                     </a>
                                     <ul class="nk-menu-sub">
                                         <li class="nk-menu-item">
-                                            <a href="./report-stocks.php" class="nk-menu-link"><span class="nk-menu-text">Stocks</span></a>
+                                            <a href="./transactions.php" class="nk-menu-link"><span class="nk-menu-text">All Transactions </span></a>
                                         </li>
-                                        <li class="nk-menu-item">
+                                        <!-- <li class="nk-menu-item">
                                             <a href="./report-expenses.php" class="nk-menu-link"><span class="nk-menu-text">Expenses</span></a>
                                         </li>
                                         <li class="nk-menu-item">
                                             <a href="./report-booking.php" class="nk-menu-link"><span class="nk-menu-text">Booking</span></a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </li><!-- .nk-menu-item -->
                                 

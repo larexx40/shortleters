@@ -101,12 +101,12 @@
 
                                                                                             <div class="dropdown-body dropdown-body-rg">
                                                                                                 <ul class="link-check">
-                                                                                                    <li v-if="sort == null" class="" :class="{active: class_active}" @click.prevent ="noSort(0)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="sort != null" class=""  @click.prevent="noSort(0)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="sort == 1" :class="{active: class_active}"  @click.prevent="sortByStatus(1)" class=""><a href="#">Active</a></li>
-                                                                                                    <li v-if="sort != 1" class=""  @click.prevent="sortByStatus(1)"><a href="#">Active</a></li>
-                                                                                                    <li v-if="sort == 0" :class="{active: class_active}" @click.prevent="sortByStatus(0)" class=""><a href="#">Inactive</a></li>
-                                                                                                    <li v-if="sort != 0" class=""  @click.prevent="sortByStatus(0)"><a href="#">Inactive</a></li>
+                                                                                                <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
                                                                                                 </ul>
                                                                                             </div>
 
@@ -152,13 +152,13 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input @keyup="getAllHosttype(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
+                                                                <input @keyup="getAllCurrency(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
                                                 </div><!-- .card-inner -->
-                                                <div v-if="all_host_type" class="card-inner p-0">
+                                                <div v-if="all_currencies" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
@@ -168,7 +168,8 @@
                                                                 </div>
                                                             </div> -->
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Host Type</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Currency Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Currency Symbol</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <!-- <div class="dropdown">
@@ -198,7 +199,7 @@
                                                                 </div> -->
                                                             </div>
                                                         </div><!-- .nk-tb-item -->
-                                                        <div v-for="(item, index) in all_host_type" class="nk-tb-item">
+                                                        <div v-for="(item, index) in all_currencies" class="nk-tb-item">
                                                             <!-- <div class="nk-tb-col nk-tb-col-check">
                                                                 <div class="custom-control custom-control-sm custom-checkbox notext">
                                                                     <input type="checkbox" class="custom-control-input" id="uid1">
@@ -211,6 +212,9 @@
                                                             <div class="nk-tb-col">
                                                                 <span>{{item.name}} <span class="dot dot-success d-md-none ms-1"></span></span>
                                                             </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>{{item.symbol}} <span class="dot dot-success d-md-none ms-1"></span></span>
+                                                            </div>
                                                             <div class="nk-tb-col tb-col-md">
                                                                 <span v-if="item.status_code > 0" class="tb-status text-success">{{item.status}}</span>
                                                                 <span v-if="item.status_code < 1" class="tb-status text-danger">{{item.status}}</span>
@@ -222,8 +226,8 @@
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
-                                                                                    <li @click="changeHostTypeStatus(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Deactivate</span></a></li>
-                                                                                    <li @click="changeHostTypeStatus(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Activate</span></a></li>
+                                                                                    <li @click="changeCurrencyStatus(item.id, 0)" v-if="item.status_code > 0" class="tb-status text-danger"><a ><em class="icon ni ni-edit"></em><span>Deactivate</span></a></li>
+                                                                                    <li @click="changeCurrencyStatus(item.id, 1)" v-if="item.status_code < 1" class="tb-status text-success"><a ><em class="icon ni ni-edit"></em><span>Activate</span></a></li>
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
                                                                                     <li @click="getItemIndex(index)"><a data-bs-toggle="modal" href="#modalDelete"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                                 </ul>
@@ -237,11 +241,12 @@
                                                 </div><!-- .card-inner -->
 
                                                 <!-- Table when record not found -->
-                                                <div v-if="!all_host_type" class="card-inner p-0">
+                                                <div v-if="!all_currencies" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
                                                             <div class="nk-tb-col tb-col-mb"><span class="sub-text">ID</span></div>
-                                                            <div class="nk-tb-col"><span class="sub-text">Host Type</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Currency Name</span></div>
+                                                            <div class="nk-tb-col"><span class="sub-text">Currency Symbol</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></div>
                                                         </div><!-- .nk-tb-item -->
                                                         <div  class="nk-tb-item">
@@ -258,7 +263,7 @@
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
                                                 
-                                                <div v-if="all_host_type" class="card">
+                                                <div v-if="all_currencies" class="card">
                                                     <div class="card-inner">
                                                         <div class="nk-block-between-md g-3">
                                                             <div class="g">
@@ -445,19 +450,25 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Host Type Details</h5>
-                        <form @submit.prevent="addHostType" class="mt-2">
+                        <h5 class="modal-title">Add Currency Details</h5>
+                        <form @submit.prevent="addCurrency" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-add">Host Type Name</label>
-                                        <input v-model="host_type_name" type="text" class="form-control" id="product-name-add" placeholder="Host Type Name">
+                                        <label class="form-label" for="product-name-add">Currency Name</label>
+                                        <input v-model="currency_name" type="text" class="form-control" id="product-name-add" placeholder="Currency Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-symbol-add">Currency Symbol</label>
+                                        <input v-model="currency_symbol" type="text" class="form-control" id="product-symbol-add" placeholder="Currency Symbol">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Host Type</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Currency</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -475,20 +486,26 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="hosts" class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Host Type Details</h5>
-                        <form @submit.prevent="updateHostType" class="mt-2">
+                    <div v-if="currency" class="modal-body modal-body-md">
+                        <h5 class="modal-title">Edit Currency Details</h5>
+                        <form @submit.prevent="updateCurrency" class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Host Type Name</label>
-                                        <input type="text" v-model="hosts.name" class="form-control" id="product-name-edit" placeholder="Host Type Name">
+                                        <label class="form-label" for="product-name-edit">Currency Name</label>
+                                        <input type="text" v-model="currency.name" class="form-control" id="product-name-edit" placeholder="Currency Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-symbol-add">Currency Symbol</label>
+                                        <input v-model="currency.symbol" type="text" class="form-control" id="product-symbol-add" placeholder="Currency Symbol">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Host Type</button>
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Currency</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -504,15 +521,15 @@
         <div class="modal fade" id="modalDelete" style="display: none;" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content"> <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div v-if="hosts" class="modal-body modal-body-lg text-center">
+                    <div v-if="currency" class="modal-body modal-body-lg text-center">
                         <div class="nk-modal py-4"> <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross bg-danger"></em>
                             <h4 class="nk-modal-title">Are You Sure ?</h4>
                             <div class="nk-modal-text mt-n2">
-                                <p class="text-soft">This Host Type will be removed permanently.</p>
+                                <p class="text-soft">This Currency will be removed permanently.</p>
                             </div>
                             <ul class="d-flex justify-content-center gx-4 mt-4">
                                 <li>
-                                    <button @click="deleteHostType(hosts.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
+                                    <button @click="deleteCurrency(currency.id)" data-bs-dismiss="modal" id="deleteEvent" class="btn btn-success">Yes, Delete it</button>
                                 </li>
                                 <li>
                                     <button data-bs-dismiss="modal" class="btn btn-danger btn-dim">Cancel</button>

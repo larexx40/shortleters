@@ -56,7 +56,7 @@
 
         //check status passed
         if ( !isset($_POST['status']) ){
-            $errordesc="House rule status required";
+            $errordesc="Transaction status required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
@@ -70,10 +70,10 @@
 
         if ($status == 0 || $status == "inactive"){
             $changeStatus = 0;
-            $message = "Deactivated";
+            $message = "Not Paid";
         }elseif ($status == 1 || $status == 'active'){
             $changeStatus = 1;
-            $message = "Activated";
+            $message = "Paid";
         }else{
             $changeStatus = "";
         }
@@ -99,9 +99,9 @@
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `user_transactions` SET `status`= ?, approvedby = ? WHERE transactionid = ?";
+        $sql = "UPDATE `user_transactions` SET `status` = ? , approvedby = ? WHERE transactionid = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('sss',$adminid, $changeStatus, $transactionid);
+        $stmt->bind_param('sss', $changeStatus, $adminid, $transactionid);
         $stmt->execute();
 
         if ( $stmt->affected_rows > 0 ){
@@ -117,9 +117,9 @@
         
         }else{
             //Building type not found
-            $errordesc = "Transaction with id not found";
+            $errordesc = "Transactions with id not found";
             $linktosolve = 'https://';
-            $hint = "Kindly pass valid Transaction id";
+            $hint = "Kindly pass valid transactions id";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data); 

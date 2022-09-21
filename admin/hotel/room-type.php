@@ -535,7 +535,8 @@
                     </div><!-- .modal-body -->
                 </div><!-- .modal-content -->
             </div><!-- .modal-dialog -->
-        </div><!-- .modal -->
+        </div>
+        <!-- .modal -->
         <div class="modal fade" id="modalDelete" style="display: none;" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content"> <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
