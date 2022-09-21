@@ -87,7 +87,7 @@
             $searching = "%{$search}%";
             if($sort > 0){  
                 // Get total number of complains in the system
-                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
+                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price, apartments.status,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
                         LEFT JOIN building_types ON building_types.build_id = apartments.building_type_id LEFT JOIN users ON users.id = apartments.agent_id
                         WHERE (apartments.name like ? OR apartments.title LIKE ? OR building_types.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ? ) AND `feature` = ? AND availability = ?";
                 $gtTotalPgs = $connect->prepare($query);
@@ -106,7 +106,7 @@
 
             }else{ 
                 // Get total number of complains in the system
-                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
+                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price, apartments.status,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
                         LEFT JOIN building_types ON building_types.build_id = apartments.building_type_id LEFT JOIN users ON users.id = apartments.agent_id  WHERE `feature` = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("s", $feature);
@@ -126,7 +126,7 @@
         }else{//no seearch
             if($sort > 0){  
                 // Get total number of complains in the system
-                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
+                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price, apartments.status, apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
                         LEFT JOIN building_types ON building_types.build_id = apartments.building_type_id LEFT JOIN users ON users.id = apartments.agent_id  WHERE `feature` = ? AND availability = ?";
                 $gtTotalPgs = $connect->prepare($query);
                 $gtTotalPgs->bind_param("ss", $feature, $availability);
@@ -172,7 +172,7 @@
                 $title = $row['title'];
                 $price = $row["price"];
                 $availabilityCode = $row['availability'];
-                $availability = ($row["availability"] > 0)? "Booked" : "Available";
+                $availability = ($row["availability"] > 0)? "Available" : "Booked";
                 $building_type_id = $row["building_type_id"];
                 $building_type_name = $row['building_name'];
                 if ( $row['apartment_status'] == 1 ){
@@ -208,6 +208,10 @@
                 ));
             }
             $data =[
+                'page' => $page_no,
+                'per_page' => $no_per_page,
+                'total_data' => $total_num_row,
+                'totalPage' => $total_pg_found,
                 'features' => $allResponse,
             ];
             $text= "Fetch Successful";

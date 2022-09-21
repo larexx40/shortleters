@@ -69,7 +69,7 @@
         $offset = ($page_no - 1) * $noPerPage;
 
 
-        if($status > 0){
+        if($sort > 0){
             
             //sort with default address
             if (!empty($search) && $search!="" && $search!=' '){

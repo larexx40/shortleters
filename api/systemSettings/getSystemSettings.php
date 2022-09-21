@@ -89,6 +89,7 @@
                 $paymentApi = "None";
             }
             $minApartmentPhotos = $row['min_apart_photo'];
+            $maxApartmentHighlights = $row['max_apart_highlights'];
             $chargePercentage = $row['charge_perc'];
             $discountPercentage = $row['discount_perc'];
             $discount_guest = $row['discount_guest']; 
@@ -106,6 +107,7 @@
                 "emailApi"=>$emailApi,
                 "activePaymentCode"=>$activePaymentCode,
                 "paymentApi"=>$paymentApi,
+                "maxApartmentHighlights"=>$maxApartmentHighlights,
                 "minApartmentPhotos"=>$minApartmentPhotos,
                 "chargePercentage"=>$chargePercentage,
                 "discountPercentage"=>$discountPercentage,

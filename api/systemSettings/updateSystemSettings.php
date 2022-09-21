@@ -196,10 +196,10 @@
         }
 
         
-        $query = 'UPDATE `systemsettings` SET `name`=? ,`iosversion`= ?, androidversion`= ?,`webversion`= ?,`activesmssystem`= ?,
-                `activemailsystem`= ?, `min_apart_photo`= ?, `max_apart_highlights`= ?, charge_perc =?, `discount_perc`= ?,`discount_guest`= ? WHERE sys_setting_id = ?';
+        $query = 'UPDATE `systemsettings` SET `name`=? ,`iosversion`= ?, androidversion= ?,`webversion`= ?,`activesmssystem`= ?,
+                `activemailsystem`= ?, activepaymentsystem = ?, `min_apart_photo`= ?, `max_apart_highlights`= ?, charge_perc =?, `discount_perc`= ?,`discount_guest`= ? WHERE sys_setting_id = ?';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ssssssssssss", $name, $iosversion, $androidversion, $webversion, $activesmssystem, $activemailsystem, $min_apart_photo,  $max_apart_highlights, $charge_perc, $discount_perc, $discount_guest, $systemSettingsid);
+        $slider_stmt->bind_param("sssssssssssss", $name, $iosversion, $androidversion, $webversion, $activesmssystem, $activemailsystem, $activepaymentsystem, $min_apart_photo,  $max_apart_highlights, $charge_perc, $discount_perc, $discount_guest, $systemSettingsid);
 
         if ( $slider_stmt->execute() ) {
             $text= "System settings successfully updated";

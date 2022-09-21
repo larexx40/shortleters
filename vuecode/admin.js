@@ -2982,15 +2982,17 @@ let admin = Vue.createApp({
         },
        
         async updateSystemSettings(){
+            console.log(this.systemSettings);
             if(this.systemSettings.name == null||this.systemSettings.iosversion == null||this.systemSettings.androidversion == null||this.systemSettings.webversion == null||
-                this.systemSettings.activesmssystem == null||this.systemSettings.activemailsystem == null||this.systemSettings.min_apart_photo == null||this.systemSettings.max_apart_highlights == null||
-                this.systemSettings.charge_perc == null || this.systemSettings.discount_perc == null||this.systemSettings.discount_guest == null){
+                this.systemSettings.activeSmsCode == null||this.systemSettings.activeEmailCode == null|| this.systemSettings.activePaymentCode == null || 
+                this.systemSettings.minApartmentPhotos == null||this.systemSettings.maxApartmentHighlights == null||
+                this.systemSettings.chargePercentage == null || this.systemSettings.discountPercentage == null||this.systemSettings.discount_guest == null){
                 new Toasteur().error("Kindly fill all fields")
             }else{
-                if(isNaN(this.systemSettings.min_apart_photo)){
+                if(isNaN(this.systemSettings.minApartmentPhotos)){
                     new Toasteur().error("pass in valid minimun photo")  
                 }
-                if(isNaN(this.systemSettings.max_apart_highlights)){
+                if(isNaN(this.systemSettings.maxApartmentHighlights)){
                     new Toasteur().error("pass in valid maximum Highlighs")  
                 }
                 let data = new FormData();
@@ -2999,12 +3001,13 @@ let admin = Vue.createApp({
                 data.append('iosversion', this.systemSettings.iosversion );
                 data.append('androidversion', this.systemSettings.androidversion );
                 data.append('webversion', this.systemSettings.webversion );
-                data.append('activesmssystem', this.systemSettings.activesmssystem );
-                data.append('activemailsystem', this.systemSettings.activemailsystem );
-                data.append('min_apart_photo', this.systemSettings.min_apart_photo );
-                data.append('max_apart_highlights', this.systemSettings.max_apart_highlights );
-                data.append('charge_perc', this.systemSettings.charge_perc );
-                data.append('discount_perc', this.systemSettings.discount_perc );
+                data.append('activesmssystem', this.systemSettings.activeSmsCode );
+                data.append('activemailsystem', this.systemSettings.activeEmailCode );
+                data.append('activepaymentsystem', this.systemSettings.activePaymentCode );
+                data.append('min_apart_photo', this.systemSettings.minApartmentPhotos );
+                data.append('max_apart_highlights', this.systemSettings.maxApartmentHighlights );
+                data.append('charge_perc', this.systemSettings.chargePercentage );
+                data.append('discount_perc', this.systemSettings.discountPercentage );
                 data.append('discount_guest', this.systemSettings.discount_guest );
 
                 const url = `${this.baseUrl}api/systemSettings/updateSystemSettings.php`;
@@ -3024,7 +3027,7 @@ let admin = Vue.createApp({
                     const response = await axios(options); 
                     if(response.data.status){
                         new Toasteur().success(response.data.text);
-                        await this.getSystemSettings();
+                        window.location.href='system_settings.php'
                         
                     }
                 } catch (error) {
@@ -5000,9 +5003,11 @@ let admin = Vue.createApp({
                     const response = await axios(options);
                     if(response.data.status){
                         new Toasteur().success("Status Changed")
-                        this.getAllFeature();      
+                        this.getAllFeature();
+                        this.getAllUnfeatureApartment();      
                     }else{
                         this.getAllFeature();
+                        this.getAllUnfeatureApartment();
                     }     
                 } catch (error) {
                     // //console.log(error);

@@ -201,8 +201,6 @@
                                                                             <select class="form-select" v-model='systemSettings.activeEmailCode' aria-label="Default select example">
                                                                                 <option value="0">None</option>
                                                                                 <option value="1">SendGrid</option>
-                                                                                <option value="2">Twilo</option>
-                                                                                <option value="3">African Talking</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -210,7 +208,7 @@
                                                                         <label class="form-label"  for="full-name">Active Payment System
                                                                             </label>
                                                                         <div class="form-control-wrap">
-                                                                            <select class="form-select" v-model='systemSettings.activePaymentCode' @change="logResponse" aria-label="Default select example" >{{systemSettings.paymentApi}}
+                                                                            <select class="form-select" v-model='systemSettings.activePaymentCode' aria-label="Default select example" >{{systemSettings.paymentApi}}
                                                                                 <option value="">None</option>
                                                                                 <option value="1">PayStack</option>
                                                                                 <option value="2">Monify</option>
@@ -222,7 +220,7 @@
                                                                         <label class="form-label"  for="full-name">Minimum Apartment Photo
                                                                             </label>
                                                                         <div class="form-control-wrap">
-                                                                            <input v-model='systemSettings.min_apart_photo' type="text" class="form-control"
+                                                                            <input v-model='systemSettings.minApartmentPhotos' type="text" class="form-control"
                                                                                 required="" />
                                                                         </div>
                                                                     </div>
@@ -230,7 +228,7 @@
                                                                         <label class="form-label"  for="full-name">maximum Apartment Highlights
                                                                             </label>
                                                                         <div class="form-control-wrap">
-                                                                            <input v-model='systemSettings.max_apart_highlights' type="text" class="form-control"
+                                                                            <input v-model='systemSettings.maxApartmentHighlights' type="text" class="form-control"
                                                                                 required="" />
                                                                         </div>
                                                                     </div>
@@ -238,7 +236,7 @@
                                                                         <label class="form-label" for="email-address">Charge Percentage
                                                                             </label>
                                                                         <div class="form-control-wrap">
-                                                                            <input v-model='systemSettings.charge_perc' type="text" class="form-control"
+                                                                            <input v-model='systemSettings.chargePercentage' type="text" class="form-control"
                                                                                 required="" />
                                                                         </div>
                                                                     </div>                                                                    
@@ -246,7 +244,7 @@
                                                                         <label class="form-label" for="email-address">Discount Percentage
                                                                             </label>
                                                                         <div class="form-control-wrap">
-                                                                            <input v-model='systemSettings.discount_perc' type="text" class="form-control"
+                                                                            <input v-model='systemSettings.discountPercentage' type="text" class="form-control"
                                                                                 required="" />
                                                                         </div>
                                                                     </div>
