@@ -231,6 +231,7 @@ let admin = Vue.createApp({
             agent_apartments: null,
             agent_bookings: null,
             agent_transactions: null,
+            apartment_rules: null,
             // currency
             all_currencies: null,
             currency: null,
@@ -11104,6 +11105,69 @@ let admin = Vue.createApp({
                 window.location.href="./all_apartments.php"
             }
         },
+        async getApartmentHouseRules(load = 1){
+            let id = (window.localStorage.getItem("apart_id")) ? window.localStorage.getItem("apart_id") : null 
+            
+            if (id){
+                const url = `${this.baseUrl}api/houseRule/getApartmentRule.php?apartment_id=${id}`;
+                const options = {
+                    method: "GET",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url
+                }
+                try {
+                    if (load == 1){
+                        this.loading = true;
+                    } 
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.apartment_rules = response.data.data.houseRules;
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }else{
+                        this.apartment_rules = null;
+                    }  
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // window.location.href="/login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+        
+                    new Toasteur().error(error.message || "Error processing request")
+        
+                    
+                }finally {
+                    this.loading = false;
+                }
+            }else{
+                window.location.href="./all_apartments.php"
+            }
+        },
         async getAllApartmentAndImages(load = 1){
             let search = (this.search)? `&search=${this.search}`: '';
             let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
@@ -11608,6 +11672,65 @@ let admin = Vue.createApp({
             }
 
             let url = `${this.baseUrl}api/accounts/getAllUserById.php?user_id=${shop_id}`;
+
+            this.kor_total_page = null
+            try {
+                if (load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    this.user_details = response.data.data.user;
+                    //console.log(this.user_details);
+                }else{
+                    this.user_details = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+
+
+        },
+        async getUserBookings(load = 1){
+            let shop_id = (window.localStorage.getItem("user_id"))? window.localStorage.getItem("user_id") : "";
+
+            const headers = {
+                "Authorization": `Bearer ${this.authToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseUrl}api/bookings/getBookingsbyUserId.php?user_id=${shop_id}`;
 
             this.kor_total_page = null
             try {

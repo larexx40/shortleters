@@ -63,7 +63,7 @@
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @click="getApartmentAdditionalChargesById(3)" class="nav-link" data-bs-toggle="tab" href="#house_rules"><span>House Rules</span> </a>
+                                                    <a @click="getApartmentHouseRules(3)" class="nav-link" data-bs-toggle="tab" href="#house_rules"><span>House Rules</span> </a>
                                                 </li>
                                             </ul>
                                             <div class="card-inner">
@@ -599,26 +599,26 @@
                                                     </div>
 
                                                     <div class="tab-pane" id="house_rules">
-                                                        <div v-if="apartment_charges" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="apartment_rules" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Apartment Additional Charge</span>
+                                                                    <span class="lead-text">House Rule</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Additional Charge Rate/Price</span>
+                                                                    <span class="lead-text">House Rule Url</span>
                                                                 </div>
                                                                 <!-- <div class="nk-tb-col nk-tb-col-tools">
                                                                     <span class="lead-text">Preview</span>
                                                                 </div> -->
                                                             </div>
-                                                            <div v-for="(item, index) in apartment_charges" class="nk-tb-item">
+                                                            <div v-for="(item, index) in apartment_rules" class="nk-tb-item">
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1}} </div>
-                                                                <div class="nk-tb-col"> {{item.add_charge_name}}  </div>
+                                                                <div class="nk-tb-col"> {{item.rules.details.name}}</div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">{{item.price}}</span>
+                                                                    <span class="lead-text">{{item.rules.details.read_more_url}}</span>
                                                                 </div>
                                                                 <!-- <div class="nk-tb-col nk-tb-col-tools">
                                                                     <ul class="nk-tb-actions gx-1">
@@ -629,16 +629,16 @@
                                                                 </div> -->
                                                             </div>
                                                         </div>
-                                                        <div v-if="!apartment_charges" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="!apartment_rules" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Apartment Additional Charge</span>
+                                                                    <span class="lead-text">House Rule</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Additional Charge Rate/Price</span>
+                                                                    <span class="lead-text">House Rule Url</span>
                                                                 </div>
                                                                 <!-- <div class="nk-tb-col nk-tb-col-tools">
                                                                     <span class="lead-text">Preview</span>
