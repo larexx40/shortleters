@@ -96,6 +96,7 @@ let admin = Vue.createApp({
             bookings: null,
             booking: null,
             features: null,
+            unfeatures: null,
             iosversion: null,
             androidversion: null,
             webversion: null,
@@ -163,7 +164,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM2NDg0OTYsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzY0ODQ5NiwiZXhwIjoxNjYzNzIyMjk2LCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.6yJ4Fj-b8Q3gRZ9PEIo14r2mDxVYU2AAx81H1oXnpIaqTmkJWgdZr9WFrRZBko-UZ8feq8fv0K88rpvy-BZ6zg',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3MzAzMTAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzczMDMxMCwiZXhwIjoxNjYzODA0MTEwLCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.T5x3u60ISHcaPcMwbiuZ7sWBA1fBfb9G99abHi2kEP27VACGtFKzOGJ6VclL0fqdom37-wJZvZSKDtZfx8e5eA',
             email: null,
             ref_link: null,
             admin_details: null,
@@ -364,6 +365,7 @@ let admin = Vue.createApp({
         }
         if(webPage == 'features.php'){
             await this.getAllFeature()
+            await this.getAllUnfeatureApartment();
         }
     },
     methods: {
@@ -2982,7 +2984,7 @@ let admin = Vue.createApp({
         async updateSystemSettings(){
             if(this.systemSettings.name == null||this.systemSettings.iosversion == null||this.systemSettings.androidversion == null||this.systemSettings.webversion == null||
                 this.systemSettings.activesmssystem == null||this.systemSettings.activemailsystem == null||this.systemSettings.min_apart_photo == null||this.systemSettings.max_apart_highlights == null||
-                this.systemSettings.discount_perc == null||this.systemSettings.discount_guest == null){
+                this.systemSettings.charge_perc == null || this.systemSettings.discount_perc == null||this.systemSettings.discount_guest == null){
                 new Toasteur().error("Kindly fill all fields")
             }else{
                 if(isNaN(this.systemSettings.min_apart_photo)){
@@ -3001,6 +3003,7 @@ let admin = Vue.createApp({
                 data.append('activemailsystem', this.systemSettings.activemailsystem );
                 data.append('min_apart_photo', this.systemSettings.min_apart_photo );
                 data.append('max_apart_highlights', this.systemSettings.max_apart_highlights );
+                data.append('charge_perc', this.systemSettings.charge_perc );
                 data.append('discount_perc', this.systemSettings.discount_perc );
                 data.append('discount_guest', this.systemSettings.discount_guest );
 
@@ -4920,15 +4923,69 @@ let admin = Vue.createApp({
                 this.loading = false;
             }
         },
+        async getAllUnfeatureApartment(load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 10;
+            const url = `${this.baseUrl}api/apartments/getApartmentByFeature.php?noPerPage=${noPerPage}&status=0&page=${page}${search}`;
+            //console.log('URL', url);
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.unfeatures = response.data.data.features;
+                }else{
+                    this.unfeatures = null;
+                }         
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    // // window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }finally{
+                this.loading = false;
+            }
+        },
         async changeApartmentFeature(id, status){
-            const url = `${this.baseUrl}api/apartment/changeApartmentFeature.php?`;
+            const url = `${this.baseUrl}api/apartments/changeApartmentFeature.php?`;
             //console.log('URL', url);
             if(!id){
                 new Toasteur().error("undefined")
             }else{
                 const data = new FormData();
                 data.append('apartment_id', id);
-                data.append('status', status);
+                data.append('feature', status);
                 const options = {
                     method: "POST",
                     headers: { 
@@ -7571,6 +7628,12 @@ let admin = Vue.createApp({
             if(webPage == 'bookings.php'){
                 this.getAllBookings()
             }
+            if(webPage == 'transactions.php'){
+                this.getAllTransactions()
+            }
+            if(webPage == 'features.php'){
+                this.getAllFeature()
+            }
         },
         async previousPage(){
             this.currentPage = parseInt(this.currentPage) - 1;
@@ -7628,6 +7691,12 @@ let admin = Vue.createApp({
             }
             if(webPage == 'bookings.php'){
                 this.getAllBookings()
+            }
+            if(webPage == 'transactions.php'){
+                this.getAllTransactions()
+            }
+            if(webPage == 'features.php'){
+                this.getAllFeature()
             }
         },
         async tab_nextPage(item){
@@ -7743,6 +7812,12 @@ let admin = Vue.createApp({
             if(webPage == 'bookings.php'){
                 this.getAllBookings()
             }
+            if(webPage == 'transactions.php'){
+                this.getAllTransactions()
+            }
+            if(webPage == 'features.php'){
+                this.getAllFeature()
+            }
         },
         async noSort(){
             this.loading = true
@@ -7828,6 +7903,12 @@ let admin = Vue.createApp({
             if(webPage == 'bookings.php'){
                 this.getAllBookings()
             }
+            if(webPage == 'transactions.php'){
+                this.getAllTransactions()
+            }
+            if(webPage == 'features.php'){
+                this.getAllFeature()
+            }
         }, 
         async sortByStatus(status){
             this.loading = true;
@@ -7908,6 +7989,12 @@ let admin = Vue.createApp({
             
             if(webPage == 'bookings.php'){
                 this.getAllBookings()
+            }
+            if(webPage == 'transactions.php'){
+                this.getAllTransactions()
+            }
+            if(webPage == 'features.php'){
+                this.getAllFeature()
             }
             
         },

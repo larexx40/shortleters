@@ -41,11 +41,25 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondUnAuthorized($data);
         }
+
+        if (isset($_GET['search'])) {
+            $search = cleanme($_GET['search']);
+        } else {
+            $search = "";
+        }
+    
+        if (!isset ($_GET['page']) ) {  
+            $page_no = 1;  
+        } else {  
+            $page_no = $_GET['page'];  
+        }
+
         if (isset($_GET['sort'])) {
             $sort = cleanme($_GET['sort']); //sort if > 0
         } else {
             $sort = "";
         }
+
         //sort with status
         if (isset($_GET['sortStatus']) && is_numeric($_GET['sortStatus'])) {
             $availability = cleanme($_GET['sortStatus']); //status =0-6
@@ -53,27 +67,101 @@
             $availability = "";
         }
 
-        if($sort > 0){
-            $feature =1;  
-            // Get total number of complains in the system
-            $query = "SELECT * FROM `apartments` WHERE `feature` = ? AND availability = ?";
-            $gtTotalPgs = $connect->prepare($query);
-            $gtTotalPgs->bind_param("ss", $feature, $availability);
-            $gtTotalPgs->execute();
-            $result = $gtTotalPgs->get_result();
-            $num_row = $result->num_rows; 
-        }else{
-            $feature =1;  
-            // Get total number of complains in the system
-            $query = "SELECT * FROM `apartments` WHERE `feature` = ?";
-            $gtTotalPgs = $connect->prepare($query);
-            $gtTotalPgs->bind_param("s", $feature);
-            $gtTotalPgs->execute();
-            $result = $gtTotalPgs->get_result();
-            $num_row = $result->num_rows; 
+        //sort with status
+        if (isset($_GET['status']) && is_numeric($_GET['status'])) {
+            $feature = cleanme($_GET['status']); //status =0-6
+        } else {
+            $feature = 1;
         }
 
-        
+        if (isset ($_GET['per_page']) ) {  
+            $no_per_page = cleanme($_GET['per_page']);
+        } else {  
+            $no_per_page = 8;  
+        }
+
+
+        $offset = ($page_no - 1) * $no_per_page;
+
+        if (!empty($search) && $search != "" && $search != " "){
+            $searching = "%{$search}%";
+            if($sort > 0){  
+                // Get total number of complains in the system
+                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
+                        LEFT JOIN building_types ON building_types.build_id = apartments.building_type_id LEFT JOIN users ON users.id = apartments.agent_id
+                        WHERE (apartments.name like ? OR apartments.title LIKE ? OR building_types.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ? ) AND `feature` = ? AND availability = ?";
+                $gtTotalPgs = $connect->prepare($query);
+                $gtTotalPgs->bind_param("sssssss",$searching, $searching, $searching, $searching, $searching, $feature, $availability);
+                $gtTotalPgs->execute();
+                $result = $gtTotalPgs->get_result();
+                $total_num_row = $result->num_rows;
+                $total_pg_found =  ceil($total_num_row / $no_per_page);
+
+                $query = "$query LIMIT ?, ?";
+                $gtTotalcomplains = $connect->prepare($query);
+                $gtTotalcomplains->bind_param("sssssssss",$searching, $searching, $searching, $searching, $searching, $feature, $availability, $offset, $no_per_page);
+                $gtTotalcomplains->execute();
+                $result = $gtTotalcomplains->get_result();
+                $num_row = $result->num_rows;
+
+            }else{ 
+                // Get total number of complains in the system
+                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
+                        LEFT JOIN building_types ON building_types.build_id = apartments.building_type_id LEFT JOIN users ON users.id = apartments.agent_id  WHERE `feature` = ?";
+                $gtTotalPgs = $connect->prepare($query);
+                $gtTotalPgs->bind_param("s", $feature);
+                $gtTotalPgs->execute();
+                $result = $gtTotalPgs->get_result();
+                $total_num_row = $result->num_rows;
+                $total_pg_found =  ceil($total_num_row / $no_per_page);
+
+                $query = "$query LIMIT ?, ?";
+                $gtTotalcomplains = $connect->prepare($query);
+                $gtTotalcomplains->bind_param("sss", $feature, $offset, $no_per_page);
+                $gtTotalcomplains->execute();
+                $result = $gtTotalcomplains->get_result();
+                $num_row = $result->num_rows;
+            } 
+
+        }else{//no seearch
+            if($sort > 0){  
+                // Get total number of complains in the system
+                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price,  apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
+                        LEFT JOIN building_types ON building_types.build_id = apartments.building_type_id LEFT JOIN users ON users.id = apartments.agent_id  WHERE `feature` = ? AND availability = ?";
+                $gtTotalPgs = $connect->prepare($query);
+                $gtTotalPgs->bind_param("ss", $feature, $availability);
+                $gtTotalPgs->execute();
+                $result = $gtTotalPgs->get_result();
+                $total_num_row = $result->num_rows;
+                $total_pg_found =  ceil($total_num_row / $no_per_page);
+
+                $query = "$query LIMIT ?, ?";
+                $gtTotalcomplains = $connect->prepare($query);
+                $gtTotalcomplains->bind_param("ssss", $feature, $availability, $offset, $no_per_page);
+                $gtTotalcomplains->execute();
+                $result = $gtTotalcomplains->get_result();
+                $num_row = $result->num_rows;
+
+            }else{ 
+                // Get total number of complains in the system
+                $query = "SELECT apartments.id, apartments.name, apartments.title, apartments.price,  apartments.status, apartments.building_type_id, building_types.name AS building_name, apartments.availability, apartments.feature, apartments.apartment_id, apartments.agent_id, users.fname, users.lname, apartments.apartment_status FROM `apartments` 
+                        LEFT JOIN building_types ON building_types.build_id = apartments.building_type_id LEFT JOIN users ON users.id = apartments.agent_id  WHERE `feature` = ?";
+                $gtTotalPgs = $connect->prepare($query);
+                $gtTotalPgs->bind_param("s", $feature);
+                $gtTotalPgs->execute();
+                $result = $gtTotalPgs->get_result();
+                $total_num_row = $result->num_rows;
+                $total_pg_found =  ceil($total_num_row / $no_per_page);
+
+                $query = "$query LIMIT ?, ?";
+                $gtTotalcomplains = $connect->prepare($query);
+                $gtTotalcomplains->bind_param("sss", $feature, $offset, $no_per_page);
+                $gtTotalcomplains->execute();
+                $result = $gtTotalcomplains->get_result();
+                $num_row = $result->num_rows;
+            } 
+
+        }
 
         if ($num_row > 0){
             $allResponse =[];
@@ -86,7 +174,7 @@
                 $availabilityCode = $row['availability'];
                 $availability = ($row["availability"] > 0)? "Booked" : "Available";
                 $building_type_id = $row["building_type_id"];
-                $building_type_name = getNameFromField($connect, "building_types", "build_id", $building_type_id);
+                $building_type_name = $row['building_name'];
                 if ( $row['apartment_status'] == 1 ){
                     $apartment_status = "Listed";
                 }
@@ -100,10 +188,10 @@
                     $apartment_status = "Deactivated";
                 }
                 $apartment_status_code = $row['apartment_status'];
-                $agentName = getUserFullname($connect, $row['agent_id'] );
-                $agentName = ($agentName) ? $agentName : null;
+                $agentName =  $row['fname']. $row['lname'] ;
+                // $agentName = ($agentName) ? $agentName : null;
      
-                $apartment = array(
+                array_push($allResponse, array(
                     'id' => $row['apartment_id'],
                     'name' => $name,
                     'status_code' => $status_code,
@@ -117,11 +205,11 @@
                     'apartment_status' => $apartment_status,
                     'agentName'=>$agentName,
                     
-                );
+                ));
             }
-            $data = array(
-                'apartment' => $apartment,
-            );
+            $data =[
+                'features' => $allResponse,
+            ];
             $text= "Fetch Successful";
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);

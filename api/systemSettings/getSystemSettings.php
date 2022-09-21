@@ -31,7 +31,7 @@
         $userPubKey = $decodeToken->usertoken;
 
         $sqlQuery ="SELECT `id`, `sys_setting_id`, `name`, `iosversion`, `androidversion`, `webversion`, `activesmssystem`, `activemailsystem`, `activepaymentsystem`, 
-                    `min_apart_photo`, `max_apart_highlights`, `discount_perc`, `discount_guest` FROM `systemsettings`";
+                    `min_apart_photo`, `max_apart_highlights`, `charge_perc`, `discount_perc`, `discount_guest` FROM `systemsettings`";
         $stmt= $connect->prepare($sqlQuery);
         $stmt->execute();
         $result= $stmt->get_result();
@@ -89,6 +89,7 @@
                 $paymentApi = "None";
             }
             $minApartmentPhotos = $row['min_apart_photo'];
+            $chargePercentage = $row['charge_perc'];
             $discountPercentage = $row['discount_perc'];
             $discount_guest = $row['discount_guest']; 
 
@@ -106,6 +107,7 @@
                 "activePaymentCode"=>$activePaymentCode,
                 "paymentApi"=>$paymentApi,
                 "minApartmentPhotos"=>$minApartmentPhotos,
+                "chargePercentage"=>$chargePercentage,
                 "discountPercentage"=>$discountPercentage,
                 "discount_guest"=>$discount_guest 
             ];

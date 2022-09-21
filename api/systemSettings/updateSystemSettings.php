@@ -151,6 +151,17 @@
             $max_apart_highlights = cleanme($_POST['max_apart_highlights']);
         }
 
+        if (!isset($_POST['charge_perc'])){
+            $errordesc = "charge_perc fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required charge_perc field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $charge_perc = cleanme($_POST['charge_perc']);
+        }
+
         if (!isset($_POST['discount_perc'])){
             $errordesc = "discount_perc fields must be passed";
             $linktosolve = 'https://';
@@ -175,7 +186,7 @@
         
         // check if none of the fields are empty
         if (empty($name)||empty($iosversion)||empty($systemSettingsid)||empty($androidversion)||empty($webversion)||empty($activesmssystem)|| 
-            empty($min_apart_photo)  || empty($max_apart_highlights) || empty($discount_perc) || empty($discount_guest) ){
+            empty($min_apart_photo)  || empty($max_apart_highlights) || empty($discount_perc) || empty($discount_guest) || empty($charge_perc)){
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
             $hint = "Kindly pass value to all fields";
@@ -186,12 +197,12 @@
 
         
         $query = 'UPDATE `systemsettings` SET `name`=? ,`iosversion`= ?, androidversion`= ?,`webversion`= ?,`activesmssystem`= ?,
-                `activemailsystem`= ?, `min_apart_photo`= ?, `max_apart_highlights`= ?,`discount_perc`= ?,`discount_guest`= ? WHERE sys_setting_id = ?';
+                `activemailsystem`= ?, `min_apart_photo`= ?, `max_apart_highlights`= ?, charge_perc =?, `discount_perc`= ?,`discount_guest`= ? WHERE sys_setting_id = ?';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("sssssssssss", $name, $iosversion, $androidversion, $webversion, $activesmssystem, $activemailsystem, $min_apart_photo,  $max_apart_highlights, $discount_perc, $discount_guest, $systemSettingsid);
+        $slider_stmt->bind_param("ssssssssssss", $name, $iosversion, $androidversion, $webversion, $activesmssystem, $activemailsystem, $min_apart_photo,  $max_apart_highlights, $charge_perc, $discount_perc, $discount_guest, $systemSettingsid);
 
         if ( $slider_stmt->execute() ) {
-            $text= "Slider successfully added";
+            $text= "System settings successfully updated";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
@@ -217,6 +228,5 @@
         respondMethodNotAlowed($data);
         
     }
-
 
 ?>
