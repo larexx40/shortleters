@@ -32,7 +32,7 @@
                                             <div class="nk-block-head-content">
                                                 <ul class="nk-block-tools g-3">
                                                     <li>
-                                                        <div class="drodown">
+                                                        <div v-if='unfeatures' class="drodown">
                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul class="link-list-opt no-bdr">
@@ -202,10 +202,7 @@
                                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                                 <ul class="link-list-opt no-bdr">
                                                                                     <li @click.prevent = 'getIndex(index)'><a data-bs-toggle="modal" href="#edit-stock"><em class="icon ni ni-edit"></em><span>Unfeature</span></a></li>
-                                                                                    <li @click.prevent= getSubBuilding(item.buildingTypeid) v-if='item.subTypes > 0 '><a href=""><em class="icon ni ni-eye"></em><span>Sub type</span></a></li>
-                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 1)' v-if='item.statusCode == 0 '><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
-                                                                                    <li @click.prevent = 'changeBuildingTypeStatus(item.buildingTypeid, 0)' v-if='item.statusCode == 1  ' ><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Inactive</span></a></li>
-                                                                                    <li @click.prevent= 'deleteByid(item.buildingTypeid)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
+                                                                                    
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -436,31 +433,22 @@
                 <div class="modal-content">
                     <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
                     <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Add Building Type</h5>
-                        <form @submit.prevent="addBuildingType" class="mt-2">
+                        <h5 class="modal-title">Add Apartment to Feature</h5>
+                        <form @submit.prevent='changeApartmentFeature(itemid, 1)' class="mt-2">
                             <div class="row g-gs">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="product-name-add"> Name</label>
-                                        <input v-model="name" type="text" class="form-control" id="product-name-add" placeholder="Product Name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Building Image</label>
-                                        <div class="form-control-wrap">        
-                                            <div class="form-file">            
-                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
-                                                <label class="form-file-label" for="customFile">Choose file</label>        
-                                            </div>    
-                                        </div>
-                                        <!-- <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity"> -->
+                                    <div v-if='unfeatures' class="form-group">
+                                        <label class="form-label" for="product-name-add">Apartment Name</label>
+                                        <select class="form-select js-select2 js-select2-sm" v-model="itemid" data-search="off" data-placeholder="Bulk Action">
+                                            <option value="null">Select Apartment</option>
+                                            <option v-for="(item, index) in unfeatures" v-bind:value="item.id">{{item.id}}{{item.name}}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add Building Type</button>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">Add to Feature</button>
                                         </li>
                                         <li>
                                             <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
@@ -473,48 +461,7 @@
                 </div><!-- .modal-content -->
             </div><!-- .modal-dialog -->
         </div><!-- .modal -->
-        <!-- Edit Stock-->
-        <div class="modal fade" tabindex="-1" role="dialog" id="edit-stock">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div class="modal-body modal-body-md">
-                        <h5 class="modal-title">Edit Building Type</h5>
-                        <form @submit.prevent="updateBuildingType"  action="#" class="mt-2">
-                            <div v-if='itemDetails' class="row g-gs">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="product-name-edit">Type Name</label>
-                                        <input type="text" class="form-control" id="product-name-edit" v-model="itemDetails.name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="quantity-add">Building Image</label>
-                                        <div class="form-control-wrap">        
-                                            <div class="form-file">            
-                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">            
-                                                <label class="form-file-label" for="customFile">Choose file</label>        
-                                            </div>    
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                        <li>
-                                            <button class="btn btn-primary" data-bs-dismiss="modal">Update Building Type</button>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="link" data-bs-dismiss="modal">Cancel</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </form>
-                    </div><!-- .modal-body -->
-                </div><!-- .modal-content -->
-            </div><!-- .modal-dialog -->
-        </div><!-- .modal -->
+        
     </div>
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>

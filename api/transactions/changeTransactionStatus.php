@@ -39,7 +39,7 @@
             respondUnAuthorized($data);
         }
 
-        //confirm if additionalcharge id is passed
+        //confirm if transactionid is passed
         if(!isset($_POST['transactionid'])){
             $errordesc="transactionid required";
             $linktosolve="htps://";
@@ -94,7 +94,7 @@
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the House rule id ";
+            $text="Please pass in the transaction id ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
@@ -117,7 +117,7 @@
         
         }else{
             //Building type not found
-            $errordesc = "transactions with id not found";
+            $errordesc = "Transactions with id not found";
             $linktosolve = 'https://';
             $hint = "Kindly pass valid transactions id";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);

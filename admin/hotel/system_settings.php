@@ -113,6 +113,14 @@
                                                                 </div>
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">Charge Percentage
+                                                                            </span>
+                                                                        <span
+                                                                            class="profile-ud-value">{{systemSettings.charge_perc}}  %</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">Discount Percentage
                                                                             </span>
                                                                         <span
@@ -226,7 +234,14 @@
                                                                                 required="" />
                                                                         </div>
                                                                     </div>
-                                                                    
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" for="email-address">Charge Percentage
+                                                                            </label>
+                                                                        <div class="form-control-wrap">
+                                                                            <input v-model='systemSettings.charge_perc' type="text" class="form-control"
+                                                                                required="" />
+                                                                        </div>
+                                                                    </div>                                                                    
                                                                     <div class="form-group">
                                                                         <label class="form-label" for="email-address">Discount Percentage
                                                                             </label>

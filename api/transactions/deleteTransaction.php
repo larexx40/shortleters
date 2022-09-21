@@ -41,36 +41,36 @@
             respondBadRequest($data);
         }
 
-       //confirm how to pass in the id
-       if(!isset($_POST['house_rule_id'])){
-            $errordesc="House rule id required";
+       //confirm if transactionid is passed
+       if(!isset($_POST['transactionid'])){
+            $errordesc="transactionid required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in House rule id";
+            $text="Pass in Transaction  id";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
             
         }else {
-            $houseRuleid = cleanme($_POST['house_rule_id']); 
+            $transactionid = cleanme($_POST['transactionid']); 
         }
 
-        //confirm if building type id is not empty
-        if(empty($houseRuleid)){
+        //confirm if transactionid is not empty
+        if(empty($transactionid)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the House rule id ";
+            $text="Please pass in the transactionid ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
 
-        $sqlQuery = "DELETE FROM `house_rule` WHERE house_rule_id =?";
+        $sqlQuery = "DELETE FROM `user_transactions` WHERE transactionid =?";
         $stmt = $connect->prepare($sqlQuery);
-        $stmt->bind_param("s",$houseRuleid);
+        $stmt->bind_param("s",$transactionid);
         $stmt->execute();
         $affectedRow =$stmt->affected_rows;
 
@@ -89,19 +89,19 @@
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = ["House rule deleted from the database"];
+            $hint = ["Transaction deleted from the database"];
             $errordata = [];
-            $text = "House rule successfully deleted";
+            $text = "Transaction successfully deleted";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
         }else{
             //id not found response
-            $errordesc="House rule id not found";
+            $errordesc="Transaction id not found";
             $linktosolve="htps://";
-            $hint='House rule id not in database';
+            $hint='Transaction id not in database';
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="House rulenot found";
+            $text="Transaction not found";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);

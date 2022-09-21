@@ -129,14 +129,16 @@ use function Composer\Autoload\includeFile;
                                                                         <div class="drodown">
                                                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                             <div class="dropdown-menu dropdown-menu-end">
+                                                                               
                                                                                 <ul class="link-list-opt no-bdr">
                                                                                     <li @click.prevent='getUserid(value.id)'><a href="./admins-details.php"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
                                                                                     <!-- <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Set as SuperAdmin</span></a></li> -->
-                                                                                    <li @click.prevent='changeAdminStatus(value.id, 0)' v-if='value.statusCode != 0'><a href="#"><em class="icon fa-solid fa-ban"></em><span>Ban</span></a></li>
-                                                                                    <li @click.prevent='changeAdminStatus(value.id, 1)' v-if='value.statusCode != 1'><a href="#"><em class="icon fa-solid fa-toggle-on"></em><span>Activate</span></a></li>
-                                                                                    <li @click.prevent='changeAdminStatus(value.id, 2)' v-if='value.statusCode != 2'><a href="#"><em class="icon fa-solid fa-pause"></em><span>Suspend</span></a></li>
+                                                                                    <li  @click.prevent='changeAdminStatus(value.id, 0)' v-if='value.statusCode != 0' ><a href="#"><em class="icon fa-solid fa-ban"></em><span>Ban</span></a></li>
+                                                                                    <li @click.prevent='changeAdminStatus(value.id, 1)' v-if='value.statusCode != 1' style="--hover-color: var(--bs-success)"><a href="#"><em class="icon fa-solid fa-toggle-on"></em><span>Activate</span></a></li>
+                                                                                    <li @click.prevent='changeAdminStatus(value.id, 2)' v-if='value.statusCode != 2' style="--hover-color: var(--bs-warning)"><a href="#"><em class="icon fa-solid fa-pause"></em><span>Suspend</span></a></li>
                                                                                     <li @click.prevent='changeAdminStatus(value.id, 3)' v-if='value.statusCode != 3'><a href="#"><em class="icon fa-solid fa-user-lock"></em><span>Freeze</span></a></li>
                                                                                 </ul>
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                     </li>
