@@ -8271,16 +8271,75 @@ let admin = Vue.createApp({
             //console.log(this.kor_file);
         },
         async fetchPriceAndId(){
-            if (this.apartment_details){
-                console.log(`id: ${this.apartment_details.id}`);
-                console.log(`price: ${this.apartment_details.price}`);
-                this.apartment_booked = this.apartment_details.id;
-                this.apartment_price = this.apartment_details.price;
+            if ( this.booking_details ){
+                this.fetchPartmentWithPrice();
+                this.booking_details.apartment_price = this.apartment_details.price; 
+
+                if (this.apartment_details){
+                    if ( this.booking_details.preferred_check_in && this.booking_details.prefferred_check_out ){
+                        const days = days_difference(this.booking_details.preferred_check_in, this.booking_details.prefferred_check_out)
+                        if (days <= 0 ){
+                            this.booking_details.preferred_check_in = null;
+                            this.booking_details.prefferred_check_out = null;
+                            new Toasteur().error("Select correct check in and check out time");
+                            return;
+                        }
+                        if (days >= this.apartment_details.min_stay_value && days <= this.apartment_details.max_stay_value){
+                            this.booking_details.total_amount_paid = this.booking_details.apartment_price * days;
+                        }else{
+                            this.booking_details.preferred_check_in = null;
+                            this.booking_details.prefferred_check_out = null;
+                            new Toasteur().error(`min number of days is ${this.apartment_details.min_stay_value} & max no of days is ${this.apartment_details.max_stay_value}`);
+                            return;
+                        }
+                    }
+    
+                }else{
+                    this.booking_details.preferred_check_in = null;
+                    this.booking_details.prefferred_check_out = null;
+                    new Toasteur().error("Kindly Select an Apartment");
+                    return;
+                }
+            }else{
+                if (this.apartment_details){
+                    console.log(`id: ${this.apartment_details.id}`);
+                    console.log(`price: ${this.apartment_details.price}`);
+                    this.apartment_booked = this.apartment_details.id;
+                    this.apartment_price = this.apartment_details.price;
+                }
+    
+                if (this.apartment_details){
+                    if ( this.preferred_check_in && this.prefferred_check_out ){
+                        const days = days_difference(this.preferred_check_in, this.prefferred_check_out)
+                        if (days <= 0 ){
+                            this.preferred_check_in = null;
+                            this.prefferred_check_out = null;
+                            new Toasteur().error("Select correct check in and check out time");
+                            return;
+                        }
+                        if (days >= this.apartment_details.min_stay_value && days <= this.apartment_details.max_stay_value){
+                            this.total_payment = this.apartment_price * days;
+                        }else{
+                            this.preferred_check_in = null;
+                            this.prefferred_check_out = null;
+                            new Toasteur().error(`min number of days is ${this.apartment_details.min_stay_value} & max no of days is ${this.apartment_details.max_stay_value}`);
+                            return;
+                        }
+                    }
+    
+                }else{
+                    this.preferred_check_in = null;
+                    this.prefferred_check_out = null;
+                    new Toasteur().error("Kindly Select an Apartment");
+                    return;
+                }
             }
-            if ( this.preferred_check_in && this.prefferred_check_out ){
-                const days = days_difference(this.preferred_check_in, this.prefferred_check_out)
-                this.total_payment = this.apartment_price * days;
-            }
+        },
+        fetchPartmentWithPrice(){
+            this.apartment_details = this.all_apartments.filter((e) => {
+                return e.id = this.booking_details.apartment_id;
+            });
+                
         },
         async getAllAmenities( load = 1){
             console.log(this.sort);
@@ -12340,6 +12399,7 @@ let admin = Vue.createApp({
 
         if ( webPage === "booking-edit.php"){
             await this.getBookingDetails();
+            this.fetchPartmentWithPrice();
         }
 
         if (webPage !== "all_apartments.php" && webPage !== "apartment-details.php"){

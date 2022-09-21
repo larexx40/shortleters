@@ -42,7 +42,7 @@
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="last-name">Last Name</label>
-                                                            <input type="text" v-model="booking_details.last_name" class="form-control" id="last-name" placeholder="Last Name" value="Ishtiyak">
+                                                            <input type="text" v-model="booking_details.last_name" class="form-control" id="last-name" placeholder="Last Name">
                                                         </div>
                                                     </div>
                                                     <!--col-->
@@ -61,7 +61,7 @@
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="phone-no">Phone</label>
-                                                            <input type="tel" v-model="booking_details.phone" class="form-control" id="phone-no" placeholder="Phone no" value="+811 847-4958">
+                                                            <input type="tel" v-model="booking_details.phone" class="form-control" id="phone-no" placeholder="Phone no">
                                                         </div>
                                                     </div>
                                                     <!--col-->
@@ -115,7 +115,7 @@
                                                         <div v-if="all_apartments" class="form-group">
                                                             <label class="form-label">Select Apartment</label>
                                                             <div class="form-control-wrap">
-                                                                <select v-model="booking_details.apartment_id" @change="fetchPriceAndId" class="form-select js-select2">
+                                                                <select v-model="booking_details.apartment_id" @change="fetchPartmentWithPrice" class="form-select js-select2">
                                                                     <option value="null">Select Preffered Apartment</option>
                                                                     <option v-for="(item, index) in all_apartments" v-bind:value="item.id">{{item.name}}</option>
                                                                 </select>
