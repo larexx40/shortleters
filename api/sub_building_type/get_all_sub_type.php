@@ -87,7 +87,7 @@
                 $queryStmt->bind_param("ssss", $status, $searching, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
+                $total_num_row = $result->num_rows;
                 $total_pg_found =  ceil($num_row / $no_per_page);
 
                 $query = "$query LIMIT ?, ?";

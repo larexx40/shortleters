@@ -225,21 +225,6 @@
                                         <span class="nk-menu-text">Settings</span>
                                     </a>
                                 </li><!-- .nk-menu-item -->
-                                <li class="nk-menu-heading">
-                                    <h6 class="overline-title text-primary-alt">Return to</h6>
-                                </li><!-- .nk-menu-item -->
-                                <li class="nk-menu-item">
-                                    <a href="html/index.php" class="nk-menu-link">
-                                        <span class="nk-menu-icon"><em class="icon ni ni-dashlite-alt"></em></span>
-                                        <span class="nk-menu-text">Main Dashboard</span>
-                                    </a>
-                                </li><!-- .nk-menu-item -->
-                                <li class="nk-menu-item">
-                                    <a href="html/components.php" class="nk-menu-link">
-                                        <span class="nk-menu-icon"><em class="icon ni ni-layers-fill"></em></span>
-                                        <span class="nk-menu-text">All Components</span>
-                                    </a>
-                                </li><!-- .nk-menu-item -->
                             </ul><!-- .nk-menu -->
                         </div><!-- .nk-sidebar-menu -->
                     </div><!-- .nk-sidebar-content -->

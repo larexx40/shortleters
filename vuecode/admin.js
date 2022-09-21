@@ -8187,10 +8187,10 @@ let admin = Vue.createApp({
             if ( this.booking_details ){
                 this.fetchPartmentWithPrice();
                 this.booking_details.apartment_price = this.apartment_details.price; 
-
                 if (this.apartment_details){
+                    console.log(this.apartment_details);
                     if ( this.booking_details.preferred_check_in && this.booking_details.prefferred_check_out ){
-                        const days = days_difference(this.booking_details.preferred_check_in, this.booking_details.prefferred_check_out)
+                        const days = days_difference(this.booking_details.preferred_check_in, this.booking_details.prefferred_check_out);
                         if (days <= 0 ){
                             this.booking_details.preferred_check_in = null;
                             this.booking_details.prefferred_check_out = null;
@@ -8249,9 +8249,10 @@ let admin = Vue.createApp({
             }
         },
         fetchPartmentWithPrice(){
-            this.apartment_details = this.all_apartments.filter((e) => {
+            const value = this.all_apartments.filter((e) => {
                 return e.id = this.booking_details.apartment_id;
             });
+            this.apartment_details = value[0];
                 
         },
         async getAllAmenities( load = 1){
@@ -8578,7 +8579,9 @@ let admin = Vue.createApp({
                 url
             }
             try {
-                this.loading = true;
+                if (load == 1){
+                    this.loading = true;
+                }
                 const response = await axios(options);
                 if(response.data.status){
                     this.all_facilities = response.data.data.facilities;
@@ -9329,7 +9332,7 @@ let admin = Vue.createApp({
             data.append("apartment_id", this.apartment_booked);
             data.append("apartment_price", this.apartment_price);
             data.append("address", this.address);
-            data.append("occupation_or_workplace", this.occupation_or_workplace);
+            data.append("occupation_or_workplace", this.occupation_or_work);
             data.append("preferred_check_in", this.preferred_check_in);
             data.append("prefferred_check_out", this.prefferred_check_out);
             data.append("total_amount_paid", this.total_payment);
@@ -9459,9 +9462,9 @@ let admin = Vue.createApp({
             let id = (window.localStorage.getItem("booking_id")) ? window.localStorage.getItem("booking_id") : null 
             
             if (id){
-                if (!this.booking_details.first_name || !this.booking_details.last_name || !this.booking_details.gender || !this.booking_details.phone || !this.booking_details.email || !this.booking_details.apartment_booked || !this.booking_details.apartment_price
-                    || !this.booking_details.address || !this.booking_details.occupation_or_work || !this.booking_details.preferred_check_in || !this.booking_details.prefferred_check_out || !this.booking_details.no_of_people
-                    || !this.booking_details.payment_status || !this.booking_details.identification_type){
+                console.log(this.booking_details);
+                if (!this.booking_details.first_name || !this.booking_details.last_name || !this.booking_details.gender || !this.booking_details.phone || !this.booking_details.email || !this.booking_details.apartment_id || !this.booking_details.apartment_price
+                    || !this.booking_details.address || !this.booking_details.occupation_or_workplace || !this.booking_details.preferred_check_in || !this.booking_details.prefferred_check_out || !this.booking_details.no_of_people || !this.booking_details.identification_type){
                    this.error = "Insert all Fields"
                    new Toasteur().error(this.error);
                    return;
@@ -9479,7 +9482,7 @@ let admin = Vue.createApp({
                    return;
                }
     
-               const verifiedPhone = validatePhoneNumber(this.phone)
+               const verifiedPhone = validatePhoneNumber(this.booking_details.phone);
                const data = new FormData();
                data.append("booking_id", id);
                data.append("first_name", this.booking_details.first_name);
@@ -9487,7 +9490,7 @@ let admin = Vue.createApp({
                data.append("gender", this.booking_details.gender);
                data.append("phone", verifiedPhone);
                data.append("email", this.booking_details.email);
-               data.append("apartment_id", this.booking_details.apartment_booked);
+               data.append("apartment_id", this.booking_details.apartment_id);
                data.append("apartment_price", this.booking_details.apartment_price);
                data.append("address", this.booking_details.address);
                data.append("occupation_or_workplace", this.booking_details.occupation_or_workplace);

@@ -122,7 +122,7 @@
         $slider_update->bind_param("ssss", $building_type, $name, $description, $sub_building_type_id);
 
         if ( $slider_update->execute() ) {
-            $text= "Slider successfully updated";
+            $text= "Building Sub Type successfully updated";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
