@@ -8029,6 +8029,7 @@ let admin = Vue.createApp({
             }
         },
         async sortByTransactionType(type){
+            this.sort=1
             this.transactionType = type;
             this.loading = true;
             this.currentPage =null;

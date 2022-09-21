@@ -63,7 +63,7 @@
                                                                     </div>
                                                                 </div>
                                                             </li>
-                                                            <!-- <li>
+                                                            <li>
                                                                 <div class="drodown">
                                                                     <a href="#" class="dropdown-toggle btn btn-white btn-dim btn-outline-light" data-bs-toggle="dropdown"><em class="d-none d-sm-inline icon ni ni-filter-alt"></em><span><span class="d-none d-md-inline"></span>Type </span><em class="dd-indc icon ni ni-chevron-right"></em></a>
                                                                     <div class="dropdown-menu dropdown-menu-end">
@@ -79,7 +79,7 @@
                                                                         </ul>
                                                                     </div>
                                                                 </div>
-                                                            </li> -->
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div><!-- .toggle-wrap -->

@@ -44,7 +44,7 @@
                                             </div><!-- .invoice-actions -->
                                             <div class="invoice-wrap">
                                                 <div class="invoice-brand text-center">
-                                                    <img src="../imagess/logo-dark.png" srcset="./images/logo-dark2x.png 2x" alt="">
+                                                    <img src="../../assets/images/logo/WHITELOGO_GREEN_BKGD_1.jpg" srcset="../../assets/images/logo/WHITELOGO_GREEN_BKGD_1.jpg" alt="">
                                                 </div>
                                                 <div class="invoice-head">
                                                     <div class="invoice-contact">
@@ -142,109 +142,109 @@
                             <ul class="country-list text-center gy-2">
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/arg.png" alt="" class="country-flag">
+                                        <img src="../images/flags/arg.png" alt="" class="country-flag">
                                         <span class="country-name">Argentina</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/aus.png" alt="" class="country-flag">
+                                        <img src="../images/flags/aus.png" alt="" class="country-flag">
                                         <span class="country-name">Australia</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/bangladesh.png" alt="" class="country-flag">
+                                        <img src="../images/flags/bangladesh.png" alt="" class="country-flag">
                                         <span class="country-name">Bangladesh</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/canada.png" alt="" class="country-flag">
+                                        <img src="../images/flags/canada.png" alt="" class="country-flag">
                                         <span class="country-name">Canada <small>(English)</small></span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/china.png" alt="" class="country-flag">
+                                        <img src="../images/flags/china.png" alt="" class="country-flag">
                                         <span class="country-name">Centrafricaine</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/china.png" alt="" class="country-flag">
+                                        <img src="../images/flags/china.png" alt="" class="country-flag">
                                         <span class="country-name">China</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/french.png" alt="" class="country-flag">
+                                        <img src="../images/flags/french.png" alt="" class="country-flag">
                                         <span class="country-name">France</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/germany.png" alt="" class="country-flag">
+                                        <img src="../images/flags/germany.png" alt="" class="country-flag">
                                         <span class="country-name">Germany</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/iran.png" alt="" class="country-flag">
+                                        <img src="../images/flags/iran.png" alt="" class="country-flag">
                                         <span class="country-name">Iran</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/italy.png" alt="" class="country-flag">
+                                        <img src="../images/flags/italy.png" alt="" class="country-flag">
                                         <span class="country-name">Italy</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/mexico.png" alt="" class="country-flag">
+                                        <img src="../images/flags/mexico.png" alt="" class="country-flag">
                                         <span class="country-name">México</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/philipine.png" alt="" class="country-flag">
+                                        <img src="../images/flags/philipine.png" alt="" class="country-flag">
                                         <span class="country-name">Philippines</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/portugal.png" alt="" class="country-flag">
+                                        <img src="../images/flags/portugal.png" alt="" class="country-flag">
                                         <span class="country-name">Portugal</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/s-africa.png" alt="" class="country-flag">
+                                        <img src="../images/flags/s-africa.png" alt="" class="country-flag">
                                         <span class="country-name">South Africa</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/spanish.png" alt="" class="country-flag">
+                                        <img src="../images/flags/spanish.png" alt="" class="country-flag">
                                         <span class="country-name">Spain</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/switzerland.png" alt="" class="country-flag">
+                                        <img src="../images/flags/switzerland.png" alt="" class="country-flag">
                                         <span class="country-name">Switzerland</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/uk.png" alt="" class="country-flag">
+                                        <img src="../images/flags/uk.png" alt="" class="country-flag">
                                         <span class="country-name">United Kingdom</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="country-item">
-                                        <img src="../imagess/flags/english.png" alt="" class="country-flag">
+                                        <img src="../images/flags/english.png" alt="" class="country-flag">
                                         <span class="country-name">United State</span>
                                     </a>
                                 </li>

@@ -124,7 +124,6 @@
                                                                                             <em class="icon ni ni-setting"></em>
                                                                                         </a>
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                                                            
                                                                                             <ul class="link-check">
                                                                                                 <li><span>Show</span></li>
                                                                                                 <li v-if="per_page == 10" class="" :class="{active: class_active}" @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
@@ -134,11 +133,6 @@
                                                                                                 <li v-if="per_page == 50" :class="{active: class_active}" @click.prevent="setNoPerPage(50)" class=""><a href="#">50</a></li>
                                                                                                 <li v-if="per_page != 50" class=""  @click.prevent="setNoPerPage(50)"><a href="#">50</a></li>
                                                                                             </ul>
-                                                                                            <!-- <ul class="link-check">
-                                                                                                <li><span>Order</span></li>
-                                                                                                <li class="active"><a href="#">DESC</a></li>
-                                                                                                <li><a href="#">ASC</a></li>
-                                                                                            </ul> -->
                                                                                         </div>
                                                                                     </div><!-- .dropdown -->
                                                                                 </li><!-- li -->
