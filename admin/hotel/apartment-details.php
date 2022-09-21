@@ -58,7 +58,7 @@
                                                 </li>
 
                                                 <li class="nav-item">
-                                                    <a @click="getUserTransactions(3)" class="nav-link" data-bs-toggle="tab" href="#profile-transactions"><span>Transactions</span> </a>
+                                                    <a @click="getApartmentTransactions(3)" class="nav-link" data-bs-toggle="tab" href="#profile-transactions"><span>Transactions</span> </a>
                                                 </li>
 
                                                 <li class="nav-item">
@@ -482,42 +482,51 @@
                                                     <!--tab pane-->
 
                                                     <div class="tab-pane" id="profile-transactions">
-                                                        <div v-if="user_transactions" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="apartment_transactions" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             <div class="nk-tb-item nk-tb-head">
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">#</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">Transaction Hash</span>
+                                                                    <span class="lead-text">Booking Id</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">User Fullname</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Amount</span>
                                                                 </div>
                                                                 <div class="nk-tb-col">
                                                                     <span class="lead-text">Time</span>
                                                                 </div>
                                                                 <div class="nk-tb-col nk-tb-col-tools">
-                                                                    <span class="lead-text">Preview</span>
+                                                                    <span class="lead-text">Status</span>
                                                                 </div>
                                                             </div>
-                                                            <div v-for="(item, index) in user_transactions" class="nk-tb-item">
+                                                            <div v-for="(item, index) in apartment_transactions" class="nk-tb-item">
                                                                 <div class="nk-tb-col"> {{parseInt(index) + 1 }} </div>
-                                                                <div class="nk-tb-col"> {{item.transhash}} </div>
+                                                                <div class="nk-tb-col"> {{item.booking_id}} </div>
                                                                 <div class="nk-tb-col">
-                                                                    <span class="lead-text">{{item.created_at}}</span>
+                                                                    <span class="lead-text">{{item.user_fullname}}</span>
                                                                 </div>
-                                                                <div class="nk-tb-col nk-tb-col-tools">
-                                                                    <ul class="nk-tb-actions gx-1">
-                                                                        <li @click="getTransaction(index)" data-bs-toggle="modal" data-bs-target="#modal-transactions">
-                                                                            <a href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
-                                                                        </li>
-                                                                    </ul>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">#{{item.amttopay}}</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">{{item.ordertime}}</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span v-if="item.status_code < 1" class="lead-text text-danger">{{item.status}}</span>
+                                                                    <span v-if="item.status_code > 0" class="lead-text text-success">{{item.status}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div v-if="!user_transactions" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                        <div v-if="!apartment_transactions" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
                                                             No Record Found
                                                         </div>
                                                         <br><br>
                                                         <nav>
-                                                            <ul v-if="user_transactions" class="pagination justify-content-end">
+                                                            <ul v-if="apartment_transactions" class="pagination justify-content-end">
                                                                 <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_transaction')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_transaction', page)" class="page-link" href="#">{{page}}</a></li>

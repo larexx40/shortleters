@@ -164,7 +164,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3MzAzMTAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzczMDMxMCwiZXhwIjoxNjYzODA0MTEwLCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.T5x3u60ISHcaPcMwbiuZ7sWBA1fBfb9G99abHi2kEP27VACGtFKzOGJ6VclL0fqdom37-wJZvZSKDtZfx8e5eA',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3NTM0NjMsImlzcyI6IkxPRyIsIm5iZiI6MTY2Mzc1MzQ2MywiZXhwIjoxNjYzODI3MjYzLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.TlI2rKYjyUGoYzl0xD4ARfVuQg9_ilEY-reU3Nr2Ea3_HiA21-tGVGI2NW1WSE_8cDpWaUnRAcYO6b6nG1-ejg',
             email: null,
             ref_link: null,
             admin_details: null,
@@ -225,6 +225,7 @@ let admin = Vue.createApp({
             apartment_img: null,
             apartment: null,
             apartments_and_images: null,
+            apartment_transactions: null,
             // currency
             all_currencies: null,
             currency: null,
@@ -10970,6 +10971,69 @@ let admin = Vue.createApp({
                         //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                     }else{
                         this.apartment_details = null;
+                    }  
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // window.location.href="/login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+        
+                    new Toasteur().error(error.message || "Error processing request")
+        
+                    
+                }finally {
+                    this.loading = false;
+                }
+            }else{
+                window.location.href="./all_apartments.php"
+            }
+        },
+        async getApartmentTransactions(load = 1){
+            let id = (window.localStorage.getItem("apart_id")) ? window.localStorage.getItem("apart_id") : null 
+            
+            if (id){
+                const url = `${this.baseUrl}api/apartments/getApartmentTransactions.php?apartment_id=${id}`;
+                const options = {
+                    method: "GET",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url
+                }
+                try {
+                    if (load == 1){
+                        this.loading = true;
+                    } 
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.apartment_transactions = response.data.data.apartment_transaction;
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }else{
+                        this.apartment_transactions = null;
                     }  
                 } catch (error) {
                     // //console.log(error);
