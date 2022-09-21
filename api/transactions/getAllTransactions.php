@@ -266,6 +266,8 @@
             respondInternalError($data);
         }
         //return fetched data as array
+
+        $stmt->close();
         
         if($numRow > 0){
             
@@ -273,7 +275,10 @@
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
                 $userid = $row['userid'];
-                $username = $row['fname']. $row['lname'];
+                if ($userid){
+                    $username = $row['fname']. $row['lname'];
+                }
+                
                 $transactionid = $row['transactionid'];
                 $transaction_type = $row['transaction_type'];
                 if ( $transaction_type == 1){
@@ -285,7 +290,11 @@
                 if ( $transaction_type == 3){
                     $type = "Payment for Apartment";
                 }
+                
                 $booking_id = $row['booking_id'];
+                if ( !$userid && $booking_id){
+                    $username = getBookingDetails($connect, $booking_id);
+                }
                 $ordertime = $row['ordertime'];
                 $approvedby = $row['approvedby'];
                 $adminname = $row['admin_name'];

@@ -517,6 +517,34 @@
         return $refno;
     }
 
+    function getBookingDetails($connect, $bookingId){
+        $query = "SELECT `user_id`, `first_name`, `last_name` FROM `bookings` WHERE `booking_id` = ?";
+        $getUser = $connect->prepare($query);
+        $getUser->bind_param("s", $bookingId);
+        $getUser->execute();
+        $result = $getUser->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $row = $result->fetch_assoc();
+            $userid = $row['user_id'];
+            $lastname = $row['last_name'];
+            $firstname = $row['first_name'];
+
+            if ($userid){
+                $user_full_name = getUserFullname($connect, $userid);
+            }else{
+                $user_full_name = $lastname . " ". $firstname; 
+            }
+
+            return $user_full_name;
+
+        }
+        else{
+            return false;
+        }
+    }
+
     function getUserFullname($connect, $userid){
         $query = "SELECT  `email`, `fname`, `lname` FROM `users` WHERE `id` = ?";
         $getUser = $connect->prepare($query);
