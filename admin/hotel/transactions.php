@@ -30,153 +30,67 @@
                                     <div class="nk-block-head nk-block-head-sm">
                                         <div class="nk-block-between g-3">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Transaction Details</h3>
+                                                <h3 class="nk-block-title page-title">Transaction</h3>
                                                 <div class="nk-block-des text-soft">
                                                     <p>Here is our various Transaction.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
-                                                <!-- <ul class="nk-block-tools g-3">
-                                                    <li>
-                                                        <div class="drodown">
-                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <ul class="link-list-opt no-bdr">
-                                                                    <li><a data-bs-toggle="modal" href="#add-stock"><span>Add Stock</span></a></li>
-                                                                    <li><a href="#"><span>Import Expenses</span></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul> -->
-                                            </div>
+                                                <div class="toggle-wrap nk-block-tools-toggle">
+                                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                    <div class="toggle-expand-content" data-content="pageMenu">
+                                                        <ul class="nk-block-tools g-3">
+                                                            <li>
+                                                                <div class="form-control-wrap">
+                                                                    <div class="form-icon form-icon-right">
+                                                                        <em class="icon ni ni-search"></em>
+                                                                    </div>
+                                                                    <input type="text" class="form-control" id="default-04" @keyup='getAllTransactions(4)' v-model ='search' placeholder="Quick search by transaction">
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="drodown">
+                                                                    <a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-bs-toggle="dropdown">Status</a>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <ul class="link-check">
+                                                                            <li v-if="sort == null" class="" :class="{active: class_active}" @click.prevent ="noSort(0)"><a href="#">Show All</a></li>
+                                                                            <li v-if="sort != null" class=""  @click.prevent="noSort(0)"><a href="#">Show All</a></li>
+                                                                            <li v-if="sort == 1" :class="{active: class_active}"  @click.prevent="sortByStatus(1)" class=""><a href="#">Successful</a></li>
+                                                                            <li v-if="sort != 1" class=""  @click.prevent="sortByStatus(1)"><a href="#">Successful</a></li>
+                                                                            <li v-if="sort == 0" :class="{active: class_active}" @click.prevent="sortByStatus(0)" class=""><a href="#">Pending</a></li>
+                                                                            <li v-if="sort != 0" class=""  @click.prevent="sortByStatus(0)"><a href="#">Pending</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <!-- <li>
+                                                                <div class="drodown">
+                                                                    <a href="#" class="dropdown-toggle btn btn-white btn-dim btn-outline-light" data-bs-toggle="dropdown"><em class="d-none d-sm-inline icon ni ni-filter-alt"></em><span><span class="d-none d-md-inline"></span>Type </span><em class="dd-indc icon ni ni-chevron-right"></em></a>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <ul class="link-list-opt no-bdr">
+                                                                        <li v-if="transactionType == null" class="" :class="{active: class_active_type}" @click.prevent ="noSort(0)"><a href="#">Show All</a></li>
+                                                                            <li v-if="transactionType != null" class=""  @click.prevent="noSort(0)"><a href="#">Show All</a></li>
+                                                                            <li v-if="transactionType == 1" :class="{active: class_active_type}"  @click.prevent="sortByTransactionType(1)" class=""><a href="#">Fund Wallet</a></li>
+                                                                            <li v-if="transactionType != 1" class=""  @click.prevent="sortByTransactionType(1)"><a href="#">Fund Wallet</a></li>
+                                                                            <li v-if="transactionType == 2" :class="{active: class_active_type}" @click.prevent="sortByTransactionType(2)" class=""><a href="#">Pay Agent</a></li>
+                                                                            <li v-if="transactionType != 2" class=""  @click.prevent="sortByTransactionType(2)"><a href="#">Pay Agent</a></li>
+                                                                            <li v-if="transactionType == 3" :class="{active: class_active_type}" @click.prevent="sortByTransactionType(3)" class=""><a href="#">Book Apartment</a></li>
+                                                                            <li v-if="transactionType != 3" class=""  @click.prevent="sortByTransactionType(3)"><a href="#">Book Apartment</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </li> -->
+                                                        </ul>
+                                                    </div>
+                                                </div><!-- .toggle-wrap -->
+                                            </div><!-- .nk-block-head-content -->
                                             <!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
                                     <div class="nk-block">
                                         <div class="card card-bordered card-stretch">
                                             <div class="card-inner-group">
-                                                <div class="card-inner position-relative card-tools-toggle">
-                                                    <div class="card-title-group">
-                                                        <div class="card-tools">
-                                                            <!-- <div class="form-inline flex-nowrap gx-3">
-                                                                <div class="form-wrap w-150px">
-                                                                    <select class="form-select js-select2 js-select2-sm" data-search="off" data-placeholder="Bulk Action">
-                                                                        <option value="">Bulk Action</option>
-                                                                        <option value="edit">Edit Selected</option>
-                                                                        <option value="delete">Delete Selected</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="btn-wrap">
-                                                                    <span class="d-none d-md-block"><button class="btn btn-dim btn-outline-light disabled">Apply</button></span>
-                                                                    <span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span>
-                                                                </div>
-                                                            </div> -->
-                                                        </div>
-                                                        <!-- .form-inline -->
-                                                        <!-- .card-tools -->
-                                                        <div class="card-tools me-n1">
-                                                            <ul class="btn-toolbar gx-1">
-                                                                <li>
-                                                                    <a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a>
-                                                                </li><!-- li -->
-                                                                <li class="btn-toolbar-sep"></li><!-- li -->
-                                                                <li>
-                                                                    <div class="toggle-wrap">
-                                                                        <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-menu-right"></em></a>
-                                                                        <div class="toggle-content" data-content="cardTools">
-                                                                            <ul class="btn-toolbar gx-1">
-                                                                                <li class="toggle-close">
-                                                                                    <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-arrow-left"></em></a>
-                                                                                </li><!-- li -->
-                                                                                <li>
-                                                                                    <div class="dropdown">
-                                                                                        <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                                                                                            <div class="dot dot-primary"></div>
-                                                                                            <em class="icon ni ni-filter-alt"></em>
-                                                                                        </a>
-                                                                                        <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
-                                                                                            <div class="dropdown-head">
-                                                                                                <span class="sub-title dropdown-title">Filter By Status</span>
-                                                                                                <span class="sub-title dropdown-title">Filter By Type</span>
-                                                                                                <!-- <div class="dropdown">
-                                                                                                    <a href="#" class="btn btn-sm btn-icon">
-                                                                                                        <em class="icon ni ni-more-h"></em>
-                                                                                                    </a>
-                                                                                                </div> -->
-                                                                                            </div>
-
-                                                                                            <div style="display: flex; flex-direction: row; justify-content: space-between;" class="dropdown-body dropdown-body-rg">
-                                                                                                <ul class="link-check">
-                                                                                                    <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
-                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
-                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
-                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
-                                                                                                </ul>
-
-                                                                                                <ul class="link-check">
-                                                                                                    <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
-                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
-                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
-                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
-                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
-                                                                                                </ul>
-                                                                                            </div>
-
-                                                                                            
-
-                                                                                            <div class="dropdown-foot between">
-                                                                                                <a class="clickable" href="#">Reset Filter</a>
-                                                                                                <a href="#">Save Filter</a>
-                                                                                            </div>
-                                                                                        </div><!-- .filter-wg -->
-                                                                                    </div><!-- .dropdown -->
-                                                                                </li><!-- li -->
-                                                                                <li>
-                                                                                    <div class="dropdown">
-                                                                                        <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                                                                                            <em class="icon ni ni-setting"></em>
-                                                                                        </a>
-                                                                                        <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                                                            
-                                                                                            <ul class="link-check">
-                                                                                                <li><span>Show</span></li>
-                                                                                                <li v-if="per_page == 10" class="" :class="{active: class_active}" @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
-                                                                                                <li v-if="per_page != 10" class=""  @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
-                                                                                                <li v-if="per_page == 20" :class="{active: class_active}"  @click.prevent="setNoPerPage(20)" class=""><a href="#">20</a></li>
-                                                                                                <li v-if="per_page != 20" class=""  @click.prevent="setNoPerPage(20)"><a href="#">20</a></li>
-                                                                                                <li v-if="per_page == 50" :class="{active: class_active}" @click.prevent="setNoPerPage(50)" class=""><a href="#">50</a></li>
-                                                                                                <li v-if="per_page != 50" class=""  @click.prevent="setNoPerPage(50)"><a href="#">50</a></li>
-                                                                                            </ul>
-                                                                                            <!-- <ul class="link-check">
-                                                                                                <li><span>Order</span></li>
-                                                                                                <li class="active"><a href="#">DESC</a></li>
-                                                                                                <li><a href="#">ASC</a></li>
-                                                                                            </ul> -->
-                                                                                        </div>
-                                                                                    </div><!-- .dropdown -->
-                                                                                </li><!-- li -->
-                                                                            </ul><!-- .btn-toolbar -->
-                                                                        </div><!-- .toggle-content -->
-                                                                    </div><!-- .toggle-wrap -->
-                                                                </li><!-- li -->
-                                                            </ul><!-- .btn-toolbar -->
-                                                        </div><!-- .card-tools -->
-                                                    </div><!-- .card-title-group -->
-                                                    <div class="card-search search-wrap" data-search="search">
-                                                        <div class="card-body">
-                                                            <div class="search-content">
-                                                                <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input @keyup="getAllHosttype(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by transation id or username">
-                                                                <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
-                                                            </div>
-                                                        </div>
-                                                    </div><!-- .card-search -->
-                                                </div>
-                                                <!-- .card-inner -->
+                                                
                                                 <div v-if="transactions" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">
@@ -308,46 +222,56 @@
                                                         </div><!-- .nk-tb-item  -->
                                                     </div><!-- .nk-tb-list -->
                                                 </div>
-                                                <div v-if="transactions" class="card">
-                                                    <div class="card-inner">
-                                                        <div class="nk-block-between-md g-3">
-                                                            <div class="g">
-                                                                <ul class="pagination justify-content-center justify-content-md-start">
-                                                                    <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
-                                                                    <li v-if="kor_page > 1" @click="nav_previousPage" class="page-item"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
-                                                                    
-                                                                    <li class="page-item" v-for="page in kor_total_page">
-                                                                        <a v-if='page < 7'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        
-                                                                    </li>
-                                                                    <span v-if="kor_total_page > 7" class="page-link"><em class="icon ni ni-more-h"></em></span>
-                                                                    <li class="page-item" v-for="page in kor_total_page">
-                                                                        <a v-if='page > 13'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
-                                                                    </li>
-                                                                    
-                                                                    <li v-if="kor_page < kor_total_page"  class="page-item" @click="nav_nextPage"><a class="page-link"><em class="icon ni ni-chevrons-right"></em></a></li>
-                                                                    <li v-if="kor_page == kor_total_page" class="page-item disabled"><a  class="page-link" href="#"><em class="icon ni ni-chevrons-right"></em></a></li>
-                                                                </ul><!-- .pagination -->
-                                                            </div>
-                                                            <div class="g">
-                                                                <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                                                    <div>Page</div>
-                                                                    <div>
-                                                                        <select v-if="kor_total_page > 1" @change="selectPage(kor_page)" v-model="kor_page" class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                                                            <option v-for="page in kor_total_page" v-bind:value="page">{{page}}</option>
-                                                                        </select>
-                                                                        <select v-if="kor_total_page == 1" class="form-select js-select2 " data-search="on" data-dropdown="xs center">
-                                                                            <option value="1">1</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div>OF {{kor_total_page}}</div>
+                                                <div v-if="transactions" class="card-inner">
+                                                    <div class="nk-block-between-md g-3">
+                                                        <div class="g">
+                                                        <ul class="pagination justify-content-end">
+                                                            <li v-if="currentPage == 1" class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item">
+                                                                <a @click.prevent="previousPage()" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link">{{currentPage}} of {{totalPage}}</a></li>
+                                                            <li v-if="currentPage < totalPage" class="page-item">
+                                                                <a v-on:click.prevent="nextPage()" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                            <li v-else class="page-item disabled">
+                                                                <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                            </li>
+                                                        </ul><!-- .pagination -->
+                                                        </div>
+                                                        <!-- <div class="g">
+                                                            <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+                                                                <div>Page</div>
+                                                                <div>
+                                                                    <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
+                                                                        <option value="page-1">1</option>
+                                                                        <option value="page-2">2</option>
+                                                                        <option value="page-4">4</option>
+                                                                        <option value="page-5">5</option>
+                                                                        <option value="page-6">6</option>
+                                                                        <option value="page-7">7</option>
+                                                                        <option value="page-8">8</option>
+                                                                        <option value="page-9">9</option>
+                                                                        <option value="page-10">10</option>
+                                                                        <option value="page-11">11</option>
+                                                                        <option value="page-12">12</option>
+                                                                        <option value="page-13">13</option>
+                                                                        <option value="page-14">14</option>
+                                                                        <option value="page-15">15</option>
+                                                                        <option value="page-16">16</option>
+                                                                        <option value="page-17">17</option>
+                                                                        <option value="page-18">18</option>
+                                                                        <option value="page-19">19</option>
+                                                                        <option value="page-20">20</option>
+                                                                    </select>
                                                                 </div>
-                                                            </div><!-- .pagination-goto -->
-                                                        </div><!-- .nk-block-between -->
-                                                    </div>
-                                                </div>
+                                                                <div>OF 102</div>
+                                                            </div>
+                                                        </div>.pagination-goto -->
+                                                    </div><!-- .nk-block-between -->
+                                                </div><!-- .card-inner -->
                                                 <!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
                                         </div><!-- .card -->

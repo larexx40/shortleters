@@ -76,6 +76,7 @@ let admin = Vue.createApp({
     data(){
         return{
             //lanre data @S
+            class_active_type: null,
             sms: null,
             payment: null,
             buildingTypes: null,
@@ -97,6 +98,7 @@ let admin = Vue.createApp({
             booking: null,
             features: null,
             unfeatures: null,
+            transactionType: null,
             iosversion: null,
             androidversion: null,
             webversion: null,
@@ -164,7 +166,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3NTM0NjMsImlzcyI6IkxPRyIsIm5iZiI6MTY2Mzc1MzQ2MywiZXhwIjoxNjYzODI3MjYzLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.TlI2rKYjyUGoYzl0xD4ARfVuQg9_ilEY-reU3Nr2Ea3_HiA21-tGVGI2NW1WSE_8cDpWaUnRAcYO6b6nG1-ejg',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3NjEwNzUsImlzcyI6IkxPRyIsIm5iZiI6MTY2Mzc2MTA3NSwiZXhwIjoxNjYzODM0ODc1LCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.Z5GhV715cQoluQJUZTsq1uzKnc5Wi6bxK5ovkKJz7oZYMjCKo9Wnr5kjWEusx0-b9itu_UjMWAPivbX2DMpKhg',
             email: null,
             ref_link: null,
             admin_details: null,
@@ -2992,15 +2994,17 @@ let admin = Vue.createApp({
         },
        
         async updateSystemSettings(){
+            console.log(this.systemSettings);
             if(this.systemSettings.name == null||this.systemSettings.iosversion == null||this.systemSettings.androidversion == null||this.systemSettings.webversion == null||
-                this.systemSettings.activesmssystem == null||this.systemSettings.activemailsystem == null||this.systemSettings.min_apart_photo == null||this.systemSettings.max_apart_highlights == null||
-                this.systemSettings.charge_perc == null || this.systemSettings.discount_perc == null||this.systemSettings.discount_guest == null){
+                this.systemSettings.activeSmsCode == null||this.systemSettings.activeEmailCode == null|| this.systemSettings.activePaymentCode == null || 
+                this.systemSettings.minApartmentPhotos == null||this.systemSettings.maxApartmentHighlights == null||
+                this.systemSettings.chargePercentage == null || this.systemSettings.discountPercentage == null||this.systemSettings.discount_guest == null){
                 new Toasteur().error("Kindly fill all fields")
             }else{
-                if(isNaN(this.systemSettings.min_apart_photo)){
+                if(isNaN(this.systemSettings.minApartmentPhotos)){
                     new Toasteur().error("pass in valid minimun photo")  
                 }
-                if(isNaN(this.systemSettings.max_apart_highlights)){
+                if(isNaN(this.systemSettings.maxApartmentHighlights)){
                     new Toasteur().error("pass in valid maximum Highlighs")  
                 }
                 let data = new FormData();
@@ -3009,12 +3013,13 @@ let admin = Vue.createApp({
                 data.append('iosversion', this.systemSettings.iosversion );
                 data.append('androidversion', this.systemSettings.androidversion );
                 data.append('webversion', this.systemSettings.webversion );
-                data.append('activesmssystem', this.systemSettings.activesmssystem );
-                data.append('activemailsystem', this.systemSettings.activemailsystem );
-                data.append('min_apart_photo', this.systemSettings.min_apart_photo );
-                data.append('max_apart_highlights', this.systemSettings.max_apart_highlights );
-                data.append('charge_perc', this.systemSettings.charge_perc );
-                data.append('discount_perc', this.systemSettings.discount_perc );
+                data.append('activesmssystem', this.systemSettings.activeSmsCode );
+                data.append('activemailsystem', this.systemSettings.activeEmailCode );
+                data.append('activepaymentsystem', this.systemSettings.activePaymentCode );
+                data.append('min_apart_photo', this.systemSettings.minApartmentPhotos );
+                data.append('max_apart_highlights', this.systemSettings.maxApartmentHighlights );
+                data.append('charge_perc', this.systemSettings.chargePercentage );
+                data.append('discount_perc', this.systemSettings.discountPercentage );
                 data.append('discount_guest', this.systemSettings.discount_guest );
 
                 const url = `${this.baseUrl}api/systemSettings/updateSystemSettings.php`;
@@ -3034,7 +3039,7 @@ let admin = Vue.createApp({
                     const response = await axios(options); 
                     if(response.data.status){
                         new Toasteur().success(response.data.text);
-                        await this.getSystemSettings();
+                        window.location.href='system_settings.php'
                         
                     }
                 } catch (error) {
@@ -4645,11 +4650,12 @@ let admin = Vue.createApp({
         //transactions
         async getAllTransactions(load = 1){
             let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}&sortType=${this.transactionType}` : "";  
+            // let type = (this.transactionType) ? `&sortType=${this.transactionType}`: ''; 
             let page = ( this.currentPage )? this.currentPage : 1;
             let noPerPage = ( this.per_page ) ? this.per_page : 4;
             const url = `${this.baseUrl}api/transactions/getAllTransactions.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            //console.log('URL', url);
+            console.log('URL', url);
             const options = {
                 method: "GET",
                 headers: { 
@@ -5010,9 +5016,11 @@ let admin = Vue.createApp({
                     const response = await axios(options);
                     if(response.data.status){
                         new Toasteur().success("Status Changed")
-                        this.getAllFeature();      
+                        this.getAllFeature();
+                        this.getAllUnfeatureApartment();      
                     }else{
                         this.getAllFeature();
+                        this.getAllUnfeatureApartment();
                     }     
                 } catch (error) {
                     // //console.log(error);
@@ -7832,6 +7840,7 @@ let admin = Vue.createApp({
         async noSort(){
             this.loading = true
             this.sort = null;
+            this.transactionType = null,
             this.currentPage =null;
             this.totalData =null;
             this.totalPage =null;
@@ -8018,6 +8027,18 @@ let admin = Vue.createApp({
             //console.log('sortByDays', days);
             if(webPage == "posts.php"){
                 await this.getAllBlog();
+            }
+        },
+        async sortByTransactionType(type){
+            this.transactionType = type;
+            this.loading = true;
+            this.currentPage =null;
+            this.totalData =null;
+            this.totalPage =null;
+            
+            if(webPage == 'transactions.php'){
+                this.class_active_type = true;
+                this.getAllTransactions()
             }
         },
         async sortByDraft(draft){

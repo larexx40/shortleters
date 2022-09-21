@@ -77,7 +77,7 @@
         $offset = ($page_no - 1) * $noPerPage;
 
 
-        if($status > 0){
+        if($sort > 0){
             if(is_numeric($status) && !is_numeric($transactionType)){//get where only status is passed
                 //sort with status
                 if (!empty($search) && $search!="" && $search!=' '){
@@ -144,9 +144,7 @@
 
                 }else{
                     //get without search
-                    $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
-                                LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                WHERE `transaction_type` =?";
+                    $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby WHERE user_transactions.transaction_type = ?";
                     $stmt= $connect->prepare($sqlQuery);
                     $stmt->bind_param("s", $transactionType);
                     $stmt->execute();
@@ -154,7 +152,7 @@
                     $total_numRow = $result->num_rows;
                     $pages = ceil($total_numRow / $noPerPage);
 
-                    $sqlQuery = "$sqlQuery ORDER BY id DESC LIMIT ?,?";
+                    $sqlQuery = "$sqlQuery ORDER BY user_transactions.id DESC LIMIT ?, ?";
                     $stmt= $connect->prepare($sqlQuery);
                     $stmt->bind_param("sss", $transactionType, $offset, $noPerPage);
                     $stmt->execute();
@@ -188,7 +186,7 @@
                     //get without search
                     $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                WHERE `transaction_type` =? AND user_transactions.status = ?";
+                                WHERE user_transactions.transaction_type =? AND user_transactions.status = ?";
                     $stmt= $connect->prepare($sqlQuery);
                     $stmt->bind_param("ss", $transactionType, $status);
                     $stmt->execute();
@@ -204,57 +202,16 @@
                     $numRow = $result->num_rows;
                 }
             }
-            if(!is_numeric($status) && !is_numeric($transactionType)){//get where none is passed
-                $errordesc="Pass in transaction_type or status";
-                $linktosolve="htps://";
-                $hint=["Ensure you pass a valid Email","Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-                $errordata=returnError7003($errordesc,$linktosolve,$hint);
-                $text="pass in transaction_type or status";
-                $method=getenv('REQUEST_METHOD');
-                $data=returnErrorArray($text,$method,$endpoint,$errordata);
-                respondBadRequest($data);
-            }
-
-            //sort with status
-            if (!empty($search) && $search!="" && $search!=' '){
-                //search user_transactions from database 
-                $searchParam = "%{$search}%"; 
-                $searchQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
-                                LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                WHERE (users.fname like ? OR users.lname  like ?) AND user_transactions.status =?";
-                $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("sss", $searchParam, $searchParam, $status);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
-                $pages = ceil($total_numRow / $noPerPage);
-
-                $searchQuery = "$searchQuery ORDER BY id DESC LIMIT ?,?";
-                $stmt= $connect->prepare($searchQuery);
-                $stmt->bind_param("sssss",$searchParam, $searchParam, $status, $offset, $noPerPage);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $numRow = $result->num_rows;  
-
-            }else{
-                //get without search
-                $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
-                            LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                            WHERE user_transactions.status =?";
-                $stmt= $connect->prepare($sqlQuery);
-                $stmt->bind_param("s", $status);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
-                $pages = ceil($total_numRow / $noPerPage);
-
-                $sqlQuery = "$sqlQuery ORDER BY id DESC LIMIT ?,?";
-                $stmt= $connect->prepare($sqlQuery);
-                $stmt->bind_param("sss", $status, $offset, $noPerPage);
-                $stmt->execute();
-                $result= $stmt->get_result();
-                $numRow = $result->num_rows;
-            }
+            // if(is_numeric($status) && !is_numeric($transactionType)){//get where none is passed
+            //     $errordesc="Pass in transaction_type or status";
+            //     $linktosolve="htps://";
+            //     $hint=["Ensure you pass a valid Email","Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            //     $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            //     $text="pass in transaction_type or status";
+            //     $method=getenv('REQUEST_METHOD');
+            //     $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            //     respondBadRequest($data);
+            // }
         }else{
             //no need to sort
             if (!empty($search) && $search!="" && $search!=' '){
@@ -313,6 +270,7 @@
         $stmt->close();
         
         if($numRow > 0){
+            
             $allResponse = [];
             while($row = $result->fetch_assoc()){
                 $id = $row['id'];
@@ -351,7 +309,7 @@
                 $statusCode = $row['status'];
 
                 if($statusCode == 1){
-                    $status = "Completed";
+                    $status = "Successful";
                 }else{
                     $status = "Pending";
                 }

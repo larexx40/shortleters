@@ -121,7 +121,7 @@
                                                             Kindly note that this booking request form does not reflect availability. <br> Also note
                                                             that filling this form does not guarantee booking, bookings are only guaranteed <br>
                                                             with an issued receipt after payment is fully acknowledged. A receipt is the only <br>
-                                                            binding document between Shortleters Limited and Victor.
+                                                            binding document between Shortleters Limited and {{booking.first_name}} {{booking.last_name}}.
                                                         </span>
                                                     </div>
                                                 </div><!-- .invoice-bills -->
