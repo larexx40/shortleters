@@ -58,8 +58,8 @@
                                             <div class="card-inner-group">
                                                 <div class="card-inner position-relative card-tools-toggle">
                                                     <div class="card-title-group">
-                                                        <!-- <div class="card-tools">
-                                                            <div class="form-inline flex-nowrap gx-3">
+                                                        <div class="card-tools">
+                                                            <!-- <div class="form-inline flex-nowrap gx-3">
                                                                 <div class="form-wrap w-150px">
                                                                     <select class="form-select js-select2 js-select2-sm" data-search="off" data-placeholder="Bulk Action">
                                                                         <option value="">Bulk Action</option>
@@ -71,11 +71,11 @@
                                                                     <span class="d-none d-md-block"><button class="btn btn-dim btn-outline-light disabled">Apply</button></span>
                                                                     <span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span>
                                                                 </div>
-                                                            </div>
-                                                        </div> -->
+                                                            </div> -->
+                                                        </div>
+                                                        <!-- .form-inline -->
                                                         <!-- .card-tools -->
                                                         <div class="card-tools me-n1">
-                                                            <div></div>
                                                             <ul class="btn-toolbar gx-1">
                                                                 <li>
                                                                     <a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a>
@@ -97,44 +97,37 @@
                                                                                         </a>
                                                                                         <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
                                                                                             <div class="dropdown-head">
-                                                                                                <span class="sub-title dropdown-title">Filter Report</span>
-                                                                                                <div class="dropdown">
+                                                                                                <span class="sub-title dropdown-title">Filter By Status</span>
+                                                                                                <span class="sub-title dropdown-title">Filter By Type</span>
+                                                                                                <!-- <div class="dropdown">
                                                                                                     <a href="#" class="btn btn-sm btn-icon">
                                                                                                         <em class="icon ni ni-more-h"></em>
                                                                                                     </a>
-                                                                                                </div>
+                                                                                                </div> -->
                                                                                             </div>
-                                                                                            <div class="dropdown-body dropdown-body-rg">
-                                                                                                <div class="row gx-6 gy-3">
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Status</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">Any Status</option>
-                                                                                                                <option value="available">Available</option>
-                                                                                                                <option value="low">Low</option>
-                                                                                                                <option value="out">Out of Stock</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="overline-title overline-title-alt">Date</label>
-                                                                                                            <select class="form-select js-select2 js-select2-sm">
-                                                                                                                <option value="any">All Time</option>
-                                                                                                                <option value="week">Last 7 Days</option>
-                                                                                                                <option value="month">Last 30 Days</option>
-                                                                                                                <option value="six">Last 6 Months</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="form-group">
-                                                                                                            <button type="button" class="btn btn-secondary">Filter</button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
+
+                                                                                            <div style="display: flex; flex-direction: row; justify-content: space-between;" class="dropdown-body dropdown-body-rg">
+                                                                                                <ul class="link-check">
+                                                                                                    <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
+                                                                                                </ul>
+
+                                                                                                <ul class="link-check">
+                                                                                                    <li v-if="kor_sort == null" class="" :class="{active: class_active}" @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort != null" class=""  @click.prevent="setSort(null)"><a href="#">Show All</a></li>
+                                                                                                    <li v-if="kor_sort == 1" :class="{active: class_active}"  @click.prevent="setSort(1)" class=""><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort != 1" class=""  @click.prevent="setSort(1)"><a href="#">Active</a></li>
+                                                                                                    <li v-if="kor_sort == 0" :class="{active: class_active}" @click.prevent="setSort(0)" class=""><a href="#">Inactive</a></li>
+                                                                                                    <li v-if="kor_sort != 0" class=""  @click.prevent="setSort(0)"><a href="#">Inactive</a></li>
+                                                                                                </ul>
                                                                                             </div>
+
+                                                                                            
+
                                                                                             <div class="dropdown-foot between">
                                                                                                 <a class="clickable" href="#">Reset Filter</a>
                                                                                                 <a href="#">Save Filter</a>
@@ -148,17 +141,21 @@
                                                                                             <em class="icon ni ni-setting"></em>
                                                                                         </a>
                                                                                         <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
+                                                                                            
                                                                                             <ul class="link-check">
                                                                                                 <li><span>Show</span></li>
-                                                                                                <li class="active"><a href="#">10</a></li>
-                                                                                                <li><a href="#">20</a></li>
-                                                                                                <li><a href="#">50</a></li>
+                                                                                                <li v-if="per_page == 10" class="" :class="{active: class_active}" @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page != 10" class=""  @click.prevent="setNoPerPage(10)"><a href="#">10</a></li>
+                                                                                                <li v-if="per_page == 20" :class="{active: class_active}"  @click.prevent="setNoPerPage(20)" class=""><a href="#">20</a></li>
+                                                                                                <li v-if="per_page != 20" class=""  @click.prevent="setNoPerPage(20)"><a href="#">20</a></li>
+                                                                                                <li v-if="per_page == 50" :class="{active: class_active}" @click.prevent="setNoPerPage(50)" class=""><a href="#">50</a></li>
+                                                                                                <li v-if="per_page != 50" class=""  @click.prevent="setNoPerPage(50)"><a href="#">50</a></li>
                                                                                             </ul>
-                                                                                            <ul class="link-check">
+                                                                                            <!-- <ul class="link-check">
                                                                                                 <li><span>Order</span></li>
                                                                                                 <li class="active"><a href="#">DESC</a></li>
                                                                                                 <li><a href="#">ASC</a></li>
-                                                                                            </ul>
+                                                                                            </ul> -->
                                                                                         </div>
                                                                                     </div><!-- .dropdown -->
                                                                                 </li><!-- li -->
@@ -173,12 +170,13 @@
                                                         <div class="card-body">
                                                             <div class="search-content">
                                                                 <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                                                                <input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by product name or id">
+                                                                <input @keyup="getAllHosttype(4)" v-model="search" type="text" class="form-control border-transparent form-focus-none" placeholder="Search by transation id or username">
                                                                 <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
-                                                </div><!-- .card-inner -->
+                                                </div>
+                                                <!-- .card-inner -->
                                                 <div v-if="transactions" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">

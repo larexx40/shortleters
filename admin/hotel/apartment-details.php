@@ -40,10 +40,7 @@
                                                     <a class="nav-link active" data-bs-toggle="tab" href="#personal-info"><span>Personal information</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a @click="getOrderAndTransaction" class="nav-link" data-bs-toggle="tab" href="#profile-overview"><span>Overview</span></a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a @click="getUserOrders(3)" class="nav-link" data-bs-toggle="tab" href="#profile-orders"><span>Bookings</span></a>
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#profile-overview"><span>Overview</span></a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a @click="getApartmentImagesById(3)" class="nav-link" data-bs-toggle="tab" href="#profile-notifications"><span>Apartment Images</span> </a>

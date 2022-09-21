@@ -157,7 +157,8 @@
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-search -->
-                                                </div><!-- .card-inner -->
+                                                </div>
+                                                <!-- .card-inner -->
                                                 <div v-if="all_host_type" class="card-inner p-0">
                                                     <div class="nk-tb-list nk-tb-ulist">
                                                         <div class="nk-tb-item nk-tb-head">

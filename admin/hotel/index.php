@@ -3,7 +3,7 @@
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
-    <div id="admin">
+    <div id="admin" v-cloak>
         <?php include "loading.php"; ?>
         <div class="nk-app-root">
             <!-- main @s -->
@@ -29,7 +29,7 @@
                                                     <p>Welcome to DashLite Dashboard Template.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
-                                            <div class="nk-block-head-content">
+                                            <!-- <div class="nk-block-head-content">
                                                 <div class="toggle-wrap nk-block-tools-toggle">
                                                     <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
                                                     <div class="toggle-expand-content" data-content="pageMenu">
@@ -50,7 +50,8 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            </div><!-- .nk-block-head-content -->
+                                            </div> -->
+                                            <!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
                                     <div class="nk-block">
@@ -66,12 +67,16 @@
                                                                 <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="Total Booking"></em>
                                                             </div>
                                                         </div>
-                                                        <div class="card-amount">
-                                                            <span class="amount"> 11,230 </span>
+                                                        <div v-if="bookings" class="card-amount">
+                                                            <span class="amount"> {{bookings.length}} </span>
+                                                            <span class="change down text-danger"><em class="icon ni ni-arrow-long-down"></em>1.93%</span>
+                                                        </div>
+                                                        <div v-if="!bookings" class="card-amount">
+                                                            <span class="amount"> No Booking Yet on The Platform </span>
                                                             <span class="change down text-danger"><em class="icon ni ni-arrow-long-down"></em>1.93%</span>
                                                         </div>
                                                         <div class="invest-data">
-                                                            <div class="invest-data-amount g-2">
+                                                            <!-- <div class="invest-data-amount g-2">
                                                                 <div class="invest-data-history">
                                                                     <div class="title">This Month</div>
                                                                     <div class="amount">1913</div>
@@ -80,7 +85,7 @@
                                                                     <div class="title">This Week</div>
                                                                     <div class="amount">1125</div>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="invest-data-ck">
                                                                 <canvas class="iv-data-chart" id="totalBooking"></canvas>
                                                             </div>
@@ -93,17 +98,20 @@
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
                                                             <div class="card-title">
-                                                                <h6 class="title">Rooms Available</h6>
+                                                                <h6 class="title">Apartments Available</h6>
                                                             </div>
                                                             <div class="card-tools">
                                                                 <em class="card-hint icon ni ni-help-fill" data-bs-toggle="tooltip" data-bs-placement="left" title="Total Room"></em>
                                                             </div>
                                                         </div>
-                                                        <div class="card-amount">
-                                                            <span class="amount"> 312 </span>
+                                                        <div v-if="all_apartments" class="card-amount">
+                                                            <span class="amount"> {{all_apartments.length}} </span>
+                                                        </div>
+                                                        <div v-if="!all_apartments" class="card-amount">
+                                                            <span class="amount"> 0 Apartment Available </span>
                                                         </div>
                                                         <div class="invest-data">
-                                                            <div class="invest-data-amount g-2">
+                                                            <!-- <div class="invest-data-amount g-2">
                                                                 <div class="invest-data-history">
                                                                     <div class="title">Booked (Month)</div>
                                                                     <div class="amount">913</div>
@@ -112,7 +120,7 @@
                                                                     <div class="title">Booked (Week)</div>
                                                                     <div class="amount">125</div>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="invest-data-ck">
                                                                 <canvas class="iv-data-chart" id="totalRoom"></canvas>
                                                             </div>
@@ -120,7 +128,7 @@
                                                     </div>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
-                                            <div class="col-md-4">
+                                            <!-- <div class="col-md-4">
                                                 <div class="card card-bordered  card-full">
                                                     <div class="card-inner">
                                                         <div class="card-title-group align-start mb-0">
@@ -151,8 +159,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
+                                                </div>
+                                            </div> -->
+                                            <!-- .col -->
                                             <div class="col-xxl-4">
                                                 <div class="card card-bordered card-full">
                                                     <div class="card-inner d-flex flex-column h-100">
@@ -232,7 +241,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div><!-- .col -->
+                                            </div>
+                                            <!-- .col -->
                                             <div class="col-md-6 col-xxl-5">
                                                 <div class="card card-bordered h-100">
                                                     <div class="card-inner">

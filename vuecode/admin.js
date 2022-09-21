@@ -344,6 +344,11 @@ let admin = Vue.createApp({
         if(webPage == 'house_rule.php'){
             await this.getAllHouseRules();
         }
+        if (webPage === "index.php"){
+            await this.getAllBookings();
+            await this.getAllApartments(3,3);
+            await this.getAllUsers();
+        }
         if(webPage == 'bookings.php'){
             await this.getAllBookings();
         }
