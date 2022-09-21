@@ -38,7 +38,7 @@
                                                 <li class="nav-item">
                                                     <a class="nav-link active" data-bs-toggle="tab" href="#personal-info"><em class="icon ni ni-user-circle-fill"></em><span>Personal information</span></a>
                                                 </li>
-                                                <li class="nav-item">
+                                                <!-- <li class="nav-item">
                                                     <a class="nav-link" data-bs-toggle="tab" href="#profile-overview"><em class="icon ni ni-eye-fill"></em><span>Overviews</span></a>
                                                 </li>
                                                 <li class="nav-item">
@@ -46,7 +46,7 @@
                                                 </li>
                                                 <li class="nav-item nav-item-trigger">
                                                     <a href="#" class="btn btn-icon btn-trigger"><em class="icon ni ni-edit"></em></a>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                             <div class="card-inner">
                                                 <div class="tab-content">
@@ -56,7 +56,7 @@
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">Username</span>
-                                                                        <span class="profile-ud-value">{{getAdmin_details.Username}}</span>
+                                                                        <span class="profile-ud-value">{{getAdmin_details.username}}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item">
@@ -65,12 +65,12 @@
                                                                         <span class="profile-ud-value">{{getAdmin_details.name}}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <!-- <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">Address</span>
                                                                         <span class="profile-ud-value">{{getAdmin_details.address}}</span>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">Email
@@ -82,7 +82,7 @@
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">Status</span>
-                                                                        <span v-if='getAdmin_details.status == 1 || getAdmin_details.status == "Active"'class="profile-ud-value text-seccess">{{getAdmin_details.status}}</span>
+                                                                        <span v-if='getAdmin_details.status == 1 || getAdmin_details.status == "Active"'class="profile-ud-value text-success">{{getAdmin_details.status}}</span>
                                                                         <span v-else class="profile-ud-value text-danger">{{getAdmin_details.status}}</span>
                                                                     </div>
                                                                 </div>

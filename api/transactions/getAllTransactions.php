@@ -77,7 +77,7 @@
         $offset = ($page_no - 1) * $noPerPage;
 
 
-        if($status > 0){
+        if($sort > 0){
             if(is_numeric($status) && !is_numeric($transactionType)){//get where only status is passed
                 //sort with status
                 if (!empty($search) && $search!="" && $search!=' '){
@@ -143,6 +143,7 @@
                     $numRow = $result->num_rows;  
 
                 }else{
+                    echo $transactionType;
                     //get without search
                     $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
@@ -185,10 +186,11 @@
                     $numRow = $result->num_rows;  
 
                 }else{
+                    echo $transactionType. " ". $status;
                     //get without search
                     $sqlQuery = "SELECT user_transactions.id, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, admin.name AS admin_name, user_transactions.status, `approvaltype`,`amttopay`, users.fname, users.lname FROM `user_transactions` 
                                 LEFT JOIN users ON users.id = user_transactions.userid LEFT JOIN admin on admin.id = user_transactions.approvedby
-                                WHERE `transaction_type` =? AND user_transactions.status = ?";
+                                WHERE user_transactions.transaction_type =? AND user_transactions.status = ?";
                     $stmt= $connect->prepare($sqlQuery);
                     $stmt->bind_param("ss", $transactionType, $status);
                     $stmt->execute();
@@ -342,7 +344,7 @@
                 $statusCode = $row['status'];
 
                 if($statusCode == 1){
-                    $status = "Completed";
+                    $status = "Successful";
                 }else{
                     $status = "Pending";
                 }

@@ -119,7 +119,7 @@
         if ( $updateStatus->execute()){
             
             $data = [];
-            $text= "Apartment Feature ". $changeStatusText;
+            $text= "Apartment Feature ". $message;
             $status = true;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);

@@ -81,7 +81,7 @@
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="occupation_or_work">Occupation / WorkPlace</label>
-                                                            <input type="text" v-model="booking_details.occupation_or_work" class="form-control" id="occupation_or_work" placeholder="Occupation / Workplace">
+                                                            <input type="text" v-model="booking_details.occupation_or_workplace" class="form-control" id="occupation_or_work" placeholder="Occupation / Workplace">
                                                         </div>
                                                     </div>
                                                     <!--col-->
@@ -134,18 +134,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
-                                                        <div v-if="all_apartments" class="form-group">
-                                                            <label class="form-label">Payment Status</label>
-                                                            <div class="form-control-wrap">
-                                                                <select v-model="booking_details.paid_code" class="form-select js-select2">
-                                                                    <option value="null">Select Payment Status</option>
-                                                                    <option value="0">Not Paid</option>
-                                                                    <option value="1">Paid</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="total-person">Total Person</label>
                                                             <input type="number" v-model="booking_details.no_of_people" class="form-control" id="total-person" placeholder="Total Person">
@@ -170,7 +158,7 @@
                                                                 <div class="form-icon form-icon-right">
                                                                     <em class="icon"></em>
                                                                 </div>
-                                                                <input type="date" v-model="booking_details.prefferred_check_out" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                                                                <input type="date" @change="fetchPriceAndId" v-model="booking_details.prefferred_check_out" class="form-control" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
                                                             </div>
                                                         </div>
                                                     </div>

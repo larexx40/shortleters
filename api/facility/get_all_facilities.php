@@ -87,8 +87,8 @@
                 $queryStmt->bind_param("sss", $status, $searching, $searching );
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
-                $total_pg_found =  ceil($num_row / $no_per_page);
+                $total_num_row = $result->num_rows;
+                $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
@@ -98,7 +98,7 @@
                 $num_row = $result->num_rows; 
             }else{
                 // get the total number of pages
-                $query = "SELECT  `facility_id`, `name`, `description`, `created_at`, `updated_at`, `status` FROM `facilities` WHERE name LIKE ? OR icon LIKE ?";
+                $query = "SELECT  `facility_id`, `name`, `description`, `created_at`, `updated_at`, `status` FROM `facilities` WHERE name LIKE ? OR description LIKE ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ss", $searching, $searching);
                 $queryStmt->execute();

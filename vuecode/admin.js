@@ -76,6 +76,7 @@ let admin = Vue.createApp({
     data(){
         return{
             //lanre data @S
+            class_active_type: null,
             sms: null,
             payment: null,
             buildingTypes: null,
@@ -97,6 +98,7 @@ let admin = Vue.createApp({
             booking: null,
             features: null,
             unfeatures: null,
+            transactionType: null,
             iosversion: null,
             androidversion: null,
             webversion: null,
@@ -164,7 +166,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3MzAzMTAsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzczMDMxMCwiZXhwIjoxNjYzODA0MTEwLCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.T5x3u60ISHcaPcMwbiuZ7sWBA1fBfb9G99abHi2kEP27VACGtFKzOGJ6VclL0fqdom37-wJZvZSKDtZfx8e5eA',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3NjEwNzUsImlzcyI6IkxPRyIsIm5iZiI6MTY2Mzc2MTA3NSwiZXhwIjoxNjYzODM0ODc1LCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.Z5GhV715cQoluQJUZTsq1uzKnc5Wi6bxK5ovkKJz7oZYMjCKo9Wnr5kjWEusx0-b9itu_UjMWAPivbX2DMpKhg',
             email: null,
             ref_link: null,
             admin_details: null,
@@ -225,6 +227,7 @@ let admin = Vue.createApp({
             apartment_img: null,
             apartment: null,
             apartments_and_images: null,
+            apartment_transactions: null,
             // currency
             all_currencies: null,
             currency: null,
@@ -342,6 +345,11 @@ let admin = Vue.createApp({
         }
         if(webPage == 'house_rule.php'){
             await this.getAllHouseRules();
+        }
+        if (webPage === "index.php"){
+            await this.getAllBookings();
+            await this.getAllApartments(3,3);
+            await this.getAllUsers();
         }
         if(webPage == 'bookings.php'){
             await this.getAllBookings();
@@ -4638,11 +4646,12 @@ let admin = Vue.createApp({
         //transactions
         async getAllTransactions(load = 1){
             let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}&sortType=${this.transactionType}` : "";  
+            // let type = (this.transactionType) ? `&sortType=${this.transactionType}`: ''; 
             let page = ( this.currentPage )? this.currentPage : 1;
             let noPerPage = ( this.per_page ) ? this.per_page : 4;
             const url = `${this.baseUrl}api/transactions/getAllTransactions.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            //console.log('URL', url);
+            console.log('URL', url);
             const options = {
                 method: "GET",
                 headers: { 
@@ -7827,6 +7836,7 @@ let admin = Vue.createApp({
         async noSort(){
             this.loading = true
             this.sort = null;
+            this.transactionType = null,
             this.currentPage =null;
             this.totalData =null;
             this.totalPage =null;
@@ -8013,6 +8023,18 @@ let admin = Vue.createApp({
             //console.log('sortByDays', days);
             if(webPage == "posts.php"){
                 await this.getAllBlog();
+            }
+        },
+        async sortByTransactionType(type){
+            this.transactionType = type;
+            this.loading = true;
+            this.currentPage =null;
+            this.totalData =null;
+            this.totalPage =null;
+            
+            if(webPage == 'transactions.php'){
+                this.class_active_type = true;
+                this.getAllTransactions()
             }
         },
         async sortByDraft(draft){
@@ -8279,10 +8301,10 @@ let admin = Vue.createApp({
             if ( this.booking_details ){
                 this.fetchPartmentWithPrice();
                 this.booking_details.apartment_price = this.apartment_details.price; 
-
                 if (this.apartment_details){
+                    console.log(this.apartment_details);
                     if ( this.booking_details.preferred_check_in && this.booking_details.prefferred_check_out ){
-                        const days = days_difference(this.booking_details.preferred_check_in, this.booking_details.prefferred_check_out)
+                        const days = days_difference(this.booking_details.preferred_check_in, this.booking_details.prefferred_check_out);
                         if (days <= 0 ){
                             this.booking_details.preferred_check_in = null;
                             this.booking_details.prefferred_check_out = null;
@@ -8341,9 +8363,10 @@ let admin = Vue.createApp({
             }
         },
         fetchPartmentWithPrice(){
-            this.apartment_details = this.all_apartments.filter((e) => {
+            const value = this.all_apartments.filter((e) => {
                 return e.id = this.booking_details.apartment_id;
             });
+            this.apartment_details = value[0];
                 
         },
         async getAllAmenities( load = 1){
@@ -8670,7 +8693,9 @@ let admin = Vue.createApp({
                 url
             }
             try {
-                this.loading = true;
+                if (load == 1){
+                    this.loading = true;
+                }
                 const response = await axios(options);
                 if(response.data.status){
                     this.all_facilities = response.data.data.facilities;
@@ -9421,7 +9446,7 @@ let admin = Vue.createApp({
             data.append("apartment_id", this.apartment_booked);
             data.append("apartment_price", this.apartment_price);
             data.append("address", this.address);
-            data.append("occupation_or_workplace", this.occupation_or_workplace);
+            data.append("occupation_or_workplace", this.occupation_or_work);
             data.append("preferred_check_in", this.preferred_check_in);
             data.append("prefferred_check_out", this.prefferred_check_out);
             data.append("total_amount_paid", this.total_payment);
@@ -9551,9 +9576,9 @@ let admin = Vue.createApp({
             let id = (window.localStorage.getItem("booking_id")) ? window.localStorage.getItem("booking_id") : null 
             
             if (id){
-                if (!this.booking_details.first_name || !this.booking_details.last_name || !this.booking_details.gender || !this.booking_details.phone || !this.booking_details.email || !this.booking_details.apartment_booked || !this.booking_details.apartment_price
-                    || !this.booking_details.address || !this.booking_details.occupation_or_work || !this.booking_details.preferred_check_in || !this.booking_details.prefferred_check_out || !this.booking_details.no_of_people
-                    || !this.booking_details.payment_status || !this.booking_details.identification_type){
+                console.log(this.booking_details);
+                if (!this.booking_details.first_name || !this.booking_details.last_name || !this.booking_details.gender || !this.booking_details.phone || !this.booking_details.email || !this.booking_details.apartment_id || !this.booking_details.apartment_price
+                    || !this.booking_details.address || !this.booking_details.occupation_or_workplace || !this.booking_details.preferred_check_in || !this.booking_details.prefferred_check_out || !this.booking_details.no_of_people || !this.booking_details.identification_type){
                    this.error = "Insert all Fields"
                    new Toasteur().error(this.error);
                    return;
@@ -9571,7 +9596,7 @@ let admin = Vue.createApp({
                    return;
                }
     
-               const verifiedPhone = validatePhoneNumber(this.phone)
+               const verifiedPhone = validatePhoneNumber(this.booking_details.phone);
                const data = new FormData();
                data.append("booking_id", id);
                data.append("first_name", this.booking_details.first_name);
@@ -9579,7 +9604,7 @@ let admin = Vue.createApp({
                data.append("gender", this.booking_details.gender);
                data.append("phone", verifiedPhone);
                data.append("email", this.booking_details.email);
-               data.append("apartment_id", this.booking_details.apartment_booked);
+               data.append("apartment_id", this.booking_details.apartment_id);
                data.append("apartment_price", this.booking_details.apartment_price);
                data.append("address", this.booking_details.address);
                data.append("occupation_or_workplace", this.booking_details.occupation_or_workplace);
@@ -10972,6 +10997,69 @@ let admin = Vue.createApp({
                         //console.log("ApiDelivery address", response.data.data.deliveryAddress);
                     }else{
                         this.apartment_details = null;
+                    }  
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // window.location.href="/login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+        
+                    new Toasteur().error(error.message || "Error processing request")
+        
+                    
+                }finally {
+                    this.loading = false;
+                }
+            }else{
+                window.location.href="./all_apartments.php"
+            }
+        },
+        async getApartmentTransactions(load = 1){
+            let id = (window.localStorage.getItem("apart_id")) ? window.localStorage.getItem("apart_id") : null 
+            
+            if (id){
+                const url = `${this.baseUrl}api/apartments/getApartmentTransactions.php?apartment_id=${id}`;
+                const options = {
+                    method: "GET",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    url
+                }
+                try {
+                    if (load == 1){
+                        this.loading = true;
+                    } 
+                    const response = await axios(options);
+                    if(response.data.status){
+                        this.apartment_transactions = response.data.data.apartment_transaction;
+                        //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                    }else{
+                        this.apartment_transactions = null;
                     }  
                 } catch (error) {
                     // //console.log(error);
