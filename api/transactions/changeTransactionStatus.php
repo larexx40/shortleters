@@ -39,7 +39,7 @@
             respondUnAuthorized($data);
         }
 
-        //confirm if additionalcharge id is passed
+        //confirm if transactionid is passed
         if(!isset($_POST['transactionid'])){
             $errordesc="transactionid required";
             $linktosolve="htps://";
@@ -94,32 +94,32 @@
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please pass in the House rule id ";
+            $text="Please pass in the transaction id ";
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }
         
-        $sql = "UPDATE `house_rule` SET `status`= ? WHERE house_rule_id = ?";
+        $sql = "UPDATE `user_transactions` SET `status`= ?, approvedby = ? WHERE transactionid = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ss', $changeStatus, $transactionid);
+        $stmt->bind_param('sss',$adminid, $changeStatus, $transactionid);
         $stmt->execute();
 
         if ( $stmt->affected_rows > 0 ){
             $maindata=[];
             $errordesc = " ";
             $linktosolve = "htps://";
-            $hint = "House rule status set to $message";
+            $hint = "Transaction status set to $message";
             $errordata = [];
-            $text = "House rule $message";
+            $text = "Transaction $message";
             $status = true;
             $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
             respondOK($data);
         
         }else{
             //Building type not found
-            $errordesc = "House rule with id not found";
+            $errordesc = "Transaction with id not found";
             $linktosolve = 'https://';
-            $hint = "Kindly pass valid House rule id";
+            $hint = "Kindly pass valid Transaction id";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondBadRequest($data); 
