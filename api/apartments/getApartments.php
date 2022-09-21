@@ -46,7 +46,7 @@
         
         // Get total number of complains in the system
         $listed = "1";
-        $query = "SELECT `apartment_id`, `name`, `description`, `check_in_day`, `price`  FROM `apartments` WHERE`apartment_status` = ? AND `availability` = ?";
+        $query = "SELECT `apartment_id`, `name`, `description`, `check_in_day`, `price`, `min_stay`, `max_stay`  FROM `apartments` WHERE`apartment_status` = ? AND `availability` = ?";
         $gt_apartments = $connect->prepare($query);
         $gt_apartments->bind_param("ss", $listed, $listed);
         $gt_apartments->execute();
@@ -61,6 +61,10 @@
                 $price = $row["price"];
                 $description = $row['description'];
                 $check_in_day = $row["check_in_day"];
+                $min_stay = $row['min_stay'];
+                $min_stay_value = explode(" ", $min_stay)[0];
+                $max_stay = $row['max_stay'];
+                $max_stay_value = explode(" ", $max_stay)[0];
                 
                 array_push($allApartments, array(
                     'id' => $row['apartment_id'],
@@ -68,53 +72,10 @@
                     'description' => $description,
                     'price' => $price,
                     'check_in_day' => $check_in_day,
-                    // 'status_code' => $status_code,
-                    // 'status' => $status,
-                    // 'title' => $title,
-                    // 'space_description' => $space_description,
-                    // 'guest_access' => $guest_access,
-                    // 'other_details' => $other_details,
-                    // 'host_type_id' => $host_type_id,
-                    // 'host_type_name' => ($host_type_name) ? $host_type_name : null,
-                    // 'no_of_adults' => $no_of_adults,
-                    // 'no_of_kids' => $no_of_kids,
-                    // 'no_of_pets' => $no_of_pets,
-                    // 'no_of_floor' => $no_of_floor,
-                    // 'listing_currency_id' => $listing_currency_id,
-                    // 'listing_currency_name' => ($listing_currency_name) ? $listing_currency_name : null,
-                    // 'available_floor' => $available_floor,
-                    // 'safety_ids' => $safety_id_name,
-                    // 'custom_link' => $custom_link,
-                    // 'availability' => $availability,
-                    // 'availability' => $availability,
-                    // 'neighbourhood_description' => $neighbourhood_description,
-                    // 'getting_around_details' => $getting_around_details,
-                    // 'highlights_ids' => $highlights_id_name,
-                    // 'building_type_id' => $building_type_id,
-                    // 'building_type_name' => ($building_type_name) ?  $building_type_name : null,
-                    // 'sub_building_type_id' => $sub_building_type_id,
-                    // 'sub_building_type_name' => ($sub_building_type_name) ?  $sub_building_type_name : null,
-                    // 'amenities_ids' => $amenities_id_name,
-                    // 'space_type_id' => $space_type_id,
-                    // 'space_type_name' => ($space_type_name) ?  $space_type_name : null,
-                    // 'apartment_status_code' => $apartment_status_code,
-                    // 'apartment_status' => $apartment_status,
-                    // 'agent_id' => $agent_id,
-                    // 'apartment_address' => $apartment_address,
-                    // 'apartment_country' => $apartment_country,
-                    // 'apartment_city' => $apartment_city,
-                    // 'apartment_state' => $apartment_state,
-                    // 'longtitude' => $longtitude,
-                    // 'latitude' => $latitude,
-                    // 'apartment_lga' => $apartment_lga,
-                    // 'location_sharing' => $location_sharing,
-                    // 'location_sharing_code' => $row["location_sharing"],
-                    // 'scenic_ids' => $scenic_id_name,
-                    // 'min_stay' => $min_stay,
-                    // 'max_stay' => $max_stay,
-                    // 'duration' => $duration,
-                    // 'created' => $created,
-                    // 'updated' => $updated,
+                    'min_stay' => $min_stay,
+                    'min_stay_value' => $min_stay_value,
+                    'max_stay' => $max_stay,
+                    'max_stay_value' => $max_stay_value
                 ));
             }
             $data = array(
