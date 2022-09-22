@@ -66,8 +66,8 @@
                                                         </ul>
                                                     </div>
                                                 </div><!-- .invoice-head -->
-                                                <div><span>We at SHORTLETERS LIMITED appreciate your business and look forward to hosting you! Please
-sign below to indicate that the above charges accurately reflect your stay with us.</span></div>
+                                                <div><span>We at SHORTLETERS LIMITED appreciate your business and look forward to hosting you! <br>
+                                                Please sign below to indicate that the above charges accurately reflect your stay with us.</span></div>
                                                 <div class="invoice-bills">
                                                     <div class="table-responsive">
                                                         <table class="table table-striped">
@@ -76,7 +76,7 @@ sign below to indicate that the above charges accurately reflect your stay with 
                                                                     <th class="w-150px">Apartment</th>
                                                                     <th class="w-60">Description</th>
                                                                     <th>Price</th>
-                                                                    <th>Qty/Days</th>
+                                                                    <th>Days</th>
                                                                     <th>Amount</th>
                                                                 </tr>
                                                             </thead>
@@ -84,8 +84,8 @@ sign below to indicate that the above charges accurately reflect your stay with 
                                                                 <tr>
                                                                     <td>{{booking.apartment_id}}</td>
                                                                     <td>Payment for the 'Shortleters 
-                                                                        {{booking.apartment_name}} property booking. Period:
-                                                                        12pm on {{booking.preferred_check_in}}
+                                                                        {{booking.apartment_name}} property booking.<br> 
+                                                                        Period: 12pm on {{booking.preferred_check_in}}
                                                                         till 12pm on {{booking.prefferred_check_out}}.</td>
                                                                     <td>₦{{booking.apartment_price}}</td>
                                                                     <td>{{booking.no_of_people}}</td>
@@ -103,6 +103,11 @@ sign below to indicate that the above charges accurately reflect your stay with 
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Processing fee</td>
                                                                     <td>₦100.00</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2"></td>
+                                                                    <td colspan="2">Discount</td>
+                                                                    <td>₦0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2"></td>

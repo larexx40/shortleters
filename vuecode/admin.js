@@ -166,7 +166,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM4MTQzMzMsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzgxNDMzMywiZXhwIjoxNjYzODg4MTMzLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.FsUy41BJWeQUbDSJLijeZIarlx_de9AivyG8a0om-3LNOMaAfsv2RyigxOoTmu-tPqn3M92rD2Ai5JMdGd-1KA',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM4MzM1NjIsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzgzMzU2MiwiZXhwIjoxNjYzOTA3MzYyLCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.-7OyO1CZVk_xgTEC-O-gbXISbWKzJgU4VcwoDsN2vXzvek_EkByQIzrkLA3SIQb5lx2WIuPSel0CP20X8fU8Zw',
             email: null,
             ref_link: null,
             admin_details: null,
@@ -230,6 +230,7 @@ let admin = Vue.createApp({
             apartment_transactions: null,
             agent_apartments: null,
             agent_bookings: null,
+            user_bookings: null,
             agent_transactions: null,
             apartment_rules: null,
             // currency
@@ -3876,12 +3877,13 @@ let admin = Vue.createApp({
                 const response = await axios(options);
                 if(response.data.status){
                     this.booking = response.data.data;
-                    // let day1= new Date(this.booking.preferred_check_in);
-                    // let day2= new Date(this.booking.prefferred_check_out)
-                    // var timeDifference = day2.getTime() - day1.getTime();
-                    // var noOfDays = timeDifference / (1000 * 3600 * 24);
-                    // noOfDays = (noOfDays) ? noOfDays : 1;
-                    // this.booking.noOfDays = noOfDays;
+                    let day1= new Date(this.booking.preferred_check_in);
+                    let day2= new Date(this.booking.prefferred_check_out)
+                    var timeDifference = day2.getTime() - day1.getTime();
+                    console.log(timeDifference);
+                    var noOfDays = timeDifference / (1000 * 3600 * 24);
+                    noOfDays = (noOfDays) ? noOfDays : 1;
+                    this.booking.noOfDays = noOfDays;
                     
                 }else{
                     this.booking = null;
@@ -11895,6 +11897,67 @@ let admin = Vue.createApp({
 
 
         },
+        async getUserBookings(load = 1, loadpage = 1){
+            let user_id = (window.localStorage.getItem("user_id"))? window.localStorage.getItem("user_id") : "";
+            let page = ( this.kor_page )? this.kor_page : 1;
+            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
+            
+
+            const headers = {
+                "Authorization": `Bearer ${this.authToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseUrl}api/bookings/getBookingsByUserid.php?user_id=${user_id}&page=${page}&noPerPage=${per_page}`;
+
+            this.kor_total_page = null
+            try {
+                if (load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    this.agent_bookings = response.data.data.bookings;
+                    console.log(this.agent_bookings);
+                }else{
+                    this.agent_bookings = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+
+        },
         async getAgentTransactions(load = 1){
             let agent_id = (window.localStorage.getItem("user_id"))? window.localStorage.getItem("user_id") : "";
 
@@ -11954,75 +12017,7 @@ let admin = Vue.createApp({
 
 
         },
-        async getUserOrders(load = 1, loadpage = 1){
-            let user_id = (window.localStorage.getItem("user_id"))? window.localStorage.getItem("user_id") : "";
-            let page = ( this.kor_page )? this.kor_page : 1;
-            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
-            
-
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            let url = `${this.baseUrl}api/order/getUserOrder.php?user_id=${user_id}&page=${page}&noPerPage=${per_page}`;
-
-            this.kor_total_page = null
-            try {
-                if (load == 1){
-                    this.loading = true;
-                }
-                const response = await axios.get(url, {headers} );
-                if ( response.data.status ){
-                    if (response.data.data.page){
-                        this.user_orders = response.data.data.orders;
-                        if (loadpage == 1){
-                            this.kor_page = response.data.data.page;
-                            this.kor_total_page= response.data.data.totalPage;
-                            this.kor_per_page = response.data.data.per_page;
-                            this.kor_total_data = response.data.data.total_data;
-                        }
-                        
-                    }
-                }else{
-                    this.user_orders = null
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-
-        },
+        
         async getOrder(index){
             this.user_order = this.user_orders[index];
         },

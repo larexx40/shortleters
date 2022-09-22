@@ -27,42 +27,37 @@
 
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $pubkey = $decodedToken->usertoken;
-
-        $admin =  checkIfIsAdmin($connect, $pubkey);
-        // $agent = getShopWithPubKey($connect, $user_pubkey);
-        // $user = getUserWithPubKey($connect, $user_pubkey);
-
-        if  (!$admin){
-
+        $userid = getUserWithPubKey($connect, $pubkey);
+        $adminid = checkIfIsAdmin($connect, $pubkey);
+        // send error if ur is not in the database
+        
+        if (!$userid && !$adminid){
             // send user not found response to the user
-            $errordesc =  "User not an Admin";
+            $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
+            $hint = "User is not in the database ensure the user is in the database";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondUnAuthorized($data);
         }
 
-        if ( !isset($_GET['user_id']) ){
-
-            $errordesc="booking id required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="host type id must be passed";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-
-        }else{
-            $user_id = cleanme($_GET['user_id']);
+        if ( $adminid ){
+            if ( !isset($_GET['user_id']) ){
+                $errordesc = "All fields must be passed";
+                $linktosolve = 'https://';
+                $hint = "Kindly pass the required user id field in this endpoint";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }else{
+                $userid = cleanme($_GET['user_id']);
+            }
         }
-
         
         // Get total number of complains in the system
         $query = "SELECT * FROM `bookings` WHERE `user_id` = ?";
         $gt_booking = $connect->prepare($query);
-        $gt_booking->bind_param("s", $user_id);
+        $gt_booking->bind_param("s", $userid);
         $gt_booking->execute();
         $result = $gt_booking->get_result();
         $num_row = $result->num_rows;   
@@ -72,6 +67,13 @@
                 $paid_code = $row['paid'];
                 $paid_status = ($row['paid'] == 1) ? "Paid" : "Not Paid";
                 $admin_id =  $row['admin_id'];
+                if($admin_id){
+                    $booked_by =  ( $admin_id )? getNameFromField($connect, "admin ", "id", $admin_id) : null;
+                }
+                $userid =$row['user_id'];
+                if($userid){
+                    $booked_by =($userid)? getUserFullname($connect, $userid): null;
+                }
                 $admin_name =  ( $admin_id )? getNameFromField($connect, "admin ", "id", $admin_id) : null;
                 $first_name =  $row['first_name'];
                 $last_name =  $row['last_name'];
@@ -96,7 +98,9 @@
 
                 array_push($allBookings, array(
                     'id' => $row['booking_id'],
+                    'booked_by'=>$booked_by,
                     'admin_id' => $admin_id,
+                    'userid'=>$userid,
                     'admin_name' => ($admin_name) ? $admin_name : null,
                     'first_name' => $first_name,
                     'last_name' => $last_name,
