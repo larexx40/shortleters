@@ -109,6 +109,9 @@
                                             
                                         </li> -->
                                         <li class="nk-menu-item">
+                                            <a href="./spaceType.php" class="nk-menu-link"><span class="nk-menu-text">Space Type</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
                                             <a href="./amenities.php" class="nk-menu-link"><span class="nk-menu-text">Amenities</span></a>
                                         </li>
                                         <li class="nk-menu-item">
@@ -116,9 +119,6 @@
                                         </li>
                                         <li class="nk-menu-item">
                                             <a href="./host_type.php" class="nk-menu-link"><span class="nk-menu-text">Host Type</span></a>
-                                        </li>
-                                        <li class="nk-menu-item">
-                                            <a href="./spaceType.php" class="nk-menu-link"><span class="nk-menu-text">Space Type</span></a>
                                         </li>
                                         <!-- <li class="nk-menu-item">
                                             <a href="./guest_features.php" class="nk-menu-link"><span class="nk-menu-text">Guest Features</span></a>
@@ -151,7 +151,7 @@
                                 <li class="nk-menu-item">
                                     <a href="./customers.php" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
-                                        <span class="nk-menu-text">Customers</span>
+                                        <span class="nk-menu-text">Users</span>
                                     </a>
                                 </li><!-- .nk-menu-item -->
                                 <li v-if= 'superAdmin' class="nk-menu-item">

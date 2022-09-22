@@ -244,7 +244,7 @@
          // check if none of the field is empty
         if ( empty($first_name) || empty($last_name) || empty($gender) || empty($phone) || empty($email) || empty($apartment_id) || empty($occupation_or_workplace) 
             || empty($preferred_check_in) || empty($prefferred_check_out) || empty($total_amount_paid) || empty($no_of_people) 
-            ||  empty($identification_type) || empty($payment_status) || empty($apartment_price) ){
+            ||  empty($identification_type) || !is_numeric($payment_status) || empty($apartment_price) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';

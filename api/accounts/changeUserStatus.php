@@ -104,6 +104,52 @@
             $message = "frozen";
         }
 
+        $details = getFieldsDetails($connect, "users", "id", $user_id);
+        $is_agent = $details['details']['is_agent'];
+        
+        if ( $is_agent > 0){
+            if ( $changeStatus != 1){
+                if ( $changeStatus < 1){
+                    $apart_status = 4;
+                }
+                if ( $changeStatus == 2){
+                    $apart_status = 3;
+                }
+                if ( $changeStatus == 3){
+                    $apart_status = 2;
+                }
+                $deactivate_apartments = "UPDATE `apartments` SET `apartment_status`= ? WHERE `agent_id` = ?";
+                $execute = $connect->prepare($deactivate_apartments);
+                $execute->bind_param("ss", $apart_status, $user_id);
+                $execute->execute();
+
+                if ( $execute->error ){
+                    $errordesc =  $execute->error;
+                    $linktosolve = 'https://';
+                    $hint = "500 code internal error, check ur database connections";
+                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                    respondInternalError($data);
+                }
+            }else{
+                $apart_status = 1;
+                $activate_apartments = "UPDATE `apartments` SET `apartment_status`= ? WHERE `agent_id` = ?";
+                $execute = $connect->prepare($activate_apartments);
+                $execute->bind_param("ss", $apart_status, $user_id);
+                $execute->execute();
+
+                if ( $execute->error ){
+                    $errordesc =  $execute->error;
+                    $linktosolve = 'https://';
+                    $hint = "500 code internal error, check ur database connections";
+                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                    respondInternalError($data);
+                }
+
+            }
+        }
+
 
 
         

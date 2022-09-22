@@ -166,7 +166,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM3NjEwNzUsImlzcyI6IkxPRyIsIm5iZiI6MTY2Mzc2MTA3NSwiZXhwIjoxNjYzODM0ODc1LCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.Z5GhV715cQoluQJUZTsq1uzKnc5Wi6bxK5ovkKJz7oZYMjCKo9Wnr5kjWEusx0-b9itu_UjMWAPivbX2DMpKhg',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjM4MTQzMzMsImlzcyI6IkxPRyIsIm5iZiI6MTY2MzgxNDMzMywiZXhwIjoxNjYzODg4MTMzLCJ1c2VydG9rZW4iOiJDTkcxeHQ1bXRoWVVueGpZRXQxN0tBM0FnblJjMmRtV29FVzhYckRPYWRtaW4ifQ.FsUy41BJWeQUbDSJLijeZIarlx_de9AivyG8a0om-3LNOMaAfsv2RyigxOoTmu-tPqn3M92rD2Ai5JMdGd-1KA',
             email: null,
             ref_link: null,
             admin_details: null,
@@ -350,11 +350,7 @@ let admin = Vue.createApp({
         if(webPage == 'house_rule.php'){
             await this.getAllHouseRules();
         }
-        if (webPage === "index.php"){
-            await this.getAllBookings();
-            await this.getAllApartments(3,3);
-            await this.getLatestUsers();
-        }
+        
         if(webPage == 'bookings.php'){
             await this.getAllBookings();
         }
@@ -12824,6 +12820,11 @@ let admin = Vue.createApp({
         // }
         await this.getAdminDetails();
         // this.getToken();
+        if (webPage === "index.php"){
+            await this.getAllBookings();
+            await this.getAllApartments(3,3);
+            await this.getLatestUsers();
+        }
         if ( webPage === "amenities.php" ){
             await this.getAllAmenities(4)
         }
