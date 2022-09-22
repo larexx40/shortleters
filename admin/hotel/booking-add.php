@@ -144,18 +144,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- <div v-if="payment_status > 0" class="col-md-6 col-lg-4 col-xxl-3">
+                                                    <div v-if="payment_status > 0" class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div v-if="all_apartments" class="form-group">
                                                             <label class="form-label">Method of Payment</label>
                                                             <div class="form-control-wrap">
-                                                                <select v-model="payment_status" class="form-select js-select2">
+                                                                <select v-model="payment_mode" class="form-select js-select2">
                                                                     <option value="null">Select Payment Method</option>
-                                                                    <option value="1">Direct Transfer</option>
-                                                                    <option value="2">Paid</option>
+                                                                    <option value="1">Manual</option>
+                                                                    <option value="2">Automatic</option>
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                    </div> -->
+                                                    </div>
                                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                                         <div class="form-group">
                                                             <label class="form-label" for="total-person">Total Person</label>

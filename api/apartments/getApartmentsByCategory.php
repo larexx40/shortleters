@@ -25,134 +25,55 @@
         $servername = $row['servername'];
         $expiresIn = $row['tokenexpiremin'];
 
-        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        // $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        // $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $pubkey);
-        // $agent = getShopWithPubKey($connect, $user_pubkey);
-        // $user = getUserWithPubKey($connect, $user_pubkey);
+        // $admin =  checkIfIsAdmin($connect, $pubkey);
+        // // $agent = getShopWithPubKey($connect, $user_pubkey);
+        // // $user = getUserWithPubKey($connect, $user_pubkey);
 
-        if  (!$admin){
+        // if  (!$admin){
 
-            // send user not found response to the user
-            $errordesc =  "User not an Admin";
-            $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
-        }
+        //     // send user not found response to the user
+        //     $errordesc =  "User not an Admin";
+        //     $linktosolve = 'https://';
+        //     $hint = "Only Admin has the ability to add send grid api details";
+        //     $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //     respondUnAuthorized($data);
+        // }
 
-        if (isset($_GET['search'])) {
-            $search = cleanme($_GET['search']);
-        } else {
-            $search = "";
-        }
-    
-        if (!isset ($_GET['page']) ) {  
-            $page_no = 1;  
-        } else {  
-            $page_no = $_GET['page'];  
-        }
+        if ( !isset($_GET['category_id']) ){
 
-        // Check if status is passed;
-        if (isset($_GET['sort'])) {
-            $sort = cleanme($_GET['sort']); //sort result by status if > 0
-        } else {
-            $sort = "";
-        }
-    
-        if (isset($_GET['sortstatus'])) {
-            $status = cleanme($_GET['sortstatus']); //sort result by status if > 0
-        } else {
-            $status = "";
-        }
-        
-        if (isset ($_GET['per_page']) ) {  
-            $no_per_page = cleanme($_GET['per_page']);
-        } else {  
-            $no_per_page = 8;  
-        }
-
-        $offset = ($page_no - 1) * $no_per_page;
-
-        if (!empty($search) && $search != "" && $search != " "){
-            $searching = "%{$search}%";
-            if ($sort > 0){
-               
-                // get the total number of pages
-                $query = "SELECT apartments.* FROM `apartments`, `guest_safety`,`highlights`, `building_types`, `sub_building_types`, `host_type`, `amenities`, `space_type` WHERE apartment_status = ? AND ( guest_safety.name LIKE ? OR highlights.name LIKE ? OR building_types.name LIKE ? OR sub_building_types.name LIKE ? OR host_type.name LIKE ? OR apartments.name LIKE ? OR amenities.name LIKE ? OR space_type.name LIKE ? OR apartments.title LIKE ? OR apartments.availability LIKE ? )";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sssssssssss", $status ,$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching );
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
-                $total_pg_found =  ceil($num_row / $no_per_page);
-
-                $query = "$query LIMIT ?, ?";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("sssssssssssss", $status,$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $num_row = $result->num_rows; 
-            }else{
-                // get the total number of pages
-                $query = "SELECT apartments.* FROM `apartments`, `guest_safety`,`highlights`, `building_types`, `sub_building_types`, `host_type`, `amenities`, `space_type` WHERE guest_safety.name LIKE ? OR highlights.name LIKE ? OR building_types.name LIKE ? OR sub_building_types.name LIKE ? OR host_type.name LIKE ? OR apartments.name LIKE ? OR amenities.name LIKE ? OR space_type.name LIKE ? OR apartments.title LIKE ? OR apartments.availability LIKE ?";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ssssssssss", $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching );
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $total_num_row = $result->num_rows;
-                $total_pg_found =  ceil($total_num_row / $no_per_page); 
-
-                $query = "$query LIMIT ?, ?";
-                $queryStmt = $connect->prepare($query);
-                $queryStmt->bind_param("ssssssssssss",$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
-                $queryStmt->execute();
-                $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
-
-            }            
+            $errordesc="Agent id required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="host type id must be passed";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
 
         }else{
-
-            if ($sort > 0){
-                // Get total number of complains in the system
-                $query = "SELECT * FROM `apartments` WHERE `apartment_status` = ?";
-                $gtTotalPgs = $connect->prepare($query);
-                $gtTotalPgs->bind_param("s", $status);
-                $gtTotalPgs->execute();
-                $result = $gtTotalPgs->get_result();
-                $total_num_row = $result->num_rows;
-                $total_pg_found =  ceil($total_num_row / $no_per_page); 
-
-                $query = "$query LIMIT ?, ?";
-                $gtTotalcomplains = $connect->prepare($query);
-                $gtTotalcomplains->bind_param("sss", $status ,$offset, $no_per_page);
-                $gtTotalcomplains->execute();
-                $result = $gtTotalcomplains->get_result();
-                $num_row = $result->num_rows;
-            }else{
-                // Get total number of complains in the system
-                $query = "SELECT * FROM `apartments`";
-                $gtTotalPgs = $connect->prepare($query);
-                $gtTotalPgs->execute();
-                $result = $gtTotalPgs->get_result();
-                $total_num_row = $result->num_rows;
-                $total_pg_found =  ceil($total_num_row / $no_per_page); 
-
-                $query = "$query LIMIT ?, ?";
-                $gtTotalcomplains = $connect->prepare($query);
-                $gtTotalcomplains->bind_param("ss", $offset, $no_per_page);
-                $gtTotalcomplains->execute();
-                $result = $gtTotalcomplains->get_result();
-                $num_row = $result->num_rows;   
-            }
-
+            $category_id = cleanme($_GET['category_id']);
         }
 
+
+        $status = 1;
+            
+        // Get total number of complains in the system
+        $query = "SELECT * FROM `apartments` WHERE `apartment_status` = ? AND `category_id` = ? ORDER BY feature DESC, id DESC";
+        $gtTotalPgs = $connect->prepare($query);
+        $gtTotalPgs->bind_param("s", $status, $category_id);
+        $gtTotalPgs->execute();
+        $result = $gtTotalPgs->get_result();
+        $num_row = $result->num_rows; 
+
+                 
+
+
         if ($num_row > 0){
-            $allApartments = [];
+            $apartment = [];
 
             while($row = $result->fetch_assoc()){
                 $name =  $row['name'];
@@ -177,10 +98,10 @@
                 $safety_id_name = [];
                 if ($safety_ids){
                     for ($i = 0; $i < count($safety_ids); $i++){
-                        $id_name = getNameFromField($connect, "guest_safety", "guest_safetyid", $safety_ids[$i]);
+                        $id_name = getFieldsDetails($connect, "guest_safety", "guest_safetyid", $safety_ids[$i]);
                         array_push($safety_id_name, array(
                             'safety_id' => $safety_ids[$i],
-                            'name' => ($id_name)? $id_name : null
+                            'details' => ($id_name)? $id_name['details'] : null
                         ));
                     }
                 }
@@ -262,7 +183,7 @@
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
                 $updated = gettheTimeAndDate(strtotime($row['updated_at']));
                 
-                array_push($allApartments, array(
+                array_push($apartment, array(
                     'id' => $row['apartment_id'],
                     'name' => $name,
                     'status_code' => $status_code,
@@ -318,11 +239,7 @@
                 ));
             }
             $data = array(
-                'page' => $page_no,
-                'per_page' => $no_per_page,
-                'total_data' => $total_num_row,
-                'totalPage' => $total_pg_found,
-                'apartments' => $allApartments
+                'apartment' => $apartment,
             );
             $text= "Fetch Successful";
             $status = true;
