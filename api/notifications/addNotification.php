@@ -25,32 +25,27 @@
         $expiresIn = $row['tokenexpiremin'];
 
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $user_pubkey = $decodedToken->usertoken;
+        $userpubkey = $decodeToken->usertoken;
+        $userid = getUserWithPubKey($connect, $pubkey);
+        $adminid = checkIfIsAdmin($connect, $pubkey);
 
-        // get if the user is a shop
-        
-        // send error if ur is not in the database
-        if (!getUserWithPubKey($connect, $user_pubkey)){
-            if ( !isset($_POST['user_id']) ){
-
-                $errordesc="User id if not a user required";
-                $linktosolve="htps://";
-                $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-                $errordata=returnError7003($errordesc,$linktosolve,$hint);
-                $text="User id if not a user must be passed";
-                $method=getenv('REQUEST_METHOD');
-                $data=returnErrorArray($text,$method,$endpoint,$errordata);
-                respondBadRequest($data);
-    
-            }else{
-                $user_id = cleanme($_POST['user_id']);
-            }
-        }else{
-            $user_id = getUserWithPubKey($connect, $user_pubkey);
+        if (!$userid && !$adminid){
+            // send user not found response to the user
+            $errordesc =  "User not Authorized";
+            $linktosolve = 'https://';
+            $hint = "User is not in the database ensure the user is in the database";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondUnAuthorized($data);
         }
 
+        if($userid){
+            $user = $userid;
+        }
+        if($adminid){
+            $user = $adminid;
+        }
         
-
         if ( !isset($_POST['notificationtext']) ){
 
             $errordesc="notification text required";
@@ -67,7 +62,6 @@
         }
 
         if ( !isset($_POST['notificationtype'])) {
-
             $errordesc="notification type required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
@@ -81,26 +75,7 @@
             $notificationType = cleanme($_POST['notificationtype']);
         }
 
-        if ( !isset($_POST['payment_id'])) {
-            $payment_id = "";
-        }else{
-            $payment_id = cleanme($_POST['payment_id']);
-        }
-
-        if ( !isset($_POST['booking_id'])) {
-            $booking_id = "";
-        }else{
-            $booking_id = cleanme($_POST['booking_id']);
-        }
-
-        if ( !isset($_POST['orderrefid'])) {
-            $order_ref_id = "";
-        }else{
-            $order_ref_id = cleanme($_POST['orderrefid']);
-        }
-
         if ( !isset($_POST['notificationstatus'])) {
-
             $errordesc="notification status required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
@@ -112,6 +87,24 @@
 
         }else{
             $notificationstatus= cleanme($_POST['notificationstatus']);
+        }
+
+        if ( !isset($_POST['apartment_id'])) {
+            $apartment_id = "";
+        }else{
+            $apartment_id = cleanme($_POST['apartment_id']);
+        }
+
+        if ( !isset($_POST['apartment_id'])) {
+            $apartment_id = "";
+        }else{
+            $apartment_id = cleanme($_POST['apartment_id']);
+        }
+
+        if ( !isset($_POST['orderrefid'])) {
+            $order_ref_id = "";
+        }else{
+            $order_ref_id = cleanme($_POST['orderrefid']);
         }
         
         $notificationCode = generateUniqueShortKey($connect, "usernotification", "notificationcode");
@@ -129,16 +122,6 @@
         }
 
         if (!is_numeric($notificationType) && empty($notificationType)) {
-             // Insert all fields
-             $errordesc = "Insert all fields";
-             $linktosolve = 'https://';
-             $hint = "Kindly pass value to all the fields in this endpoint";
-             $errorData = returnError7003($errordesc, $linktosolve, $hint);
-             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-             respondBadRequest($data);
-        }
-
-        if (!is_numeric($notificationstatus) && empty($notificationstatus)) {
             // Insert all fields
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -148,20 +131,6 @@
             respondBadRequest($data);
         }
 
-        // check if product is valid 
-        $isAProduct = checkifFieldExist($connect, "products" , "id" , $product_id);
-
-        // check orderref no is in db
-        $response = checkifFieldExist($connect, "productcart", "orderref_number", $order_ref_id); 
-
-        if ( !checkIfUserisInDB($connect, $user_id)){
-            $errordesc = "Invalid User";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass a valid user ";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
 
         $type = "";
         if ($notificationType == "normal" || $notificationType == 1){
@@ -184,7 +153,8 @@
         // all is perfect insert data
 
         // insert the values to the shop location table 
-        $query = "INSERT INTO `usernotification`(`userid`, `notificationtext`, `notificationtype`, `productid`, `orderrefid`, `notificationstatus`, `notificationcode`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        //INSERT INTO `usernotification`(`id`, `notificationtext`, `apartment_id`, `user_id`, `notificationtype`, `notificationstatus`, `transaction_id`, `booking_id`, `notificationcode`, `created_at`, `updated_at`) VALUES
+        $query = "INSERT INTO `usernotification`(`notificationtext`, `apartment_id`, `user_id`, `notificationtype`, `notificationstatus`, `transaction_id`, `booking_id`, `notificationcode`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $addNotification = $connect->prepare($query);
         $addNotification->bind_param("sssssss", $user_id, $notificationText, $type, $product_id, $order_ref_id, $status, $notificationCode);
 
