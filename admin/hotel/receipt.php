@@ -27,13 +27,14 @@
                                                 <h3 class="nk-block-title page-title">Payment Receipt <strong class="text-primary small">#{{booking.id}}</strong></h3>
                                                 <div class="nk-block-des text-soft">
                                                     <ul class="list-inline">
-                                                        <li>Created At: <span class="text-base">18 Dec, 2019 01:02 PM</span></li>
+                                                        <!-- <li>Created At: <span class="text-base">18 Dec, 2019 01:02 PM</span></li> -->
+                                                        <li>Created At: <span class="text-base">{{booking.created}}</span></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                             <div class="nk-block-head-content">
-                                                <a href="html/hotel/invoice-list.html" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Back</span></a>
-                                                <a href="html/hotel/invoice-list.html" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em class="icon ni ni-arrow-left"></em></a>
+                                                <a href="./bookings.php" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Back</span></a>
+                                                <a href="./bookings.php" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em class="icon ni ni-arrow-left"></em></a>
                                             </div>
                                         </div>
                                     </div><!-- .nk-block-head -->
@@ -65,6 +66,8 @@
                                                         </ul>
                                                     </div>
                                                 </div><!-- .invoice-head -->
+                                                <div><span>We at SHORTLETERS LIMITED appreciate your business and look forward to hosting you! Please
+sign below to indicate that the above charges accurately reflect your stay with us.</span></div>
                                                 <div class="invoice-bills">
                                                     <div class="table-responsive">
                                                         <table class="table table-striped">
@@ -80,10 +83,13 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td>{{booking.apartment_id}}</td>
-                                                                    <td>{{booking.apartment_name}}</td>
-                                                                    <td>${{booking.apartment_price}}</td>
-                                                                    <td>{{booking.noOfDays}}</td>
-                                                                    <td>${{booking.apartment_price * booking.noOfDays}}</td>
+                                                                    <td>Payment for the 'Shortleters 
+                                                                        {{booking.apartment_name}} property booking. Period:
+                                                                        12pm on {{booking.preferred_check_in}}
+                                                                        till 12pm on {{booking.prefferred_check_out}}.</td>
+                                                                    <td>₦{{booking.apartment_price}}</td>
+                                                                    <td>{{booking.no_of_people}}</td>
+                                                                    <td>₦{{booking.total_amount_paid}}</td>
                                                                 </tr>
                                                                
                                                             </tbody>
@@ -91,22 +97,22 @@
                                                                 <!-- <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Subtotal</td>
-                                                                    <td>$435.00</td>
+                                                                    <td>₦435.00</td>
                                                                 </tr> -->
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Processing fee</td>
-                                                                    <td>$100.00</td>
+                                                                    <td>₦100.00</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">TAX</td>
-                                                                    <td>$0</td>
+                                                                    <td>₦0</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2"></td>
                                                                     <td colspan="2">Grand Total</td>
-                                                                    <td>${{(booking.apartment_price * booking.noOfDays) + 100}}</td>
+                                                                    <td>₦{{(booking.apartment_price * booking.noOfDays) + 100}}</td>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
