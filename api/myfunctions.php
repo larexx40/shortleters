@@ -783,6 +783,26 @@
 
         return false;
     }
+    function getApartmentImage($connect, $table, $field, $data){
+        // check field
+        $query = "SELECT * FROM $table WHERE $field = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $all_images = [];
+            while ($row = $result->fetch_assoc()){
+                $image = $row['image_url'];
+                array_push($all_images, array('image' => $image));
+            }
+           return $all_images;
+        }
+
+        return false;
+    }
 
     function getCategoryImage($connect, $field ,$data){
         // check field

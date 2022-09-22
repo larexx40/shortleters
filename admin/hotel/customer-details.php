@@ -54,7 +54,7 @@
                                                     <a @click="getAgentBookings(3)" class="nav-link" data-bs-toggle="tab" href="#profile-address"><span>Bookings</span> </a>
                                                 </li>
                                                 <li v-if="user_details.agent < 1" class="nav-item">
-                                                    <a @click="getAgentBookings(3)" class="nav-link" data-bs-toggle="tab" href="#profile-address"><span>Bookings</span> </a>
+                                                    <a @click="getUserBookings(3)" class="nav-link" data-bs-toggle="tab" href="#profile-address"><span>Bookings</span> </a>
                                                 </li>
 
                                                 <li v-if="user_details.agent > 0" class="nav-item">
