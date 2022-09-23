@@ -51,13 +51,21 @@
             $page_no = $_GET['page'];  
         }
         
-        $no_per_page = 8;
+        if (isset ($_GET['per_page']) ) {  
+            $no_per_page = cleanme($_GET['per_page']);
+        } else {  
+            $no_per_page = 8;  
+        }
+
         $offset = ($page_no - 1) * $no_per_page;
 
         if (!empty($search) && $search != "" && $search != " "){
             $searching = "%{$search}%";
             // get the total number of pages
-            $query = "SELECT usernotification.id, usernotification.userid, usernotification.notificationtext, usernotification.notificationtype, usernotification.productid, usernotification.orderrefid, usernotification.notificationstatus FROM `usernotification` LEFT JOIN users ON usernotification.userid = users.id LEFT JOIN products ON usernotification.productid = products.id WHERE products.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ?";
+            $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                    LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                    LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                    WHERE apartments.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ?";
             $getSearchPages = $connect->prepare($query);
             $getSearchPages->bind_param("sss", $searching, $searching, $searching);
             $getSearchPages->execute();
@@ -66,7 +74,7 @@
             $totalPage = ceil($num_row / $no_per_page);  
 
             // Output page
-            $query = "SELECT usernotification.id, usernotification.userid, usernotification.notificationtext, usernotification.notificationtype, usernotification.productid, usernotification.orderrefid, usernotification.notificationstatus FROM `usernotification` LEFT JOIN users ON usernotification.userid = users.id LEFT JOIN products ON usernotification.productid = products.id WHERE products.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ? LIMIT ?, ?";
+            $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
             $getAll = $connect->prepare($query);
             $getAll->bind_param("sssss", $searching, $searching, $searching, $offset, $no_per_page);
             $getAll->execute();
@@ -75,7 +83,9 @@
 
             
         }else{
-            $query = "SELECT * FROM `usernotification`";
+            $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                    LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                    LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id ";
             $getSearchPages = $connect->prepare($query);
             $getSearchPages->execute();
             $result = $getSearchPages->get_result();
@@ -83,7 +93,7 @@
             $totalPage = ceil($num_row / $no_per_page);  
 
             // Output page
-            $query = "SELECT * FROM `usernotification` LIMIT ?, ?";
+            $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
             $getAll = $connect->prepare($query);
             $getAll->bind_param("ss", $offset, $no_per_page);
             $getAll->execute();
@@ -97,27 +107,29 @@
             $allNotification = [];
 
             while($row = $result->fetch_assoc()){
+                $statusCode = $row['notificationstatus'];
                 $status = ($row['notificationstatus'] == 1)? "completed" : "pending";
-                if ($row['notificationtype'] == 1) {
-                    $type = "normal";
-                }
+                $notificationtype = $row['notificationtype'];
+                // if ($row['notificationtype'] == 1) {
+                //     $type = "normal";
+                // }
         
-                if ($row['notificationtype'] == 2) {
-                    $type = "product";
-                }
+                // if ($row['notificationtype'] == 2) {
+                //     $type = "product";
+                // }
         
                 
                 $id = $row['id'];
-                $text = $row['notificationtext'];
-                $code = $row['notificationcode'];
-                $fullname = getUserFullname($connect, $row['userid']);
-                $productname = ($row['productid'] !== "") ? getNameFromField($connect, "products" , "id" , $row['productid']) : "";
-                $orderId = $row['orderrefid'];
-                $read_status = ($row['read_status'] == 0 )? "unread" : "read"; 
-                
+                $notificationtext = $row['notificationtext'];
+                $notificationcode = $row['notificationcode'];
+                $fullname = getUserFullname($connect, $row['user_id']);
+                $apartment_id = $row['apartment_id'];
+                $apartmentName = ($apartment_id) ? getNameFromField($connect, "apartments" , "apartment_id" , $apartment_id) : null;
+                $booking_id = $row['booking_id'];
+                $transaction_id = $row['transaction_id'];                
 
-                array_push($allNotification, array("id"=>$id, "status"=>$status, "type"=>$type, "text"=>$text, "productname"=>$productname, "name"=>$fullname, 
-                "orderId"=>$orderId, 'read_status' => $read_status));
+                array_push($allNotification, array("id"=>$id, "status"=>$status, 'statusCode'=>$statusCode, "notificationtype"=>$notificationtype, "notificationtext"=>$notificationtext, "apartment_id"=>$apartment_id, "apartmentName"=>$apartmentName, "booking_id"=>$booking_id,
+                "transaction_id"=>$transaction_id));
             }
 
             $data = array(

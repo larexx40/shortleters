@@ -188,6 +188,9 @@
                                             <a href="./paystack.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">Pay Stack</span></a>
                                         </li>
                                         <li class="nk-menu-item">
+                                            <a href="./oneapp.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">OneApp</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
                                             <a href="./monify.php" class="nk-menu-link" data-bs-original-title="" title=""><span class="nk-menu-text">Monify</span></a>
                                         </li>
                                         <li class="nk-menu-item">
