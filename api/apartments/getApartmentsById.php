@@ -25,23 +25,23 @@
         $servername = $row['servername'];
         $expiresIn = $row['tokenexpiremin'];
 
-        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        // $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        // $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $pubkey);
+        // $admin =  checkIfIsAdmin($connect, $pubkey);
         // $agent = getShopWithPubKey($connect, $user_pubkey);
         // $user = getUserWithPubKey($connect, $user_pubkey);
 
-        if  (!$admin){
+        // if  (!$admin){
 
-            // send user not found response to the user
-            $errordesc =  "User not an Admin";
-            $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
-        }
+        //     // send user not found response to the user
+        //     $errordesc =  "User not an Admin";
+        //     $linktosolve = 'https://';
+        //     $hint = "Only Admin has the ability to add send grid api details";
+        //     $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //     respondUnAuthorized($data);
+        // }
 
         if ( !isset($_GET['apartment_id']) ){
 
@@ -79,6 +79,7 @@
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $title = $row['title'];
+                $images = getApartmentImage($connect, "apartment_images", "apartment_id", $row['apartment_id']);
                 $description = $row['description'];
                 $space_description = $row["space_description"];
                 $guest_access = $row["guest_access"];
@@ -189,6 +190,7 @@
                     'status' => $status,
                     'title' => $title,
                     'description' => $description,
+                    'images' => ($images) ? $images : null,
                     'space_description' => $space_description,
                     'guest_access' => $guest_access,
                     'other_details' => $other_details,

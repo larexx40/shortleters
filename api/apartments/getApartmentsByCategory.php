@@ -45,11 +45,11 @@
 
         if ( !isset($_GET['category_id']) ){
 
-            $errordesc="Agent id required";
+            $errordesc="Category id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="host type id must be passed";
+            $text="Category id must be passed";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -122,6 +122,7 @@
                         ));
                     }
                 }
+                $images = getApartmentImage($connect, "apartment_images", "apartment_id", $row['apartment_id']);
                 
                 $building_type_id = $row["building_type_id"];
                 $building_type_name = getNameFromField($connect, "building_types", "build_id", $building_type_id);
@@ -189,6 +190,7 @@
                     'status_code' => $status_code,
                     'status' => $status,
                     'title' => $title,
+                    'images' => ($images) ? $images : null,
                     'description' => $description,
                     'space_description' => $space_description,
                     'guest_access' => $guest_access,

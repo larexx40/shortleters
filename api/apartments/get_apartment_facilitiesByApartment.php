@@ -30,9 +30,9 @@
 
         $admin =  checkIfIsAdmin($connect, $pubkey);
         // $agent = getShopWithPubKey($connect, $user_pubkey);
-        // $user = getUserWithPubKey($connect, $user_pubkey);
+        $user = getUserWithPubKey($connect, $user_pubkey);
 
-        if  (!$admin){
+        if  (!$admin && !$user){
 
             // send user not found response to the user
             $errordesc =  "User not an Admin";
