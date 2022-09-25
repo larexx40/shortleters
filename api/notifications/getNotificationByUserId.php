@@ -76,7 +76,7 @@
 
         
         // Output page
-        $query = "SELECT * FROM `usernotification` where `userid` = ?";
+        $query = "SELECT * FROM `usernotification` where `user_id` = ?";
         $getAll = $connect->prepare($query);
         $getAll->bind_param("s", $user_id);
         $getAll->execute();
@@ -95,26 +95,29 @@
             $all_Notifications = [];
 
                 while($row = $result->fetch_assoc()){
+                    $statusCode = $row['notificationstatus'];
                     $status = ($row['notificationstatus'] == 1)? "completed" : "pending";
-                    if ($row['notificationtype'] == 1) {
-                        $type = "normal";
-                    }
+                    $notificationtype = $row['notificationtype'];
+                    // if ($row['notificationtype'] == 1) {
+                    //     $type = "normal";
+                    // }
             
-                    if ($row['notificationtype'] == 2) {
-                        $type = "product";
-                    }
+                    // if ($row['notificationtype'] == 2) {
+                    //     $type = "product";
+                    // }
+            
                     
                     $id = $row['id'];
-                    $text = $row['notificationtext'];
-                    $code = $row['notificationcode'];
-                    $fullname = getUserFullname($connect, $row['userid']);
-                    $productname = ($row['productid'] !== "") ? getNameFromField($connect, "products" , "id" , $row['productid']) : "";
-                    $orderId = $row['orderrefid']; 
-                    $read_status = ($row['read_status'] == 0 )? "unread" : "read";
-                    $date = ($row['created_at']) ? date("H:i:s", $row['created_at']) : "";
+                    $notificationtext = $row['notificationtext'];
+                    $notificationcode = $row['notificationcode'];
+                    $fullname = getUserFullname($connect, $row['user_id']);
+                    $apartment_id = $row['apartment_id'];
+                    $apartmentName = ($apartment_id) ? getNameFromField($connect, "apartments" , "apartment_id" , $apartment_id) : null;
+                    $booking_id = $row['booking_id'];
+                    $transaction_id = $row['transaction_id'];                
 
-                    array_push($all_Notifications, array("id"=>$id, "status"=>$status, "type"=>$type, "text"=>$text, "productname"=>$productname, "name"=>$fullname, 
-                    "orderId"=>$orderId, 'read_status' => $read_status, 'date' => $date));
+                    array_push($all_Notifications, array("id"=>$id, "status"=>$status, 'statusCode'=>$statusCode, "notificationtype"=>$notificationtype, "notificationtext"=>$notificationtext, "apartment_id"=>$apartment_id, "apartmentName"=>$apartmentName, "booking_id"=>$booking_id,
+                    "transaction_id"=>$transaction_id));
                 }
 
                 $data = array(

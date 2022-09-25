@@ -147,6 +147,8 @@ let admin = Vue.createApp({
             kudi_details: null,
             payStacks: null,
             payStack_details: null,
+            oneApps: null,
+            oneApp_details: null,
             sendGrids: null,
             sendGrid_details: null,
             termiApis: null,
@@ -301,6 +303,9 @@ let admin = Vue.createApp({
         }
         if(webPage =='paystack.php'){
             await this.getAllPaystack()
+        }
+        if(webPage =='oneapp.php'){
+            await this.getAllOneapp()
         }
         if(webPage =='kudi.php' ){
             await this.getAllKudi();
@@ -6061,6 +6066,376 @@ let admin = Vue.createApp({
 
         },
 
+        //oneAPP
+        async getAllOneapp(load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseUrl}api/thirdPartyApi/oneapp/getAllOneapp.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.oneApps = response.data.data.oneApps;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.oneApps = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getOneappByid(id){
+            //console.log("paystackid", id);
+            const url = `${this.baseUrl}api/thirdPartyApi/oneapp/getOneappByid.php?id=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true
+                const response = await axios(options);
+                if (response.data.status) {
+                    this.oneApp_details= response.data.data;
+                }else{
+                    new Toasteur().error(response.data.text);
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }else{
+                    new Toasteur().error(error.message || "Error processing request");
+                }
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async addOneapp(){
+            if(this.apiKey == null || this.apiName == null || this.secretKey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('apiKey', this.apiKey );
+            data.append('name', this.apiName );
+            data.append('secreteKey', this.secretKey );
+
+            const url = `${this.baseUrl}api/thirdPartyApi/oneapp/addOneapp.php`;
+            //console.log("URL", url);
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    await this.getAllOneapp();
+                    new Toasteur().success(response.data.text);
+                    
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                       new Toasteur().error(errorMsg);
+                       // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+
+        },
+        async deleteOneapp(id){
+            let data = new FormData();
+            data.append('id', id );
+
+            const url = `${this.baseUrl}api/thirdPartyApi/oneapp/deleteOneapp.php?id=${id}`;
+
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                const response = await axios(options);
+                if(response.data.status){
+                    this.getAllOneapp();
+                }    
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    // // window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }
+        },
+        async changeOneappStatus(id){
+            const url = `${this.baseUrl}api/thirdPartyApi/oneapp/changeOneappStatus.php?`;
+            //console.log('URL', url);
+            if(!id){
+                new Toasteur().error("undefined")
+            }else{
+                const data = new FormData();
+                data.append('id', id);;
+                const options = {
+                    method: "POST",
+                    headers: { 
+                        //"Content-type": "application/json",
+                        "Authorization": `Bearer ${this.authToken}`
+                    },
+                    data,
+                    url
+                }
+                try {
+                    this.loading = true
+                    const response = await axios(options);
+                    if(response.data.status){
+                        new Toasteur().success("Status Changed")
+                        this.getAllOneapp();      
+                    }else{
+                        this.getAllOneapp();
+                    }     
+                } catch (error) {
+                    // //console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            const errorMsg = "User not Authorized";
+                            new Toasteur().error(errorMsg);
+                            // // window.location.href="./login.php"
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            const errorMsg = error.response.data.text;
+                            new Toasteur().error(errorMsg);
+                            return
+                        }
+                    }
+
+                    new Toasteur().error(error.message || "Error processing request")
+
+                    
+                }finally {
+                    this.loading = false;
+                }
+
+            }
+            
+        },
+        async updateOneapp(){
+            if(this.itemDetails.apikey == null ||this.itemDetails.name == null || this.itemDetails.secretekey == null){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('id', this.itemDetails.id );
+            data.append('apikey', this.itemDetails.apikey );
+            data.append('name', this.itemDetails.name );
+            data.append('secretekey', this.itemDetails.secretekey );
+
+            const url = `${this.baseUrl}api/thirdPartyApi/oneapp/updateOneapp.php`;
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    await this.getAllOneapp();
+                    new Toasteur().success(response.data.text);
+                    
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                       new Toasteur().error(errorMsg);
+                       // // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                       new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+
+        },
+
         //Kudi api
         async getAllKudi(load =1){
             let search = (this.search)? `&search=${this.search}`: '';
@@ -7597,6 +7972,10 @@ let admin = Vue.createApp({
             if(webPage =='paystack.php'){
                 await this.getAllPaystack()
             }
+            
+            if(webPage =='oneapp.php'){
+                await this.getAllOneapp()
+            }
             if(webPage =='kudi.php' ){
                 await this.getAllKudi();
             }
@@ -7660,6 +8039,10 @@ let admin = Vue.createApp({
             }
             if(webPage =='paystack.php'){
                 await this.getAllPaystack()
+            }
+            
+            if(webPage =='oneapp.php'){
+                await this.getAllOneapp()
             }
             if(webPage =='kudi.php' ){
                 await this.getAllKudi();
@@ -7779,6 +8162,10 @@ let admin = Vue.createApp({
             if(webPage =='paystack.php'){
                 await this.getAllPaystack()
             }
+            
+            if(webPage =='oneapp.php'){
+                await this.getAllOneapp()
+            }
             if(webPage =='kudi.php' ){
                 await this.getAllKudi();
             }
@@ -7870,6 +8257,9 @@ let admin = Vue.createApp({
             if(webPage =='paystack.php'){
                 await this.getAllPaystack()
             }
+            if(webPage =='oneapp.php'){
+                await this.getAllOneapp()
+            }            
             if(webPage =='kudi.php' ){
                 await this.getAllKudi();
             }
@@ -7956,6 +8346,10 @@ let admin = Vue.createApp({
             }
             if(webPage =='paystack.php'){
                 await this.getAllPaystack()
+            }
+            
+            if(webPage =='oneapp.php'){
+                await this.getAllOneapp()
             }
             if(webPage =='kudi.php' ){
                 await this.getAllKudi();
@@ -8142,6 +8536,11 @@ let admin = Vue.createApp({
                 if(webPage =='paystack.php'){
                     this.deletePaystack(id)
                 }
+                
+                if(webPage =='oneapp.php'){
+                    this.getAllOneapp()
+                }
+
                 if(webPage =='kudi.php' ){
                     this.deleteKudi(id);
                 }
@@ -8248,6 +8647,9 @@ let admin = Vue.createApp({
             }
             if(webPage == 'facilities.php'){
                 this.facility = this.all_facilities[index];
+            }
+            if(webPage == 'oneapp.php'){
+                this.itemDetails = this.oneApps[index];
             }
         },
         async generateUserPassword(){

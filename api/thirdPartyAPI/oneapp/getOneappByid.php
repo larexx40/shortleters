@@ -5,9 +5,8 @@
     header("Access-Control-Allow-Methods: GET");// OPTIONS,GET,POST,PUT,DELETE
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
-
-    include "../cartsfunction.php";
-    include "../connectdb.php";
+    
+    include "../../cartsfunction.php";
     
   
 

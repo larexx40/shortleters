@@ -6,7 +6,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
     
   
 
@@ -64,7 +64,7 @@
         }
 
         // check if the api details is in the database
-        $query = 'SELECT * FROM paystackapidetails WHERE id = ?';
+        $query = 'SELECT * FROM oneappapidetails WHERE id = ?';
         $stmt = $connect->prepare($query);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -73,7 +73,7 @@
  
         if ($num_row < 1){
             // return response (Api not found in the DB)
-            $errordesc = "Api not found";
+            $errordesc = "Api not found with id $id";
             $linktosolve = 'https://';
             $hint = "Kindly pass the valid OneApp API id field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
