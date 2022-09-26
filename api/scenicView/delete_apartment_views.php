@@ -54,8 +54,8 @@
             $apartment_id = cleanme($_POST['apartment_id']);
         }
 
-        if ( !isset($_POST['highlight_id']) ){
-            $errordesc = "Highlight icon must be passed";
+        if ( !isset($_POST['scenic_id']) ){
+            $errordesc = "Scenic View must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -63,12 +63,12 @@
             respondBadRequest($data);
 
         }else{
-            $highlight_id = cleanme($_POST['highlight_id']);
+            $scenic_id = cleanme($_POST['scenic_id']);
         }
 
-        if (empty($apartment_id) || empty($highlight_id)){
+        if (empty($apartment_id) || empty($scenic_id)){
             // send error if inputs are empty
-            $errordesc = "Highlight inputs are required";
+            $errordesc = "Scenic views inputs are required";
             $linktosolve = 'https://';
             $hint = "Pass in Highlight details, it can't be empty";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -76,9 +76,9 @@
             respondBadRequest($data);
         }
         
-        if ( !checkifFieldExist($connect, "highlights", "highlightid", $highlight_id) ){
+        if ( !checkifFieldExist($connect, "scenic_view", "scenicid", $scenic_id) ){
             
-            $errordesc = "Highlights not Found";
+            $errordesc = "Scenic views not Found";
             $linktosolve = 'https://';
             $hint = "Kindly pass valid value to all the fields";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -95,7 +95,7 @@
             respondBadRequest($data);
         }
 
-        $query = "SELECT highlights_ids FROM `apartments` WHERE apartment_id = ? AND agent_id = ?";
+        $query = "SELECT scenic_ids FROM `apartments` WHERE apartment_id = ? AND agent_id = ?";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("ss", $apartment_id, $user_id);
         $stmt->execute();
@@ -103,18 +103,33 @@
         $num_row = $result->num_rows;
 
 
-        if ( $num_row ){
+        if ( $num_row > 0 ){
             $row = $result->fetch_assoc();
-            $ids = $row['highlights_ids'];
+            $ids = $row['scenic_ids'];
 
-            if ( empty($ids) ){
-                $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
+            $array_of_ids = explode(",", $ids);
+            $length = count($array_of_ids);
+
+            if ($length < 1){
+                $errordesc = "Highlight not found";
+                $linktosolve = 'https://';
+                $hint = "Kindly pass valid value to all the fields";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }
+
+            if ($length == 1){
+                $delte_id = str_replace($scenic_id, "", $ids);
+                
+                // update DB
+                $update_query = "UPDATE `apartments` SET `scenic_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
                 $update_stmt = $connect->prepare($update_query);
-                $update_stmt->bind_param("sss", $highlight_id, $apartment_id, $user_id);
+                $update_stmt->bind_param("sss", $delte_id, $apartment_id, $user_id);
                 $update = $update_stmt->execute();
                 
                 if ($update){
-                    $text= "Highlight successfully added";
+                    $text= "Scenic view successfully Removed";
                     $status = true;
                     $data = [];
                     $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
@@ -129,39 +144,61 @@
                     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
                     respondInternalError($data);
                 }
-
-
-            }else{
-                if ( str_contains($ids, "$highlight_id") ){
-                    $errordesc = "Highlight already exist";
-                    $linktosolve = 'https://';
-                    $hint = "Kindly pass valid value to all the fields";
-                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                    respondBadRequest($data);
-                }
-
-                $new_ids = $ids.",".$highlight_id;
-                $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
-                $update_stmt = $connect->prepare($update_query);
-                $update_stmt->bind_param("sss", $new_ids, $apartment_id, $user_id);
-                $update = $update_stmt->execute();
+            }
+            if ($length > 1){
                 
-                if ($update){
-                    $text= "Highlight successfully added";
-                    $status = true;
-                    $data = [];
-                    $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
-                    respondOK($successData);
-                }
+                if ( str_contains($ids, ",$scenic_id") ){
+                    $delte_id = str_replace(",$scenic_id", "", $ids);
 
-                if ( $update_stmt->error ){
-                    $errordesc =  $update_stmt->error;
-                    $linktosolve = 'https://';
-                    $hint = "500 code internal error, check ur database connections";
-                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-                    respondInternalError($data);
+                    // update DB
+                    $update_query = "UPDATE `apartments` SET `scenic_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
+                    $update_stmt = $connect->prepare($update_query);
+                    $update_stmt->bind_param("sss", $delte_id, $apartment_id, $user_id);
+                    $update = $update_stmt->execute();
+                    
+                    if ($update){
+                        $text= "Scenic view successfully Removed";
+                        $status = true;
+                        $data = [];
+                        $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
+                        respondOK($successData);
+                    }
+
+                    if ( $update_stmt->error ){
+                        $errordesc =  $update_stmt->error;
+                        $linktosolve = 'https://';
+                        $hint = "500 code internal error, check ur database connections";
+                        $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+                        respondInternalError($data);
+                    }
+                    
+                }else{
+                    $delte_id = str_replace("$scenic_id,", "", $ids);
+
+                    // update DB
+                    $update_query = "UPDATE `apartments` SET `scenic_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
+                    $update_stmt = $connect->prepare($update_query);
+                    $update_stmt->bind_param("sss", $delte_id, $apartment_id, $user_id);
+                    $update = $update_stmt->execute();
+                    
+                    if ($update){
+                        $text= "Scenic view successfully Removed";
+                        $status = true;
+                        $data = [];
+                        $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
+                        respondOK($successData);
+                    }
+
+                    if ( $update_stmt->error ){
+                        $errordesc =  $update_stmt->error;
+                        $linktosolve = 'https://';
+                        $hint = "500 code internal error, check ur database connections";
+                        $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+                        respondInternalError($data);
+                    }
+                    
                 }
             }
         }else{
