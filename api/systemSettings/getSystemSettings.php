@@ -31,7 +31,7 @@
         $userPubKey = $decodeToken->usertoken;
 
         $sqlQuery ="SELECT `id`, `sys_setting_id`, `name`, `iosversion`, `androidversion`, `webversion`, `activesmssystem`, `activemailsystem`, `activepaymentsystem`, 
-                    `min_apart_photo`, `max_apart_highlights`, `charge_perc`, `discount_perc`, `discount_guest` FROM `systemsettings`";
+                    `min_apart_photo`, `max_apart_highlights`, `charge_perc`, `discount_perc`, `discount_guest`, withdrawal_limit FROM `systemsettings`";
         $stmt= $connect->prepare($sqlQuery);
         $stmt->execute();
         $result= $stmt->get_result();
@@ -93,6 +93,7 @@
             $chargePercentage = $row['charge_perc'];
             $discountPercentage = $row['discount_perc'];
             $discount_guest = $row['discount_guest']; 
+            $withdrawal_limit = $row['withdrawal_limit'];
 
             $maindata = [
                 "id"=>$id,
@@ -111,7 +112,8 @@
                 "minApartmentPhotos"=>$minApartmentPhotos,
                 "chargePercentage"=>$chargePercentage,
                 "discountPercentage"=>$discountPercentage,
-                "discount_guest"=>$discount_guest 
+                "discount_guest"=>$discount_guest ,
+                'withdrawal_limit'=>$withdrawal_limit
             ];
             $linktosolve = "htps://";
             $hint = [];

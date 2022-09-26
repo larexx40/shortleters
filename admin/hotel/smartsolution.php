@@ -164,7 +164,7 @@
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li @click.prevent = 'getSmartSolutionByid(item.id)'><a data-bs-toggle="modal" href="#viewModal"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
                                                                         <li @click.prevent = 'changeSmartSolutionStatus(item.id)' v-if='item.status === "inactive" || item.status === "Inactive" || item.status == "0"'><a href="#"><em class="icon ni ni-report-profit"></em><span>Set Active</span></a></li>
-                                                                        <li @click.prevent = 'changeSmartSolutionStatus(item.id)' v-if='item.status === "active" || item.status === "Active" || item.status == "1" ' ><a href="#"><em class="icon ni ni-report-loss"></em><span>Set Inactive</span></a></li>
+                                                                        <!-- <li @click.prevent = 'changeSmartSolutionStatus(item.id)' v-if='item.status === "active" || item.status === "Active" || item.status == "1" ' ><a href="#"><em class="icon ni ni-report-loss"></em><span>Set Inactive</span></a></li> -->
                                                                         <li @click.prevent = 'getSmartSolutionByid(item.id)'><a data-bs-toggle="modal" href="#editModal"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
                                                                         <li @click.prevent= 'deleteByid(item.id)'><a href="#"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>
                                                                     </ul>

@@ -127,12 +127,34 @@
 
         return $output;
     }
+    
 
     function generateShortKey($strength){
         $input = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $output = generate_string($input, $strength);
 
         return $output;
+    }
+
+    function generateNumericKey($strength){
+        $input = "01234567890987654321";
+        $output = generate_string($input, $strength);
+
+        return $output;
+    }
+    function generateUniqueNumericKey($connect, $tableName, $field, $strength){
+        $loop = 0;
+        while ($loop == 0){
+            $key = generateNumericKey($strength);
+            if ( checkIfCodeisInDB($connect, $tableName, $field ,$key) ){
+                $loop = 0;
+            }else {
+                $loop = 1;
+                break;
+            }
+        }
+
+        return $key;
     }
 
     function generateUniqueShortKey($connect, $tableName, $field){
@@ -1342,4 +1364,66 @@
 
         return false;
     }
+
+    function googleLogin ($connect, $google_account_info){
+        //check if user profile object is not empty
+        if(!empty($google_account_info)){
+            //create user if not  exist
+            $user_id = cleanme( $google_account_info->id);//pubkey
+            $isExist = checkifFieldExist($connect, 'users', 'userpubkey', $user_id);
+            if($isExist){
+                //fetch user details
+                $userPubKey = $user_id;
+            }else{
+                //create user and return details
+                $user = createGoogleUser($connect, $google_account_info);
+                $userPubKey = ($user) ? $user_id: null;
+            }
+        }else{
+            //go to error page
+            exit();
+        }
+        //return user datails
+        return $userPubKey;
+    }
+
+    function createGoogleUser ($connect, $google_account_info){
+        //check if user profile object is not empty
+        $user_id = cleanme( $google_account_info->id);//pubkey
+        $email =  cleanme( $google_account_info->email);
+        $firstname = cleanme( $google_account_info->given_name);
+        $surname =  cleanme( $google_account_info->family_name);
+
+        //insert query
+        $sql= "INSERT INTO `users`( `email`, `fname`, `lname`, `userpubkey`) VALUES (?,?,?,?)";
+        $stmt = $connect->prepare($sql);
+        $stmt->bind_param('ssss', $email, $firstname, $surname, $user_id);
+        if( $stmt->execute() ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function getActiveGoogleOauthDetails($connect){
+        // check field
+        $active = 1;
+        $query = "SELECT * FROM googleapidetails WHERE status = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $active );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+           $row = $result->fetch_assoc();
+           return $row;
+        }
+
+        return false;
+    }
+
+
+
+
 ?>

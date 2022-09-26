@@ -135,6 +135,14 @@
                                                                             class="profile-ud-value">{{systemSettings.discount_guest}} %</span>
                                                                     </div>
                                                                 </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">Withdrawal Limit
+                                                                            </span>
+                                                                        <span
+                                                                            class="profile-ud-value">{{systemSettings.withdrawal_limit}}</span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <!-- .profile-ud-list -->
                                                         </div>
@@ -254,6 +262,15 @@
                                                                             </label>
                                                                         <div class="form-control-wrap">
                                                                             <input v-model='systemSettings.discount_guest' type="text" class="form-control"
+                                                                                required="" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" for="email-address">Withdrawal Limit
+                                                                            </label>
+                                                                        <div class="form-control-wrap">
+                                                                            <input v-model='systemSettings.withdrawal_limit' type="text" class="form-control"
                                                                                 required="" />
                                                                         </div>
                                                                     </div>

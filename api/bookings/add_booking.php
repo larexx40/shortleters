@@ -29,17 +29,22 @@
         $user_pubkey = $decodedToken->usertoken;
 
         $admin =  checkIfIsAdmin($connect, $user_pubkey);
-        $user_id = "";
+        $user_id =  checkIfUser($connect, $user_pubkey);
 
-        // send error if ur is not in the database
-        if (!$admin){
+        if(!$admin && !$user_id ){
             // send user not found response to the user
-            $errordesc =  "User not Authorized";
+            $errordesc =  "User not registered";
             $linktosolve = 'https://';
-            $hint = "User is not in the database ensure the user is in the database";
+            $hint = "Create account ";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
+        }
+        if($admin){
+            $user_id = '';
+        }
+        if($user_id){
+            $admin ='';
         }
 
         if (!isset($_POST['first_name'])){

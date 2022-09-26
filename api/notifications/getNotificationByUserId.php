@@ -59,6 +59,7 @@
             }
         }
 
+
         if (!isset ($_GET['page']) ) {  
             $page_no = 1;  
         } else {  
@@ -68,7 +69,7 @@
         if (isset ($_GET['per_page']) ) {  
             $no_per_page = cleanme($_GET['per_page']);
         } else {  
-            $no_per_page = 8;  
+            $no_per_page = 5;  
         }
 
         $offset = ($page_no - 1) * $no_per_page;
@@ -76,7 +77,9 @@
 
         
         // Output page
-        $query = "SELECT * FROM `usernotification` where `user_id` = ?";
+        $query = "SELECT usernotification.*, user_transactions.transaction_type, user_transactions.amttopay  FROM `usernotification` 
+                LEFT JOIN user_transactions ON usernotification.transaction_id = user_transactions.transactionid 
+                where `user_id` = ?";
         $getAll = $connect->prepare($query);
         $getAll->bind_param("s", $user_id);
         $getAll->execute();
@@ -114,10 +117,24 @@
                     $apartment_id = $row['apartment_id'];
                     $apartmentName = ($apartment_id) ? getNameFromField($connect, "apartments" , "apartment_id" , $apartment_id) : null;
                     $booking_id = $row['booking_id'];
-                    $transaction_id = $row['transaction_id'];                
+                    $transaction_id = $row['transaction_id']; 
+                    $transaction_typeCode = $row['transaction_type'];
+                    if($transaction_typeCode== 1){
+                        $transaction_type = "Fund Wallet";
+                    }elseif($transaction_typeCode== 2){
+                        $transaction_type = "Withdraw";
+                    }elseif($transaction_typeCode== 3){
+                        $transaction_type = "Book Apartment";
+                    }else{
+                        $transaction_type = '';
+                    }
+                    $amount = $row['amttopay'];
+                    $read_statusCode = $row['read_status'];  
+                    $read_status = ($row['read_status'] == 0 )? "Unread" : "Read";
+                    $date = $row['created_at'];             
 
-                    array_push($all_Notifications, array("id"=>$id, "status"=>$status, 'statusCode'=>$statusCode, "notificationtype"=>$notificationtype, "notificationtext"=>$notificationtext, "apartment_id"=>$apartment_id, "apartmentName"=>$apartmentName, "booking_id"=>$booking_id,
-                    "transaction_id"=>$transaction_id));
+                    array_push($all_Notifications, array("id"=>$id, 'read_statusCode'=>$read_statusCode, 'read_status'=>$read_status, "status"=>$status, 'statusCode'=>$statusCode, "notificationtype"=>$notificationtype, "notificationtext"=>$notificationtext, "apartment_id"=>$apartment_id, "apartmentName"=>$apartmentName, "booking_id"=>$booking_id,
+                    'amount'=>$amount, "transaction_id"=>$transaction_id, 'transaction_typeCode'=>$transaction_typeCode, 'transaction_type'=>$transaction_type, 'date'=>$date));
                 }
 
                 $data = array(

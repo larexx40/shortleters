@@ -96,7 +96,7 @@
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondInternalError($data);
-            }
+        }
 
     }else{
         // method not allowed

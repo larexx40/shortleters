@@ -65,9 +65,9 @@
                                                     <a @click="getAgentTransactions(3)" class="nav-link" data-bs-toggle="tab" href="#profile-transactions"><span>Transactions</span> </a>
                                                 </li>
 
-                                                <!-- <li class="nav-item">
-                                                    <a @click="getUserComplains(3)" class="nav-link" data-bs-toggle="tab" href="#profile-complains"><span>Complains</span> </a>
-                                                </li> -->
+                                                <li class="nav-item">
+                                                    <a @click="getUserNotifications(3)" class="nav-link" data-bs-toggle="tab" href="#user-notifications"><span>Notifications</span> </a>
+                                                </li>
                                             </ul>
                                             <div class="card-inner">
                                                 <div class="tab-content">
@@ -367,7 +367,7 @@
                                                         </div>
                                                         <br><br>
                                                         <nav>
-                                                            <ul v-if="user_notifications" class="pagination justify-content-end">
+                                                            <ul v-if="agent" class="pagination justify-content-end">
                                                                 <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_notification')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
                                                                 <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_notification', page)" class="page-link" href="#">{{page}}</a></li>
@@ -574,15 +574,93 @@
                                                             </div>
                                                         </div>
                                                         <br><br>
-                                                        <nav>
-                                                            <ul v-if="user_complains" class="pagination justify-content-end">
-                                                                <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
-                                                                <li v-if="kor_page > 1" @click="nav_dynamic_previousPage('user_complain')" class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>
-                                                                <li v-for="page in kor_total_page" class="page-item"><a @click="nav_dynamic_selectPage('user_complain', page)" class="page-link" href="#">{{page}}</a></li>
-                                                                <li v-if="kor_page < kor_total_page" @click="nav_dynamic_nextPage('user_complain')" class="page-item"><a class="page-link" href="#">Next</a></li>
-                                                                <li v-if="kor_page == kor_total_page" class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                                                            </ul>
-                                                        </nav>
+                                                        <div v-if= 'logisticLocations' class="card-inner">
+                                                            <div class="nk-block-between-md g-3">
+                                                                <div class="g">                                                                        
+                                                                    <ul class="pagination justify-content-end">
+                                                                        <li v-if="location_currentPage == 1" class="page-item disabled">
+                                                                            <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                                        </li>
+                                                                        <li v-else class="page-item">
+                                                                            <a @click.prevent="tab_previousPage('locations')" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                                        </li>
+                                                                        <li class="page-item"><a class="page-link">{{location_currentPage}} of {{location_totalPage}}</a></li>
+                                                                        <li v-if="location_currentPage < location_totalPage" class="page-item">
+                                                                            <a @click.prevent="tab_nextPage('locations')" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                                        </li>
+                                                                        <li v-else class="page-item disabled">
+                                                                            <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--tab pane-->
+
+                                                    <div class="tab-pane" id="user-notifications">
+                                                        <div v-if="user_notifications" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                            <div class="nk-tb-item nk-tb-head">
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">#</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Notifications</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Time</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">Status</span>
+                                                                </div>
+                                                                <div class="nk-tb-col nk-tb-col-tools">
+                                                                </div>
+                                                            </div>
+                                                            <div v-for="(item, index) in user_notifications" class="nk-tb-item">
+                                                                <div class="nk-tb-col"> {{parseInt(index) + 1}} </div>
+                                                                <div class="nk-tb-col"> {{item.notificationtext}} </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span class="lead-text">{{item.date}}</span>
+                                                                </div>
+                                                                <div class="nk-tb-col">
+                                                                    <span v-if='item.read_statusCode == 0' class="lead-text text-warning">{{item.read_status}}</span>
+                                                                    <span v-if='item.read_statusCode  > 0' class="lead-text text-success">{{item.read_status}}</span>
+                                                                </div>
+                                                                <div class="nk-tb-col nk-tb-col-tools">
+                                                                    <ul class="nk-tb-actions gx-1">
+                                                                        <li data-bs-toggle="modal" data-bs-target="#modal_notification">
+                                                                            <a @click="getNotification(index)" href="#" class="btn btn-sm btn-icon btn-trigger me-n1"><em class="icon ni ni-eye-fill text-danger"></em></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="!user_notifications" class="nk-tb-list border border-light rounded overflow-hidden is-compact">
+                                                            No Records Found
+                                                        </div>
+                                                        <br><br>
+                                                        <div v-if= 'user_notifications' class="card-inner">
+                                                            <div class="nk-block-between-md g-3">
+                                                                <div class="g">                                                                        
+                                                                    <ul class="pagination justify-content-end">
+                                                                        <li v-if="notifications_currentPage == 1" class="page-item disabled">
+                                                                            <a class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                                        </li>
+                                                                        <li v-else class="page-item">
+                                                                            <a @click.prevent="tab_previousPage('notifications')" class="page-link"><em class="icon ni ni-chevrons-left"></em></a>
+                                                                        </li>
+                                                                        <li class="page-item"><a class="page-link">{{notifications_currentPage}} of {{notifications_totalPage}}</a></li>
+                                                                        <li v-if="notifications_currentPage < notifications_totalPage" class="page-item">
+                                                                            <a @click.prevent="tab_nextPage('notifications')" class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                                        </li>
+                                                                        <li v-else class="page-item disabled">
+                                                                            <a class="page-link"><em class="icon ni ni-chevrons-right"></em></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
                                                     </div>
                                                     <!--tab pane-->
                                                     
@@ -681,17 +759,12 @@
                         <div class="card h-100">
                                                     
                             <div class="nk-tb-list is-compact">
-                                <div class="nk-tb-item nk-tb-head">
-                                    <div class="nk-tb-col"><span>Name</span></div>
-                                    <div class="nk-tb-col text-end"><span>{{user_notification.name}}</span></div>
-                                </div><!-- .nk-tb-head -->
-                                
                                 <div class="nk-tb-item">
                                     <div class="nk-tb-col">
                                         <span class="tb-sub"><span>Notification Text</span></span>
                                     </div>
                                     <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.text}}</span></span>
+                                        <span class="tb-sub tb-amount"><span>{{user_notification.notificationtext}}</span></span>
                                     </div>
                                 </div><!-- .nk-tb-item -->
                                 <div class="nk-tb-item">
@@ -699,15 +772,31 @@
                                         <span class="tb-sub"><span>notification Type</span></span>
                                     </div>
                                     <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.type}}</span></span>
+                                        <span class="tb-sub tb-amount"><span>{{user_notification.notificationtype}}</span></span>
                                     </div>
                                 </div><!-- .nk-tb-item -->
-                                <div class="nk-tb-item">
+                                <div v-if='user_notification.transaction_id' class="nk-tb-item">
                                     <div class="nk-tb-col">
-                                        <span class="tb-sub"><span>order Ref Id</span></span>
+                                        <span class="tb-sub"><span>Transaction</span></span>
                                     </div>
                                     <div class="nk-tb-col text-end">
-                                        <span class="tb-sub tb-amount"><span>{{user_notification.orderId}}</span></span>
+                                        <span class="tb-sub tb-amount"><span>{{user_notification.transaction_type}}</span></span>
+                                    </div>
+                                </div><!-- .nk-tb-item -->
+                                <div v-if='user_notification.apartment_id' class="nk-tb-item">
+                                    <div class="nk-tb-col">
+                                        <span class="tb-sub"><span>Apartment</span></span>
+                                    </div>
+                                    <div class="nk-tb-col text-end">
+                                        <span class="tb-sub tb-amount"><span>{{user_notification.apartmentName}}</span></span>
+                                    </div>
+                                </div><!-- .nk-tb-item -->
+                                <div v-if='user_notification.transaction_id' class="nk-tb-item">
+                                    <div class="nk-tb-col">
+                                        <span class="tb-sub"><span>Amount</span></span>
+                                    </div>
+                                    <div class="nk-tb-col text-end">
+                                        <span class="tb-sub tb-amount"><span>{{user_notification.amount}}</span></span>
                                     </div>
                                 </div><!-- .nk-tb-item -->
                                 <div class="nk-tb-item">

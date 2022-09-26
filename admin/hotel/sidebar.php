@@ -79,6 +79,9 @@
                                         <li class="nk-menu-item">
                                             <a href="./all_apartments.php" class="nk-menu-link"><span class="nk-menu-text">All Apartments</span></a>
                                         </li>
+                                        <li class="nk-menu-item">
+                                            <a href="./apartment_categories.php" class="nk-menu-link"><span class="nk-menu-text">Categories</span></a>
+                                        </li>
                                         <!-- <li class="nk-menu-item">
                                             <a href="./facilities.php" class="nk-menu-link"><span class="nk-menu-text">All Apartments Facilities</span></a>
                                         </li>

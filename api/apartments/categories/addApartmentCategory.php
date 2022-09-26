@@ -9,9 +9,7 @@
     // header("Access-Control-Max-Age: 3600");//3600 seconds
     // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
-    //include ("../apifunctions.php");
-    include "../connectdb.php";
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
 
     $method = getenv('REQUEST_METHOD');
     $endpoint =  basename($_SERVER['PHP_SELF']);
@@ -54,39 +52,22 @@
             $name = cleanme($_POST['name']);
         }
 
-        if(!isset($_POST['description'])){
-            $errordesc="description required";
+        if(!isset($_POST['icon'])){
+            $errordesc="icon required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Input Description";
+            $text="Input icon";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
         }else{
-            $description = cleanme($_POST['description']);
+            $icon = cleanme($_POST['icon']);
         }
-
-        if ( !isset($_FILES['image']) ){
-
-            $errordesc="Apartment category Image required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Apartment category image must be sent";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-
-        }else{
-            $image_url = $_FILES['images'];
-        }
-
-        $image_uploaded = uploadImage($image_url, "category", $endpoint, $method);
 
         $category_id=generateUniqueShortKey($connect, "apartment_category", "category_id");
 
-        if(empty($name) || empty($description)){
+        if(empty($name)){
             //all input required / bad request
             $errordesc="Bad request";
             $linktosolve="htps://";
@@ -99,9 +80,9 @@
         }else {
             //insert to db
             //INSERT INTO `apartment_category`(`id`, `category_id`, `name`, `description`, `image_url`) VALUES 
-            $sqlQuery = "INSERT INTO `apartment_category`(`name`, category_id, `description`, `image_url`) VALUES (?,?,?,?)";
+            $sqlQuery = "INSERT INTO `apartment_category`(`name`, category_id, `icon`) VALUES (?,?,?)";
             $stmt = $connect->prepare($sqlQuery);
-            $stmt->bind_param("ssss",$name, $category_id, $description, $image_uploaded);
+            $stmt->bind_param("sss",$name, $category_id, $icon);
             $insertCategory=$stmt->execute();
 
             if($insertCategory){

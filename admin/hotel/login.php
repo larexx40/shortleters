@@ -26,14 +26,14 @@
                                         <div class="nk-block-head-content">
                                             <h5 class="nk-block-title">Sign-In</h5>
                                             <div class="nk-block-des">
-                                                <p>Access the Carts.ng Admin Panel</p>
+                                                <p>Access the Shortleters Admin Panel</p>
                                             </div>
                                         </div>
                                     </div><!-- .nk-block-head -->
                                     <form @submit.prevent="adminLogin">
                                         <div class="form-group">
                                             <div class="form-label-group">
-                                                <label class="form-label" for="default-01">Email or Username</label>
+                                                <label class="form-label" for="default-01">Email</label>
                                                 <!-- <a class="link link-primary link-sm" tabindex="-1" href="#">Need Help?</a> -->
                                             </div>
                                             <div class="form-control-wrap">
