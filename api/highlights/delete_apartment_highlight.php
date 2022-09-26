@@ -103,18 +103,33 @@
         $num_row = $result->num_rows;
 
 
-        if ( $num_row ){
+        if ( $num_row > 0 ){
             $row = $result->fetch_assoc();
             $ids = $row['highlights_ids'];
 
-            if ( empty($ids) ){
+            $array_of_ids = explode(",", $ids);
+            $length = count($array_of_ids);
+
+            if ($length < 1){
+                $errordesc = "Highlight not found";
+                $linktosolve = 'https://';
+                $hint = "Kindly pass valid value to all the fields";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }
+
+            if ($length == 1){
+                $delte_id = str_replace($highlight_id, "", $ids);
+                
+                // update DB
                 $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
                 $update_stmt = $connect->prepare($update_query);
-                $update_stmt->bind_param("sss", $highlight_id, $apartment_id, $user_id);
+                $update_stmt->bind_param("sss", $delte_id, $apartment_id, $user_id);
                 $update = $update_stmt->execute();
                 
                 if ($update){
-                    $text= "Highlight successfully added";
+                    $text= "Highlight successfully Removed";
                     $status = true;
                     $data = [];
                     $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
@@ -129,39 +144,61 @@
                     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
                     respondInternalError($data);
                 }
-
-
-            }else{
-                if ( str_contains($ids, "$highlight_id") ){
-                    $errordesc = "Highlight already exist";
-                    $linktosolve = 'https://';
-                    $hint = "Kindly pass valid value to all the fields";
-                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                    respondBadRequest($data);
-                }
-
-                $new_ids = $ids.",".$highlight_id;
-                $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
-                $update_stmt = $connect->prepare($update_query);
-                $update_stmt->bind_param("sss", $new_ids, $apartment_id, $user_id);
-                $update = $update_stmt->execute();
+            }
+            if ($length > 1){
                 
-                if ($update){
-                    $text= "Highlight successfully added";
-                    $status = true;
-                    $data = [];
-                    $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
-                    respondOK($successData);
-                }
+                if ( str_contains($ids, ",$highlight_id") ){
+                    $delte_id = str_replace(",$highlight_id", "", $ids);
 
-                if ( $update_stmt->error ){
-                    $errordesc =  $update_stmt->error;
-                    $linktosolve = 'https://';
-                    $hint = "500 code internal error, check ur database connections";
-                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
-                    respondInternalError($data);
+                    // update DB
+                    $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
+                    $update_stmt = $connect->prepare($update_query);
+                    $update_stmt->bind_param("sss", $delte_id, $apartment_id, $user_id);
+                    $update = $update_stmt->execute();
+                    
+                    if ($update){
+                        $text= "Highlight successfully Removed";
+                        $status = true;
+                        $data = [];
+                        $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
+                        respondOK($successData);
+                    }
+
+                    if ( $update_stmt->error ){
+                        $errordesc =  $update_stmt->error;
+                        $linktosolve = 'https://';
+                        $hint = "500 code internal error, check ur database connections";
+                        $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+                        respondInternalError($data);
+                    }
+                    
+                }else{
+                    $delte_id = str_replace("$highlight_id,", "", $ids);
+
+                    // update DB
+                    $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
+                    $update_stmt = $connect->prepare($update_query);
+                    $update_stmt->bind_param("sss", $delte_id, $apartment_id, $user_id);
+                    $update = $update_stmt->execute();
+                    
+                    if ($update){
+                        $text= "Highlight successfully Removed";
+                        $status = true;
+                        $data = [];
+                        $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
+                        respondOK($successData);
+                    }
+
+                    if ( $update_stmt->error ){
+                        $errordesc =  $update_stmt->error;
+                        $linktosolve = 'https://';
+                        $hint = "500 code internal error, check ur database connections";
+                        $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
+                        respondInternalError($data);
+                    }
+                    
                 }
             }
         }else{

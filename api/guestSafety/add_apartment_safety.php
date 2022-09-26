@@ -43,7 +43,7 @@
 
         if ( !isset($_POST['apartment_id']) ){
             // send error if name field is not passed
-            $errordesc = "Highlight name must be passed";
+            $errordesc = "Apartment id must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -54,8 +54,8 @@
             $apartment_id = cleanme($_POST['apartment_id']);
         }
 
-        if ( !isset($_POST['highlight_id']) ){
-            $errordesc = "Highlight icon must be passed";
+        if ( !isset($_POST['safety_id']) ){
+            $errordesc = "Safety id must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -63,12 +63,12 @@
             respondBadRequest($data);
 
         }else{
-            $highlight_id = cleanme($_POST['highlight_id']);
+            $safety_id = cleanme($_POST['safety_id']);
         }
 
-        if (empty($apartment_id) || empty($highlight_id)){
+        if (empty($apartment_id) || empty($safety_id)){
             // send error if inputs are empty
-            $errordesc = "Highlight inputs are required";
+            $errordesc = "Safety inputs are required";
             $linktosolve = 'https://';
             $hint = "Pass in Highlight details, it can't be empty";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -76,9 +76,9 @@
             respondBadRequest($data);
         }
         
-        if ( !checkifFieldExist($connect, "highlights", "highlightid", $highlight_id) ){
+        if ( !checkifFieldExist($connect, "guest_safety", "guest_safetyid", $safety_id) ){
             
-            $errordesc = "Highlights not Found";
+            $errordesc = "Guest Safety not Found";
             $linktosolve = 'https://';
             $hint = "Kindly pass valid value to all the fields";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -95,7 +95,7 @@
             respondBadRequest($data);
         }
 
-        $query = "SELECT highlights_ids FROM `apartments` WHERE apartment_id = ? AND agent_id = ?";
+        $query = "SELECT safety_ids FROM `apartments` WHERE apartment_id = ? AND agent_id = ?";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("ss", $apartment_id, $user_id);
         $stmt->execute();
@@ -105,16 +105,16 @@
 
         if ( $num_row ){
             $row = $result->fetch_assoc();
-            $ids = $row['highlights_ids'];
+            $ids = $row['safety_ids'];
 
             if ( empty($ids) ){
-                $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
+                $update_query = "UPDATE `apartments` SET `safety_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
                 $update_stmt = $connect->prepare($update_query);
-                $update_stmt->bind_param("sss", $highlight_id, $apartment_id, $user_id);
+                $update_stmt->bind_param("sss", $safety_id, $apartment_id, $user_id);
                 $update = $update_stmt->execute();
                 
                 if ($update){
-                    $text= "Highlight successfully added";
+                    $text= "Guest Safety successfully added";
                     $status = true;
                     $data = [];
                     $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
@@ -132,8 +132,8 @@
 
 
             }else{
-                if ( str_contains($ids, "$highlight_id") ){
-                    $errordesc = "Highlight already exist";
+                if ( str_contains($ids, "$safety_id") ){
+                    $errordesc = "Guest Safety already exist";
                     $linktosolve = 'https://';
                     $hint = "Kindly pass valid value to all the fields";
                     $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -141,14 +141,14 @@
                     respondBadRequest($data);
                 }
 
-                $new_ids = $ids.",".$highlight_id;
-                $update_query = "UPDATE `apartments` SET `highlights_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
+                $new_ids = $ids.",".$safety_id;
+                $update_query = "UPDATE `apartments` SET `safety_ids`= ? WHERE `apartment_id` = ? AND agent_id = ? ";
                 $update_stmt = $connect->prepare($update_query);
                 $update_stmt->bind_param("sss", $new_ids, $apartment_id, $user_id);
                 $update = $update_stmt->execute();
                 
                 if ($update){
-                    $text= "Highlight successfully added";
+                    $text= "Guest Safety successfully added";
                     $status = true;
                     $data = [];
                     $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
