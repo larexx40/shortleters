@@ -90,7 +90,7 @@
                 $num_row = $result->num_rows;
                 $total_pg_found =  ceil($num_row / $no_per_page);
 
-                $query = "$query LIMIT ?, ?";
+                $query = "$query ORDER BY bookings.id DESC LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("sssssssssss", $status,$searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
@@ -106,7 +106,7 @@
                 $total_num_row = $result->num_rows;
                 $total_pg_found =  ceil($total_num_row / $no_per_page); 
 
-                $query = "$query LIMIT ?, ?";
+                $query = "$query ORDER BY bookings.id DESC  LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
                 $queryStmt->bind_param("ssssssssss", $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $offset, $no_per_page);
                 $queryStmt->execute();
@@ -127,7 +127,7 @@
                 $total_num_row = $result->num_rows;
                 $total_pg_found =  ceil($total_num_row / $no_per_page); 
 
-                $query = "$query LIMIT ?, ?";
+                $query = "$query ORDER BY bookings.id DESC  LIMIT ?, ?";
                 $gtTotalcomplains = $connect->prepare($query);
                 $gtTotalcomplains->bind_param("sss", $status ,$offset, $no_per_page);
                 $gtTotalcomplains->execute();
@@ -142,7 +142,7 @@
                 $total_num_row = $result->num_rows;
                 $total_pg_found =  ceil($total_num_row / $no_per_page); 
 
-                $query = "$query LIMIT ?, ?";
+                $query = "$query ORDER BY bookings.id DESC  LIMIT ?, ?";
                 $gtTotalcomplains = $connect->prepare($query);
                 $gtTotalcomplains->bind_param("ss", $offset, $no_per_page);
                 $gtTotalcomplains->execute();

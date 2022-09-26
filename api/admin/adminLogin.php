@@ -146,8 +146,8 @@
                 $dateloggedin = time();
                 $browser= $_SERVER['HTTP_USER_AGENT'];
                 $userIp = getIPAddress();
-                $location = "naija";
-                $userType = "Admin";
+                $location = getLoc($userIp);
+                $userType = "1";
                 $sessionCode = generateUniqueShortKey($connect, "usersessionlog", "sessioncode");
 
                 //update the session log
@@ -162,11 +162,11 @@
                 if ($insertLogSession){
                     //send login sms
                     $receiver=$email;
-                    $sender="no-reply@loadng.ng";
+                    $sender="no-reply@shortleters.ng";
                     $subject="CartNG Account Login Notification";
                     $dateloggedin= gettheTimeAndDate($dateloggedin);
                     $msg="Hello Chief  $name,<br>
-                            You just logged in to your account on LoadNG with the ip properties below.<br><br> IP Address: $userIp <br><br>Device: $browser <br><br>Date: $dateloggedin.<br>
+                            You just logged in to your account on Shortleters with the ip properties below.<br><br> IP Address: $userIp <br><br>Device: $browser <br><br>Date: $dateloggedin.<br>
                             If this was you, you can safely disregard this email. If this wasn't you, please chat our support team immediately.";
                     
                     //send user login email  

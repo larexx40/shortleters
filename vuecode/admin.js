@@ -169,7 +169,7 @@ let admin = Vue.createApp({
             blogCount: null,
             admins:null,
             baseUrl:'http://localhost/shortleters/',
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjQxMTY3NDMsImlzcyI6IkxPRyIsIm5iZiI6MTY2NDExNjc0MywiZXhwIjoxNjY0MTkwNTQzLCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.wIMezC02e41seYlAp2OZHWFVoCAGgToDMra8k32wf9Ap5WVO3TS7-HZH_rYm4hAWUnfiePsmwEI0giUJLyyuwg',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjQxOTIzNzgsImlzcyI6IkxPRyIsIm5iZiI6MTY2NDE5MjM3OCwiZXhwIjoxNjY0MjY2MTc4LCJ1c2VydG9rZW4iOiJDTkdVYWRtaW4ifQ.-HV_B0D-sF1_ZYdxwM-xq6x_p1W0YuiJaoKQw_aUhoXEUuOznghI2ctkLNEiesWZoPzMMsTiT2Pp78wEbO5Vqg',
             email: null,
             ref_link: null,
             admin_details: null,
@@ -4156,9 +4156,16 @@ let admin = Vue.createApp({
                 this.loading = true;
                 const response = await axios(options);
                 if(response.data.status){
-                    const uri = response.data.data.redirectLink;
-                    console.log("uri", uri);
-                    // window.location.href= uri;
+                    if(response.data.data.googleStatus ==1){
+                        //already logged in
+                        window.location.href='../user/index.php'
+                    }else{
+                        //click on the link
+                        const uri = response.data.data.redirectLink;
+                        console.log("uri", uri);
+                        window.location.href= uri;
+
+                    }
                     
                 }else{
                     this.user_booking = null;

@@ -177,7 +177,7 @@
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Check in </span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Check out</span></div>
                                                             <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
-                                                            <div class="nk-tb-col nk-tb-col-tools text-end"></div>
+                                                            <div class="nk-tb-col tb-col-md"></div>
                                                         </div><!-- .nk-tb-item -->
                                                         
                                                         <div v-for='(item, index) in bookings' class="nk-tb-item">
@@ -222,7 +222,7 @@
                                                                 <span v-if="item.paid_code > 0" class="tb-status text-success">{{item.paid_status}}</span>
                                                                 <span v-if="item.paid_code < 1" class="tb-status text-warning">{{item.paid_status}}</span>
                                                             </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools">
+                                                            <div class="nk-tb-col tb-col-md nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-1">
                                                                     <li>
                                                                         <div class="drodown">

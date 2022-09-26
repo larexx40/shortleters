@@ -1,3 +1,5 @@
+<!-- This step occurs if the user Selects a sub Building Type According to Building Type Selected  -->
+
 <?php
     // pass cors header to allow from cross-origin
     header("Access-Control-Allow-Origin: *");
@@ -6,7 +8,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
-    include "../../cartsfunction.php";
+    include "../cartsfunction.php";
     
   
 
@@ -28,10 +30,10 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
-        $userid =  checkIfUser($connect, $user_pubkey);
+        $user_id =  getUserWithPubKey($connect, $user_pubkey);
 
         // send error if ur is not in the database
-        if (!$userid){
+        if (!$user_id){
             // send user not found response to the user
             $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
@@ -41,75 +43,97 @@
             respondUnAuthorized($data);
         }
 
-        if ( !isset($_POST['apartment_id']) ){
-            $errordesc="Apartment id required";
+
+        if ( !isset($_POST['space_type_id']) ){
+
+            $errordesc="Space Type id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Apartment id must be passed";
+            $text="Space Type id must be passed";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+
+        }else{
+            $space_type_id = cleanme($_POST['space_type_id']);
+        }
+
+        if ( !isset($_POST['apartment_id']) ){
+
+            $errordesc="apartments id required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="apartments id must be passed";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
 
         }else{
             $apartment_id = cleanme($_POST['apartment_id']);
-        } 
-
-        //`name`, `preferred_chek_in`, `preferred_chek_out`, `no_of_guest`
-        if ( isset($_POST['name']) ){
-            $name = cleanme($_POST['name']);
-        }else{
-            $name = '';
-        }
-        
-        if ( isset($_POST['preferred_chek_in']) ){
-            $preferred_chek_in = cleanme($_POST['preferred_chek_in']);
-        }else{
-            $preferred_chek_in = '';
-        }
-        if ( isset($_POST['preferred_chek_out']) ){
-            $preferred_chek_out = cleanme($_POST['preferred_chek_out']);
-        }else{
-            $preferred_chek_out = '';
-        }
-        if ( isset($_POST['no_of_guest']) ){
-            $no_of_guest = cleanme($_POST['no_of_guest']);
-        }else{
-            $no_of_guest = '';
         }
 
-       
+        if ( empty($space_type_id) || empty($apartment_id) ){
 
-        $wishlistid=generateUniqueShortKey($connect, "user_wishlist", "wishlist_id");
-         // check if none of the field is empty
-        if ( empty($apartment_id) ){
-
-            $errordesc = "Insert all fields";
+            $errordesc = "Enter all Fields";
             $linktosolve = 'https://';
-            $hint = "Kindly pass value to all the fields";
+            $hint = "Kindly ensure that a valid id is passed";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
-        //`name`, `preferred_chek_in`, `preferred_chek_out`, `no_of_guest`
-        $query = 'INSERT INTO `user_wishlist`(`wishlist_id`, `apartment_id`, `user_id`, `name`, `preferred_chek_in`, `preferred_chek_out`, `no_of_guest`) VALUES (?,?,?,?,?,?,?)';
-        $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("sssssss", $wishlistid, $apartment_id, $userid, $name, $preferred_chek_in, $preferred_chek_out, $no_of_guest);
+        
 
-        if ( $slider_stmt->execute() ) {
-            $text= "Wishlist successfully added";
-            $status = true;
-            $data = [];
-            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
-            respondOK($successData);
+        
 
-        }else{
-            $errordesc =  $slider_stmt->error;
+        // check if fields are valid
+        if ( !checkifFieldExist($connect, "space_type", "space_id", $space_type_id) ) {
+
+            $errordesc = "Space Type does not Exist ";
+            $linktosolve = 'https://';
+            $hint = "Kindly ensure the product id passed is for an existing product";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+
+        if ( !checkifFieldExist($connect, "apartments", "apartment_id", $apartment_id) ) {
+
+            $errordesc = "Apartment does not Exist ";
+            $linktosolve = 'https://';
+            $hint = "Kindly ensure the product id passed is for an existing product";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+
+        $steps = "4";
+        
+
+        // Make user and agent
+        $query = "UPDATE `apartments` SET `space_type_id`= ?, `steps` = ? WHERE `apartment_id` = ? AND agent_id = ?";
+        $updateStatus = $connect->prepare($query);
+        $updateStatus->bind_param("ssss", $space_type_id, $steps ,$apartment_id ,$user_id);
+        $updateStatus->execute();
+
+        if ($updateStatus->error){
+            $errordesc =  $updateStatus->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondInternalError($data);
+        }
+
+        if ( $updateStatus->execute()){
+            
+            $text= "Saved";
+            $status = true;
+            $data = [];
+            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+            respondOK($successData);
+
         }
 
     }else{

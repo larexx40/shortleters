@@ -7,6 +7,8 @@
     Header("Cache-Control: no-cache");
 
     include "../../cartsfunction.php";
+
+    // This step occurs if the user Selects a sub Building Type According to Building Type Selected
     
   
 
@@ -28,8 +30,10 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
+        $user_details = getFieldsDetails($connect, "users", "userpubkey", $user_pubkey);
+
         // send error if ur is not in the database
-        if (!$user){
+        if (!$user_details){
             // send user not found response to the user
             $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
@@ -39,57 +43,81 @@
             respondUnAuthorized($data);
         }
 
-        // Check if the email field is passed
-        if (!isset($_POST['wishlist_id'])){
-            $errordesc = "All fields must be passed";
+        $user_id = $user_details['details']['id'];
+        $verified = $user_details['details']['verified'];
+
+
+        if ( !isset($_POST['apartment_id']) ){
+
+            $errordesc="apartments id required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="apartments id must be passed";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+
+        }else{
+            $apartment_id = cleanme($_POST['apartment_id']);
+        }
+
+        if ( empty($apartment_id) ){
+
+            $errordesc = "Enter all Fields";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required amenity id field in this endpoint";
+            $hint = "Kindly ensure that a valid id is passed";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
+        }
+
+        
+
+        if ( !checkifFieldExist($connect, "apartments", "apartment_id", $apartment_id) ) {
+
+            $errordesc = "Apartment does not Exist ";
+            $linktosolve = 'https://';
+            $hint = "Kindly ensure the product id passed is for an existing product";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+
+        $steps = "14";
+        $draft = "0";
+
+        if ($verified > 0){
+            $apart_status = "1";
         }else{
-            $wishlist_id = cleanme($_POST['wishlist_id']);
+            $apart_status = "0";
         }
         
-        if ( empty($wishlist_id) ){
-            $errordesc = "Amenity id must be filled";
+
+        // Make user and agent
+        $query = "UPDATE `apartments` SET `steps`= ?, `draft` = ?, `apartment_status` = ?  WHERE `apartment_id` = ? AND agent_id = ?";
+        $updateStatus = $connect->prepare($query);
+        $updateStatus->bind_param("sssss", $steps, $draft, $apart_status ,$apartment_id ,$user_id);
+        $execute = $updateStatus->execute();
+
+        if ($updateStatus->error){
+            $errordesc =  $updateStatus->error;
             $linktosolve = 'https://';
-            $hint = "Kindly pass a valid slider id field in this endpoint";
+            $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
+            respondInternalError($data);
         }
 
-        $query = 'DELETE FROM `user_wishlist` WHERE `wishlist_id` = ? AND user_id =?';
-        $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ss", $wishlist_id, $userid);
-        $slider_stmt->execute();
-        $rows_affected = $slider_stmt->affected_rows;
-
-        if ( $rows_affected > 0 ) {
-            $slider_stmt->close();
-
-            $text= "Wishlist deleted";
+        if ( $execute ){
+            
+            $text= "Saved";
             $status = true;
             $data = [];
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 
-        }else{
-            $errordesc = "Wishlist not Found";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass a slider that exist in the database";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
         }
-
-        $errordesc =  $slider_stmt->error;
-        $linktosolve = 'https://';
-        $hint = "500 code internal error, check ur database connections";
-        $errorData = returnError7003($errordesc, $linktosolve, $hint);
-        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-        respondInternalError($data);
 
     }else{
 

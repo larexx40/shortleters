@@ -83,22 +83,17 @@
                         $firstName = $row['fname'];
                         $userPubKey = $row['userpubkey'];
                         $browser= $_SERVER['HTTP_USER_AGENT'];
-                        $sessionCode = str_shuffle(time().(mt_rand(43, 615)));
                         $username = $row['username'];
                         $fullname = $row['fname']." ".$row['lname'];
                         $balance = $row['bal'];
                         $time = new DateTimeImmutable();
                         $fullDate = gettheTimeAndDate($time->getTimestamp());
-                        $user_type = "4";
+                        $user_type = 2;
+                        $sessionCode = generateUniqueShortKey($connect, "usersessionlog", "sessioncode");
 
                         //update the session log
                         addSessionLog($connect, $email, $activity, $sessionCode, $ipaddress, $browser, $fullDate, getLoc($ipaddress), $user_type, $method, $endpoint );
-                        // $query = "INSERT INTO usersessionlog(Email, activity ,Sessioncode,Date,Ipaddress,Browser) VALUES (?,?,?,?,?)";
-                        // $logSession = $connect->prepare($query);
-                        // $logSession->bind_param("ssssss", $email , $activity ,$sessionCode, $dateloggedin, $ipaddress, $browser);
-                        // $logSession->execute();
-
-                        //get companydetalis and servername for auth token
+                        
                         $detailsID =1;
                         $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
                         $getCompanyDetails->bind_param('i', $detailsID);
@@ -111,31 +106,28 @@
 
                         //send login sms
                         $receiver=$email;
-                        $sender="no-reply@loadng.ng";
-                        $subject="LoadNG Account Login Notification";
+                        $sender="no-reply@shortleters.ng";
+                        $subject="Shortleters Account Login Notification";
                         $dateloggedin= gettheTimeAndDate($dateloggedin);
                         $msg="Hello Chief  $firstName,<br>
-                                You just logged in to your account on LoadNG with the ip properties below.<br><br> IP Address: $ipaddress <br><br>Device: $browser <br><br>Date: $dateloggedin.<br>
+                                You just logged in to your account on Shortleters with the ip properties below.<br><br> IP Address: $ipaddress <br><br>Device: $browser <br><br>Date: $dateloggedin.<br>
                                 If this was you, you can safely disregard this email. If this wasn't you, please chat our support team immediately.";
 
-                        //sendanymail($receiver, $subject, $msg, $sender);
-                        $mailsent = sendUserMail($subject, $receiver, $msg, $msg);
-                        
-                        if ( $mailsent ){
-                            //get auth token
-                        
-                            $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
-                            $maindata=["authtoken"=> $token];
-                            $errordesc = " ";
-                            $linktosolve = "htps://";
-                            $hint = [];
-                            $errordata = [];
-                            $text = "Login successful";
-                            $status = true;
-                            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-                            respondOK($data);
+                        //send use mail
+                        sendUserMail($subject, $receiver, $msg, $msg);
+                        //get auth token
+                        $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
+                        $maindata=["authtoken"=> $token];
+                        $errordesc = " ";
+                        $linktosolve = "htps://";
+                        $hint = [];
+                        $errordata = [];
+                        $text = "Login successful";
+                        $status = true;
+                        $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+                        respondOK($data);
 
-                        }
+                        
 
                     } elseif ($status==2) {//suspended
                         $maindata['status']=$status;

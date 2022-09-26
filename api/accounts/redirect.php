@@ -9,7 +9,7 @@ Header("Cache-Control: no-cache");
 // 1)private,max-age=60 (browser is only allowed to cache) 2)no-store(public),max-age=60 (all intermidiary can cache, not browser alone)  3)no-cache (no ceaching at all)
 
 include "../cartsfunction.php";
-require '../googleAPI/vendor/autoload.php';
+require_once ('../googleAPI/vendor/autoload.php');
 
 $method = getenv('REQUEST_METHOD');
 $endpoint = "/api/user/".basename($_SERVER['PHP_SELF']);
@@ -42,6 +42,7 @@ if (getenv('REQUEST_METHOD') === 'GET'){
   $client->setRedirectUri($redirectUri);
   $client->addScope("email");
   $client->addScope("profile");
+  $loginUrl = $client->createAuthUrl();
     
   // authenticate code from Google OAuth Flow
   if (isset($_GET['code'])) {
@@ -58,6 +59,7 @@ if (getenv('REQUEST_METHOD') === 'GET'){
     //return user pub key
     if($user){
       // header('location: ../../user/index.php');
+      $googleStatus=1;
       $userid = $google_account_info->id;
       $email =  $google_account_info->email;
       $firstname = $google_account_info->given_name;
@@ -65,37 +67,40 @@ if (getenv('REQUEST_METHOD') === 'GET'){
       $gender = $google_account_info->gender;
       $name =  $google_account_info->name;
       $token = getTokenToSendAPI($userid,$companyprivateKey,$minutetoend,$serverName);
+      //proceed to index page
       $maindata = [
-        'redirectLink'=>'../../user/index.php',
+        'googleStatus'=>$googleStatus,
+        'redirectLink'=>'../user/index.php',
         'userInfo'=>$google_account_info,
+        'token'=>$token,
       ];
       $errordesc = "";
       $linktosolve = "htps://";
       $hint = [];
       $errordata = [];
-      $text = "User Details Fetched";
+      $text = "User Details Fetched ";
       $status = true;
       $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
       respondOK($data);
     }else{
       //go to error
-      header('Location: ../../user/errorpage.php');
+      header('Location: ../user/errorpage.php');
       exit();
     }
     
   } else {
     $redirectLink = $client->createAuthUrl();
     // header("Location: $redirectLink");
-    // // echo "<a href='".$client->createAuthUrl()."'>Google Login</a>";
+    $googleStatus=2;
     $maindata = [
+      'googleStatus'=>$googleStatus,      
       'redirectLink'=>$redirectLink,
-      
     ];
     $errordesc = "";
     $linktosolve = "htps://";
     $hint = [];
     $errordata = [];
-    $text = "User Details Fetched";
+    $text = "User Details Fetched redirectlink";
     $status = true;
     $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
     respondOK($data);

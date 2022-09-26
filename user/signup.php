@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,7 +152,7 @@ input[type=submit]:hover {
                   <a href="#" class="twitter btn">
                   <i class="fa fa-twitter fa-fw"></i> Login with Twitter
                   </a>
-                  <a @click.preevent='googleOauth()'href="#" class="google btn"><i class="fa fa-google fa-fw">
+                  <a @click='googleOauth()' href="#" class="google btn"><i class="fa fa-google fa-fw">
                   </i> Login with Google+
                   </a>
               </div>

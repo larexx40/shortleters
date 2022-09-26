@@ -191,31 +191,30 @@
         $registered = registerAUser($connect, $email, $firstname, $lastname, $phone, $password, $username , $refferedBy ,$endpoint, $method, $tableName);
 
         if ($registered){
-            $userType = "4";
+            $userType = "2";
             $activity = "2";
             // add session log since the user has registered
             addSessionLog($connect, $email, $activity ,$sessioncode, $userIp, $browser, $date, $location, $userType ,$method, $endpoint);
 
             // generate the registration notification email format
             $emailFrom = "noreply@cart.ng";
-            $subject = "Successfully Registered to the cart.ng platform";
+            $subject = "Successfully Registered to the shortleter's platform";
             $toemail = $email;
             $msgintext = "Hello Chief  $firstname,<br>
-            You just successfully created your account on cart.ng with the ip properties below.<br><br> IP Address: $userIp <br><br>Device: $browser <br><br>Date: $fullDate.<br>
+            You just successfully created your account on shortleters with the ip properties below.<br><br> IP Address: $userIp <br><br>Device: $browser <br><br>Date: $fullDate.<br>
             If this was you, you can safely disregard this email. If this wasn't you, please chat our support team immediately.";
 
-            $mailsent = sendUserMail($subject, $toemail, $msgintext, $msgintext);
+            //send mail to user
+            sendUserMail($subject, $toemail, $msgintext, $msgintext);
 
-            //mail provider might not bed available
-            if ($mailsent){
-                $text= "User registration Successful";
-                $status = true;
-                $data = array(
-                    'auth' => $registered,
-                );
-                $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
-                respondOK($successData);
-            }
+            $text= "User registration Successful";
+            $status = true;
+            $data = array(
+                'auth' => $registered,
+            );
+            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+            respondOK($successData);
+        
         }
         
     }else{

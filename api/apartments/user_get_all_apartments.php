@@ -25,10 +25,10 @@
         $servername = $row['servername'];
         $expiresIn = $row['tokenexpiremin'];
 
-        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        // $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        // $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $pubkey);
+        // $admin =  checkIfIsAdmin($connect, $pubkey);
         // $agent = getShopWithPubKey($connect, $user_pubkey);
         // $user = getUserWithPubKey($connect, $user_pubkey);
 
@@ -124,8 +124,8 @@
                     $queryStmt->bind_param("sssssssssssssss", $status, $check_in, $check_out, $start_price, $end_price, $country_sort, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -144,8 +144,8 @@
                     $queryStmt->bind_param("sssssssssssss", $status, $check_in, $check_out, $country_sort, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -162,8 +162,8 @@
                     $queryStmt->bind_param("sssssssssssss", $status, $start_price, $end_price, $country_sort, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -179,8 +179,8 @@
                     $queryStmt->bind_param("ssssssssssssss", $status, $check_in, $check_out, $start_price, $end_price, $country_sort, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -197,8 +197,8 @@
                     $queryStmt->bind_param("ssssssssssssss", $status, $check_in, $check_out, $start_price, $end_price, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -217,8 +217,8 @@
                     $queryStmt->bind_param("sssssssssss", $status,  $country_sort, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -236,8 +236,8 @@
                     $queryStmt->bind_param("ssssssssssss", $status, $check_in, $check_out, $country_sort, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -254,8 +254,8 @@
                     $queryStmt->bind_param("ssssssssssss", $status, $check_in, $check_out, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -272,8 +272,8 @@
                     $queryStmt->bind_param("ssssssssssss", $status, $start_price, $end_price, $country_sort, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -290,8 +290,8 @@
                     $queryStmt->bind_param("ssssssssssss", $status, $start_price, $end_price, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -308,8 +308,8 @@
                     $queryStmt->bind_param("sssssssssssss", $status, $check_in, $check_out, $start_price, $end_price, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -327,8 +327,8 @@
                     $queryStmt->bind_param("ssssssssss", $status, $country_sort, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -345,8 +345,8 @@
                     $queryStmt->bind_param("ssssssssss", $status, $sort_guest, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -362,8 +362,8 @@
                     $queryStmt->bind_param("sssssssssss", $status, $check_in, $check_out, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -380,8 +380,8 @@
                     $queryStmt->bind_param("sssssssssss", $status, $start_price, $end_price, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -399,8 +399,8 @@
                 $queryStmt->bind_param("sssssssss", $status, $searching, $searching, $searching, $searching, $searching, $searching, $searching, $searching);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
-                $total_pg_found =  ceil($num_row / $no_per_page);
+                $total_num_row = $result->num_rows;
+                  $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
@@ -423,8 +423,8 @@
                     $queryStmt->bind_param("sssssss", $status, $check_in, $check_out, $start_price, $end_price, $country_sort, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -443,8 +443,8 @@
                     $queryStmt->bind_param("sssss", $status, $check_in, $check_out, $country_sort, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -461,8 +461,8 @@
                     $queryStmt->bind_param("sssss", $status, $start_price, $end_price, $country_sort, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -478,8 +478,8 @@
                     $queryStmt->bind_param("sssss", $status, $check_in, $check_out, $start_price, $end_price, $country_sort);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -496,8 +496,8 @@
                     $queryStmt->bind_param("sssss", $status, $check_in, $check_out, $start_price, $end_price, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -516,8 +516,8 @@
                     $queryStmt->bind_param("sss", $status,  $country_sort, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -535,8 +535,8 @@
                     $queryStmt->bind_param("ssss", $status, $check_in, $check_out, $country_sort);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -553,8 +553,8 @@
                     $queryStmt->bind_param("ssss", $status, $check_in, $check_out, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -571,8 +571,8 @@
                     $queryStmt->bind_param("ssss", $status, $start_price, $end_price, $country_sort);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -589,8 +589,8 @@
                     $queryStmt->bind_param("ssss", $status, $start_price, $end_price, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -607,8 +607,8 @@
                     $queryStmt->bind_param("sssss", $status, $check_in, $check_out, $start_price, $end_price);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -626,8 +626,8 @@
                     $queryStmt->bind_param("ss", $status, $country_sort);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -644,8 +644,8 @@
                     $queryStmt->bind_param("ss", $status, $sort_guest);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -661,8 +661,8 @@
                     $queryStmt->bind_param("sss", $status, $check_in, $check_out);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -679,8 +679,8 @@
                     $queryStmt->bind_param("sss", $status, $start_price, $end_price);
                     $queryStmt->execute();
                     $result = $queryStmt->get_result();
-                    $num_row = $result->num_rows;
-                    $total_pg_found =  ceil($num_row / $no_per_page);
+                    $total_num_row = $result->num_rows;
+                    $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                     $query = "$query LIMIT ?, ?";
                     $queryStmt = $connect->prepare($query);
@@ -698,8 +698,8 @@
                 $queryStmt->bind_param("s", $status);
                 $queryStmt->execute();
                 $result = $queryStmt->get_result();
-                $num_row = $result->num_rows;
-                $total_pg_found =  ceil($num_row / $no_per_page);
+                $total_num_row = $result->num_rows;
+                $total_pg_found =  ceil($total_num_row / $no_per_page);
 
                 $query = "$query LIMIT ?, ?";
                 $queryStmt = $connect->prepare($query);
@@ -720,6 +720,7 @@
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $title = $row['title'];
+                $images = getApartmentImage($connect, "apartment_images", "apartment_id", $row['apartment_id']);
                 $description = $row['description'];
                 $space_description = $row["space_description"];
                 $guest_access = $row["guest_access"];
@@ -830,6 +831,7 @@
                     'status' => $status,
                     'title' => $title,
                     'description' => $description,
+                    'images' => ($images) ? $images : null,
                     'space_description' => $space_description,
                     'guest_access' => $guest_access,
                     'other_details' => $other_details,
