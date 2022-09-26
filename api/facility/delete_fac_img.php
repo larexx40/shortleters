@@ -40,7 +40,7 @@
         }
 
         // Check if the email field is passed
-        if (!isset($_POST['apart_facility_id'])){
+        if (!isset($_POST['apart_fac_img_id'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required apartment facility id field in this endpoint";
@@ -48,33 +48,15 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $apart_facility_id = cleanme($_POST['apart_facility_id']);
+            $apart_fac_img_id = cleanme($_POST['apart_fac_img_id']);
         }
 
-        if (!isset($_POST['facility_id'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required facility id field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
-            $facility_id = cleanme($_POST['facility_id']);
-        }
         
-        if ( empty($apart_facility_id) || empty($facility_id) ){
-            $errordesc = "Amenity id must be filled";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass a valid slider id field in this endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
 
         // fetch all apart_facility images and delete
-        $imgs_query = "SELECT `images` FROM `apartment_facilities_img` WHERE `apartment_fac_id` = ? AND `facility_id` = ?";
+        $imgs_query = "SELECT `images` FROM `apartment_facilities_img` WHERE `apart_fac_img_id` = ?";
         $imgs_stmt = $connect->prepare($imgs_query);
-        $imgs_stmt->bind_param("ss", $apart_facility_id, $facility_id);
+        $imgs_stmt->bind_param("s", $apart_fac_img_id );
         $imgs_stmt->execute();
         $result = $imgs_stmt->get_result();
         $num_row = $result->num_rows;
@@ -113,45 +95,19 @@
 
             if (!$error){
                 // delete all facility images from DB
-                $delte_imgs = "DELETE FROM `apartment_facilities_img` WHERE `apartment_fac_id` = ? AND `facility_id` = ?";
+                $delte_imgs = "DELETE FROM `apartment_facilities_img` WHERE `apart_fac_img_id` = ?";
                 $delte_imgs_stmt = $connect->prepare($delte_imgs);
-                $delte_imgs_stmt->bind_param("ss", $apart_facility_id, $facility_id);
+                $delte_imgs_stmt->bind_param("s", $apart_fac_img_id);
                 $delte_imgs_stmt->execute();
                 $rows_affected = $delte_imgs_stmt->affected_rows;
 
                 if ( $rows_affected > 0 ) {
-                    $delte_imgs_stmt->close();
-
-                    $query = 'DELETE FROM `apartment_facilities` WHERE `apart_facility_id` = ? AND `facility_id` = ?';
-                    $slider_stmt = $connect->prepare($query);
-                    $slider_stmt->bind_param("ss", $apart_facility_id ,$facility_id);
-                    $slider_stmt->execute();
-                    $rows_affected = $slider_stmt->affected_rows;
-
-                    if ( $rows_affected > 0 ) {
-                        $slider_stmt->close();
-
+                
                         $text= "Apartment Facility successfully deleted";
                         $status = true;
                         $data = [];
                         $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
                         respondOK($successData);
-
-                    }else{
-                        $errordesc = "Apartment Facility not Found";
-                        $linktosolve = 'https://';
-                        $hint = "Kindly pass a slider that exist in the database";
-                        $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                        $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                        respondBadRequest($data);
-                    }
-
-                    $errordesc =  $slider_stmt->error;
-                    $linktosolve = 'https://';
-                    $hint = "500 code internal error, check ur database connections";
-                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                    respondInternalError($data);
 
                 }else{
                     $errordesc = "Apartment Facility Image not Found";
