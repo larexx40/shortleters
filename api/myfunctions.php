@@ -121,6 +121,8 @@
         return $location;
     }
 
+    
+
     function generatePubKey($strength){
         $input = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         $output = generate_string($input, $strength);
@@ -568,7 +570,7 @@
     }
 
     function getUserFullname($connect, $userid){
-        $query = "SELECT  `email`, `fname`, `lname` FROM `users` WHERE `id` = ?";
+        $query = "SELECT `fname`, `lname` FROM `users` WHERE `id` = ?";
         $getUser = $connect->prepare($query);
         $getUser->bind_param("s", $userid);
         $getUser->execute();
@@ -1041,8 +1043,9 @@
         $sx = imagesx($waterImage);
         $sy = imagesy($waterImage);
 
-        imagecopy($img, $waterImage, imagesx($img) - $sx - $marin_right, imagesy($img) - $sy - $margin_bottom, 0, 0, imagesx($waterImage ), imagesy($waterImage
-        ) );
+        $dest_sx = ( imagesx($img) - $sx ) / 2;
+        $dest_sy = ( imagesy($img) - $sy ) / 2;
+        imagecopymerge($img, $waterImage, $dest_sx, $dest_sy, 0, 0, $sx, $sy, 30);
 
 
         imagepng($img, $image);

@@ -39,7 +39,7 @@
                 $type = $split[$length - 1];
                 $imagePath = "../../assets/images/" ."$path/". $response;
 
-                $watermark_image = "../../assets/images/watermarks/rahman.png";
+                $watermark_image = "../../assets/images/watermarks/Shortleters on White Cloth.png";
                 $watermarkedImage = waterMarkImage($imagePath, $type, $watermark_image, $endpoint, $method);
 
                 if ($watermarkedImage){

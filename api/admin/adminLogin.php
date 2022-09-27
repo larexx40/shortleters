@@ -146,7 +146,7 @@
                 $dateloggedin = time();
                 $browser= $_SERVER['HTTP_USER_AGENT'];
                 $userIp = getIPAddress();
-                $location = getLoc($userIp);
+                $location = "Nigeria";
                 $userType = "1";
                 $sessionCode = generateUniqueShortKey($connect, "usersessionlog", "sessioncode");
 
