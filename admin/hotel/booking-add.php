@@ -149,7 +149,7 @@
                                                             <label class="form-label">Method of Payment</label>
                                                             <div class="form-control-wrap">
                                                                 <select v-model="payment_mode" class="form-select js-select2">
-                                                                    <option value="null">Select Payment Method</option>
+                                                                    <option value="0">Select Payment Method</option>
                                                                     <option value="1">Manual</option>
                                                                     <option value="2">Automatic</option>
                                                                 </select>
