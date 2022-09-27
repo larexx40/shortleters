@@ -13,7 +13,7 @@ let authApp = Vue.createApp({
             confirm_password: null,
             loading: null,
             error: null,
-            baseurl: "http://localhost/cart.ng2/"
+            baseurl: "http://localhost/shortleters/"
         }
     },
     methods: {  
@@ -88,7 +88,7 @@ let authApp = Vue.createApp({
 
             try {
                 this.loading = true
-                const response = await axios.post(`http://localhost/cart.ng2/api/admin/adminLogin.php`, data, {
+                const response = await axios.post(`http://localhost/shortleters/api/admin/adminLogin.php`, data, {
                     headers: { "Content-type": "application/json"}
                 });
 

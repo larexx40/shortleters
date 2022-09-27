@@ -6,7 +6,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
     
   
 
@@ -31,7 +31,7 @@
         $userid =  checkIfUser($connect, $user_pubkey);
 
         // send error if ur is not in the database
-        if (!$user){
+        if (!$userid){
             // send user not found response to the user
             $errordesc =  "User not Authorized";
             $linktosolve = 'https://';
@@ -41,39 +41,39 @@
             respondUnAuthorized($data);
         }
 
-        if ( !isset($_GET['apartment_id']) ){
-            $errordesc="product id required";
+        if ( !isset($_POST['apartment_id']) ){
+            $errordesc="Apartment id required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="host type id must be passed";
+            $text="Apartment id must be passed";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
 
         }else{
-            $apartment_id = cleanme($_GET['apartment_id']);
+            $apartment_id = cleanme($_POST['apartment_id']);
         } 
 
         //`name`, `preferred_chek_in`, `preferred_chek_out`, `no_of_guest`
-        if ( isset($_GET['name']) ){
-            $name = cleanme($_GET['name']);
+        if ( isset($_POST['name']) ){
+            $name = cleanme($_POST['name']);
         }else{
             $name = '';
         }
         
-        if ( isset($_GET['preferred_chek_in']) ){
-            $preferred_chek_in = cleanme($_GET['preferred_chek_in']);
+        if ( isset($_POST['preferred_chek_in']) ){
+            $preferred_chek_in = cleanme($_POST['preferred_chek_in']);
         }else{
             $preferred_chek_in = '';
         }
-        if ( isset($_GET['preferred_chek_out']) ){
-            $preferred_chek_out = cleanme($_GET['preferred_chek_out']);
+        if ( isset($_POST['preferred_chek_out']) ){
+            $preferred_chek_out = cleanme($_POST['preferred_chek_out']);
         }else{
             $preferred_chek_out = '';
         }
-        if ( isset($_GET['no_of_guest']) ){
-            $no_of_guest = cleanme($_GET['no_of_guest']);
+        if ( isset($_POST['no_of_guest']) ){
+            $no_of_guest = cleanme($_POST['no_of_guest']);
         }else{
             $no_of_guest = '';
         }

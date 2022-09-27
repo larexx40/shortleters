@@ -54,7 +54,7 @@
             respondBadRequest($data);
         }
         
-        $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions`";
+        $sqlQuery = "SELECT `id`, `userid`, `transactionid`, `transaction_type`, `booking_id`, `ordertime`, `approvedby`, `status`, `approvaltype`,`amttopay` FROM `user_transactions` WHERE transactionid = ?";
         $stmt = $connect->prepare($sqlQuery);
         $stmt->bind_param("s",$transactionid);
         $stmt->execute();  
@@ -75,6 +75,7 @@
         }
         if($numRow > 0){
             //pass fetched data as array maindata[]
+            $row = $result->fetch_assoc();
             $id = $row['id'];
             $userid = $row['userid'];
             $transactionid = $row['transactionid'];

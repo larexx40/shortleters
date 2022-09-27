@@ -6,7 +6,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
     
   
 
@@ -26,20 +26,39 @@
         $expiresIn = $row['tokenexpiremin'];
 
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        $user_pubkey = $decodedToken->usertoken;
 
-        $userid =  checkIfUser($connect, $pubkey);
-        if  (!$userid){
+        $user_id = getUserWithPubKey($connect, $user_pubkey);
+        $admin = checkIfIsAdmin($connect, $user_pubkey);
 
+
+        // check if user is admin
+        if ( !$user_id && !$admin ){
             // send user not found response to the user
-            $errordesc =  "User found";
+            $errordesc =  "Not Authorized";
             $linktosolve = 'https://';
-            $hint = "Login to access this route";
+            $hint = "Only authorized users can access this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
+            respondBadRequest($data);
         }
 
+        if ( $admin ){
+            if ( !isset($_GET['userid'])) {
+
+                $errordesc="user id is required";
+                $linktosolve="htps://";
+                $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+                $errordata=returnError7003($errordesc,$linktosolve,$hint);
+                $text="user id must be passed";
+                $method=getenv('REQUEST_METHOD');
+                $data=returnErrorArray($text,$method,$endpoint,$errordata);
+                respondBadRequest($data);
+    
+            }else{
+                $user_id = cleanme($_GET['userid']);
+            }
+        }
         
     
         if (!isset ($_GET['page']) ) {  
@@ -60,7 +79,7 @@
 
         $query = "SELECT user_wishlist.* from user_wishlist WHERE user_id = ?";
         $queryStmt = $connect->prepare($query);
-        $queryStmt->bind_param("s", $userid);
+        $queryStmt->bind_param("s", $user_id);
         $queryStmt->execute();
         $result = $queryStmt->get_result();
         $total_num_row = $result->num_rows;
@@ -68,7 +87,7 @@
 
         $query = "$query LIMIT ?, ?";
         $queryStmt = $connect->prepare($query);
-        $queryStmt->bind_param("sss", $userid, $offset, $no_per_page);
+        $queryStmt->bind_param("sss", $user_id, $offset, $no_per_page);
         $queryStmt->execute();
         $result = $queryStmt->get_result();
         $num_row = $result->num_rows; 

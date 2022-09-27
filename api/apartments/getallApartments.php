@@ -151,6 +151,9 @@
 
         }
 
+       
+       
+
         if ($num_row > 0){
             $allApartments = [];
 

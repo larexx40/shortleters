@@ -6,7 +6,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
     
   
 
@@ -26,29 +26,33 @@
         $expiresIn = $row['tokenexpiremin'];
 
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        $user_pubkey = $decodedToken->usertoken;
 
-        $userid =  checkIfUser($connect, $pubkey);
-        if  (!$userid){
+        $user_id = getUserWithPubKey($connect, $user_pubkey);
+        $admin = checkIfIsAdmin($connect, $user_pubkey);
+
+
+        // check if user is admin
+        if ( !$user_id && !$admin ){
             // send user not found response to the user
-            $errordesc =  "User found";
+            $errordesc =  "Not Authorized";
             $linktosolve = 'https://';
-            $hint = "Login to access this route";
+            $hint = "Only authorized users can access this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
+            respondBadRequest($data);
         }
 
         // Check if the email field is passed
-        if (!isset($_POST['wishlist_id'])){
-            $errordesc = "All fields must be passed";
+        if (!isset($_GET['wishlist_id'])){
+            $errordesc = "wishlist_id must be passed";
             $linktosolve = 'https://';
-            $hint = "Kindly pass the required amenity id field in this endpoint";
+            $hint = "Kindly pass the required wishlist_id field in this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }else{
-            $wishlist_id = cleanme($_POST['wishlist_id']);
+            $wishlist_id = cleanme($_GET['wishlist_id']);
         }
         
         if ( empty($wishlist_id) ){
@@ -61,8 +65,8 @@
         }
 
         //`apartments` WHERE `apartment_id` = 
-        $query = "SELECT user_wishlist.*, apartments.name, apartments.title, apartments.status, apartments.price, apartments.availability, apartments.no_of_pets, apartments.no_of_kids, apartments.no_of_adults, apartments.apartment_address, apartments.apartment_country, apartments.apartment_city, apartments.apartment_state, apartments.apartment_lga, apartments.longtitude, apartments.latitude, apartments.max_stay from user_wishlist 
-                LEFT JOIN apartments ON  user_wishlist.apartment_id = apartments.apartment_id WHERE wishlist_id = ?";
+        $query = "SELECT user_wishlist.*, apartments.name AS apartment_name, apartments.title, apartments.status, apartments.price, apartments.availability, apartments.no_of_pets, apartments.no_of_kids, apartments.no_of_adults, apartments.apartment_address, apartments.apartment_country, apartments.apartment_city, apartments.apartment_state, apartments.apartment_lga, apartments.longtitude, apartments.latitude, apartments.max_stay from user_wishlist 
+        LEFT JOIN apartments ON  user_wishlist.apartment_id = apartments.apartment_id WHERE user_wishlist.wishlist_id = ?";
         $gtTotalcomplains = $connect->prepare($query);
         $gtTotalcomplains->bind_param("s", $wishlist_id);
         $gtTotalcomplains->execute();
@@ -71,15 +75,17 @@
                 
 
         if ($num_row > 0){
+            $row = $result->fetch_assoc();
             $id =  $row['id'];
             $wishlist_id = $row['wishlist_id'];
             $apartment_id = $row['apartment_id'];
             $images = getApartmentImage($connect, "apartment_images", "apartment_id", $apartment_id);
-            $name =  $row['name'];
+            $wishlist_name =  $row['name'];
+            $apartment_name =  $row['apartment_name'];
             $preferred_chek_in = $row['preferred_chek_in'];
             $preferred_chek_out = $row['preferred_chek_out'];
             $no_of_guest = $row['no_of_guest'];
-            $status_code = $row['status'];
+            $statusCode = $row['status'];
             $status = ($row['status'] == 1) ? "Active" : "Inactive";
             $title = $row['title'];
             $price = $row["price"];
@@ -95,12 +101,12 @@
             $longtitude = $row["longtitude"];
             $latitude = $row["latitude"];
             $apartment_lga = $row["apartment_lga"];
-
             $data=[
                 "id"=>$id,
                 'wishlist_id'=>$wishlist_id,
+                'wishlist_name'=>$wishlist_name,
                 "apartment_id"=>$apartment_id,
-                "name"=>$name,
+                'apartment_name'=>$apartment_name,
                 "images"=>$images,
                 "preferred_chek_in"=>$preferred_chek_in,
                 'preferred_chek_out'=>$preferred_chek_out,

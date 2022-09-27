@@ -29,18 +29,23 @@
         $user_pubkey = $decodedToken->usertoken;
 
         $admin =  checkIfIsAdmin($connect, $user_pubkey);
-        $user_id = "";
+        $user_id =  checkIfUser($connect, $user_pubkey);
 
-        // send error if ur is not in the database
-        if (!$admin){
+        if(!$admin && !$user_id ){
             // send user not found response to the user
-            $errordesc =  "User not Authorized";
+            $errordesc =  "User not registered";
             $linktosolve = 'https://';
-            $hint = "User is not in the database ensure the user is in the database";
+            $hint = "Create account ";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
         }
+        if($admin){
+            $user_id = '';
+        }
+        // if($user_id){
+        //     $admin ='';
+        // }
 
         if (!isset($_POST['first_name'])){
             $errordesc = "All fields must be passed";
@@ -207,6 +212,16 @@
             $payment_status = cleanme($_POST['payment_status']);
         }
 
+        if (!isset($_POST['payment_type'])){
+            $errordesc = "All fields must be passed";
+            $linktosolve = 'https://';
+            $hint = "Kindly pass the required name field in this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }else{
+            $payment_type = cleanme($_POST['payment_type']);
+        }
         if (!isset($_POST['customer_note'])){
             $errordesc = "All fields must be passed";
             $linktosolve = 'https://';
@@ -244,7 +259,7 @@
          // check if none of the field is empty
         if ( empty($first_name) || empty($last_name) || empty($gender) || empty($phone) || empty($email) || empty($apartment_id) || empty($occupation_or_workplace) 
             || empty($preferred_check_in) || empty($prefferred_check_out) || empty($total_amount_paid) || empty($no_of_people) 
-            ||  empty($identification_type) || !is_numeric($payment_status) || empty($apartment_price) ){
+            ||  empty($identification_type) || !is_numeric($payment_status) || !is_numeric($payment_type) || empty($apartment_price) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -287,6 +302,23 @@
 
         $booking_id = generateUniqueShortKey($connect, "bookings", "booking_id ");
 
+        if ($payment_type < 1){
+            $time = time();
+            $id_initial = "NP".$time;
+        }
+
+        if ($payment_type == 1){
+            $time = time();
+            $id_initial = "MU".$time;
+        }
+        if ($payment_type == 2){
+            $time = time();
+            $id_initial = "AU".$time;
+        }
+
+        $booking_id = $id_initial.$booking_id;
+        
+
         if ( $payment_status > 0){
             $trans_id = generateUniqueShortKey($connect, "user_transactions", "transactionid");
             $trans_type = "3";
@@ -309,9 +341,9 @@
             }
         }
 
-        $query = 'INSERT INTO `bookings`(`booking_id`, `user_id`, `admin_id`, `first_name`, `last_name`, `gender`, `phone`, `email`, `apartment_id`, `apartment_price` ,`address`, `occupation_or_workplace`, `preferred_check_in`, `prefferred_check_out`, `total_amount_paid` ,`no_of_people`, `identification_type`, `identification_img`, `paid`, `customer_note`) VALUES (? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)';
+        $query = 'INSERT INTO `bookings`(`booking_id`, `user_id`, `admin_id`, `first_name`, `last_name`, `gender`, `phone`, `email`, `apartment_id`, `apartment_price` ,`address`, `occupation_or_workplace`, `preferred_check_in`, `prefferred_check_out`, `total_amount_paid` ,`no_of_people`, `identification_type`, `identification_img`, `paid`, `payment_type` ,`customer_note`) VALUES (? , ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)';
         $slider_stmt = $connect->prepare($query);
-        $slider_stmt->bind_param("ssssssssssssssssssss", $booking_id, $user_id, $admin, $first_name, $last_name, $gender, $phone, $email, $apartment_id, $apartment_price ,$address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $total_amount_paid ,$no_of_people, $identification_type, $identification_img_link, $payment_status, $customer_note);
+        $slider_stmt->bind_param("sssssssssssssssssssss", $booking_id, $user_id, $admin, $first_name, $last_name, $gender, $phone, $email, $apartment_id, $apartment_price ,$address, $occupation_or_workplace, $preferred_check_in, $prefferred_check_out, $total_amount_paid ,$no_of_people, $identification_type, $identification_img_link, $payment_status, $payment_type ,$customer_note);
 
         if ( $slider_stmt->execute() ) {
             $text= "Booking successfully added";

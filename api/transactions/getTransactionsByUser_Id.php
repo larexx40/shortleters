@@ -28,21 +28,21 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-       //confirm if space type id is passed
-       if(!isset($_POST['userid'])){
-        $errordesc="Transactionid required";
+       //confirm if User  id is passed
+       if(!isset($_GET['userid'])){
+        $errordesc="User id required";
         $linktosolve="htps://";
         $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
         $errordata=returnError7003($errordesc,$linktosolve,$hint);
-        $text="Pass in space type  id";
+        $text="Pass in User id";
         $data=returnErrorArray($text,$method,$endpoint,$errordata);
         respondBadRequest($data);
         
         }else {
-            $userid = cleanme($_POST['userid']); 
+            $userid = cleanme($_GET['userid']); 
         }
 
-        //confirm if space type id is not empty
+        //confirm if User  id is not empty
         if(empty($userid)){
             //all input required / bad request
             $errordesc="Bad request";
@@ -73,6 +73,7 @@
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondInternalError($data);
         }
+        $stmt->close();
         
         if($numRow > 0){
             //pass fetched data as array maindata[]

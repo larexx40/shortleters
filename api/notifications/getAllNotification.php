@@ -38,6 +38,25 @@
             respondBadRequest($data);
         }
 
+        if (isset($_GET['sort'])) {
+            $sort = cleanme($_GET['sort']); //sort if > 0
+        } else {
+            $sort = "";
+        }
+        //sort with status
+        if (isset($_GET['sortStatus']) && is_numeric($_GET['sortStatus'])) {
+            $status = cleanme($_GET['sortStatus']); //status =0-6
+        } else {
+            $status = "";
+        }
+
+        //sort with transaction type
+        if (isset($_GET['sortType'] ) && is_numeric($_GET['sortType']) ) {//web, bank, cash
+            $type =$_GET['sortType'] ;
+        } else {
+            $type = '';
+        }
+
         // pagination and search parameters
         if (isset($_GET['search'])) {
             $search = cleanme($_GET['search']);
@@ -54,53 +73,211 @@
         if (isset ($_GET['per_page']) ) {  
             $no_per_page = cleanme($_GET['per_page']);
         } else {  
-            $no_per_page = 8;  
+            $no_per_page = 5;  
         }
 
         $offset = ($page_no - 1) * $no_per_page;
 
-        if (!empty($search) && $search != "" && $search != " "){
-            $searching = "%{$search}%";
-            // get the total number of pages
-            $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
-                    LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
-                    LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
-                    WHERE apartments.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ?";
-            $getSearchPages = $connect->prepare($query);
-            $getSearchPages->bind_param("sss", $searching, $searching, $searching);
-            $getSearchPages->execute();
-            $result = $getSearchPages->get_result();
-            $num_row = $result->num_rows;
-            $totalPage = ceil($num_row / $no_per_page);  
+        if($sort > 0){
+            if(is_numeric($status) && !is_numeric($type)){//get where only status is passed
+                //sort with notificationstatus
+                if (!empty($search) && $search != "" && $search != " "){
+                    $searching = "%{$search}%";
+                    // get the total number of pages
+                    $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                            LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                            LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                            WHERE (apartments.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ?) AND usernotification.notificationstatus =?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("ssss", $searching, $searching, $searching, $status);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+                    $totalPage = ceil($num_row / $no_per_page);  
+        
+                    // Output page
+                    $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("ssssss", $searching, $searching, $searching, $status, $offset, $no_per_page);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+        
+                    
+                }else{
+                    $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                            LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                            LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                            WHERE usernotification.notificationstatus = ? ";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("s",$status);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+                    $totalPage = ceil($num_row / $no_per_page);  
+        
+                    // Output page
+                    $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("sss",$status, $offset, $no_per_page);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+                    
+        
+                }
+            }
+            if(!is_numeric($status) && is_numeric($type)){//get where only status is passed
+                //sort with notificationtype
+                if (!empty($search) && $search != "" && $search != " "){
+                    $searching = "%{$search}%";
+                    // get the total number of pages
+                    $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                            LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                            LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                            WHERE (apartments.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ?) AND usernotification.notificationtype =?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("ssss", $searching, $searching, $searching, $type);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+                    $totalPage = ceil($num_row / $no_per_page);  
+        
+                    // Output page
+                    $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("ssssss", $searching, $searching, $searching, $type, $offset, $no_per_page);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+        
+                    
+                }else{
+                    $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                            LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                            LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                            WHERE usernotification.notificationtype = ? ";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("s",$type);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+                    $totalPage = ceil($num_row / $no_per_page);  
+        
+                    // Output page
+                    $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("sss",$type, $offset, $no_per_page);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+        
+                }
+            }
+            if(is_numeric($status) && is_numeric($type)){//get where only status is passed
+                //sort with notificationtype and notificationstatus
+                if (!empty($search) && $search != "" && $search != " "){
+                    $searching = "%{$search}%";
+                    // get the total number of pages
+                    $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                            LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                            LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                            WHERE (apartments.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ?) AND usernotification.notificationstatus =? AND usernotification.notificationtype =?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("sssss", $searching, $searching, $searching, $status, $type);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+                    $totalPage = ceil($num_row / $no_per_page);  
+        
+                    // Output page
+                    $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("sssssss", $searching, $searching, $searching, $status, $type, $offset, $no_per_page);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+        
+                    
+                }else{
+                    $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                            LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                            LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                            WHERE usernotification.notificationstatus = ? AND usernotification.notificationtype =? ";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("ss",$status, $type);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+                    $totalPage = ceil($num_row / $no_per_page);  
+        
+                    // Output page
+                    $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                    $getAll = $connect->prepare($query);
+                    $getAll->bind_param("ssss",$status, $type, $offset, $no_per_page);
+                    $getAll->execute();
+                    $result = $getAll->get_result();
+                    $num_row = $result->num_rows;
+        
+                }
+            }
+            if(!is_numeric($status) && !is_numeric($type)){
+                $errordesc="Pass in type or status";
+                $linktosolve="htps://";
+                $hint=["Ensure you pass a valid Email","Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+                $errordata=returnError7003($errordesc,$linktosolve,$hint);
+                $text="pass in type or status";
+                $method=getenv('REQUEST_METHOD');
+                $data=returnErrorArray($text,$method,$endpoint,$errordata);
+                respondBadRequest($data);
+            }
 
-            // Output page
-            $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
-            $getAll = $connect->prepare($query);
-            $getAll->bind_param("sssss", $searching, $searching, $searching, $offset, $no_per_page);
-            $getAll->execute();
-            $result = $getAll->get_result();
-            $num_row = $result->num_rows;
-
-            
         }else{
-            $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
-                    LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
-                    LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id ";
-            $getSearchPages = $connect->prepare($query);
-            $getSearchPages->execute();
-            $result = $getSearchPages->get_result();
-            $num_row = $result->num_rows;
-            $totalPage = ceil($num_row / $no_per_page);  
-
-            // Output page
-            $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
-            $getAll = $connect->prepare($query);
-            $getAll->bind_param("ss", $offset, $no_per_page);
-            $getAll->execute();
-            $result = $getAll->get_result();
-            $num_row = $result->num_rows;
-
+            if (!empty($search) && $search != "" && $search != " "){
+                $searching = "%{$search}%";
+                // get the total number of pages
+                $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                        LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                        LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id 
+                        WHERE apartments.name LIKE ? OR users.fname LIKE ? OR users.lname LIKE ?";
+                $getAll = $connect->prepare($query);
+                $getAll->bind_param("sss", $searching, $searching, $searching);
+                $getAll->execute();
+                $result = $getAll->get_result();
+                $num_row = $result->num_rows;
+                $totalPage = ceil($num_row / $no_per_page);  
+    
+                // Output page
+                $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                $getAll = $connect->prepare($query);
+                $getAll->bind_param("sssss", $searching, $searching, $searching, $offset, $no_per_page);
+                $getAll->execute();
+                $result = $getAll->get_result();
+                $num_row = $result->num_rows;
+    
+                
+            }else{
+                $query = "SELECT usernotification.* FROM `usernotification` LEFT JOIN users ON usernotification.user_id = users.id 
+                        LEFT JOIN bookings ON usernotification.booking_id = bookings.booking_id 
+                        LEFT JOIN apartments ON usernotification.apartment_id = apartments.apartment_id ";
+                $getAll = $connect->prepare($query);
+                $getAll->execute();
+                $result = $getAll->get_result();
+                $num_row = $result->num_rows;
+                $totalPage = ceil($num_row / $no_per_page);  
+    
+                // Output page
+                $query = "$query ORDER BY usernotification.id LIMIT ?, ?";
+                $getAll = $connect->prepare($query);
+                $getAll->bind_param("ss", $offset, $no_per_page);
+                $getAll->execute();
+                $result = $getAll->get_result();
+                $num_row = $result->num_rows;
+    
+            }
         }
+
+        
 
         if ($num_row > 0){
 
