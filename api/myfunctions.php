@@ -121,6 +121,8 @@
         return $location;
     }
 
+    
+
     function generatePubKey($strength){
         $input = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         $output = generate_string($input, $strength);
@@ -568,7 +570,7 @@
     }
 
     function getUserFullname($connect, $userid){
-        $query = "SELECT  `email`, `fname`, `lname` FROM `users` WHERE `id` = ?";
+        $query = "SELECT `fname`, `lname` FROM `users` WHERE `id` = ?";
         $getUser = $connect->prepare($query);
         $getUser->bind_param("s", $userid);
         $getUser->execute();
