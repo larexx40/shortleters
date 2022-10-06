@@ -1,0 +1,44 @@
+footer h5{
+    color: #222222 !important;
+    margin-bottom: 15px;
+    font-size: 14px !important;
+    line-height: 18px !important;
+    font-weight: 800 !important;
+}footer ul li a{
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    font-style: inherit !important;
+    font-variant: inherit !important;
+    text-decoration: none !important;
+    color: #222222 !important;
+    font-size: 14px !important;
+    line-height: 18px !important;
+    outline: none !important;
+}footer ul li a:hover{
+    text-decoration: underline !important;
+}
+
+/*  <===== FOOTER MOBILE VIEW =====> */
+footer .mobile-view .each-link a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	color: var(--inactive-clr);
+}
+footer .mobile-view .each-link a.active {
+	color: var(--pink);
+}
+footer .mobile-view .each-link a .svg-icon svg {
+	width: 1.7rem;
+	height: max-content;
+	margin-top: 4px;
+}
+footer .mobile-view .each-link a .text small {
+	font-size: 0.75rem;
+}
+@media all and (max-width: 600px) {
+	footer .mobile-view .each-link a .svg-icon svg {
+		width: 1.5rem;
+	}
+}

@@ -1,0 +1,196 @@
+.hero{
+    display: flex;
+    height: calc(100vh - 132px);
+    width: 100%;
+}
+
+.hero .section1{
+    background-color: black;
+    padding: 50px;
+    flex: 50%;
+}
+
+.hero .section2{
+    flex: 50%;
+}
+
+.hero .section2 video::-webkit-media-controls {
+    display: none;
+}
+
+.hero .section1 .logo svg{
+    display: block;
+    height: 36px;
+    width: 36px;
+    fill: #fff;
+}
+.hero .section1 .logo{
+    cursor: pointer; 
+}
+
+.hero .section1 .submain{
+    margin-left: 72px;
+    margin-right: 72px;
+    margin-top: 18%;
+    text-align: center;
+}
+
+.hero .section1 .submain .text{
+    color: white;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 70px;
+}
+
+.hero .section1 .submain .btn{
+    color: white;
+    background-color: #da0a65;
+    margin-top: 15%;
+    padding: 10px 15px;
+    font-weight: bold;
+}
+
+.hero .section2 .ask{
+    display: none;
+    position: absolute;
+    top: 25px;
+    right: 27px;
+    z-index: 5;
+    padding: 5px;
+    background-color: white;
+    color: black;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-radius: 40px;
+}
+
+.find_section{
+    margin-top: 100px;
+}
+
+.find_section h2{
+    align-self: center;
+    text-align: center;
+    font-size: 48px;
+    line-height: 56px; 
+    margin: 0px 290px;  
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.find_section .section1{
+    margin-top: 30px;
+    display: grid;
+    row-gap: 10px;
+    column-gap: 10px;
+    grid-template-columns: auto auto auto;
+    margin: 0px 150px;
+    margin-bottom: 20px;  
+
+}
+.find_section .section1 .card1, .find_section .section1 .card2, .find_section .section1 .card3{
+    display: flex;
+    padding: 10px 15px;
+    background-color: #f7f7f7;
+    border-radius: 15px;
+}
+
+.find_section .section1 .card1 .side1, .find_section .section1 .card2 .side1, .find_section .section1 .card3 .side1{
+    flex:80%
+}
+
+.find_section .section1 .card1 .side2, .find_section .section1 .card2 .side2, .find_section .section1 .card3 .side2{
+    flex:20%
+}
+
+.map_section{
+    margin-top: 60px;
+}
+
+.map_section .section1{
+    overflow-x: hidden;
+    max-width: 1280px;
+}
+
+.map_section .section1 .map{
+    overflow-x: scroll;
+}
+
+.testimonial{
+    margin-top: 60px;
+    margin-bottom: 60px;
+    padding: 20px 50px; 
+}
+
+.testimonial h2{
+    margin-bottom:30px;
+    text-align: center;
+    font-size: 48px;
+    line-height: 56px;
+    font-weight: bold;    
+}
+
+
+.Slider--wrapper .Slide {
+    max-width: 100%;
+    margin: 0px 10px;
+}
+
+.Slider--wrapper .Slide img {
+    margin: 10px 10px;
+    width: 340px;
+    height: 354px;
+    border-radius: 10px;
+    filter: drop-shadow(10px 8px 6px rgba(0, 0, 0, 0.25));
+}
+
+.Slider--wrapper .cardx{
+    display: flex;
+    flex-direction: column;
+}
+
+.Slider--wrapper .cardx .card-textx p{
+    display: none;
+}
+
+.help_section{
+    min-height: 450px;
+    margin: 96px 55px 40px 55px;
+    color: white ;
+    background-color: #FF385C;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    border-radius: 12px;
+    padding:100px 0px;
+}
+
+.help_section .section{
+    font-size: 48px ;
+    line-height: 54px ;
+    width: 70%;
+    font-weight: bolder; 
+}
+
+.help_section .btnx{
+    margin-top: 24px;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    font-family: var(--e-ls-qkw);
+    font-size: var(--iw-ehf-f);
+    line-height: var(---s-l-myu);
+    font-weight: var(--jx-zk-pv);
+    border-radius: var(--go-h-jh-l);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    outline: none;
+    padding-left: 23px;
+    padding-right: 23px;
+    padding-top: 5px ;
+    padding-bottom: 5px ;    
+
+}
+
