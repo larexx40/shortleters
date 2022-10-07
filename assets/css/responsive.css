@@ -74,6 +74,7 @@
     
     .tryhosting_section .main .section2 .submain .btn {
         margin-top: 10%;
+        margin-left: 80%;
     }
         
 
@@ -246,5 +247,37 @@
 
     .help_section .btnx{
         font-size: 15px;
+    }
+    
+    .type-of-place-wrapper{
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .property-type .property-wrap{
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 1.2rem;
+    }
+
+    .rooms-and-bed .main{
+        max-width: 375px;
+        overflow-x: hidden;
+    }
+
+    .rooms-and-bed .main .bottom{
+        overflow-x: scroll;
+        padding-bottom:15px;
     }    
+    
+    .amenities-inner-one .body, .amenities-inner-two .body, .amenities-inner-three .body{
+        flex-direction: column;
+    }
+    
+    .accessibility-inner-one .body, .accessibility-inner-two .body, .accessibility-inner-three .body, .accessibility-inner-four .body{
+        flex-direction: column;
+    }
+
+    .filter.modal .modal-body * .form-check {
+        margin-bottom: 5px;
+    }
+    
 }
