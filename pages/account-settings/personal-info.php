@@ -14,8 +14,8 @@
 		<link rel="stylesheet" href="../../assets/css/footer.css" />
 		<link rel="stylesheet" href="../../assets/css/nav.css" />
 	</head>
-	<body>
-		<style>
+	
+	<style>
 			.header-inner {
 				border: none !important;
 			}
@@ -158,7 +158,10 @@
 				background: #008489;
 				color: #fff;
 			}
-		</style>
+	</style>
+
+	<body>
+	<div id="user" v-cloak>
 		<div class="body-wrapper">
 			<header>
 				<div class="header-inner">
@@ -257,34 +260,34 @@
 				</div>
 				<div class="page-inner">
 					<div class="row align-items-start justify-content-between m-0">
-						<div class="form-wrapper col-md-7 p-0">
+						<div v-if='userDetails' class="form-wrapper col-md-7 p-0">
 							<div class="each-form-content">
 								<div class="title-button">
 									<strong>Legal name</strong>
-									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#language">Edit</button>
+									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editName">Edit</button>
 								</div>
-								<div class="value"><span>Yahos Diner</span></div>
+								<div class="value"><span>{{userDetails.fullname}}</span></div>
 							</div>
 							<div class="each-form-content">
 								<div class="title-button">
 									<strong>Gender</strong>
-									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Edit</button>
+									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editGender">Edit</button>
 								</div>
-								<div class="value"><span>United States dollar</span></div>
+								<div class="value"><span>{{userDetails.sex}}</span></div>
 							</div>
 							<div class="each-form-content">
 								<div class="title-button">
 									<strong>Date of birth</strong>
-									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Edit</button>
+									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editDOB">Edit</button>
 								</div>
-								<div class="value"><span>**/**/****</span></div>
+								<div class="value"><span>{{userDetails.dob}}</span></div>
 							</div>
 							<div class="each-form-content">
 								<div class="title-button">
 									<strong>Email address</strong>
-									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Edit</button>
+									<!-- <button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Edit</button> -->
 								</div>
-								<div class="value"><span>na***@dineroa.com</span></div>
+								<div class="value"><span>{{userDetails.Email}}</span></div>
 							</div>
 							<div class="each-form-content variant">
 								<div class="title-button">
@@ -558,10 +561,10 @@
 
 			<!-- modalllllllsssssssss -->
 
-			<!--Language Modal -->
-			<div class="modal fade" id="language" tabindex="-1" aria-labelledby="lang-modal" aria-hidden="true">
+			<!--EditName Modal -->
+			<div class="modal fade" id="editName" tabindex="-1" aria-labelledby="lang-modal" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
+					<div v-if= 'userDetails' class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="lang-modal">Edit Fullname</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -571,14 +574,79 @@
 								<h6>Legal name</h6>
 								<small>This is the name on your travel document, which could be a license or a passport.</small>
 							</div>
-							<form action="" method="" class="form-floating">
-								<input
-									type="email"
-									class="form-control"
-									id="floatingInputValue1"
-									placeholder="name@example.com"
-									value="Yosha Kenshin" />
-								<label for="floatingInputValue1">Fullname</label>
+							<form action="" method="" >
+								<div class="form-floating">
+									<input
+										type="text"
+										class="form-control"
+										id="floatingInputValue1"
+										v-model="userDetails.Firstname" />
+									<label for="floatingInputValue1">Firstname</label>
+								</div>
+								<br>
+								<div class="form-floating">
+									<input
+										type="text"
+										class="form-control"
+										id="floatingInputValue1"
+										v-model="userDetails.Lastname" />
+									<label for="floatingInputValue1">Lastname</label>
+								</div>						
+								
+								
+								<div class="submit-btn">
+									<button class="btn" style="background-color: #000; color: #fff; padding: 14px 1.8rem">Save</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- EditGender Modal -->
+			<div class="modal fade" id="editGender" tabindex="-1" aria-labelledby="currency-modal" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="currency-modal">Edit Gender</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form action="" method="">
+								<div class="form-input">
+									<select class="form-select" aria-label="Default select example">
+										<option selected>Select Gender</option>
+										<option value="1">Male</option>
+										<option value="2">Female</option>
+										<option value="3">Others</option>
+									</select>
+								</div>
+								<div class="submit-btn">
+									<button>Save</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--EditDOB Modal -->
+			<div class="modal fade" id="editDOB" tabindex="-1" aria-labelledby="lang-modal" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div v-if= 'userDetails' class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="lang-modal">Edit Date of Birth</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							
+							<form action="" method="" >
+								<div class="form-floating">
+									<input
+										type="text"
+										class="form-control"
+										id="floatingInputValue1"
+										v-model="userDetails.Firstname" />
+									<label for="floatingInputValue1">DOB</label>
+								</div>
 								<div class="submit-btn">
 									<button class="btn" style="background-color: #000; color: #fff; padding: 14px 1.8rem">Save</button>
 								</div>
@@ -614,9 +682,17 @@
 				</div>
 			</div>
 		</div>
+</div>
+
 		<script src="../../assets/js/bootstrap.min.js"></script>
 		<script src="../../assets/js/bootstrap.bundle.min.js"></script>
 		<script src="../../assets/js/jquery-3.6.1.min.js"></script>
 		<script src="../../assets/js/custom.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+		
+		<script src="https://unpkg.com/vue@3"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="../../vuecode/user.js" ></script>
 	</body>
 </html>

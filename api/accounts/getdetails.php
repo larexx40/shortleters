@@ -60,52 +60,52 @@
             $getUser->close();
 
             //get default delivery address
-            $default = 1;
-            $getAddress = $connect->prepare("SELECT * FROM deliveryaddress WHERE defultaddress = ? AND userid = ?");
-            $getAddress->bind_param("ss",$default, $user_id);
-            $getAddress->execute();
-            $result = $getAddress->get_result();
+            // $default = 1;
+            // $getAddress = $connect->prepare("SELECT * FROM deliveryaddress WHERE defultaddress = ? AND userid = ?");
+            // $getAddress->bind_param("ss",$default, $user_id);
+            // $getAddress->execute();
+            // $result = $getAddress->get_result();
 
-                //get delivery address
-                $row = $result->fetch_assoc();
-                $addressno = ( $row ) ? $row['address_no'] : "";
-                $address = ( $row ) ? $row['address'] : "";
-                $lga = ( $row ) ? $row['lga'] : "";
-                $address_state = ( $row ) ? $row['state'] : "";
-                $address_country = ( $row ) ? $row['country'] : "" ;
-                $zipCode = ( $row ) ? $row['zipcode'] : "";
-                $getAddress->close();
+            //     //get delivery address
+            //     $row = $result->fetch_assoc();
+            //     $addressno = ( $row ) ? $row['address_no'] : "";
+            //     $address = ( $row ) ? $row['address'] : "";
+            //     $lga = ( $row ) ? $row['lga'] : "";
+            //     $address_state = ( $row ) ? $row['state'] : "";
+            //     $address_country = ( $row ) ? $row['country'] : "" ;
+            //     $zipCode = ( $row ) ? $row['zipcode'] : "";
+            //     $getAddress->close();
 
-                $maindata = [
-                    "userid"=>$id,
-                    "Email"=>$email,
-                    "Firstname"=>$firstName,
-                    "Lastname"=>$lastName,
-                    "fullname" => $fullname,
-                    "Username"=>$username,
-                    "Fullname"=>$fullname,
-                    "phone" => $phoneno,
-                    "balance"=>$balance,
-                    "Addressno"=> $addressno,
-                    "Address"=> $address,
-                    "address_state" => $address_state,
-                    "address_country" => $address_country,
-                    "Local government"=> $lga ,
-                    "State"=>$state,
-                    "Country"=>$country,
-                    "sex" => $sex,
-                    'dob' => $dob,
-                    "Zipcode"=>$zipCode,
-                    "refcode" => $refcode
-                ];
-                $errordesc = "";
-                $linktosolve = "htps://";
-                $hint = [];
-                $errordata = [];
-                $text = "User Details Fetched";
-                $status = true;
-                $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-                respondOK($data);
+            $maindata = [
+                "userid"=>$id,
+                "Email"=>$email,
+                "Firstname"=>$firstName,
+                "Lastname"=>$lastName,
+                "fullname" => $fullname,
+                "Username"=>$username,
+                "Fullname"=>$fullname,
+                "phone" => $phoneno,
+                "balance"=>$balance,
+                // "Addressno"=> $addressno,
+                // "Address"=> $address,
+                // "address_state" => $address_state,
+                // "address_country" => $address_country,
+                // "Local government"=> $lga ,
+                "State"=>$state,
+                "Country"=>$country,
+                "sex" => $sex,
+                'dob' => $dob,
+                // "Zipcode"=>$zipCode,
+                "refcode" => $refcode
+            ];
+            $errordesc = "";
+            $linktosolve = "htps://";
+            $hint = [];
+            $errordata = [];
+            $text = "User Details Fetched";
+            $status = true;
+            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+            respondOK($data);
 
         }else {
             //pubkey does not exist

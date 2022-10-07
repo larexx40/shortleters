@@ -86,7 +86,7 @@ function sendWithTermi($sendto,$smstosend){
             $smssent=false;
         }else{
             $theresponse= json_decode($resp);
-            //   print_r($theresponse);
+              print_r($theresponse);
             if($theresponse->code=="ok"){
                 $smssent=true;
                 $msgid= $theresponse->message_id;

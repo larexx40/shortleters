@@ -165,7 +165,7 @@ let authApp = Vue.createApp({
             try {
                 this.loading = true
                 const response = await axios.post(`http://localhost/shortleters/api/admin/adminLogin.php`, data, {
-                    headers: { "Content-type": "application/json"}
+                    // headers: { "Content-type": "application/json"}
                 });
 
                 if (response.data.status) {

@@ -128,6 +128,7 @@
             <!-- main @e -->
         </div>
     </div>
+    
     <!-- app-root @e -->
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>

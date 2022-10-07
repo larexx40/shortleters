@@ -56,10 +56,14 @@ let userApp = Vue.createApp({
             // currentpassword: null,
             // wallets: null,
             // Shortleters Data
+
+            //lanre data @S
+            userDetails: null,
+            //@E lanre data
             apartments: null,
             transactions: null,
             password: null,
-            authToken: null,
+            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjUxMzQ3MDYsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTEzNDcwNiwiZXhwIjoxNjY1MjA4NTA2LCJ1c2VydG9rZW4iOiJDTkdIZ3l4dHdzUHh4ZXg4QjhDcExlbTlxREppd3JXY0d5N0xlM0tsdXNlcnMifQ.bL-j7_nktia8W3CSXi0DWRgvfIUpDBGUP6f4a19yf2AwS9Ts3C5Ot7Hv4WZAZx4nEHh8n0lbWv5n7w563qm1Vg",
             confirmPassword: null,
             loading: false,
             search: null,
@@ -73,119 +77,19 @@ let userApp = Vue.createApp({
             baseurl: "http://localhost/shortleters/"
         }
     },
-    created() {
-        this.getToken()
-        //to save data for serverside rendering
-        if(page == 'shipment1.php' || page == 'shipment2.php'){
-            //get refno and carts cartIndex from localStorage
-            let carts = (localStorage.getItem("carts")) ? JSON.parse(localStorage.getItem("carts")): null;
-            let orderRef = (localStorage.getItem("refno")) ? localStorage.getItem("refno"): null;
-            let cartIndex = (localStorage.getItem("cartIndex")) ? localStorage.getItem("cartIndex"): null;
-            let trackid = (localStorage.getItem("trackid")) ? localStorage.getItem("trackid"): null;
-            this.loading = true;
-            if(carts && orderRef && cartIndex && trackid){
-                //set dataObject to localStorage
-                this.refNo = orderRef;
-                this.cartIndex = cartIndex
-                this.trackid = trackid;
-                this.carts = carts
-
-                let orderStatus = this.carts[this.cartIndex].orderStatusid
-                this.order_status = orderStatus;
-
-                let track_id = this.carts[this.cartIndex].trackid
-                this.track_id = track_id;
-
-                let totalweightlbs = this.carts[this.cartIndex].totalweightlbs
-                this.total_weight =  totalweightlbs;
-
-                let totalPaid = this.carts[this.cartIndex].totalPaid
-                this.total_paid =  totalPaid;
-
-                this.getOrderByOrderRefno(this.refNo)//will set it to orders
-
-                console.log(`Am on shipment${page}, i need order details and make call to api`);
-                console.log('onCreatedCarts', this.carts);
-                console.log("Refno",this.refNo);
-                console.log('onCreatedCartIndex', this.cartIndex);
-                console.log('onCreatedCartStatus',orderStatus);
-                console.log('onCreatedtrackid',this.trackid);
-                console.log('onCreatedtrack_id',this.track_id);
-                console.log('onCreatedDOCartStatus',this.order_status);
-                console.log('onCreatedOrder', this.orders);
-                
-            }else{
-                if(page == 'shipment1.php'){
-                    window.location.href = 'shipment.php'
-                }
-                if(page == 'shipment2.php'){
-                    window.location.href = 'orders.php'
-                } 
-            }
-
+    async created() {
+        // this.getToken()
+        //check page
+        if(page =='personal-info.php'){
+            await this.getUserDetails()
         }
         
-        if(page == 'address.php'){
-            this.loading= true;
-            this.getUserAddress();
-        }
 
-        if(page == 'shipment.php' || page == 'orders.php'){
-            this.loading= true;
-            this.getUserCarts();
-        }
     },
     methods: {
-        async redirectOrder(page,orderRefno, trackid, cartIndex){
-            this.refNo = null;
-            this.trackid = null;
-            this.cartIndex = null;
-            localStorage.setItem("refno", orderRefno);
-            localStorage.setItem("cartIndex", cartIndex);
-            localStorage.setItem("trackid", trackid);
-            window.location.href= page;
-        },
-        async sortCartByStatus(cartStatus){
-            console.log('status', cartStatus);
-            this.getUserCartByOrderStatus()
-        },
-        async allCart(){
-            this.sort = null;
-            this.currentPage =null;
-            this.totalData =null;
-            this.total_page =null;
-            this.getUserCarts();
-        },
-
-        redirectAddress(){
-            this.addresses = null;
-            window.location.href= 'address.php';
-        },
-        async redirectOrder(page,orderRefno, trackid, cartIndex){
-            this.refNo = null;
-            this.trackid = null;
-            this.cartIndex = null;
-            localStorage.setItem("refno", orderRefno);
-            localStorage.setItem("cartIndex", cartIndex);
-            localStorage.setItem("trackid", trackid);
-            window.location.href= page;
-        },
-        async sortCartByStatus(cartStatus){
-            console.log('status', cartStatus);
-            this.getUserCartByOrderStatus()
-        },
-        async allCart(){
-            this.sort = null;
-            this.currentPage =null;
-            this.totalData =null;
-            this.total_page =null;
-            this.getUserCarts();
-        },
-
-        redirectAddress(){
-            this.addresses = null;
-            window.location.href= 'address.php';
-        },
+        //lanre method
+       
+        //end of lanre's method
         
         async nextPage(){
             this.currentPage = parseInt(this.currentPage) + 1;
@@ -220,129 +124,7 @@ let userApp = Vue.createApp({
             this.getUserCarts()
 
         },
-        async getUserCarts(){
-            let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let noPerPage = ( this.per_page ) ? this.per_page : 5;
-            const url = `${this.baseurl}api/cart/getUserCart.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
-            console.log('URL', url);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if(response.data.status){
-                    this.carts=response.data.data.productCarts;
-                    this.currentPage =response.data.data.page
-                    this.totalData =response.data.data.total_data
-                    this.total_page =response.data.data.totalPage
-                    window.localStorage.setItem("carts", JSON.stringify(response.data.data.productCarts))                              
-                }else{
-                    this.carts= null
-                    this.currentPage = null
-                    this.totalData =null
-                    this.total_page =null;
-                }
-                console.log(this.total_page);     
-            } catch (error) {
-                // console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-                }
-
-                swal(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
-        async getUserCartByOrderStatus(status){
-            console.log("status is ", status);
-            const url = `${this.baseurl}api/cart/getUserCartByOrderStatus.php?status=${status}`;
-            console.log('URL', url);
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if(response.data.status){
-                    this.carts=response.data.data.productCarts;
-                    //console.log("carts", response.data.data.productCarts);
-                    
-                    
-                }
-                console.log(response);     
-            } catch (error) {
-                //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-                }
-
-                swal(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
+        
         async getAddressByid(id){
             console.log("addressid", id);
             const url = `${this.baseurl}api/deliveryAddress/getAddressByid.php?id=${id}`;
@@ -541,61 +323,7 @@ let userApp = Vue.createApp({
                 this.loading = false;
             }
         },
-        async getOrderByOrderRefno(orderRefno){
-            //this.saveProduct(index);
-            console.log(orderRefno);
-            const url = `${this.baseurl}api/order/getOrderByOrderref.php?orderrefno=${orderRefno}`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if(response.data.status){
-                    this.orders=response.data.data.orders;
-                    console.log("apiOrder", response.data.data.orders);
-                    localStorage.setItem("orders", JSON.stringify(response.data.data.orders));                   
-                }     
-            } catch (error) {
-                // console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        swal(errorMsg);
-                        return
-                    }
-                }
-
-                swal(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
+       
         async updateAddress(){
             if ( !this.address_details.id || !this.address_details.fullname || !this.address_details.phoneno || !this.address_details.lga || !this.address_details.state
                 || !this.address_details.country || !this.address_details.address || !this.address_details.addressno || !this.address_details.zipcode ){
@@ -1195,55 +923,7 @@ let userApp = Vue.createApp({
                 this.loading = false;
             }
         },
-        async getAllLogistics(){
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            try {
-                this.loading = true
-                const response = await axios.get(`${this.baseurl}api/logistics/getAllActiveLogistics.php`, {headers} );
-                if ( response.data.status ){
-                    if (response.data.data.length > 0){
-                        this.logistics = response.data.data;
-                        return
-                    }
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-                }else{
-                    this.error = error.message || "Error Processing Request"
-                    swal(this.error);
-                }
-    
-            } finally {
-                this.loading = false;
-            }
-        },
+        
         async getDefaultAddress(){
             const headers = {
                 "Authorization": `Bearer ${this.authToken}`,
@@ -1402,77 +1082,32 @@ let userApp = Vue.createApp({
             const token = window.localStorage.getItem("token");
             this.authToken = token;
         },
-        async display(id){
-            this.loading = true;
-            this.address_details = null;
-            console.log("View Clicked");
-            this.getAddressByid(id);
-        },
-        async saveRef(ref, cartIndex){
-            this.loading = false
-            localStorage.setItem("ref", ref);
-            localStorage.setItem("cartIndex", cartIndex);
-            window.location.href=`shipment2.php?`;
-        
-        },
-        async redirect(){
-            let carts = (localStorage.getItem("carts")) ? JSON.parse(localStorage.getItem("carts")): null;
-            let order = (localStorage.getItem("ref")) ? localStorage.getItem("ref"): null;
-            let cartIndex = (localStorage.getItem("cartIndex")) ? localStorage.getItem("cartIndex"): null;
-            this.loading = true;
-            if (order){
-                this.refNo = order;
-                this.cartIndex = cartIndex
-                this.carts = carts
-                let orderStatus = this.carts[this.cartIndex].orderStatusid
-                this.order_status = orderStatus;
-                this.getOrderByOrderRefno(this.refNo)
-                console.log('redirectOrder', this.orders);
-            }
-
-            //get location incase refresh will not clear all item
-            const path = window.location.pathname.split("/");
-            const length = path.length;
-            const location = path[length -1];
-            //clear order and cartIndex localStorage when done
-            if (order){
-                if (location !== "shipment2.php"){
-                    localStorage.removeItem("ref");
-                    this.refNo = null;
-                }
-            }
-            if (cartIndex){
-                if (location !== "shipment2.php"){
-                    localStorage.removeItem("cartIndex");
-                    this.cartIndex = null;
-                }
-                
-            }
-        },
         async getUserDetails(){
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
+            const url = `${this.baseurl}api/accounts/getdetails.php?`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
             }
-
-            const path = window.location.pathname.split("/");
-            const length = path.length;
-            const location = path[length -1];
+           
             
             try {
                 this.loading = true
-                const response = await axios.get(`${this.baseurl}api/accounts/getdetails.php`, {headers} );
+                const response = await axios(options);
                 if ( response.data.status ){
-                    this.user_detais = response.data.data
-                    this.ref_link = `${this.baseurl}register.php?code=${this.user_detais.refcode}`;
+                    this.userDetails = response.data.data
+                    this.ref_link = `${this.baseurl}register.php?code=${this.userDetails.refcode}`;
 
-                    if (location === "index.php"){
-                        this.getUserAddress();
-                        this.getUserTotalBalance();
-                        this.getDefaultAddress();
-                        this.getAllLogistics();
+                    // if (location === "index.php"){
+                    //     this.getUserAddress();
+                    //     this.getUserTotalBalance();
+                    //     this.getDefaultAddress();
+                    //     this.getAllLogistics();
                             
-                    }
+                    // }
 
                     if (location === "activities.php"){
                         this.getAllActivity();
