@@ -414,13 +414,13 @@
                     <div class="modal-body"  style=" flex-direction:column;">
                         <div style="display:flex; justify-content:center;border:none;padding:20px 0px" >
                             <form class="digit-group" data-group-name="digits" data-autosubmit="false" autocomplete="off">
-                                <input type="text" id="digit-1" name="digit-1" data-next="digit-2" />
-                                <input type="text" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" />
-                                <input type="text" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2" />
+                                <input type="number" id="digit-1" name="digit-1" data-next="digit-2" />
+                                <input type="number" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" />
+                                <input type="number" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2" />
                                 <span class="splitter">&ndash;</span>
-                                <input type="text" id="digit-4" name="digit-4" data-next="digit-5" data-previous="digit-3" />
-                                <input type="text" id="digit-5" name="digit-5" data-next="digit-6" data-previous="digit-4" />
-                                <input type="text" id="digit-6" name="digit-6" data-previous="digit-5" />
+                                <input type="number" id="digit-4" name="digit-4" data-next="digit-5" data-previous="digit-3" />
+                                <input type="number" id="digit-5" name="digit-5" data-next="digit-6" data-previous="digit-4" />
+                                <input type="number" id="digit-6" name="digit-6" data-previous="digit-5" />
                             </form>
                         </div>
                         <div style="display:flex; justify-content:center;border:none;padding:20px 0px" >
