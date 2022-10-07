@@ -59,26 +59,20 @@ if (getenv('REQUEST_METHOD') === 'GET'){
     //return user pub key
     if($user){
       // header('location: ../../user/index.php');
-      $googleStatus=1;
-      $userid = $google_account_info->id;
-      $email =  $google_account_info->email;
-      $firstname = $google_account_info->given_name;
-      $surname =  $google_account_info->family_name;
-      $gender = $google_account_info->gender;
-      $name =  $google_account_info->name;
-      $token = getTokenToSendAPI($userid,$companyprivateKey,$minutetoend,$serverName);
-      //proceed to index page
-      $maindata = [
-        'googleStatus'=>$googleStatus,
-        'redirectLink'=>'../user/index.php',
-        'userInfo'=>$google_account_info,
-        'token'=>$token,
-      ];
-      $errordesc = "";
+      // $googleStatus=1;
+      // $userid = $google_account_info->id;
+      // $email =  $google_account_info->email;
+      // $firstname = $google_account_info->given_name;
+      // $surname =  $google_account_info->family_name;
+      // $gender = $google_account_info->gender;
+      // $name =  $google_account_info->name;
+      $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
+      $maindata=["authtoken"=> $token];
+      $errordesc = " ";
       $linktosolve = "htps://";
       $hint = [];
       $errordata = [];
-      $text = "User Details Fetched ";
+      $text = "Login successful";
       $status = true;
       $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
       respondOK($data);
@@ -91,16 +85,13 @@ if (getenv('REQUEST_METHOD') === 'GET'){
   } else {
     $redirectLink = $client->createAuthUrl();
     // header("Location: $redirectLink");
-    $googleStatus=2;
-    $maindata = [
-      'googleStatus'=>$googleStatus,      
-      'redirectLink'=>$redirectLink,
-    ];
-    $errordesc = "";
+    $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
+    $maindata=["authtoken"=> $token];
+    $errordesc = " ";
     $linktosolve = "htps://";
     $hint = [];
     $errordata = [];
-    $text = "User Details Fetched redirectlink";
+    $text = "Login successful";
     $status = true;
     $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
     respondOK($data);

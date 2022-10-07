@@ -135,7 +135,7 @@ input[type=submit]:hover {
 </style>
 </head>
 <body>
-  <div id="admin">
+  <div id="auth">
 
     <div class="container">
         <form action="/action_page.php">
@@ -152,7 +152,7 @@ input[type=submit]:hover {
                   <a href="#" class="twitter btn">
                   <i class="fa fa-twitter fa-fw"></i> Login with Twitter
                   </a>
-                  <a @click='googleOauth()' href="#" class="google btn"><i class="fa fa-google fa-fw">
+                  <a @click.prevent='googleOauth()' href="#" class="google btn"><i class="fa fa-google fa-fw">
                   </i> Login with Google+
                   </a>
               </div>
@@ -184,7 +184,11 @@ input[type=submit]:hover {
   </div>
 
   <!-- JavaScript -->
-  <?php include "./vue-script.php" ?>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="js/toasteur.min.js"></script>
+  <script src="../vuecode/auth.js" ></script>
 
 </body>
 </html>

@@ -27,13 +27,13 @@
 
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
+        $user_id =  checkIfUser($connect, $user_pubkey);
 
-        $admin =  checkIfIsAdmin($connect, $user_pubkey);
-        if(!$admin){
+        if(!$user_id ){
             // send user not found response to the user
-            $errordesc =  "User not authorized";
+            $errordesc =  "User not registered";
             $linktosolve = 'https://';
-            $hint = "Only admin can access this route ";
+            $hint = "Create account ";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);

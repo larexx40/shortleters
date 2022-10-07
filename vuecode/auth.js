@@ -16,7 +16,83 @@ let authApp = Vue.createApp({
             baseurl: "http://localhost/shortleters/"
         }
     },
-    methods: {  
+    methods: { 
+        //google oauth
+        async googleOauth(){
+            console.log("proceed to oauth");
+            const url = 'http://localhost/shortleters/api/accounts/redirect.php';
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    // if(response.data.data.googleStatus ==1){
+                    //     //already logged in
+                    //     window.location.href='../user/index.php'
+                    // }else{
+                    //     //click on the link
+                    //     const uri = response.data.data.redirectLink;
+                    //     console.log("uri", uri);
+                    //     window.location.href= uri;
+
+                    // }
+                    console.log(response.data);
+                    this.success = response.data.text;;
+                    const token = response.data.authtoken;
+                    localStorage.setItem("token", token);
+                    swal(this.success);
+                    window.location.href ="/index.php";
+                
+                    
+                }else{
+                    this.user_booking = null;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        }, 
+        async log(name){
+            console.log("name", name)
+        },
         async loginUser() {
             if (!this.email || !this.password){
                 this.error = "Kindly Enter all Fields"
