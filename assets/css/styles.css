@@ -1,3 +1,8 @@
+.form-floating input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 .hero{
     display: flex;
     height: calc(100vh - 132px);
@@ -172,6 +177,7 @@
 }
 
 .help_section .btnx{
+    font-size: 30px;
     margin-top: 24px;
     cursor: pointer;
     display: inline-block;
@@ -179,10 +185,8 @@
     text-align: center;
     text-decoration: none;
     font-family: var(--e-ls-qkw);
-    font-size: var(--iw-ehf-f);
     line-height: var(---s-l-myu);
     font-weight: var(--jx-zk-pv);
-    border-radius: var(--go-h-jh-l);
     border-width: 1px;
     border-style: solid;
     border-radius: 5px;
@@ -194,3 +198,54 @@
 
 }
 
+.tryhosting_section .main{
+    display: flex;
+    height: calc(100vh - 132px);
+    width: 100%;
+}
+
+
+.tryhosting_section .main .section2{
+    background-color: black;
+    padding: 50px;
+    flex: 50%;
+}
+
+.tryhosting_section .main .section1{
+    flex: 50%;
+}
+
+.tryhosting_section .main .section1 video::-webkit-media-controls {
+    display: none;
+}
+
+
+.tryhosting_section .main .section2 .submain{
+    margin-left: 72px;
+    margin-right: 72px;
+    margin-top: 18%;
+    text-align: center;
+}
+
+.tryhosting_section .main .section2 .submain .text{
+    color: white;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 70px;
+}
+
+.tryhosting_section .main .section2 .submain .text2{
+    margin-top: 10px;
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 26px;
+}
+
+.tryhosting_section .main .section2 .submain .btn{
+    color: white;
+    background-color: #da0a65;
+    margin-top: 15%;
+    padding: 10px 15px;
+    font-weight: bold;
+}

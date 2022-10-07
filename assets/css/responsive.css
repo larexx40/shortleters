@@ -36,6 +36,43 @@
         padding: 48px ;
     }
 
+    .tryhosting_section .main{
+        flex-direction: column-reverse;
+        height: 100%;
+    }
+
+    .tryhosting_section .main .section2{
+        margin-top:-300px;
+        background-color: white;
+        color: black;
+        padding: 15px;
+        border-radius: 15px 15px 0px 0px;
+    }
+
+
+    .tryhosting_section .main .section2 .submain {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 5%;        
+    }
+
+    .tryhosting_section .main .section2 .submain .text{
+        font-weight: bolder;
+        color: black;
+        font-size: 64px ;
+        line-height: 70px ;
+        padding: 48px ;
+    } 
+    
+    .tryhosting_section .main .section2 .submain .text2{
+        margin-top: 10px;
+        font-weight: bolder;
+        color: black;
+        font-size: 64px ;
+        line-height: 70px ;
+        padding: 48px ;
+    }     
+
     .find_section .section1{
         grid-template-columns: auto auto;
     }
