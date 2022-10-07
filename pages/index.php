@@ -951,10 +951,10 @@
                 <div class="main-inner">
                     <div v-if="apartments" class="container p-0">
                         <!-- card wrapper -->
-                        <div v-for="(item, index) in apartments" class="image-content-wrapper">
+                        <div class="image-content-wrapper">
                             <!-- card item -->
-                            <a href="rooms.php" class="card-item">
-                                <div class="card">
+                            <a v-for="(item, index) in apartments" :key="index" href="rooms.php" class="card-item">
+                                <div @click="setApartmentId(item.id)" class="card">
                                     <div class="card-image">
                                         <div class="icon-love">
                                             <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="fill: rgba(0, 0, 0, 0.5); height: 24px; width: 24px; stroke-width: 2; overflow: visible;">
@@ -965,27 +965,30 @@
                                         </div>
                                         <!-- carousel-start -->
 
-                                        <div v-if="item.images" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                        <div v-if="item.images" :id="'carouselExampleIndicators' + index" class="carousel slide" data-bs-ride="carousel">
                                             <div class="carousel-indicators">
-                                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                <button v-for="(image, each) in item.images.length" :key="each" type="button" data-bs-target="'#carouselExampleIndicators' + index" :data-bs-slide-to="each" class="active" aria-current="true" :aria-label="'Slide' + ( parseInt(each) + 1 )"></button>
+                                                <!-- <button v-if="image > 1" type="button" data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="each" :aria-label="'Slide' + ( parseInt(each) + 1 )"></button> -->
+                                                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                                                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button> -->
                                             </div>
 
-                                            <div v-for="(image, each) in item.images" class="carousel-inner">
-                                                <div class="carousel-item active">
+                                            <div v-if="item.images.length > 1" class="carousel-inner">
+                                                <div  class="carousel-item active">
+                                                    <img :src="item.images[0].image" class="card-img-top d-block w-100" alt="...">
+                                                </div>
+                                                <div v-for="(image, each) in item.images.slice(1)" :key="each" class="carousel-item">
                                                     <img :src="image.image" class="card-img-top d-block w-100" alt="...">
                                                 </div>
                                             </div>
-                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                            <button class="carousel-control-prev" type="button" :data-bs-target="'#carouselExampleIndicators' + index" data-bs-slide="prev">
                                                 <span class="carousel-control-prev-icon" aria-hidden="true">
                                                 <em class="bi bi-chevron-left"></em>
                                                 </span>
                                                 <span class="visually-hidden"></span>
                                             </button>
-                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                            <button class="carousel-control-next" type="button" :data-bs-target="'#carouselExampleIndicators'+ index" data-bs-slide="next">
                                                 <span class="carousel-control-next-icon" aria-hidden="true">
                                                 <em class="bi bi-chevron-right"></em>
                                                 </span>

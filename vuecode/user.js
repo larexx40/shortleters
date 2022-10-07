@@ -57,6 +57,8 @@ let userApp = Vue.createApp({
             // wallets: null,
             // Shortleters Data
             apartments: null,
+            apartment_details: null,
+            active: true,
             transactions: null,
             password: null,
             authToken: null,
@@ -760,6 +762,67 @@ let userApp = Vue.createApp({
             } finally {
                 this.loading = false;
             }
+        }, 
+        async getApartmentDetails(load = 1){
+            const apart_id = window.localStorage.getItem("apart_id");
+            if ( !apart_id ){
+                window.location.href="./index.php";
+                return;
+            }
+            const headers = {
+                // "Authorization": `Bearer ${this.accessToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseurl}api/apartments/getApartmentsById.php?apartment_id=${apart_id}`;
+
+            this.total_page = null
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    this.apartment_details = response.data.data.apartment
+                }else{
+                    this.apartment_details = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+        },
+        async setApartmentId(id){
+            window.localStorage.setItem("apart_id", id)
         }, 
         async fetchLocation(){
             const headers = {
@@ -1988,9 +2051,11 @@ let userApp = Vue.createApp({
         this.getToken();
         // this.getUserDetails();
         // this.getDefaultAddress();
-        console.log(page);
         if ( page === "index.php" || page === "" ){
             await this.getAllApartments();
+        }
+        if ( page === "rooms.php" ){
+            await this.getApartmentDetails();
         }
         
     }
