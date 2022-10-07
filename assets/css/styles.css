@@ -262,10 +262,40 @@
     font-weight: 200;
     color: black;
     margin: 0 2px;
-  }
-  .digit-group .splitter {
+}
+.digit-group .splitter {
     padding: 0 5px;
     color: rgb(0, 0, 0);
     font-size: 24px;
-  }
+}
+
+.filter.modal .modal-body * .form-check .form-check-label{
+    margin-left: 5px;
+}
+
+.amenities-inner-one .top, .amenities-inner-two .top, .amenities-inner-three .top{
+    margin-bottom: 10px;
+}
+
+.accessibility-inner-one .top, .accessibility-inner-two .top, .accessibility-inner-three .top, .accessibility-inner-four .top{
+    margin-bottom: 10px;
+}
+
+.amenities-inner-one .body, .amenities-inner-two .body, .amenities-inner-three .body{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.accessibility-inner-one .body, .accessibility-inner-two .body, .accessibility-inner-three .body, .accessibility-inner-four .body{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.amenities-inner-one .form-check, .amenities-inner-two .form-check, .amenities-inner-three .form-check{
+    margin: 0px 12px 0px 0px;
+}
+
+.accessibility-inner-one .form-check, .accessibility-inner-two .form-check, .accessibility-inner-three .form-check, .accessibility-inner-four .form-check{
+    margin: 0px 12px 0px 0px;
+}
   
