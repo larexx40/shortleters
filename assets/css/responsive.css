@@ -37,14 +37,12 @@
     }
 
     .tryhosting_section .main{
-        flex-direction: column-reverse;
+        flex-direction: column;
         height: 100%;
     }
 
     .tryhosting_section .main .section2{
         margin-top:-300px;
-        background-color: white;
-        color: black;
         padding: 15px;
         border-radius: 15px 15px 0px 0px;
     }
@@ -58,20 +56,26 @@
 
     .tryhosting_section .main .section2 .submain .text{
         font-weight: bolder;
-        color: black;
-        font-size: 64px ;
-        line-height: 70px ;
-        padding: 48px ;
+        color: white;
+        font-size: 32px ;
+        line-height: 36px ;
+        padding: 25px 10px;
+        text-align:left ;
     } 
     
     .tryhosting_section .main .section2 .submain .text2{
         margin-top: 10px;
         font-weight: bolder;
-        color: black;
-        font-size: 64px ;
-        line-height: 70px ;
-        padding: 48px ;
-    }     
+        font-size: 18px;
+        line-height: 26px;
+        padding: 0px 10px ;
+        text-align: left;
+    }
+    
+    .tryhosting_section .main .section2 .submain .btn {
+        margin-top: 10%;
+    }
+        
 
     .find_section .section1{
         grid-template-columns: auto auto;
@@ -156,6 +160,45 @@
     .hero .section2 .ask{
         display: block;
     }
+
+    .tryhosting_section .main{
+
+        height: 100%;
+    }
+
+    .tryhosting_section .main .section2{
+        margin-top:-100px;
+        padding: 15px;
+        border-radius: 15px 15px 0px 0px;
+    }
+
+    .tryhosting_section .main .section2 .submain {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 5%;        
+    }
+
+    .tryhosting_section .main .section2 .submain .text{
+        text-align: left;
+        color: white;
+        font-size: 32px ;
+        line-height: 36px ;
+        padding: 0px;
+    }
+
+    .tryhosting_section .main .section2 .submain .text2{
+        text-align: left;
+        color: white;
+        font-size: 16px ;
+        line-height: 24px ;
+        padding: 0px;
+    }
+
+    
+.tryhosting_section .main .section2 .submain .btn {
+    margin-top: 25%;
+    padding: 10px 110px;
+}
 
     .find_section h2{
         text-align: left;
