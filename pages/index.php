@@ -149,7 +149,6 @@
                                             <li><a class="dropdown-item" href="login.php">Log in</a></li>
                                             <div class="sub-menu-links">
                                                 <li><a class="dropdown-item" href="home.php">Host your Home</a></li>
-                                                <li><a class="dropdown-item" href="experience.php">Host an experience</a></li>
                                                 <li><a class="dropdown-item" href="help.php">Help</a></li>
                                             </div>
                                         </ul>
@@ -308,44 +307,50 @@
                                 </div>
                                 <div class="each-room">
                                     <div class="top"><span>Bedrooms</span></div>
-                                    <div class="bottom">
-                                        <button class="active">Any</button>
-                                        <button>1</button>
-                                        <button>2</button>
-                                        <button>3</button>
-                                        <button>4</button>
-                                        <button>5</button>
-                                        <button>6</button>
-                                        <button>7</button>
-                                        <button>8+</button>
+                                    <div class="main" >
+                                        <div class="bottom">
+                                            <button class="active">Any</button>
+                                            <button>1</button>
+                                            <button>2</button>
+                                            <button>3</button>
+                                            <button>4</button>
+                                            <button>5</button>
+                                            <button>6</button>
+                                            <button>7</button>
+                                            <button>8+</button>
+                                        </div>                                        
                                     </div>
                                 </div>
                                 <div class="each-room">
                                     <div class="top"><span>Bed</span></div>
-                                    <div class="bottom">
-                                        <button class="active">Any</button>
-                                        <button>1</button>
-                                        <button>2</button>
-                                        <button>3</button>
-                                        <button>4</button>
-                                        <button>5</button>
-                                        <button>6</button>
-                                        <button>7</button>
-                                        <button>8+</button>
+                                    <div class="main" >
+                                        <div class="bottom">
+                                            <button class="active">Any</button>
+                                            <button>1</button>
+                                            <button>2</button>
+                                            <button>3</button>
+                                            <button>4</button>
+                                            <button>5</button>
+                                            <button>6</button>
+                                            <button>7</button>
+                                            <button>8+</button>
+                                        </div>                                        
                                     </div>
                                 </div>
                                 <div class="each-room">
                                     <div class="top"><span>Bathrooms</span></div>
-                                    <div class="bottom">
-                                        <button class="active">Any</button>
-                                        <button>1</button>
-                                        <button>2</button>
-                                        <button>3</button>
-                                        <button>4</button>
-                                        <button>5</button>
-                                        <button>6</button>
-                                        <button>7</button>
-                                        <button>8+</button>
+                                    <div class="main" >
+                                        <div class="bottom">
+                                            <button class="active">Any</button>
+                                            <button>1</button>
+                                            <button>2</button>
+                                            <button>3</button>
+                                            <button>4</button>
+                                            <button>5</button>
+                                            <button>6</button>
+                                            <button>7</button>
+                                            <button>8+</button>
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>
