@@ -1,0 +1,279 @@
+<?php include "header.php"; ?>
+    <title>Invoice Details</title>
+</head>
+
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div id="admin" v-cloak>
+        <?php include "loading.php"; ?>
+        <div class="nk-app-root">
+            <!-- main @s -->
+            <div class="nk-main ">
+                <!-- sidebar @s -->
+                <?php include "sidebar.php"; ?>
+                <!-- sidebar @e -->
+                <!-- wrap @s -->
+                <div class="nk-wrap ">
+                    <!-- main header @s -->
+                    <?php include "content-header.php"; ?>
+                    <!-- main header @e -->
+                    <!-- content @s -->
+                    <div class="nk-content ">
+                        <div class="container-fluid">
+                            <div class="nk-content-inner">
+                                <div v-if='booking' class="nk-content-body">
+                                    <div class="nk-block-head">
+                                        <div class="nk-block-between g-3">
+                                            <div class="nk-block-head-content">
+                                                <h3 class="nk-block-title page-title">Invoice <strong class="text-primary small">#{{booking.id}}</strong></h3>
+                                                <div class="nk-block-des text-soft">
+                                                    <ul class="list-inline">
+                                                        <!-- <li>Created At: <span class="text-base">18 Dec, 2019 01:02 PM</span></li> -->
+                                                        <li>Created At: <span class="text-base">{{booking.created}}</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="nk-block-head-content">
+                                                <a href="./bookings.php" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Back</span></a>
+                                                <a href="./bookings.php" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em class="icon ni ni-arrow-left"></em></a>
+                                            </div>
+                                        </div>
+                                    </div><!-- .nk-block-head -->
+                                    <div class="nk-block">
+                                        <div class="invoice">
+                                            <div class="invoice-action">
+                                                <a class="btn btn-icon btn-lg btn-white btn-dim btn-outline-primary" href="html/hotel/invoice-print.html" target="_blank"><em class="icon ni ni-printer-fill"></em></a>
+                                            </div><!-- .invoice-actions -->
+                                            <div class="invoice-wrap">
+                                                <div class="invoice-brand text-center">
+                                                    <img src="../../assets/images/logo/WHITELOGO_GREEN_BKGD_1.jpg" srcset="../../assets/images/logo/WHITELOGO_GREEN_BKGD_1.jpg" alt="">
+                                                </div>
+                                                <div class="invoice-head">
+                                                    <div class="invoice-desc">
+                                                        <h3 class="title">Invoice</h3>
+                                                        <ul class="list-plain">
+                                                            <li class="invoice-id"><span>Invoice ID</span>:<span>{{booking.id}}</span></li>
+                                                            <li class="invoice-date"><span>Date</span>:<span>{{booking.created}}</span></li>
+                                                            <li class="invoice-id"><span>Account No.</span>:<span>0900999933</span></li>
+                                                            <li class="invoice-id"><span>Bank Name</span>:<span>GTBank</span></li>
+                                                            <li class="invoice-id"><span>Payment link</span>:<span></span></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="invoice-contact">
+                                                        <span class="overline-title">Invoice To</span>
+                                                        <div class="invoice-contact-info">
+                                                            <h4 class="title">{{booking.first_name}} {{booking.last_name}}</h4>
+                                                            <ul class="list-plain">
+                                                                <li><em class="icon ni ni-map-pin-fill"></em><span>{{booking.address}}</span></li>
+                                                                <li><em class="icon ni ni-call-fill"></em><span>{{booking.phone}}</span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- .invoice-head -->
+                                                <div class="invoice-bills">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="w-150px">Apartment</th>
+                                                                    <th class="w-60">Description</th>
+                                                                    <th>Price</th>
+                                                                    <th>Qty/Days</th>
+                                                                    <th>Amount</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>{{booking.apartment_id}}</td>
+                                                                    <td>{{booking.apartment_name}}</td>
+                                                                    <td>₦{{booking.apartment_price}}</td>
+                                                                    <td>{{booking.no_of_people}}</td>
+                                                                    <td>₦{{booking.apartment_price * booking.noOfDays}}</td>
+                                                                </tr>
+                                                               
+                                                            </tbody>
+                                                            <tfoot>
+                                                                <!-- <tr>
+                                                                    <td colspan="2"></td>
+                                                                    <td colspan="2">Subtotal</td>
+                                                                    <td>₦435.00</td>
+                                                                </tr> -->
+                                                                <tr>
+                                                                    <td colspan="2"></td>
+                                                                    <td colspan="2">Processing fee</td>
+                                                                    <td>₦100.00</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2"></td>
+                                                                    <td colspan="2">TAX</td>
+                                                                    <td>₦0</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2"></td>
+                                                                    <td colspan="2">Grand Total</td>
+                                                                    <td>₦{{(booking.apartment_price * booking.noOfDays) + 100}}</td>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+
+                                                        <div class="nk-notes ff-italic fs-12px text-soft"> Invoice was created on a computer and is valid without the signature and seal. </div>
+                                                    </div>
+                                                    <div>
+                                                        <span>
+                                                            Kindly note that this booking request form does not reflect availability. <br> Also note
+                                                            that filling this form does not guarantee booking, bookings are only guaranteed <br>
+                                                            with an issued receipt after payment is fully acknowledged. A receipt is the only <br>
+                                                            binding document between Shortleters Limited and {{booking.first_name}} {{booking.last_name}}.
+                                                        </span>
+                                                    </div>
+                                                </div><!-- .invoice-bills -->
+                                            </div><!-- .invoice-wrap -->
+                                        </div><!-- .invoice -->
+                                    </div><!-- .nk-block -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- content @e -->
+                    <!-- footer @s -->
+                    <?php include "content-footer.php"; ?>
+                    <!-- footer @e -->
+                </div>
+                <!-- wrap @e -->
+            </div>
+            <!-- main @e -->
+        </div>
+        <!-- app-root @e -->
+        <!-- select region modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="region">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                    <div class="modal-body modal-body-md">
+                        <h5 class="title mb-4">Select Your Country</h5>
+                        <div class="nk-country-region">
+                            <ul class="country-list text-center gy-2">
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/arg.png" alt="" class="country-flag">
+                                        <span class="country-name">Argentina</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/aus.png" alt="" class="country-flag">
+                                        <span class="country-name">Australia</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/bangladesh.png" alt="" class="country-flag">
+                                        <span class="country-name">Bangladesh</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/canada.png" alt="" class="country-flag">
+                                        <span class="country-name">Canada <small>(English)</small></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/china.png" alt="" class="country-flag">
+                                        <span class="country-name">Centrafricaine</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/china.png" alt="" class="country-flag">
+                                        <span class="country-name">China</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/french.png" alt="" class="country-flag">
+                                        <span class="country-name">France</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/germany.png" alt="" class="country-flag">
+                                        <span class="country-name">Germany</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/iran.png" alt="" class="country-flag">
+                                        <span class="country-name">Iran</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/italy.png" alt="" class="country-flag">
+                                        <span class="country-name">Italy</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/mexico.png" alt="" class="country-flag">
+                                        <span class="country-name">México</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/philipine.png" alt="" class="country-flag">
+                                        <span class="country-name">Philippines</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/portugal.png" alt="" class="country-flag">
+                                        <span class="country-name">Portugal</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/s-africa.png" alt="" class="country-flag">
+                                        <span class="country-name">South Africa</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/spanish.png" alt="" class="country-flag">
+                                        <span class="country-name">Spain</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/switzerland.png" alt="" class="country-flag">
+                                        <span class="country-name">Switzerland</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/uk.png" alt="" class="country-flag">
+                                        <span class="country-name">United Kingdom</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="country-item">
+                                        <img src="../images/flags/english.png" alt="" class="country-flag">
+                                        <span class="country-name">United State</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div><!-- .modal-content -->
+            </div><!-- .modla-dialog -->
+        </div><!-- .modal -->
+
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="../assets/js/bundle.js?ver=3.0.3"></script>
+    <script src="../assets/js/scripts.js?ver=3.0.3"></script>
+    <?php include "vue-script.php" ?>
+
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-All" role="tabpanel" aria-labelledby="pills-All-tab">
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row align-items-center justify-content-evenly">
+                    <div class="col-lg-4  title col-sm-4 col-6 ">
+                        <small>Type </small>
+                    </div>
+                    <div class="col-lg-1 status col-sm-2 col-6 mb-md-0 ">
+                        <small>Date Created</small>
+                    </div>
+                    <div class="col-lg-1  tracking col-sm-2 col-6">
+                        <small>Status</small>
+                    </div>
+                    <div class="col-lg-1 weight col-sm-2 col-6">
+                    <small>View</small>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+            
+            <div class="card-body">
+                  <!-- itemlist  .// -->
+                <article v-if="complains" v-for="each in complains" class="itemlist">
+                    <div class="row align-items-center justify-content-evenly">
+                        <div class="col-lg-4 col-sm-4 col-7 col-name">
+                            <a class="itemside" href="#">
+                                <div class="info">
+                                    <h6 class="mb-0">{{each.complain}}</h6>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="col-lg-1 col-sm-2 col-5 col-status">
+                            <span class="">22-05-2022</span>
+                        </div>
+                        <div class="col-lg-1 col-sm-2 col-6 col-track-id">
+                            <span class="pointer" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i class="bi bi-pencil-square"></i> {{each.status}}</span>
+                        </div>
+                        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"  aria-modal="true" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>View Complaint </h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="">
+                                            <div class="row col-12 m-0">
+                                                
+                                                <div class="each__form">
+                                                    <label>Complaint</label>
+                                                    <textarea class="form-control" id="exampleFormControlInput1" style="min-height:200px"></textarea>
+                                                </div><br>
+                                            </div>
+                                                
+                                            <div class="row col-12 m-0">
+                                                <div class="col-12 proceed">
+                                                    <button type="submit">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer cancel row col-12 m-0">
+                                        <div class="col-12">
+                                            <button type="button" class="" data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-sm-2 col-6 col-weight">
+                            <span class="pointer" ><i class="bi bi-trash-fill"></i> Delete </span>
+                        </div>
+                    </div> <!-- row .// -->
+                </article>
+                  <!-- itemlist  .// -->
+                
+            
+
+                <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+                </nav>
+
+            </div> <!-- card-body end// -->
+        </div>    
+    </div>
+
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row align-items-center justify-content-evenly">
+                    <div class="col-lg-4  title col-sm-4 col-6 ">
+                        <small>Type </small>
+                    </div>
+                    <div class="col-lg-1 status col-sm-2 col-6 mb-md-0 ">
+                        <small>Date Created</small>
+                    </div>
+                    <div class="col-lg-1  tracking col-sm-2 col-6">
+                        <small>Edit</small>
+                    </div>
+                    <div class="col-lg-1 weight col-sm-2 col-6">
+                    <small>Delete</small>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+            
+            <div class="card-body">
+                <article class="itemlist">
+                    <div class="row align-items-center justify-content-evenly">
+                        <div class="col-lg-4 col-sm-4 col-7 col-name">
+                            <a class="itemside" href="#">
+                                <div class="info">
+                                    <h6 class="mb-0">Login</h6>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="col-lg-1 col-sm-2 col-5 col-status">
+                            <span class="">22-05-2022</span>
+                        </div>
+                        <div class="col-lg-1 col-sm-2 col-6 col-track-id">
+                            <span class="pointer" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i class="bi bi-pencil-square"></i> Edit</span>
+                        </div>
+                        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"  aria-modal="true" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>View Complaint </h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="">
+                                            <div class="row col-12 m-0">
+                                                
+                                                <div class="each__form">
+                                                    <label>Complaint</label>
+                                                    <textarea class="form-control" id="exampleFormControlInput1" style="min-height:200px"></textarea>
+                                                </div><br>
+                                            </div>
+                                                
+                                            <div class="row col-12 m-0">
+                                                <div class="col-12 proceed">
+                                                    <button type="submit">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer cancel row col-12 m-0">
+                                        <div class="col-12">
+                                            <button type="button" class="" data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-sm-2 col-6 col-weight">
+                            <span class="pointer" ><i class="bi bi-trash-fill"></i> Delete </span>
+                        </div>
+                    </div> <!-- row .// -->
+                </article>  <!-- itemlist  .// -->
+                
+            
+
+                <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+                </nav>
+
+            </div> <!-- card-body end// -->
+        </div>    
+    </div>
+    
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="card mb-4">
+                <header class="card-header">
+            <div class="row align-items-center justify-content-evenly">
+                <div class="col-lg-4 title col-sm-4 col-6 ">
+                    <small>Type </small>
+                </div>
+                <div class="col-lg-1 status col-sm-2 col-6">
+                    <small>Date Created</small>
+                </div>
+                <div class="col-lg-1  tracking col-sm-2 col-6">
+                    <small>Status</small>
+                </div>
+                <div class="col-lg-1  weight col-sm-2 col-6">
+                <small>Delete</small>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        
+        <div class="card-body">
+            <article v-if="complains" v-for="each in complains" class="itemlist">
+                <div class="row align-items-center justify-content-evenly">
+                    <div class="col-lg-4 col-sm-4 col-7 col-name">
+                        <a class="itemside" href="#">
+                            <div class="info">
+                                <h6 class="mb-0">{{each.complain}}</h6>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-lg-1 text-center col-sm-2 col-5 col-status">
+                        <span class="">date</span>
+                    </div>
+                    <div class="col-lg-1 col-sm-2 col-6 col-track-id">
+                        <span class="pointer" style="color:#2fff2f;">{{each.status}}</span>
+                    </div>
+                    <div class="col-lg-1 col-sm-2 col-6 col-weight">
+                        <span class="pointer" > View </span>
+                    </div>
+                </div> <!-- row .// -->
+            </article>  <!-- itemlist  .// -->
+    
