@@ -35,7 +35,7 @@ let userApp = Vue.createApp({
             // // Korede Data
 
             // // End Korede
-            // user_detais: null,
+            // userDetails: null,
             // user_address: null,
             // shipping_address: "",
             // ref_link: null,
@@ -63,7 +63,7 @@ let userApp = Vue.createApp({
             apartments: null,
             transactions: null,
             password: null,
-            authToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjUxMzQ3MDYsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTEzNDcwNiwiZXhwIjoxNjY1MjA4NTA2LCJ1c2VydG9rZW4iOiJDTkdIZ3l4dHdzUHh4ZXg4QjhDcExlbTlxREppd3JXY0d5N0xlM0tsdXNlcnMifQ.bL-j7_nktia8W3CSXi0DWRgvfIUpDBGUP6f4a19yf2AwS9Ts3C5Ot7Hv4WZAZx4nEHh8n0lbWv5n7w563qm1Vg",
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjUxMzQ3MDYsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTEzNDcwNiwiZXhwIjoxNjY1MjA4NTA2LCJ1c2VydG9rZW4iOiJDTkdIZ3l4dHdzUHh4ZXg4QjhDcExlbTlxREppd3JXY0d5N0xlM0tsdXNlcnMifQ.bL-j7_nktia8W3CSXi0DWRgvfIUpDBGUP6f4a19yf2AwS9Ts3C5Ot7Hv4WZAZx4nEHh8n0lbWv5n7w563qm1Vg',
             confirmPassword: null,
             loading: false,
             search: null,
@@ -88,7 +88,162 @@ let userApp = Vue.createApp({
     },
     methods: {
         //lanre method
-       
+        
+        async getUserDetails(){
+            const url = `${this.baseurl}api/accounts/getdetails.php?`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+           
+            
+            try {
+                this.loading = true
+                const response = await axios(options);
+                if ( response.data.status ){
+                    this.userDetails = response.data.data
+                    this.ref_link = `${this.baseurl}register.php?code=${this.userDetails.refcode}`;
+
+                    // if (location === "index.php"){
+                    //     this.getUserAddress();
+                    //     this.getUserTotalBalance();
+                    //     this.getDefaultAddress();
+                    //     this.getAllLogistics();
+                            
+                    // }
+
+                    if (location === "activities.php"){
+                        this.getAllActivity();
+                    }
+
+                    if (location === "complain.php"){
+                        this.getAllComplain();
+                    }
+
+
+                    if (location === "notifications.php"){
+                        this.getAllUserNotification();
+                    } 
+                    
+                    if (location === "wallet.php"){
+                        await this.getAllTransactions();
+                        await this.getAllWallets();
+                    }
+
+                    if (location === 'address.php'){
+                        await this.getUserAddress();
+                    }
+                    
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        window.location.href ="../login.php";
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }else{
+                    this.error = error.message || "Error Processing Request"
+                    new Toasteur().error(this.error);
+                }    
+                
+            } finally {
+                this.loading = false;
+            }
+        },
+        async updateUserInfo() {
+            console.log(this.userDetails);
+            console.log(this.authToken);
+        //   if ( !this.userDetails.Firstname || !this.userDetails.Lastname || !this.userDetails.phone || !this.userDetails.dob
+        //         || !this.userDetails.sex || !this.userDetails.State || !this.userDetails.Country ){
+        //            this.error = "Insert all Fields";
+        //            console.log(this.error);
+        //            new Toasteur().error(this.error);
+        //            return
+        //    }
+
+            const data = new FormData();
+            data.append('firstname', this.userDetails.Firstname);
+            data.append('lastname', this.userDetails.Lastname);
+            data.append('phoneno', this.userDetails.phone);
+            data.append('dob', this.userDetails.dob);
+            data.append('sex', this.userDetails.sex);
+            data.append('state', this.userDetails.State);
+            data.append('country', this.userDetails.Country);
+            
+            const url = `${this.baseurl}api/accounts/updateuserinfo.php`;
+            const options = {
+                method: "POST",
+                headers: { 
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                data,
+                url
+            }
+            try {
+                this.loading = true
+                const response = await axios(options);
+            
+                if ( response.data.status ){
+                    new Toasteur().success(response.data.text);
+                    window.location.reload();
+                }          
+           } catch (error) {
+               if (error.response.status == 400){
+                   this.error = error.response.data.text;
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               if (error.response.status == 401){
+                   this.error = "User not Authorized";
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               if (error.response.status == 405){
+                   this.error = error.response.data.text;
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               if (error.response.status == 500){
+                   this.error = error.response.data.text;
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               this.error = error.message || "Error Processing Request"
+               new Toasteur().error(this.error);
+               
+           } finally {
+               this.loading = false;
+           }
+        },
+        
         //end of lanre's method
         
         async nextPage(){
@@ -198,7 +353,7 @@ let userApp = Vue.createApp({
             if ( !this.fullname || !this.phoneno || !this.lga || !this.state
                 || !this.country || !this.address || !this.addressno || !this.zipcode ){
                 this.error = "Insert all Fields";
-                swal(this.error);
+                new Toasteur().error(this.error);
                 return
             }
             //validate phone 
@@ -329,7 +484,7 @@ let userApp = Vue.createApp({
                 || !this.address_details.country || !this.address_details.address || !this.address_details.addressno || !this.address_details.zipcode ){
 
                 this.error = "Insert all Fields";
-                swal(this.error);
+                new Toasteur().error(this.error);
                 return
             }
             
@@ -409,7 +564,7 @@ let userApp = Vue.createApp({
                 
             } catch (error) {
                 this.error = error.message || "Error processing request";
-                swal(this.error);
+                new Toasteur().error(this.error);
             }finally{
                 this.loading = false
             }
@@ -505,31 +660,31 @@ let userApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                 }
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -550,7 +705,7 @@ let userApp = Vue.createApp({
                     }
                     if (!this.weight){
                         this.error = "Kindly Enter weight Value";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return;
                     }
                     const url = `${this.baseurl}api/logistics/getShipmentPrice.php?logistic_id=${this.selectedLogistics}&loc_id=${this.selectedLocation}&weight=${this.weight}`;
@@ -562,31 +717,31 @@ let userApp = Vue.createApp({
                     if (error.response){
                         if (error.response.status == 400){
                             this.error = error.response.data.text;
-                            swal(this.error);
+                            new Toasteur().error(this.error);
                             return
                         }
         
                         if (error.response.status == 401){
                             this.error = "User not Authorized";
-                            swal(this.error);
+                            new Toasteur().error(this.error);
                             return
                         }
         
                         if (error.response.status == 405){
                             this.error = error.response.data.text;
-                            swal(this.error);
+                            new Toasteur().error(this.error);
                             return
                         }
         
                         if (error.response.status == 500){
                             this.error = error.response.data.text;
-                            swal(this.error);
+                            new Toasteur().error(this.error);
                             return
                         }
         
                     }
                     this.error = error.message || "Error Processing Request"
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     
                 }finally{
                     this.loading = false;
@@ -594,71 +749,7 @@ let userApp = Vue.createApp({
             }
             
         },
-        async updateDetails() {
-            if ( !this.user_detais.Firstname || !this.user_detais.Lastname || !this.user_detais.phone || !this.user_detais.dob
-                || !this.user_detais.sex || !this.user_detais.State || !this.user_detais.Country ){
-
-                   this.error = "Insert all Fields";
-                   swal(this.error);
-                   return
-           }
-
-           const data = new FormData();
-           data.append('firstname', this.user_detais.Firstname);
-           data.append('lastname', this.user_detais.Lastname);
-           data.append('phoneno', this.user_detais.phone);
-           data.append('dob', this.user_detais.dob);
-           data.append('sex', this.user_detais.sex);
-           data.append('state', this.user_detais.State);
-           data.append('country', this.user_detais.Country);
-
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-           try {
-               this.loading = true
-               const response = await axios.post(`${this.baseurl}api/accounts/updateuserinfo.php`, data ,{headers} );
-               
-               // 
-               if ( response.data.status ){
-                   this.success = response.data.text;
-                   swal(this.success);
-                   window.location.reload();
-               }          
-           } catch (error) {
-               if (error.response.status == 400){
-                   this.error = error.response.data.text;
-                   swal(this.error);
-                   return
-               }
-
-               if (error.response.status == 401){
-                   this.error = "User not Authorized";
-                   swal(this.error);
-                   return
-               }
-
-               if (error.response.status == 405){
-                   this.error = error.response.data.text;
-                   swal(this.error);
-                   return
-               }
-
-               if (error.response.status == 500){
-                   this.error = error.response.data.text;
-                   swal(this.error);
-                   return
-               }
-
-               this.error = error.message || "Error Processing Request"
-               swal(this.error);
-               
-           } finally {
-               this.loading = false;
-           }
-        },
+        
         async changePassword(){
             if (!this.currentpassword || !this.password || !this.confirmPassword){
                 swal("Kindly Insert all Fields");
@@ -690,30 +781,30 @@ let userApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -738,30 +829,30 @@ let userApp = Vue.createApp({
             } catch (error) {
                 if (error.response.status == 400){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 401){
                     this.error = "User not Authorized";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 405){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 500){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -789,30 +880,30 @@ let userApp = Vue.createApp({
             } catch (error) {
                 if (error.response.status == 400){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 401){
                     this.error = "User not Authorized";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 405){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 500){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
             } finally {
                 this.loading = false
             }
@@ -838,30 +929,30 @@ let userApp = Vue.createApp({
             } catch (error) {
                 if (error.response.status == 400){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 401){
                     this.error = "User not Authorized";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 405){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 500){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
             } finally {
                 this.loading = false
             }
@@ -871,7 +962,7 @@ let userApp = Vue.createApp({
             if (!this.cointype || !this.useraddress || !this.producttrackid || !this.memo 
                 || !this.systemlivewallet || !this.liveaddressid || !this.redeemscript || !this.wallettrackid) {
                     this.error = "Insert all Fields";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
             }
 
             const data = FormData();
@@ -894,30 +985,30 @@ let userApp = Vue.createApp({
             } catch (error) {
                 if (error.response.status == 400){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 401){
                     this.error = "User not Authorized";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 405){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 500){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -940,30 +1031,30 @@ let userApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }else{
                     this.error = error.message || "Error Processing Request"
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                 }
     
             } finally {
@@ -985,30 +1076,30 @@ let userApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }else{
                     this.error = error.message || "Error Processing Request"
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                 }
     
             } finally {
@@ -1082,91 +1173,6 @@ let userApp = Vue.createApp({
             const token = window.localStorage.getItem("token");
             this.authToken = token;
         },
-        async getUserDetails(){
-            const url = `${this.baseurl}api/accounts/getdetails.php?`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-           
-            
-            try {
-                this.loading = true
-                const response = await axios(options);
-                if ( response.data.status ){
-                    this.userDetails = response.data.data
-                    this.ref_link = `${this.baseurl}register.php?code=${this.userDetails.refcode}`;
-
-                    // if (location === "index.php"){
-                    //     this.getUserAddress();
-                    //     this.getUserTotalBalance();
-                    //     this.getDefaultAddress();
-                    //     this.getAllLogistics();
-                            
-                    // }
-
-                    if (location === "activities.php"){
-                        this.getAllActivity();
-                    }
-
-                    if (location === "complain.php"){
-                        this.getAllComplain();
-                    }
-
-
-                    if (location === "notifications.php"){
-                        this.getAllUserNotification();
-                    } 
-                    
-                    if (location === "wallet.php"){
-                        await this.getAllTransactions();
-                        await this.getAllWallets();
-                    }
-
-                    if (location === 'address.php'){
-                        await this.getUserAddress();
-                    }
-                    
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        swal(this.error);
-                        window.location.href ="../login.php";
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-                }else{
-                    this.error = error.message || "Error Processing Request"
-                    swal(this.error);
-                }    
-                
-            } finally {
-                this.loading = false;
-            }
-        },
         async getAllUserNotification(){
             const headers = {
                 "Authorization": `Bearer ${this.authToken}`,
@@ -1193,30 +1199,30 @@ let userApp = Vue.createApp({
             } catch (error) {
                 if (error.response.status == 400){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 401){
                     this.error = "User not Authorized";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 405){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 500){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -1244,30 +1250,30 @@ let userApp = Vue.createApp({
             } catch (error) {
                 if (error.response.status == 400){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 401){
                     this.error = "User not Authorized";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 405){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 500){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
             } finally {
                 this.loading = false;
             }
@@ -1297,30 +1303,30 @@ let userApp = Vue.createApp({
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
                         this.activities = null;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -1330,7 +1336,7 @@ let userApp = Vue.createApp({
         async makeComplain() {
             if (!this.complain){
                 this.error = "Kindly Enter a complain"
-                swal(this.error);
+                new Toasteur().error(this.error);
             }
 
             const headers = {
@@ -1353,31 +1359,31 @@ let userApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -1412,30 +1418,30 @@ let userApp = Vue.createApp({
             } catch (error) {
                 if (error.response.status == 400){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 401){
                     this.error = "User not Authorized";
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 405){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 if (error.response.status == 500){
                     this.error = error.response.data.text;
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                     return
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -1523,31 +1529,31 @@ let userApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -1582,31 +1588,31 @@ let userApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
@@ -1620,7 +1626,7 @@ let userApp = Vue.createApp({
         }
     },
     async mounted(){
-        this.getToken();
+        // this.getToken();
         // this.getUserDetails();
         // this.getDefaultAddress();
         console.log(page);

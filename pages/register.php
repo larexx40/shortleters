@@ -11,7 +11,14 @@
     <link rel="stylesheet" href="../assets/css/auth.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <title>Layout Page</title>
+
+    <style>
+
+    </style>
+
+
 </head>
 
 <body>
@@ -110,9 +117,9 @@
                                         <li><a class="dropdown-item" href="register.php">Sign up</a></li>
                                         <li><a class="dropdown-item" href="login.php">Log in</a></li>
                                         <div class="sub-menu-links">
-                                            <li><a class="dropdown-item" href="login.php">Host your Home</a></li>
-                                            <li><a class="dropdown-item" href="login.php">Host an experience</a></li>
-                                            <li><a class="dropdown-item" href="help.php">Help</a></li>
+                                            <li><a class="dropdown-item" href="home.html">Host your Home</a></li>
+                                            <li><a class="dropdown-item" href="experience.html">Host an experience</a></li>
+                                            <li><a class="dropdown-item" href="help.html">Help</a></li>
                                         </div>
                                     </ul>
                                 </div>
@@ -349,8 +356,8 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">Email address</label>
+                        <input type="text" class="form-control" id="floatingPhonenumber" placeholder="Phone Number">
+                        <label for="floatingPhonenumber">Phone number</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
@@ -367,27 +374,69 @@
                     <div class="_16fq9mb">or</div>
                     <!-- Register buttons -->
                     <div class="social-links d-grid" style="gap:10px;">
-                        <button type="button" class="btn position-relative text-center btn-floating mx-1">
+                    <button type="button" class="btn position-relative text-center btn-floating mx-1">
                         <em class="bi bi-facebook position-absolute" style="color: rgb(24, 119, 242);"></em> <b> Continue with Facebook.</b>
                     </button>
 
-                        <button type="button" class="btn position-relative text-center btn-floating mx-1">
+                    <button type="button" class="btn position-relative text-center btn-floating mx-1">
                         <em class="bi bi-google position-absolute" style="color: red;"></em> <b> Continue with Google.</b>
                     </button>
 
-                        <button type="button" class="btn position-relative text-center btn-floating mx-1">
+                    <button type="button" class="btn position-relative text-center btn-floating mx-1">
                         <em class="bi bi-twitter position-absolute" style="color: #37afd6;"></em> <b>Continue with Twitter.</b>
                     </button>
 
-                        <button type="button" class="btn position-relative text-center btn-floating mx-1">
+                    <button type="button" class="btn position-relative text-center btn-floating mx-1">
                         <em class="bi bi-github position-absolute"></em> <b>Continue with Github.</b>
                     </button>
+                    
+
+                    <button type="button" class="btn position-relative text-center btn-floating mx-1 " data-bs-target="#staticBackdropfilter2" data-bs-toggle="modal">
+                        <b>Launch Modal</b>
+                    </button>                    
 
                     </div>
                 </form>
+
             </div>
 
         </main>
+
+        <!-- TODO <======== SEARCH BAR MODAL START =========> -->
+        <div class="modal fade filter" id="staticBackdropfilter2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h6 class="modal-title" id="staticBackdropLabel">Check your phone for an otp message</h6>
+                        <div style="background-color: transparent; width: 2rem;height: 2px"></div>
+                    </div>
+                    <div class="modal-body"  style=" flex-direction:column;">
+                        <div style="display:flex; justify-content:center;border:none;padding:20px 0px" >
+                            <form class="digit-group" data-group-name="digits" data-autosubmit="false" autocomplete="off">
+                                <input type="number" id="digit-1" name="digit-1" data-next="digit-2" />
+                                <input type="number" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" />
+                                <input type="number" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2" />
+                                <span class="splitter">&ndash;</span>
+                                <input type="number" id="digit-4" name="digit-4" data-next="digit-5" data-previous="digit-3" />
+                                <input type="number" id="digit-5" name="digit-5" data-next="digit-6" data-previous="digit-4" />
+                                <input type="number" id="digit-6" name="digit-6" data-previous="digit-5" />
+                            </form>
+                        </div>
+                        <div style="display:flex; justify-content:center;border:none;padding:20px 0px" >
+                            <div class="submit-btn">
+                                <button class="btn" style="background-color: #000; color: #fff; padding: 14px 1.8rem">Save</button>
+                            </div>                         
+                        </div>
+                       
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- <======= SEARCH BAR MODAL ENDS ========> -->       
+ 
+
         <!-- mobile view footer -->
         <footer>
             <div class="row col-12 m-0 align-items-center justify-content-center d-md-none mobile-view">
@@ -497,7 +546,52 @@
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/jquery-3.6.1.min.js"></script>
     <script src="../assets/js/custom.js"></script>
+<<<<<<< HEAD
     <?php include "./includes/vue-script.php"; ?>
+=======
+
+    <script>
+        $(document).ready(function(){
+            $('#floatingPhonenumber').focus(function(){
+                if( $("#floatingPhonenumber").val() === "" ){
+                    let selected = $("#floatingSelect").val();
+                    var st = selected;
+                    var regex = new RegExp('([0-9]+)|([a-zA-Z]+)','g');
+                    var splittedArray = st.match(regex);
+                    var num = splittedArray[0];              
+                    $('#floatingPhonenumber').val("+"+num);                       
+                }
+             
+            });
+
+            $('.digit-group').find('input').each(function() {
+                $(this).attr('maxlength', 1);
+                $(this).on('keyup', function(e) {
+                    var parent = $($(this).parent());
+                    
+                    if(e.keyCode === 8 || e.keyCode === 37) {
+                        var prev = parent.find('input#' + $(this).data('previous'));
+                        
+                        if(prev.length) {
+                            $(prev).select();
+                        }
+                    } else if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode === 39) {
+                        var next = parent.find('input#' + $(this).data('next'));
+                        
+                        if(next.length) {
+                            $(next).select();
+                        } else {
+                            if(parent.data('autosubmit')) {
+                                parent.submit();
+                            }
+                        }
+                    }
+                });
+            });            
+
+        });        
+    </script>
+>>>>>>> 5d3c7f753100fd1bbaf80e14b5e02c1a6a665e62
 </body>
 
 </html>
