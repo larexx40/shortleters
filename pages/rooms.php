@@ -580,8 +580,8 @@
                     <div class="sub-header-inner">
                         <div class="container p-0">
                             <div class="d-flex align-items-center justify-content-between">
-                                <div class="navigation-wrapper">
-                                    <button>
+                                <div v-if="apartment_category" class="navigation-wrapper">
+                                    <button v-for="(item, index) in apartment_category" :key="index">
                                         <div >
                                             <span class="c1m2z0bj c1w8ohg7">
                                                 <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24">
@@ -592,21 +592,21 @@
                                         </div>
                                     </button>
                                     <button>
-                                            <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/8b44f770-7156-4c7b-b4d3-d92549c8652f.jpg" alt="" width="24" height="24"><div ><span >Arctic</span></div>
+                                        <div >
+                                            <span class="c1m2z0bj">
+                                                <img src="https://a0.muscache.com/pictures/8b44f770-7156-4c7b-b4d3-d92549c8652f.jpg" alt="" width="24" height="24">
+                                                <div>
+                                                    <span >Arctic</span>
+                                                </div>
                                             </span>
-                                    </div>
-                                    </button>
-                                    <button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/50861fca-582c-4bcc-89d3-857fb7ca6528.jpg" alt="" width="24" height="24"><div ><span >Design</span></div></span></div></button>
+                                        </div>
+                                    </button>  
                                     <button>
-                                        <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/bcd1adc0-5cee-4d7a-85ec-f6730b0f8d0c.jpg" alt="" width="24" height="24"><div ><span >Beachfront</span></div>
-                                        </span>
-                                </div>
-                                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/ee9e2a40-ffac-4db9-9080-b351efc3cfc4.jpg" alt="" width="24" height="24"><div ><span >Tropical</span></div></span></div></button>
-                                    <button>
-                                    <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg" alt="" width="24" height="24"><div ><span >OMG!</span></div>
-                                    </span>
-                            </div>
-                            </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/10ce1091-c854-40f3-a2fb-defc2995bcaf.jpg" alt="" width="24" height="24"><div ><span >Beach</span></div></span></div></button>
+                                        <div >
+                                            <span class="c1m2z0bj">
+                                                <img src="https://a0.muscache.com/pictures/10ce1091-c854-40f3-a2fb-defc2995bcaf.jpg" alt="" width="24" height="24">
+                                                <div >
+                                                    <span >Beach</span></div></span></div></button>
                                     <button>
                                 <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/3fb523a0-b622-4368-8142-b5e03df7549b.jpg" alt="" width="24" height="24"><div ><span >Amazing pools</span></div>
                                 </span>
