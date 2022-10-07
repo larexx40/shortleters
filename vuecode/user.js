@@ -6,55 +6,57 @@ let userApp = Vue.createApp({
     data(){
         return{
             // Lanre data
-            carts: [],
-            orders:[],
-            refNo: null,
-            trackid: null,
-            track_id: null,
-            order_status: null,
-            total_weight: null,
-            total_paid: null,
-            cartIndex: '',
-            orderIndex: '',
-            addresses:[],
-            address_details: null,
-            address: null,
-            addressno: null,
-            lga: null,
-            zipcode: null,
-            username: null,
-            firstname: null,
-            lastname: null,
-            fullname: null,
-            phoneno: null,
-            state: null,
-            resetToken: '',
-            userpubkey: '',
-            country: null,
-            // End Lanre Data
-            // Korede Data
+            // carts: [],
+            // orders:[],
+            // refNo: null,
+            // trackid: null,
+            // track_id: null,
+            // order_status: null,
+            // total_weight: null,
+            // total_paid: null,
+            // cartIndex: '',
+            // orderIndex: '',
+            // addresses:[],
+            // address_details: null,
+            // address: null,
+            // addressno: null,
+            // lga: null,
+            // zipcode: null,
+            // username: null,
+            // firstname: null,
+            // lastname: null,
+            // fullname: null,
+            // phoneno: null,
+            // state: null,
+            // resetToken: '',
+            // userpubkey: '',
+            // country: null,
+            // // End Lanre Data
+            // // Korede Data
 
-            // End Korede
-            user_detais: null,
-            user_address: null,
-            shipping_address: "",
-            ref_link: null,
-            defaultAddress: null,
-            notifications: null,
-            weight: null,
-            price: null,
-            logistics: null,
-            selectedLogistics: "",
-            locations: null,
-            selectedLocation: "",
-            username: null,
-            total_wallet_balance: null,
-            activities: null,
-            complains: null,
-            each_complain: null,
-            complain: null,
-            currentpassword: null,
-            wallets: null,
+            // // End Korede
+            // user_detais: null,
+            // user_address: null,
+            // shipping_address: "",
+            // ref_link: null,
+            // defaultAddress: null,
+            // notifications: null,
+            // weight: null,
+            // price: null,
+            // logistics: null,
+            // selectedLogistics: "",
+            // locations: null,
+            // selectedLocation: "",
+            // username: null,
+            // total_wallet_balance: null,
+            // activities: null,
+            // complains: null,
+            // each_complain: null,
+            // complain: null,
+            // currentpassword: null,
+            // wallets: null,
+            // Shortleters Data
+            apartments: null,
             transactions: null,
             password: null,
             authToken: null,
@@ -68,7 +70,7 @@ let userApp = Vue.createApp({
             totalData: null,
             per_page: 6,
             error: null,
-            baseurl: "http://localhost/cart.ng2/"
+            baseurl: "http://localhost/shortleters/"
         }
     },
     created() {
@@ -684,6 +686,81 @@ let userApp = Vue.createApp({
                 this.loading = false
             }
         },
+        // Korede Shortleters
+        async getAllApartments(load = 1){
+            let search = (this.search) ? `&search=${this.search}` : ""; 
+            let sort = (this.sort !== null) ? `&sort=1&sortstatus=${this.sort}` : "";
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let per_page = ( this.per_page ) ? this.per_page : 5;
+
+            if (this.sorttype && this.sort){
+                 type = `&sorttype=${this.sorttype}`;
+            } 
+            if ( this.sorttype && !this.sor ){
+                type = `&sort=1&sorttype=${this.sorttype}`;
+            }
+            if (!this.sorttype){
+                type = "";
+            }
+            
+            const headers = {
+                // "Authorization": `Bearer ${this.accessToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseurl}api/apartments/user_get_all_apartments.php?page=${page}&per_page=${per_page}`;
+
+            this.total_page = null
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    if (response.data.data.page){
+                        this.apartments = response.data.data.apartments;
+                        this.currentPage = response.data.data.page;
+                        this.total_page = response.data.data.totalPage;
+                        this.per_page = response.data.data.per_page;
+                        this.totalData = response.data.data.total_data;   
+                    }
+                }else{
+                    this.apartments = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+        }, 
         async fetchLocation(){
             const headers = {
                 "Authorization": `Bearer ${this.authToken}`,
@@ -1909,8 +1986,12 @@ let userApp = Vue.createApp({
     },
     async mounted(){
         this.getToken();
-        this.getUserDetails();
-        this.getDefaultAddress();
+        // this.getUserDetails();
+        // this.getDefaultAddress();
+        console.log(page);
+        if ( page === "index.php" || page === "" ){
+            await this.getAllApartments();
+        }
         
     }
 });

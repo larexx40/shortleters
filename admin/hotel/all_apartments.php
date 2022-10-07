@@ -277,45 +277,45 @@
                                                     
                                                 
                                                 <div v-if="all_apartments" class="card">
-                                                        <div class="card-inner">
-                                                            <div class="nk-block-between-md g-3">
-                                                                <div class="g">
-                                                                    <ul class="pagination justify-content-center justify-content-md-start">
-                                                                        <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
-                                                                        <li v-if="kor_page > 1" @click="nav_previousPage" class="page-item"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
+                                                    <div class="card-inner">
+                                                        <div class="nk-block-between-md g-3">
+                                                            <div class="g">
+                                                                <ul class="pagination justify-content-center justify-content-md-start">
+                                                                    <li v-if="kor_page == 1" class="page-item disabled"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
+                                                                    <li v-if="kor_page > 1" @click="nav_previousPage" class="page-item"><a class="page-link" href="#"><em class="icon ni ni-chevrons-left"></em></a></li>
+                                                                    
+                                                                    <li class="page-item" v-for="page in kor_total_page">
+                                                                        <a v-if='page < 7'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
+                                                                    </li>
+                                                                    <li>
                                                                         
-                                                                        <li class="page-item" v-for="page in kor_total_page">
-                                                                            <a v-if='page < 7'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
-                                                                        </li>
-                                                                        <li>
-                                                                            
-                                                                        </li>
-                                                                        <span v-if="kor_total_page > 7" class="page-link"><em class="icon ni ni-more-h"></em></span>
-                                                                        <li class="page-item" v-for="page in kor_total_page">
-                                                                            <a v-if='page > 13'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
-                                                                        </li>
-                                                                        
-                                                                        <li v-if="kor_page < kor_total_page"  class="page-item" @click="nav_nextPage"><a class="page-link"><em class="icon ni ni-chevrons-right"></em></a></li>
-                                                                        <li v-if="kor_page == kor_total_page" class="page-item disabled"><a  class="page-link" href="#"><em class="icon ni ni-chevrons-right"></em></a></li>
-                                                                    </ul><!-- .pagination -->
-                                                                </div>
-                                                                <div class="g">
-                                                                    <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                                                        <div>Page</div>
-                                                                        <div>
-                                                                            <select v-if="kor_total_page > 1" @change="selectPage(kor_page)" v-model="kor_page" class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                                                                <option v-for="page in kor_total_page" v-bind:value="page">{{page}}</option>
-                                                                            </select>
-                                                                            <select v-if="kor_total_page == 1" class="form-select js-select2 " data-search="on" data-dropdown="xs center">
-                                                                                <option value="1">1</option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div>OF {{kor_total_page}}</div>
+                                                                    </li>
+                                                                    <span v-if="kor_total_page > 7" class="page-link"><em class="icon ni ni-more-h"></em></span>
+                                                                    <li class="page-item" v-for="page in kor_total_page">
+                                                                        <a v-if='page > 13'  class="page-link" @click="nav_selectPage(page)">{{page}}</a>
+                                                                    </li>
+                                                                    
+                                                                    <li v-if="kor_page < kor_total_page"  class="page-item" @click="nav_nextPage"><a class="page-link"><em class="icon ni ni-chevrons-right"></em></a></li>
+                                                                    <li v-if="kor_page == kor_total_page" class="page-item disabled"><a  class="page-link" href="#"><em class="icon ni ni-chevrons-right"></em></a></li>
+                                                                </ul><!-- .pagination -->
+                                                            </div>
+                                                            <div class="g">
+                                                                <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+                                                                    <div>Page</div>
+                                                                    <div>
+                                                                        <select v-if="kor_total_page > 1" @change="selectPage(kor_page)" v-model="kor_page" class="form-select js-select2" data-search="on" data-dropdown="xs center">
+                                                                            <option v-for="page in kor_total_page" v-bind:value="page">{{page}}</option>
+                                                                        </select>
+                                                                        <select v-if="kor_total_page == 1" class="form-select js-select2 " data-search="on" data-dropdown="xs center">
+                                                                            <option value="1">1</option>
+                                                                        </select>
                                                                     </div>
-                                                                </div><!-- .pagination-goto -->
-                                                            </div><!-- .nk-block-between -->
-                                                        </div>
+                                                                    <div>OF {{kor_total_page}}</div>
+                                                                </div>
+                                                            </div><!-- .pagination-goto -->
+                                                        </div><!-- .nk-block-between -->
                                                     </div>
+                                                </div>
                                                 <!-- .card-inner -->
                                             </div><!-- .card-inner-group -->
                                         </div><!-- .card -->

@@ -408,6 +408,25 @@
         return false;
     }
 
+
+    function getCurrencySymbol($connect, $data){
+        // check field
+        $query = "SELECT `currency_symbol` FROM `listing_currency` WHERE `currency_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $row = $result->fetch_assoc();
+            $name = $row['currency_symbol'];
+            return $name;
+        }
+
+        return false;
+    }
+
     
 
     function getEmailFromField($connect, $table, $field, $data){

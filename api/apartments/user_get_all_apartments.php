@@ -173,6 +173,7 @@
                     $num_row = $result->num_rows;
                     
                 }
+
                 if ( $country_sort && !$sort_guest && $date_sort && $price_sort ){
                     $query = "SELECT apartments.* FROM apartments LEFT JOIN bookings ON bookings.apartment_id = apartments.apartment_id LEFT JOIN apartment_category ON apartment_category.category_id = apartments.category_id WHERE apartments.apartment_status = ? AND bookings.preferred_check_in != ? AND bookings.preferred_check_in != ? AND (apartments.price BETWEEN ? AND ?) AND apartments.apartment_country = ?  AND ( apartments.name LIKE ? OR apartment_category.name LIKE ? OR apartments.title LIKE ? OR apartments.description LIKE ? OR apartments.apartment_address LIKE ? OR apartments.apartment_lga LIKE ? OR apartments.apartment_city LIKE ? OR apartments.apartment_state LIKE ?) ORDER BY apartments.id DESC, apartments.feature DESC";
                     $queryStmt = $connect->prepare($query);
@@ -190,6 +191,7 @@
                     $num_row = $result->num_rows;
                     
                 }
+
                 if ( !$country_sort && $sort_guest && $date_sort && $price_sort ){
 
                     $query = "SELECT apartments.* FROM apartments LEFT JOIN bookings ON bookings.apartment_id = apartments.apartment_id LEFT JOIN apartment_category ON apartment_category.category_id = apartments.category_id WHERE apartments.apartment_status = ? AND bookings.preferred_check_in != ? AND bookings.preferred_check_in != ? AND (apartments.price BETWEEN ? AND ?)  AND apartments.max_guest <= ? AND ( apartments.name LIKE ? OR apartment_category.name LIKE ? OR apartments.title LIKE ? OR apartments.description LIKE ? OR apartments.apartment_address LIKE ? OR apartments.apartment_lga LIKE ? OR apartments.apartment_city LIKE ? OR apartments.apartment_state LIKE ?) ORDER BY apartments.id DESC, apartments.feature DESC";
@@ -247,6 +249,7 @@
                     $num_row = $result->num_rows;
                     
                 }
+                
                 if ( !$country_sort && $sort_guest && $date_sort && !$price_sort ){
 
                     $query = "SELECT apartments.* FROM apartments LEFT JOIN bookings ON bookings.apartment_id = apartments.apartment_id LEFT JOIN apartment_category ON apartment_category.category_id = apartments.category_id WHERE apartments.apartment_status = ? AND bookings.preferred_check_in != ? AND bookings.preferred_check_in != ? AND apartments.max_guest <= ? AND ( apartments.name LIKE ? OR apartment_category.name LIKE ? OR apartments.title LIKE ? OR apartments.description LIKE ? OR apartments.apartment_address LIKE ? OR apartments.apartment_lga LIKE ? OR apartments.apartment_city LIKE ? OR apartments.apartment_state LIKE ?) ORDER BY apartments.id DESC, apartments.feature DESC";
@@ -733,7 +736,7 @@
                 $no_of_pets = $row["no_of_pets"];
                 $no_of_floor = $row["no_of_floor"];
                 $listing_currency_id = $row["listing_currency_id"];
-                $listing_currency_name = getNameFromField($connect, "listing_currency", "currency_id", $listing_currency_id);
+                $listing_currency_symbol = getCurrencySymbol($connect, $listing_currency_id);
                 $available_floor = $row["available_floor"];
                 $safety_ids = ($row["safety_ids"])? explode(",", $row["safety_ids"]) : null;
                 $safety_id_name = [];
@@ -843,7 +846,7 @@
                     'no_of_pets' => $no_of_pets,
                     'no_of_floor' => $no_of_floor,
                     'listing_currency_id' => $listing_currency_id,
-                    'listing_currency_name' => ($listing_currency_name) ? $listing_currency_name : null,
+                    'listing_currency_symbol' => ($listing_currency_symbol) ? $listing_currency_symbol : null,
                     'available_floor' => $available_floor,
                     'safety_ids' => $safety_id_name,
                     'custom_link' => $custom_link,

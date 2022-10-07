@@ -1,0 +1,42 @@
+.btn-primary{
+    background-image: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%) !important;
+    border-color:#E61E4D !important;
+}._16fq9mb {
+-webkit-box-align: center !important;
+-ms-flex-align: center !important;
+display: -webkit-box !important;
+display: -moz-box !important;
+display: -ms-flexbox !important;
+display: -webkit-flex !important;
+display: flex !important;
+-webkit-align-items: center !important;
+align-items: center !important;
+margin: 16px 0 !important;
+}._16fq9mb::before {
+content: '' !important;
+display: block !important;
+width: 100% !important;
+height: 1px !important;
+background-color: #DDDDDD !important;
+margin-right: 16px !important;
+}._16fq9mb::after {
+content: '' !important;
+display: block !important;
+width: 100% !important;
+height: 1px !important;
+background-color: #DDDDDD !important;
+margin-left: 16px !important;
+}input,select{
+outline: none !important;
+box-shadow: none !important;
+
+}
+input:focus, select:focus{
+border-color: #d80765 !important;
+}.social-links button{
+border: 1px solid !important;
+padding: 10px;
+}.social-links button em{
+left: 10px;
+font-size: 19px;
+}
