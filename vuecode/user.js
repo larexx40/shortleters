@@ -60,10 +60,13 @@ let userApp = Vue.createApp({
             //lanre data @S
             userDetails: null,
             //@E lanre data
+            // @S korede data
             apartments: null,
             apartment_details: null,
+            apartment_category: null,
             active: true,
             transactions: null,
+            // @E korede data
             password: null,
             authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjUxMzQ3MDYsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTEzNDcwNiwiZXhwIjoxNjY1MjA4NTA2LCJ1c2VydG9rZW4iOiJDTkdIZ3l4dHdzUHh4ZXg4QjhDcExlbTlxREppd3JXY0d5N0xlM0tsdXNlcnMifQ.bL-j7_nktia8W3CSXi0DWRgvfIUpDBGUP6f4a19yf2AwS9Ts3C5Ot7Hv4WZAZx4nEHh8n0lbWv5n7w563qm1Vg',
             confirmPassword: null,
@@ -666,7 +669,8 @@ let userApp = Vue.createApp({
                 }
                 const response = await axios.get(url, {headers} );
                 if ( response.data.status ){
-                    this.apartment_details = response.data.data.apartment
+                    this.apartment_details = response.data.data.apartment;
+                    console.log(this.apartment_details);
                 }else{
                     this.apartment_details = null
                 }          
@@ -1766,9 +1770,9 @@ let userApp = Vue.createApp({
         // this.getToken();
         // this.getUserDetails();
         // this.getDefaultAddress();
+        await this.getAllCategory();
         if ( page === "index.php" || page === "" ){
             await this.getAllApartments();
-            await this.getAllCategory();
         }
         if ( page === "rooms.php" ){
             await this.getApartmentDetails();

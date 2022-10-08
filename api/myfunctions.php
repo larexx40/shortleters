@@ -828,7 +828,7 @@
     }
     function getApartmentImage($connect, $table, $field, $data){
         // check field
-        $query = "SELECT * FROM $table WHERE $field = ?";
+        $query = "SELECT * FROM $table WHERE $field = ? ORDER BY cover_photo DESC";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("s", $data );
         $stmt->execute();
@@ -904,6 +904,82 @@
                 $value = array('details' => $row);
             }
            return $value;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentFacilities($connect, $data){
+        $query = "SELECT `facility_id`, `total_number` FROM `apartment_facilities` WHERE `apartment_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $facilities = [];
+            while ($row = $result->fetch_assoc()){
+                $facility_id = $row['facility_id'];
+                $facility_name = getNameFromField($connect, "facilities", "facility_id", $facility_id);
+                $number = $row['total_number'];
+                array_push( $facilities ,array(
+                    "facility_id" => $facility_id,
+                    "facility_name" => ($facility_name)? $facility_name : null,
+                    "number" => $number
+                ));
+            }
+           return $facilities;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentHouseRule($connect, $data){
+        $query = "SELECT `house_rule_id` FROM `apartment_house_rule` WHERE `apart_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $rules = [];
+            while ($row = $result->fetch_assoc()){
+                $house_rule_id = $row['house_rule_id'];
+                $house_rule_name = getNameFromField($connect, "house_rule", "house_rule_id", $house_rule_id);
+                array_push( $rules ,array(
+                    "house_rule_id" => $house_rule_id,
+                    "house_rule_name" => ($house_rule_name)? $house_rule_name : null,
+                ));
+            }
+           return $rules;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentCancellationPolicy($connect, $data){
+        $query = "SELECT `facility_id`, `total_number` FROM `apartment_facilities` WHERE `apartment_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $facilities = [];
+            while ($row = $result->fetch_assoc()){
+                $facility_id = $row['facility_id'];
+                $facility_name = getNameFromField($connect, "facilities", "facility_id", $facility_id);
+                $number = $row['total_number'];
+                array_push( $facilities ,array(
+                    "facility_id" => $facility_id,
+                    "facility_name" => ($facility_name)? $facility_name : null,
+                    "number" => $number
+                ));
+            }
+           return $facilities;
         }
 
         return false;

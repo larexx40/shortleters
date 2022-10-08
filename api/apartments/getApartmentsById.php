@@ -92,7 +92,7 @@
                 $no_of_pets = $row["no_of_pets"];
                 $no_of_floor = $row["no_of_floor"];
                 $listing_currency_id = $row["listing_currency_id"];
-                $listing_currency_name = getNameFromField($connect, "listing_currency", "currency_id", $listing_currency_id);
+                $listing_currency_symbol = getCurrencySymbol($connect, $listing_currency_id);
                 $available_floor = $row["available_floor"];
                 $safety_ids = ($row["safety_ids"])? explode(",", $row["safety_ids"]) : null;
                 $safety_id_name = [];
@@ -131,10 +131,11 @@
                 $amenities_id_name = [];
                 if ($amenities_ids){
                     for ($i = 0; $i < count($amenities_ids); $i++){
-                        $id_name = getNameFromField($connect, "sub_amenities", "sub_amen_id", $amenities_ids[$i]);
+                        $id_details = getFieldsDetails($connect, "sub_amenities", "sub_amen_id", $amenities_ids[$i]);
                         array_push($amenities_id_name, array(
                             'amenities_id' => $amenities_ids[$i],
-                            'name' => ($id_name)? $id_name : null
+                            'name' => ($id_details)? $id_details['details']['name'] : null,
+                            'icon' => ($id_details)? $id_details['details']['icon'] : null
                         ));
                     }
                 }
@@ -155,6 +156,7 @@
                 }
                 $apartment_status_code = $row['apartment_status'];
                 $agent_id = $row['agent_id'];
+                $agent_fullname = ($agent_id)? getUserFullname($connect, $agent_id): null;
                 // $space_type_name = getNameFromField($connect, "space_type", "space_id", $space_type_id);
                 $apartment_address = $row["apartment_address"];
                 $apartment_country = $row["apartment_country"];
@@ -162,6 +164,8 @@
                 $apartment_state = $row["apartment_state"];
                 $longtitude = $row["longtitude"];
                 $latitude = $row["latitude"];
+                $apartment_facilities = getAllApartmentFacilities($connect, $row['apartment_id']);
+                $apartment_house_rules = getAllApartmentHouseRule($connect, $row['apartment_id']);
                 $apartment_lga = $row["apartment_lga"];
                 $location_sharing = ($row["location_sharing"] > 0)? "Sharing" : "Not Sharing";
                 $scenic_ids = ($row["scenic_ids"])? explode(",", $row["scenic_ids"]): null;
@@ -178,6 +182,7 @@
                 
                 $min_stay = $row["min_stay"];
                 $max_stay = $row["max_stay"];
+                $max_guest = $row["max_guest"];
                 $duration = $row["duration"];
                 $check_in_day = $row["check_in_day"];
                 $created = gettheTimeAndDate(strtotime($row['created_at']));
@@ -202,7 +207,7 @@
                     'no_of_pets' => $no_of_pets,
                     'no_of_floor' => $no_of_floor,
                     'listing_currency_id' => $listing_currency_id,
-                    'listing_currency_name' => ($listing_currency_name) ? $listing_currency_name : null,
+                    'listing_currency_symbol' => ($listing_currency_symbol) ? $listing_currency_symbol : null,
                     'available_floor' => $available_floor,
                     'safety_ids' => $safety_id_name,
                     'custom_link' => $custom_link,
@@ -216,11 +221,14 @@
                     'sub_building_type_id' => $sub_building_type_id,
                     'sub_building_type_name' => ($sub_building_type_name) ?  $sub_building_type_name : null,
                     'amenities_ids' => $amenities_id_name,
+                    "facilities" => ( $apartment_facilities )? $apartment_facilities : null,
                     'space_type_id' => $space_type_id,
                     'space_type_name' => ($space_type_name) ?  $space_type_name : null,
                     'apartment_status_code' => $apartment_status_code,
                     'apartment_status' => $apartment_status,
+                    'apartment_house_rules' => $apartment_house_rules,
                     'agent_id' => $agent_id,
+                    'agent_name' => $agent_fullname,
                     'apartment_address' => $apartment_address,
                     'apartment_country' => $apartment_country,
                     'apartment_city' => $apartment_city,
@@ -233,6 +241,7 @@
                     'scenic_ids' => $scenic_id_name,
                     'min_stay' => $min_stay,
                     'max_stay' => $max_stay,
+                    'max_guest' => $max_guest,
                     'duration' => $duration,
                     'check_in_day' => $check_in_day,
                     'created' => $created,
