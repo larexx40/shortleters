@@ -1325,7 +1325,7 @@
                             <div class="d-flex justify-content-between align-content-center">
                                 <div class="_tqmy57">
                                     <div class="_cv5qq4">
-                                        <h2 tabindex="-1" class="_14i3z6h" elementtiming="LCP-target">{{apartment_details.name}} hosted by&nbsp;{{apartment_details.agent_name}}</h2>
+                                        <h2 tabindex="-1" class="_14i3z6h" elementtiming="LCP-target">{{apartment_details.title}} hosted by&nbsp;{{apartment_details.agent_name}}</h2>
                                     </div>
                                     <ul class="d-flex gap-2">
                                         <li v-if="apartment_details.max_guest" class="l7n4lsf dir dir-ltr"><span>{{apartment_details.max_guest}} guests</span><span class="axjq0r dir dir-ltr"><span class="s1b4clln dir dir-ltr" aria-hidden="true"> · </span></span>
@@ -1411,7 +1411,7 @@
                                     <div v-for="(item, index) in apartment_details.amenities_ids" class="_19xnuo97 col-sm-6">
                                         <div class="iikjzje d-flex gap-2">
                                             <div class="i4wvyiy i1fpqhzs dir dir-ltr">
-                                                <span><i style="font-size: 24px;" class="fas fa-wifi"></i></span>
+                                                <span><i class="fa-solid fa-wifi"></i></span>
                                                 <!-- <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="m15.9999 20.33323c2.0250459 0 3.66667 1.6416241 3.66667 3.66667s-1.6416241 3.66667-3.66667 3.66667-3.66667-1.6416241-3.66667-3.66667 1.6416241-3.66667 3.66667-3.66667zm0 2c-.9204764 0-1.66667.7461936-1.66667 1.66667s.7461936 1.66667 1.66667 1.66667 1.66667-.7461936 1.66667-1.66667-.7461936-1.66667-1.66667-1.66667zm.0001-7.33323c3.5168171 0 6.5625093 2.0171251 8.0432368 4.9575354l-1.5143264 1.5127043c-1.0142061-2.615688-3.5549814-4.4702397-6.5289104-4.4702397s-5.5147043 1.8545517-6.52891042 4.4702397l-1.51382132-1.5137072c1.48091492-2.939866 4.52631444-4.9565325 8.04273174-4.9565325zm.0001-5.3332c4.9804693 0 9.3676401 2.540213 11.9365919 6.3957185l-1.4470949 1.4473863c-2.1746764-3.5072732-6.0593053-5.8431048-10.489497-5.8431048s-8.31482064 2.3358316-10.48949703 5.8431048l-1.44709488-1.4473863c2.56895177-3.8555055 6.95612261-6.3957185 11.93659191-6.3957185zm-.0002-5.3336c6.4510616 0 12.1766693 3.10603731 15.7629187 7.9042075l-1.4304978 1.4309874c-3.2086497-4.44342277-8.4328305-7.3351949-14.3324209-7.3351949-5.8991465 0-11.12298511 2.89133703-14.33169668 7.334192l-1.43047422-1.4309849c3.58629751-4.79760153 9.31155768-7.9032071 15.7621709-7.9032071z"></path></svg> -->
                                             </div>
                                             <div>{{item.name}}</div>
@@ -1796,6 +1796,7 @@
                         <div class="col-12 mb-4">
                             <h4><b>What this place offers</b></h4>
                         </div>
+                        <!-- House Rules -->
                         <div v-if="apartment_details.apartment_house_rules" class="col-md-4">
                             <div class="c1lue5su dir dir-ltr">
                                 <div class="hgq99v9 dir dir-ltr">
@@ -1807,6 +1808,20 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div v-if="!apartment_details.apartment_house_rules" class="col-md-4">
+                            <div class="c1lue5su dir dir-ltr">
+                                <div class="hgq99v9 dir dir-ltr">
+                                    <h3 class="_14i3z6h">House rules</h3>
+                                </div>
+                                <div class="d-flex gap-2 mb-2">
+                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
+                                    <span>No House Rule</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Health and Safety -->
                         <div v-if="apartment_details.safety_ids" class="col-md-4">
                             <div class="c1lue5su dir dir-ltr">
                                 <div  class="hgq99v9 dir dir-ltr">
@@ -1818,7 +1833,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+
+                        <div v-if="!apartment_details.safety_ids" class="col-md-4">
+                            <div class="c1lue5su dir dir-ltr">
+                                <div  class="hgq99v9 dir dir-ltr">
+                                    <h3 class="_14i3z6h">Health & safety</h3>
+                                </div>
+                                <div class="d-flex gap-2 mb-2">
+                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
+                                    <span>No Safety Features</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cancellation Policy -->
+                        <div v-if="apartment_details.apartment_cancellation_policies" class="col-md-4">
+                            <div class="c1lue5su dir dir-ltr">
+                                <div class="hgq99v9 dir dir-ltr">
+                                    <h3 class="_14i3z6h">Cancellation policy
+                                    </h3>
+                                </div>
+                                <div v-for="(item, index) in apartment_details.safety_ids" class="d-flex gap-2 mb-2">
+                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
+                                    <span>{{item.canc_sub_pol_name}}</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div v-if="!apartment_details.apartment_cancellation_policies" class="col-md-4">
                             <div class="c1lue5su dir dir-ltr">
                                 <div class="hgq99v9 dir dir-ltr">
                                     <h3 class="_14i3z6h">Cancellation policy
@@ -1826,7 +1868,7 @@
                                 </div>
                                 <div class="d-flex gap-2 mb-2">
                                     <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
-                                    <span>Add your trip dates to get the cancellation details for this stay.</span>
+                                    <span>No Cancellation Policy</span>
                                 </div>
 
                             </div>

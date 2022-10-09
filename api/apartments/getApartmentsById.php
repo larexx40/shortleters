@@ -166,6 +166,7 @@
                 $latitude = $row["latitude"];
                 $apartment_facilities = getAllApartmentFacilities($connect, $row['apartment_id']);
                 $apartment_house_rules = getAllApartmentHouseRule($connect, $row['apartment_id']);
+                $apartment_cancellation_policies = getAllApartmentCancellationPolicy($connect, $row['apartment_id']);
                 $apartment_lga = $row["apartment_lga"];
                 $location_sharing = ($row["location_sharing"] > 0)? "Sharing" : "Not Sharing";
                 $scenic_ids = ($row["scenic_ids"])? explode(",", $row["scenic_ids"]): null;
@@ -227,6 +228,7 @@
                     'apartment_status_code' => $apartment_status_code,
                     'apartment_status' => $apartment_status,
                     'apartment_house_rules' => $apartment_house_rules,
+                    'apartment_cancellation_policies' => $apartment_cancellation_policies,
                     'agent_id' => $agent_id,
                     'agent_name' => $agent_fullname,
                     'apartment_address' => $apartment_address,

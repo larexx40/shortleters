@@ -960,7 +960,7 @@
     }
 
     function getAllApartmentCancellationPolicy($connect, $data){
-        $query = "SELECT `facility_id`, `total_number` FROM `apartment_facilities` WHERE `apartment_id` = ?";
+        $query = "SELECT `canc_pol_id`, `canc_sub_pol_id` FROM `apartment_cancellation_policy` WHERE `apart_id` = ?";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("s", $data );
         $stmt->execute();
@@ -968,18 +968,44 @@
         $num_row = $result->num_rows;
 
         if ($num_row > 0){
-            $facilities = [];
+            $policies = [];
             while ($row = $result->fetch_assoc()){
-                $facility_id = $row['facility_id'];
-                $facility_name = getNameFromField($connect, "facilities", "facility_id", $facility_id);
-                $number = $row['total_number'];
-                array_push( $facilities ,array(
-                    "facility_id" => $facility_id,
-                    "facility_name" => ($facility_name)? $facility_name : null,
-                    "number" => $number
+                $canc_sub_pol_id = $row['canc_sub_pol_id'];
+                $canc_sub_pol_name = getNameFromField($connect, "sub_cancellation_policy", "sub_canc_pol_id", $canc_sub_pol_id);
+                $pol_id = $row['canc_pol_id'];
+                array_push( $policies ,array(
+                    "canc_sub_pol_id" => $canc_sub_pol_id,
+                    "canc_sub_pol_name" => ($canc_sub_pol_name)? $canc_sub_pol_name : null,
+                    "pol_id" => $pol_id
                 ));
             }
-           return $facilities;
+           return $policies;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentReviews($connect, $data){
+        $query = "SELECT `canc_pol_id`, `canc_sub_pol_id` FROM `apartment_cancellation_policy` WHERE `apart_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $policies = [];
+            while ($row = $result->fetch_assoc()){
+                $canc_sub_pol_id = $row['canc_sub_pol_id'];
+                $canc_sub_pol_name = getNameFromField($connect, "sub_cancellation_policy", "sub_canc_pol_id", $canc_sub_pol_id);
+                $pol_id = $row['canc_pol_id'];
+                array_push( $policies ,array(
+                    "canc_sub_pol_id" => $canc_sub_pol_id,
+                    "canc_sub_pol_name" => ($canc_sub_pol_name)? $canc_sub_pol_name : null,
+                    "pol_id" => $pol_id
+                ));
+            }
+           return $policies;
         }
 
         return false;
