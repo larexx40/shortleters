@@ -764,6 +764,10 @@ let userApp = Vue.createApp({
                 this.loading = false;
             }
         },
+        percentage(rate) {
+            rate = parseInt(rate);
+            return (100 * rate) / 5;
+        }, 
         async getAllCategory(load = 1){
             // let search = (this.search) ? `&search=${this.search}` : ""; 
             // let sort = (this.sort !== null) ? `&sort=1&sortstatus=${this.sort}` : "";
@@ -856,7 +860,7 @@ let userApp = Vue.createApp({
                 "Content-type": "application/json"
             }
 
-            let url = `${this.baseurl}api/apartments/categories/getAllApartmentByCategoryid.php?category_id=${category_id}page=${page}&per_page=${per_page}`;
+            let url = `${this.baseurl}api/apartments/categories/getAllApartmentByCategoryid.php?category_id=${category_id}&page=${page}&per_page=${per_page}`;
 
             this.total_page = null
             try {
@@ -866,7 +870,7 @@ let userApp = Vue.createApp({
                 const response = await axios.get(url, {headers} );
                 if ( response.data.status ){
                     if (response.data.data.page){
-                        this.apartments = response.data.data.apartmentCategories;
+                        this.apartments = response.data.data.apartments;
                         this.currentPage = response.data.data.page;
                         this.total_page = response.data.data.totalPage;
                         this.per_page = response.data.data.per_page;

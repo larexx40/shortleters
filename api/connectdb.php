@@ -1,10 +1,6 @@
 <?php
 date_default_timezone_set("Africa/Lagos");
-//Database Connection to loadngdatabase
-// $server= 'localhost';
-// $username= 'root';
-// $password= '';
-// $dbname= 'cart.ng';
+//Database Connection to shortleters
 
 $username= 'root';
 $password= '';

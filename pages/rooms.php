@@ -1563,7 +1563,7 @@
                                             <b>{{item.review}}</b>
                                             <div class="d-flex gap-3 align-items-center">
                                                 <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" :style="'width:' + percentage(item.rate_star)+'%'" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                                 <b><span>{{item.rate_star}}</span></b>
                                             </div>
