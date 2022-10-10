@@ -53,12 +53,7 @@
 
         // Check if the lastname field is passed
         if (!isset($_POST['username'])){
-            $errordesc = "Username must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required lastname field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
+            $username = "";
         }else{
             $username = cleanme($_POST['username']);
         }
@@ -95,7 +90,7 @@
         }
 
         // check if none of the field is empty
-        if ( empty($email) || empty($firstname) || empty($lastname) || empty($phone) || empty($password) || empty($username) ){
+        if ( empty($email) || empty($firstname) || empty($lastname) || empty($phone) || empty($password) ){
 
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
@@ -143,15 +138,18 @@
         }
 
         // check if username is unique
-        $usernameExist = checkIfExist($connect, "users" , "username" , $username);
-        if ( $usernameExist ){
-            $errordesc = "Username already exist";
-            $linktosolve = 'https://';
-            $hint = "username already in database";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
+        if($username){
+            $usernameExist = checkIfExist($connect, "users" , "username" , $username);
+            if ( $usernameExist ){
+                $errordesc = "Username already exist";
+                $linktosolve = 'https://';
+                $hint = "username already in database";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }
         }
+        
 
         // check if email is unique
         $emailExist = checkIfExist($connect, "users" , "email" , $email);

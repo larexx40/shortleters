@@ -406,9 +406,9 @@
 
             <main class="container justify-content-center row " style="margin: auto;margin-bottom: 70px;">
                 <div class="card col-md-7 p-0" style="max-width: 500px;margin-top:120px;">
-                    <b class="text-center pt-3"> Log in or sign up</b>
+                    <b class="text-center pt-3"> <a @click.prevent ='oldUser'> Log in or </a> <a @click.prevent='newUser'>Sign Up</a></b>
                     <hr>
-                    <form @submit.prevent='loginUser()' class="p-3 pt-3">
+                    <form v-if='loginField' @submit.prevent='loginUser()' class="p-3 pt-3">
                         <h3 class="mb-3"><b>Welcome to Airbnb.</b></h3>
                         <!-- Email input -->
                         <div v-if="show_phone" class="form-floating mb-3">
@@ -422,17 +422,17 @@
                         </div>
 
                         <div v-if="show_phone" class="form-floating mb-3">
-                            <input type="email" v-model='phone' class="form-control" id="floatingInput" placeholder="Enter yoour Phone number">
+                            <input type="email" v-model='phone' class="form-control"  placeholder="Enter yoour Phone number">
                             <label for="floatingInput">Phone Number</label>
                         </div>
                         <span v-if="show_phone" class="d-block mb-3"><small>We’ll call or text you to confirm your number. Standard message and data rates apply.</small> <a href="#!">Privacy Policy?</a></span>
 
                         <div v-if="show_email" class="form-floating mb-3">
-                            <input type="email" v-model='email' class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <input type="email" v-model='email' class="form-control"  placeholder="name@example.com">
                             <label for="floatingInput">Email address</label>
                         </div>
                         <div v-if="show_email" class="form-floating mb-3">
-                            <input type="password" v-model='password' class="form-control" id="floatingPassword" placeholder="Password">
+                            <input type="password" v-model='password' class="form-control"  placeholder="Password">
                             <label for="floatingPassword">Password</label>
                         </div>
                         <span v-if="show_email" class="d-block mb-3" data-bs-toggle="modal" data-bs-target="#forgotPassword"><small>Forgot Password? </small></span>
@@ -452,6 +452,58 @@
                                 <em class="bi bi-phone position-absolute"></em> <b>Continue with Phone.</b>
                             </button>
 
+                            <button type="button" class="btn position-relative text-center btn-floating mx-1">
+                                <em class="bi bi-facebook position-absolute" style="color: rgb(24, 119, 242);"></em> <b> Continue with Facebook.</b>
+                            </button>
+
+                            <button @click.prevent='googleOauth()' type="button" class="btn position-relative text-center btn-floating mx-1">
+                                <em class="bi bi-google position-absolute" style="color: red;"></em> <b> Continue with Google.</b>
+                            </button>
+
+                            <button type="button" class="btn position-relative text-center btn-floating mx-1">
+                                <em class="bi bi-twitter position-absolute" style="color: #37afd6;"></em> <b>Continue with Twitter.</b>
+                            </button>
+
+                        </div>
+                    </form>
+
+                    <form v-if='regField' @submit.prevent='registerUser()' class="p-3 pt-3">
+                        <h3 class="mb-3"><b>Welcome to Airbnb.</b></h3>
+                        <!-- Email input -->
+                        <div class="form-floating mb-3">
+                            <input type="email" v-model='email' class="form-control"  placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" v-model='phone' class="form-control"  placeholder="Enter yoour Phone number">
+                            <label for="floatingInput">Phone Number</label>
+                        </div>
+                        <span class="d-block mb-3"><small>We’ll call or text you to confirm your number. Standard message and data rates apply.</small> <a href="#!">Privacy Policy?</a></span>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" v-model='firstname' class="form-control" placeholder="name@example.com">
+                            <label for="floatingInput">Firstname</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" v-model='lastname' class="form-control"  placeholder="name@example.com">
+                            <label for="floatingInput">Lastname</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" v-model='password' class="form-control"  placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" v-model='password1' class="form-control" id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">Verify Password</label>
+                        </div>
+                        <!-- 2 column grid layout for inline styling -->
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-primary btn-block p-2 mb-2" style="width: calc(100% - 30px);">Continue</button>
+
+                        <div class="_16fq9mb">or</div>
+                        <!-- Register buttons -->
+                        <div class="social-links d-grid" style="gap:10px;">
                             <button type="button" class="btn position-relative text-center btn-floating mx-1">
                                 <em class="bi bi-facebook position-absolute" style="color: rgb(24, 119, 242);"></em> <b> Continue with Facebook.</b>
                             </button>
