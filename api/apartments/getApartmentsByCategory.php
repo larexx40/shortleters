@@ -61,7 +61,7 @@
 
         $status = 1;
             
-        // Get total number of complains in the system
+        // Get total number of apartment in this category in the system
         $query = "SELECT * FROM `apartments` WHERE `apartment_status` = ? AND `category_id` = ? ORDER BY feature DESC, id DESC";
         $gtTotalPgs = $connect->prepare($query);
         $gtTotalPgs->bind_param("s", $status, $category_id);
@@ -92,7 +92,7 @@
                 $no_of_pets = $row["no_of_pets"];
                 $no_of_floor = $row["no_of_floor"];
                 $listing_currency_id = $row["listing_currency_id"];
-                $listing_currency_name = getNameFromField($connect, "listing_currency", "currency_id", $listing_currency_id);
+                $listing_currency_name = getCurrencySymbol($connect, $listing_currency_id);
                 $available_floor = $row["available_floor"];
                 $safety_ids = ($row["safety_ids"])? explode(",", $row["safety_ids"]) : null;
                 $safety_id_name = [];
