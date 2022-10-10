@@ -157,6 +157,7 @@
                 $apartment_status_code = $row['apartment_status'];
                 $agent_id = $row['agent_id'];
                 $agent_fullname = ($agent_id)? getUserFullname($connect, $agent_id): null;
+                $agent_photo = ( $agent_id )? getUserProfilePic($connect, $agent_id): null;
                 // $space_type_name = getNameFromField($connect, "space_type", "space_id", $space_type_id);
                 $apartment_address = $row["apartment_address"];
                 $apartment_country = $row["apartment_country"];
@@ -167,6 +168,7 @@
                 $apartment_facilities = getAllApartmentFacilities($connect, $row['apartment_id']);
                 $apartment_house_rules = getAllApartmentHouseRule($connect, $row['apartment_id']);
                 $apartment_cancellation_policies = getAllApartmentCancellationPolicy($connect, $row['apartment_id']);
+                $apartment_reviews = getAllApartmentReviews($connect, $row['apartment_id']);
                 $apartment_lga = $row["apartment_lga"];
                 $location_sharing = ($row["location_sharing"] > 0)? "Sharing" : "Not Sharing";
                 $scenic_ids = ($row["scenic_ids"])? explode(",", $row["scenic_ids"]): null;
@@ -229,8 +231,10 @@
                     'apartment_status' => $apartment_status,
                     'apartment_house_rules' => $apartment_house_rules,
                     'apartment_cancellation_policies' => $apartment_cancellation_policies,
+                    "apartment_reviews" => ($apartment_reviews) ?  $apartment_reviews : null,
                     'agent_id' => $agent_id,
                     'agent_name' => $agent_fullname,
+                    'agent_photo' => ($agent_photo) ? $agent_photo: null,
                     'apartment_address' => $apartment_address,
                     'apartment_country' => $apartment_country,
                     'apartment_city' => $apartment_city,

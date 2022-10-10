@@ -521,7 +521,7 @@
                                     </li>
                                     <li class="filter-icon d-md-none" data-bs-target="#staticBackdropfilter" data-bs-toggle="modal">
                                         <button>
-                                <span><svg xmlns="http://www.w3.org/2000/svg" width="32" height=" preserveAspectRatio="
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="32" height="preserveAspectRatio="
                                         xMidYMid meet viewBox="0 0 21 21">
                                         <g transform="rotate(90 10.5 10.5)">
                                         <g fill="none" fill-rule="evenodd" stroke="currentColor"
@@ -1339,8 +1339,8 @@
                                     </ul>
                                 </div>
                                 <div class="_kt26s1">
-                                    <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/e51705cc-09a0-4834-ba66-a4ae7fa2dc73.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
-
+                                    <img v-if="apartment_details.agent_photo" class="_9ofhsl" :src="apartment_details.agent_photo" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
+                                    <img v-if="!apartment_details.agent_photo" class="_9ofhsl" src="../assets/images/profile photo/User-avatar.svg.png" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
                                 </div>
                             </div>
                             <hr>
@@ -1411,7 +1411,7 @@
                                     <div v-for="(item, index) in apartment_details.amenities_ids" class="_19xnuo97 col-sm-6">
                                         <div class="iikjzje d-flex gap-2">
                                             <div class="i4wvyiy i1fpqhzs dir dir-ltr">
-                                                <span><i class="fa-solid fa-wifi"></i></span>
+                                                <span><i class="fa fa-wifi"></i></span>
                                                 <!-- <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="m15.9999 20.33323c2.0250459 0 3.66667 1.6416241 3.66667 3.66667s-1.6416241 3.66667-3.66667 3.66667-3.66667-1.6416241-3.66667-3.66667 1.6416241-3.66667 3.66667-3.66667zm0 2c-.9204764 0-1.66667.7461936-1.66667 1.66667s.7461936 1.66667 1.66667 1.66667 1.66667-.7461936 1.66667-1.66667-.7461936-1.66667-1.66667-1.66667zm.0001-7.33323c3.5168171 0 6.5625093 2.0171251 8.0432368 4.9575354l-1.5143264 1.5127043c-1.0142061-2.615688-3.5549814-4.4702397-6.5289104-4.4702397s-5.5147043 1.8545517-6.52891042 4.4702397l-1.51382132-1.5137072c1.48091492-2.939866 4.52631444-4.9565325 8.04273174-4.9565325zm.0001-5.3332c4.9804693 0 9.3676401 2.540213 11.9365919 6.3957185l-1.4470949 1.4473863c-2.1746764-3.5072732-6.0593053-5.8431048-10.489497-5.8431048s-8.31482064 2.3358316-10.48949703 5.8431048l-1.44709488-1.4473863c2.56895177-3.8555055 6.95612261-6.3957185 11.93659191-6.3957185zm-.0002-5.3336c6.4510616 0 12.1766693 3.10603731 15.7629187 7.9042075l-1.4304978 1.4309874c-3.2086497-4.44342277-8.4328305-7.3351949-14.3324209-7.3351949-5.8991465 0-11.12298511 2.89133703-14.33169668 7.334192l-1.43047422-1.4309849c3.58629751-4.79760153 9.31155768-7.9032071 15.7621709-7.9032071z"></path></svg> -->
                                             </div>
                                             <div>{{item.name}}</div>
@@ -1455,8 +1455,10 @@
                                                                 <span class="_9qqdp4" style="font-size: 12px;">
                                                                     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;"><path d="M15.094 1.579l-4.124 8.885-9.86 1.27a1 1 0 0 0-.542 1.736l7.293 6.565-1.965 9.852a1 1 0 0 0 1.483 1.061L16 25.951l8.625 4.997a1 1 0 0 0 1.482-1.06l-1.965-9.853 7.293-6.565a1 1 0 0 0-.541-1.735l-9.86-1.271-4.127-8.885a1 1 0 0 0-1.814 0z" fill-rule="evenodd"></path></svg>
                                                                 </span>
-                                                            <span class="_12si43g" aria-hidden="true">5.0 ·</span>
-                                                            <button aria-label="Rated 5.0 out of 5 from 8 reviews." type="button" class="_u1thwpg"><span class="_1qx9l5ba">8 reviews</span></button></span>
+                                                            <span v-if="apartment_details.apartment_reviews" class="_12si43g" aria-hidden="true">{{apartment_details.apartment_reviews.average_review}} ·</span>
+                                                            <span v-if="!apartment_details.apartment_reviews" class="_12si43g" aria-hidden="true">No Review ·</span>
+                                                            <button v-if="apartment_details.apartment_reviews" aria-label="Rated 5.0 out of 5 from 8 reviews." type="button" class="_u1thwpg"><span class="_1qx9l5ba">{{apartment_details.apartment_reviews.num_of_reviews}} reviews</span></button></span>
+                                                            <button v-if="!apartment_details.apartment_reviews" aria-label="Rated 5.0 out of 5 from 8 reviews." type="button" class="_u1thwpg"><span class="_1qx9l5ba">0 reviews</span></button></span>
                                                         </div>
                                                     </div>
                                                     <div class="_p03egf">
@@ -1548,210 +1550,62 @@
                             </div>
                         </div>
                     </div>
-                    <section class="mt-5">
+                    <section v-if="apartment_details.apartment_reviews" class="mt-5">
                         <div class="dijfijm d-flex gap-2 mb-3">
                             <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M15.094 1.579l-4.124 8.885-9.86 1.27a1 1 0 0 0-.542 1.736l7.293 6.565-1.965 9.852a1 1 0 0 0 1.483 1.061L16 25.951l8.625 4.997a1 1 0 0 0 1.482-1.06l-1.965-9.853 7.293-6.565a1 1 0 0 0-.541-1.735l-9.86-1.271-4.127-8.885a1 1 0 0 0-1.814 0z" fill-rule="evenodd"></path></svg></span>
-                            <span class="nnn"><b>5.0 · 8 reviews</b></span>
+                            <span class="nnn"><b>{{apartment_details.apartment_reviews.average_review}} · {{apartment_details.apartment_reviews.num_of_reviews}} reviews</b></span>
                         </div>
                         <div class="d-block">
-                            <div class="mb-4">
+                            <div v-if="apartment_details.apartment_reviews.reviews" class="mb-4">
                                 <div class="row gy-2 gx-5">
-                                    <div class="col-sm-6">
+                                    <div v-for="(item, index) in apartment_details.apartment_reviews.reviews" class="col-sm-6">
                                         <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
+                                            <b>{{item.review}}</b>
                                             <div class="d-flex gap-3 align-items-center">
                                                 <div class="progress" style="width: 100px;height:5px">
                                                     <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
-                                                <b><span>5.0</span></b>
+                                                <b><span>{{item.rate_star}}</span></b>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="d-block mt-4">
                             <div class="mb-4 mt-4">
-                                <div class="row gy-2 gx-5">
-                                    <div class="col-md-6 mb-5">
+                                <div v-if="apartment_details.apartment_reviews" class="row gy-2 gx-5">
+                                    <div v-for="(item, index) in apartment_details.apartment_reviews.reviews" class="col-md-6 mb-5">
                                         <div class="r1rl3yjt">
                                             <div>
                                                 <div class="chnzxuf mb-3">
                                                     <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
+                                                        <h3 tabindex="-1" class="_14i3z6h">{{item.user_fullname}}</h3>
+                                                        <span style="color: #717171;font-weight:400;">{{item.created.split(" ")[0]}}</span>
                                                     </div>
                                                     <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
+                                                        <img v-if="item.photo" class="_9ofhsl" :src="item.photo" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
+                                                        <img v-if="!item.photo" class="_9ofhsl" src="../assets/images/profile photo/User-avatar.svg.png" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
+                                                <span class="ll4r2nl">{{item.review_details}}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
                                 </div>
                             </div>
                         </div>
                         <div class="stu4mdj dir dir-ltr">
-                            <button data-testid="pdp-show-all-reviews-button" aria-label="Show all 8 reviews, Opens modal dialog" type="button" class="b65jmrv v7aged4 dir dir-ltr">Show all 8 reviews</button></div>
+                            <button data-testid="pdp-show-all-reviews-button" :aria-label="'Show all ' + apartment_details.apartment_reviews.num_of_reviews +' reviews, Opens modal dialog'" type="button" class="b65jmrv v7aged4 dir dir-ltr">Show all {{apartment_details.apartment_reviews.num_of_reviews}} reviews</button></div>
                     </section>
                     <hr>
                     <section>
                         <div class="d-flex align-items-center gap-4">
                             <div class="_kt26s1">
-                                <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/e51705cc-09a0-4834-ba66-a4ae7fa2dc73.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
-
+                                <img v-if="apartment_details.agent_photo" class="_9ofhsl" :src="apartment_details.agent_photo" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
+                                <img v-if="!apartment_details.agent_photo" class="_9ofhsl" src="../assets/images/profile photo/User-avatar.svg.png" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
                             </div>
                             <div class="_tqmy57">
                                 <div class="_cv5qq4">
