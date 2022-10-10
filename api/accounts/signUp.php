@@ -16,19 +16,40 @@
 
     if ($method == 'POST') {
         // Check if the phone field is passed
-        if (!isset($_POST['phone'])){
-            $errordesc = "All fields must be passed";
-            $linktosolve = 'https://';
-            $hint = "Kindly pass the required phone field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }else{
+        if (isset($_POST['phone'])){
             $phoneno = cleanme($_POST['phone']);
-        }     
+            if (!validatePhone($phoneno)){
+                $errordesc = "Invalid phone number";
+                $linktosolve = 'https://';
+                $hint = "pass a valid phone number in the phone field in this register endpoint";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }  
+            $useridentity = $phoneno; 
+        }else{
+            $phoneno = '';
+        }    
+
+        if (isset($_POST['email'])){
+            //clean and validate
+            $email = cleanme($_POST['email']);
+            $validEmail = validateEmail($email);
+            if(!$validEmail){
+                $errordesc = "Invalid email";
+                $linktosolve = 'https://';
+                $hint = "pass a valid email in the email field in this register endpoint";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }
+            $useridentity = $email;
+        }else{
+            $email='';
+        }    
 
         // check if phoneno is empty
-        if ( empty($phoneno) ){
+        if ( empty($phoneno) && empty($email) ){
             $errordesc = "Insert all fields";
             $linktosolve = 'https://';
             $hint = "Kindly pass value to the email and password field in this register endpoint";
@@ -38,54 +59,33 @@
 
         }
 
-        // check if phone is a valid phone number
-        if (!validatePhone($phoneno)){
-            $errordesc = "Invalid phone number";
-            $linktosolve = 'https://';
-            $hint = "pass a valid phone number in the phone field in this register endpoint";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
-
-        // Check if the phone number is already in the database
-        $isPhoneExist = checkifFieldisUnique($connect, "users" , "phoneno" , $phoneno);
-        if ( $isPhoneExist ){
-            $errordesc = "phoneno already exist";
-            $linktosolve = 'https://';
-            $hint = ["User with phoneno already exist" ,"proceed to login", "register as a new user"];
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
-
         //set token expiretime
         $expiresin = "5";
         $created_time = new DateTimeImmutable();
         $expiretime = $created_time->modify("+$expiresin minutes")->getTimestamp();
 
         // generate token and insert it into the token table
-        $token = generateUniqueNumericKey($connect, "token", "token", 5);
+        $token = generateUniqueNumericKey($connect, "token", "token", 6);
         //verify type 1=email, 2= phone
         $verifyType = 2;
 
         $tokenQuery = 'INSERT INTO token (useridentity, token, time, verifytype) Values (?, ?, ?, ?)';
         $tokenStmt = $connect->prepare($tokenQuery);
-        $tokenStmt->bind_param("ssss",$phoneno, $token, $expiretime, $verifyType);
+        $tokenStmt->bind_param("ssss",$useridentity, $token, $expiretime, $verifyType);
         if ( $tokenStmt->execute() ){
-            $smstosend = "Your Shortleters verification code is $token"; 
-            $sent = sendUserSMS($phoneno, $smstosend);
-            if ($sent){
-                $text= "SignUp verification token sent";
-                $status = true;
-                $data = [];
-                $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
-                respondOK($successData);
-            }
+            // $smstosend = "Your Shortleters verification code is $token"; 
+            // $sent = sendUserSMS($phoneno, $smstosend);
+            // if ($sent){
+            //     $text= "SignUp verification token sent";
+            //     $status = true;
+            //     $data = [];
+            //     $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+            //     respondOK($successData);
+            // }
 
-            $text= "Token sent ";
+            $text= "Token sent, verify token ";
             $status = true;
-            $data = [];
+            $data = ['token'=>$token];
             $successData = returnSuccessArray($text, $method, $endpoint, $maindata, $data, $status);
             respondOK($successData);
         }else{

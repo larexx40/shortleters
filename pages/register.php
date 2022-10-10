@@ -546,9 +546,7 @@
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/jquery-3.6.1.min.js"></script>
     <script src="../assets/js/custom.js"></script>
-<<<<<<< HEAD
     <?php include "./includes/vue-script.php"; ?>
-=======
 
     <script>
         $(document).ready(function(){
@@ -591,7 +589,6 @@
 
         });        
     </script>
->>>>>>> 5d3c7f753100fd1bbaf80e14b5e02c1a6a665e62
 </body>
 
 </html>

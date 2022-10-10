@@ -114,7 +114,7 @@
                                 If this was you, you can safely disregard this email. If this wasn't you, please chat our support team immediately.";
 
                         //send use mail
-                        sendUserMail($subject, $receiver, $msg, $msg);
+                        //sendUserMail($subject, $receiver, $msg, $msg);
                         //get auth token
                         $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
                         $maindata=["authtoken"=> $token];
@@ -130,6 +130,7 @@
                         
 
                     } elseif ($status==2) {//suspended
+                        $banreason = "Account suspended";
                         $maindata['status']=$status;
                         $maindata=[$maindata];
                         $errordesc="Unauthorized";
@@ -141,6 +142,7 @@
                         $data=returnErrorArray($text,$method,$endpoint,$errordata,$maindata);
                         respondBadRequest($data);
                     } elseif ($status==3) {//frozen
+                        $banreason = "Account Frozen";
                         $maindata['status']=$statusis;
                         $maindata['frozedate']=$frotime;
                         $maindata=[$maindata];
@@ -153,13 +155,14 @@
                         $data=returnErrorArray($text,$method,$endpoint,$errordata,$maindata);
                         respondBadRequest($data);
                     } elseif ($status==0) {//banned
+                        $banreason = "Account Banned";
                         $maindata['status']=$status;
                         $maindata=[$maindata];
                         $errordesc="Unauthorized";
                         $linktosolve="htps://";
                         $hint=["Ensure acount is not banned on the app", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
                         $errordata=returnError7002($errordesc,$linktosolve,$hint);
-                        $text= "state banreason";
+                        $text= "Account Banned";
                         $method=getenv('REQUEST_METHOD');
                         $data=returnErrorArray($text,$method,$endpoint,$errordata,$maindata);
                         respondBadRequest($data);
