@@ -65,7 +65,9 @@ let userApp = Vue.createApp({
             active: true,
             transactions: null,
             password: null,
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjUxMzQ3MDYsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTEzNDcwNiwiZXhwIjoxNjY1MjA4NTA2LCJ1c2VydG9rZW4iOiJDTkdIZ3l4dHdzUHh4ZXg4QjhDcExlbTlxREppd3JXY0d5N0xlM0tsdXNlcnMifQ.bL-j7_nktia8W3CSXi0DWRgvfIUpDBGUP6f4a19yf2AwS9Ts3C5Ot7Hv4WZAZx4nEHh8n0lbWv5n7w563qm1Vg',
+            confirmpassword: null,
+            currentpassword: null,
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjUyMjQ5NzEsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTIyNDk3MSwiZXhwIjoxNjY1Mjk4NzcxLCJ1c2VydG9rZW4iOiJDTkdrTG1zNVF2N3dUdU1zWEhmbmNrYkg4UG1LcnRmc004cjBDazdsdXNlcnN1c2VyIn0.yRZ4KF2vvpN_4WRegCkamxMajCBV9pApKTVOtiIkKU5bE8yGB0Jko1PWs6L8bb0PGk9OYX-Om6y-ZiS46kLldw',
             confirmPassword: null,
             loading: false,
             search: null,
@@ -81,6 +83,7 @@ let userApp = Vue.createApp({
     },
     async created() {
         // this.getToken()
+
         //check page
         if(page =='personal-info.php'){
             await this.getUserDetails()
@@ -152,7 +155,7 @@ let userApp = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        window.location.href ="../login.php";
+                        // window.location.href ="../login.php";
                         return
                     }
     
@@ -179,13 +182,6 @@ let userApp = Vue.createApp({
         async updateUserInfo() {
             console.log(this.userDetails);
             console.log(this.authToken);
-        //   if ( !this.userDetails.Firstname || !this.userDetails.Lastname || !this.userDetails.phone || !this.userDetails.dob
-        //         || !this.userDetails.sex || !this.userDetails.State || !this.userDetails.Country ){
-        //            this.error = "Insert all Fields";
-        //            console.log(this.error);
-        //            new Toasteur().error(this.error);
-        //            return
-        //    }
 
             const data = new FormData();
             data.append('firstname', this.userDetails.Firstname);
@@ -246,6 +242,66 @@ let userApp = Vue.createApp({
            }
         },
         
+        //change user password
+        async changePassword(){
+            if (!this.currentpassword || !this.password || !this.confirmPassword){
+                new Toasteur().error("Kindly Insert all Fields");
+                return;
+            }
+            if (this.password !== this.confirmPassword){
+                new Toasteur().error("Password Does not Match");
+                return
+            }
+
+
+            const data = new FormData();
+            data.append('currentpassword', this.currentpassword);
+            data.append('newpassword', this.password);
+
+            const headers = {
+                "Authorization": `Bearer ${this.authToken}`,
+            }
+            
+            try {
+                this.loading = true
+                const response = await axios.post(`${this.baseurl}api/accounts/changepass.php`, data, {headers});
+                if ( response.data.status ){
+                    this.success = response.data.text;
+                    new Toasteur().success(this.success)
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+        },
         //end of lanre's method
         
         async nextPage(){
@@ -887,66 +943,7 @@ let userApp = Vue.createApp({
             
         },
         
-        async changePassword(){
-            if (!this.currentpassword || !this.password || !this.confirmPassword){
-                swal("Kindly Insert all Fields");
-                return;
-            }
-            if (this.password !== this.confirmPassword){
-                swal("Password Does not Match");
-                return
-            }
-
-
-            const data = new FormData();
-            data.append('currentpassword', this.currentpassword);
-            data.append('newpassword', this.password);
-
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-            
-            try {
-                this.loading = true
-                const response = await axios.post(`${this.baseurl}api/accounts/changepass.php`, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    swal(this.success);
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
+       
         async getAllAddress(){
 
             const headers = {
@@ -1012,7 +1009,7 @@ let userApp = Vue.createApp({
 
                 if (response.data.status) {
                     this.success = response.data.text;
-                    swal(this.success);
+                    new Toasteur().success(this.success)
                 }
             } catch (error) {
                 if (error.response.status == 400){
@@ -1061,7 +1058,7 @@ let userApp = Vue.createApp({
 
                 if (response.data.status) {
                     this.success = response.data.text;
-                    swal(this.success);
+                    new Toasteur().success(this.success)
                 }
             } catch (error) {
                 if (error.response.status == 400){
@@ -1117,7 +1114,7 @@ let userApp = Vue.createApp({
                 const response = await axios.post(`${this.baseurl}api/userwalletaddress/addWallet.php`, data , {headers} );
                 if ( response.data.status ){ 
                     this.success = response.data.text;
-                    swal(this.success);
+                    new Toasteur().success(this.success)
                 }          
             } catch (error) {
                 if (error.response.status == 400){
@@ -1489,7 +1486,7 @@ let userApp = Vue.createApp({
                 const response = await axios.post(`${this.baseurl}api/complains/addComplain.php`, data ,{headers} );
                 if ( response.data.status ){ 
                     this.success = response.data.text;
-                    swal(this.success);
+                    new Toasteur().success(this.success)
                     this.getAllComplain();
                 }          
             } catch (error) {

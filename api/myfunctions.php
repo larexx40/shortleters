@@ -61,6 +61,7 @@
 
     }
 
+
     // sets verify type due to user identity given
     function setVerifyType($user_identity){
         if ($user_identity == 'phone'){
@@ -70,6 +71,21 @@
         if ($user_identity == 'email'){
             return 1;
         }
+    }
+
+    function checkUserIdentity ($connect, $userIdentity){
+        $sqlQuery = 'SELECT id, userpubkey FROM users where email = ? OR phoneno = ?';
+        $stmt = $connect->prepare($sqlQuery);
+        $stmt->bind_param("ss", $userIdentity, $userIdentity);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0){  
+            $row = $result->fetch_assoc();
+            $userpubkey =$row['userpubkey'];
+            return $userpubkey;
+        }
+        return false;
     }
 
     function getIPAddress() {  
@@ -654,6 +670,8 @@
         }
         return false;
     }
+
+
 
     function checkIfIsAdmin($connect, $pubkey){
         $adminQuery = 'SELECT * FROM admin where userpubkey = ?';
@@ -1444,6 +1462,25 @@
 
         return false;
     }
+
+    function checkIsEmailorPhone($userIdentity){
+        //verifytype 1 = email, 2=phone
+        $phone =  (validatePhone($userIdentity)) ? 2 : null;
+        $email = (filter_var($userIdentity, FILTER_VALIDATE_EMAIL)) ? 1 : null;
+ 
+        if ($phone){
+         return $phone;
+        }
+ 
+        if ($email){
+         return $email;
+        }
+
+        if(!$phone && !$email){
+            return null;
+        }
+ 
+     }
 
 
 

@@ -15,31 +15,30 @@
     // check if the right request was sent
     if ($method == 'POST') {
 
-         // Get company private key
-         $query = 'SELECT * FROM apidatatable';
-         $stmt = $connect->prepare($query);
-         $stmt->execute();
-         $result = $stmt->get_result();
-         $row =  mysqli_fetch_assoc($result);
-         $companykey = $row['privatekey'];
-         $servername = $row['servername'];
-         $expiresIn = $row['tokenexpiremin'];
- 
-         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-         $user_pubkey = $decodedToken->usertoken;
- 
-         // send error if ur is not in the database
-         if (!getUserWithPubKey($connect, $user_pubkey)){
-             // send user not found response to the user
-             $errordesc =  "User not found";
-             $linktosolve = 'https://';
-             $hint = "User is not in the database ensure the user is in the database";
-             $errorData = returnError7003($errordesc, $linktosolve, $hint);
-             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-             respondBadRequest($data);
-         }
- 
-         $user_id = getUserWithPubKey($connect, $user_pubkey);
+        // Get company private key
+        $query = 'SELECT * FROM apidatatable';
+        $stmt = $connect->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row =  mysqli_fetch_assoc($result);
+        $companykey = $row['privatekey'];
+        $servername = $row['servername'];
+        $expiresIn = $row['tokenexpiremin'];
+
+        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        $user_pubkey = $decodedToken->usertoken;
+
+        // send error if ur is not in the database
+        $user_id = checkIfUser($connect, $user_pubkey);
+
+        if (!$user_id){
+            $errordesc = "Not Authorized";
+            $linktosolve = 'https://';
+            $hint = "Only User can use this endpoint";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);        
+        }
 
         // check if the current password field was passed 
         if ( !isset($_POST['currentpassword'] ) ) {
@@ -78,10 +77,22 @@
             respondBadRequest($data);
         }
 
-        // check for user details in the database
+        // Check if new password meets the standard
+        if ( !validatePassword($newpassword) ) {
+            // Send error response that password doesn't meet standard
+            $errordesc = "Password doesn't contain necessary characters";
+            $linktosolve = 'https://';
+            $hint = "Password field must contain uppercase, lowercase, a number, special characters and also must be more than 8 characters";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+
+        }
+
+        // fetch user details in the database
         $query = 'SELECT * FROM users WHERE id = ?';
         $stmt = $connect->prepare($query);
-        $stmt->bind_param("i", $user_id);
+        $stmt->bind_param("s", $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $num_row = $result->num_rows;
@@ -113,21 +124,7 @@
                     $errorData = returnError7003($errordesc, $linktosolve, $hint);
                     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
                     respondBadRequest($data);
-                }
-                
-                // Check if new password meets the standard
-                if ( !validatePassword($newpassword) ) {
-                    // Send error response that password doesn't meet standard
-                    $errordesc = "Password doesn't contain necessary characters";
-                    $linktosolve = 'https://';
-                    $hint = "Password field must contain uppercase, lowercase, a number, special characters and also must be more than 8 characters";
-                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                    respondBadRequest($data);
-
-                }
-
-                
+                }               
 
                 $hashNewPassword = Password_encrypt($newpassword);
 

@@ -13,6 +13,17 @@
     $maindata =[];
 
     if ($method == 'POST') {
+        //company details for auth token
+        $detailsID =1;
+        $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
+        $getCompanyDetails->bind_param('i', $detailsID);
+        $getCompanyDetails->execute();
+        $result = $getCompanyDetails->get_result();
+        $companyDetails = $result->fetch_assoc();
+        $companyprivateKey = $companyDetails['privatekey'];
+        $minutetoend = $companyDetails['tokenexpiremin'];
+        $serverName = $companyDetails['servername'];
+        
         // Check if the phone field is passed
         if (!isset($_POST['token'])){
             $errordesc = "Signup token must be passed";
@@ -52,37 +63,63 @@
             $currentTime = time();
 
             if($expiredAt >= $currentTime){
-                //valid token
-                $userpubkey = generateUserPubKey($connect, 'users');
-                if($verifytype == 1){
-                    $getToken->close();
-                    //email
-                    //create user with email only
-                    $sql = "INSERT INTO users (email, userpubkey) Values (?, ?)'";
-                    $stmt = $connect->prepare($sql);
-                    $stmt->bind_param('ss', $identity, $userpubkey);
-                    $createUser = $stmt->execute();
+                //valid toke, check if identity exist
+                if($verifytype ==1){
+                    $userPubKey = checkUserIdentity($connect, $identity);
                 }
-                if($verifytype == 2){
-                    $getToken->close();
-                    //phoneno
-                    //create user with phone number only
-                    $sql = "INSERT INTO users (phoneno, userpubkey) Values (?, ?)";
-                    $stmt = $connect->prepare($sql);
-                    $stmt->bind_param('ss', $identity, $userpubkey);
-                    $createUser = $stmt->execute();
+                if($verifytype ==2){
+                    $userPubKey = checkUserIdentity($connect, $identity);
                 }
-                if($createUser){
-                    $maindata = [];
-                    $errordesc = "";
+
+                if($userPubKey){
+                    //user exist, proceed to login and generate authtoken
+                    $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
+                    $maindata=["authtoken"=> $token];
+                    $errordesc = " ";
                     $linktosolve = "htps://";
                     $hint = [];
                     $errordata = [];
-                    $text = "User created";
+                    $text = "Login successful";
                     $status = true;
                     $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
                     respondOK($data);
+                    
+                }else{
+                    //created user
+                    $userpubkey = generateUserPubKey($connect, 'users');
+                    if($verifytype == 1){
+                        $getToken->close();
+                        //email
+                        //create user with email only
+                        $sql = "INSERT INTO users (email, userpubkey) Values (?, ?)'";
+                        $stmt = $connect->prepare($sql);
+                        $stmt->bind_param('ss', $identity, $userpubkey);
+                        $createUser = $stmt->execute();
+                    }
+                    if($verifytype == 2){
+                        $getToken->close();
+                        //phoneno
+                        //create user with phone number only
+                        $sql = "INSERT INTO users (phoneno, userpubkey) Values (?, ?)";
+                        $stmt = $connect->prepare($sql);
+                        $stmt->bind_param('ss', $identity, $userpubkey);
+                        $createUser = $stmt->execute();
+                    }
+                    if($createUser){
+                        $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
+                        $maindata=["authtoken"=> $token];
+                        $errordesc = "";
+                        $linktosolve = "htps://";
+                        $hint = [];
+                        $errordata = [];
+                        $text = "User created";
+                        $status = true;
+                        $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+                        respondOK($data);
+                    }
                 }
+
+                
 
             }else{
                 //token expired
