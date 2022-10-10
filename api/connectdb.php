@@ -6,16 +6,16 @@ date_default_timezone_set("Africa/Lagos");
 // $password= '';
 // $dbname= 'cart.ng';
 
-// $username= 'root';
-// $password= '';
-// $dbname= 'shortleters';
-// $connect= mysqli_connect('localhost',$username,$password,$dbname);
+$username= 'root';
+$password= '';
+$dbname= 'shortleters';
+$connect= mysqli_connect('localhost',$username,$password,$dbname);
 
-$host = "localhost";
-$user = "root";
-$password = "1234";
-$dbName = "shortleters";
-$connect= mysqli_connect($host,$user,$password,$dbName);
+// $host = "localhost";
+// $user = "root";
+// $password = "1234";
+// $dbName = "shortleters";
+// $connect= mysqli_connect($host,$user,$password,$dbName);
 
 
 $resetLink = "http://localhost/shortleters/pages/resetpassword.php";
