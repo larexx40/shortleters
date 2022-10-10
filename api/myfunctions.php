@@ -609,6 +609,27 @@
 
     }
 
+    function getUserProfilePic($connect, $userid){
+        $query = "SELECT `profile_pic` FROM `users` WHERE `id` = ?";
+        $getUser = $connect->prepare($query);
+        $getUser->bind_param("s", $userid);
+        $getUser->execute();
+        $result = $getUser->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $row = $result->fetch_assoc();
+
+            $photo = $row['profile_pic'];
+        }
+        else{
+            $photo = false;
+        }
+
+        return $photo;
+
+    }
+
     function getShopname($connect, $userid){
         $query = "SELECT * FROM `shops` WHERE `id` = ?";
         $getUser = $connect->prepare($query);
@@ -986,7 +1007,7 @@
     }
 
     function getAllApartmentReviews($connect, $data){
-        $query = "SELECT `canc_pol_id`, `canc_sub_pol_id` FROM `apartment_cancellation_policy` WHERE `apart_id` = ?";
+        $query = "SELECT `userid`, `review`, `review_details` ,`ratestar`, `created_at` FROM `apartment_review` WHERE `apartment_id` = ?";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("s", $data );
         $stmt->execute();
@@ -994,18 +1015,29 @@
         $num_row = $result->num_rows;
 
         if ($num_row > 0){
-            $policies = [];
+            $reviews = [];
+            $sum_review = 0;
             while ($row = $result->fetch_assoc()){
-                $canc_sub_pol_id = $row['canc_sub_pol_id'];
-                $canc_sub_pol_name = getNameFromField($connect, "sub_cancellation_policy", "sub_canc_pol_id", $canc_sub_pol_id);
-                $pol_id = $row['canc_pol_id'];
-                array_push( $policies ,array(
-                    "canc_sub_pol_id" => $canc_sub_pol_id,
-                    "canc_sub_pol_name" => ($canc_sub_pol_name)? $canc_sub_pol_name : null,
-                    "pol_id" => $pol_id
+                $user_id = $row['userid'];
+                $fullname = getUserFullname($connect, $user_id);
+                $user_photo = getUserProfilePic($connect, $user_id);
+                $review = $row['review'];
+                $review_details = $row['review_details'];
+                $ratestar = $row['ratestar'];
+                $sum_review = $sum_review + $ratestar;
+                $created = ($row['created_at']) ? gettheTimeAndDate(strtotime($row['created_at'])) : null;
+                array_push( $reviews ,array(
+                    "user_id" => $user_id,
+                    "user_fullname" => ($fullname)? $fullname : "",
+                    "photo" => ($user_photo)? $user_photo : null,
+                    "review" => $review,
+                    "review_details" => $review_details,
+                    "rate_star" => $ratestar. ".0",
+                    "created" => $created
                 ));
             }
-           return $policies;
+            $average = round( $sum_review / $num_row, 1);
+            return array("reviews" => $reviews, "average_review" => $average, "num_of_reviews" => $num_row );
         }
 
         return false;
