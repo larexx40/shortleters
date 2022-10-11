@@ -27,7 +27,7 @@ footer .mobile-view .each-link a {
 	color: var(--inactive-clr);
 }
 footer .mobile-view .each-link a.active {
-	color: var(--pink);
+	color: var(--primary);
 }
 footer .mobile-view .each-link a .svg-icon svg {
 	width: 1.7rem;
