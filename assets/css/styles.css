@@ -324,3 +324,9 @@
 .register .terms_condition .link{
     text-decoration: underline;
 }
+
+.navigation-wrapper .a3r5gds .active{
+    border-bottom: 5px solid #53B561;
+    border-radius: 6px;
+    padding: 0px 7px;
+}
