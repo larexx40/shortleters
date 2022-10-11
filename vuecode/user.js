@@ -148,7 +148,7 @@ let userApp = Vue.createApp({
             password: null,
             confirmpassword: null,
             currentpassword: null,
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjU0NzMzNTcsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTQ3MzM1NywiZXhwIjoxNjY1NTQ3MTU3LCJ1c2VydG9rZW4iOiIxMDU5NDMyMzM1NzA4ODY2Mjc0OTUifQ.mvMQV5BDPjaRXsYDkIviRKOREKCpt8Xnm290MZ1PhFc1FadO9WN4WlzCTWFAFV4NLFi9P3_UH8xFgPp7Bad8MQ',
+            authToken: null,
             confirmPassword: null,
             loading: false,
             search: null,
@@ -164,26 +164,24 @@ let userApp = Vue.createApp({
         }
     },
     async created() {
-        // this.getToken()
-
         //check page
-        if(page =='property-type-group.php'){
+        if(page === 'property-type-group.php'){
             await this.getAllBuildingType()
         }
-        if(page =='property-type.php'){
+        if(page === 'property-type.php'){
             let buildingTypeid = (localStorage.getItem("buildingTypeid")) ? localStorage.getItem("buildingTypeid"): null;
             if(!buildingTypeid){
                 window.location.href="./property-type-group.php";
             }
             await this.getAllSubBuildingTypeByBuildingTypeid(buildingTypeid,1);
         }
-        if(page =='privacy-type.php'){
+        if(page === 'privacy-type.php'){
             await this.getAllSpaceType()
         }
-        if(page =='amenities.php'){
+        if(page === 'amenities.php'){
             await this.getAllAmenities()
         }
-        if(page =='description.php'){
+        if(page === 'description.php'){
             await this.getAllHighlight()
         }
 
@@ -209,37 +207,6 @@ let userApp = Vue.createApp({
                 if ( response.data.status ){
                     this.userDetails = response.data.data
                     this.ref_link = `${this.baseurl}register.php?code=${this.userDetails.refcode}`;
-
-                    // if (location === "index.php"){
-                    //     this.getUserAddress();
-                    //     this.getUserTotalBalance();
-                    //     this.getDefaultAddress();
-                    //     this.getAllLogistics();
-                            
-                    // }
-
-                    if (location === "activities.php"){
-                        this.getAllActivity();
-                    }
-
-                    if (location === "complain.php"){
-                        this.getAllComplain();
-                    }
-
-
-                    if (location === "notifications.php"){
-                        this.getAllUserNotification();
-                    } 
-                    
-                    if (location === "wallet.php"){
-                        await this.getAllTransactions();
-                        await this.getAllWallets();
-                    }
-
-                    if (location === 'address.php'){
-                        await this.getUserAddress();
-                    }
-                    
                 }          
             } catch (error) {
                 if (error.response){
@@ -1150,7 +1117,7 @@ let userApp = Vue.createApp({
                 for( var i=0; i < this.bookings.length; i++ ){
                     availability = dateCheck(this.bookings[i].preferred_check_in, this.bookings[i].preferred_check_in, this.selected_check_in)
 
-                    if ( !availability && ( this.bookings[i].paid_code  > 0 ) ){
+                    if ( availability && ( this.bookings[i].paid_code  > 0 ) ){
                         this.error = `Apartment not available for this period`
                         new Toasteur().error(this.error);
                         return;
@@ -1161,20 +1128,13 @@ let userApp = Vue.createApp({
             }
         },
         async getAllApartments(load = 1){
+            console.log(this.per_page);
             let search = (this.search) ? `&search=${this.search}` : ""; 
             let sort = (this.sort !== null) ? `&sort=1&sortstatus=${this.sort}` : "";
             let page = ( this.currentPage )? this.currentPage : 1;
             let per_page = ( this.per_page ) ? this.per_page : 5;
 
-            if (this.sorttype && this.sort){
-                 type = `&sorttype=${this.sorttype}`;
-            } 
-            if ( this.sorttype && !this.sor ){
-                type = `&sort=1&sorttype=${this.sorttype}`;
-            }
-            if (!this.sorttype){
-                type = "";
-            }
+            
             
             const headers = {
                 // "Authorization": `Bearer ${this.accessToken}`,
@@ -1298,27 +1258,12 @@ let userApp = Vue.createApp({
             return (100 * rate) / 5;
         }, 
         async getAllCategory(load = 1){
-            // let search = (this.search) ? `&search=${this.search}` : ""; 
-            // let sort = (this.sort !== null) ? `&sort=1&sortstatus=${this.sort}` : "";
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let per_page = ( this.per_page ) ? this.per_page : 5;
-
-            // if (this.sorttype && this.sort){
-            //      type = `&sorttype=${this.sorttype}`;
-            // } 
-            // if ( this.sorttype && !this.sor ){
-            //     type = `&sort=1&sorttype=${this.sorttype}`;
-            // }
-            // if (!this.sorttype){
-            //     type = "";
-            // }
-            
             const headers = {
                 // "Authorization": `Bearer ${this.accessToken}`,
                 "Content-type": "application/json"
             }
 
-            let url = `${this.baseurl}api/apartments/categories/getAllApartmentCategory.php?page=${page}&per_page=${per_page}`;
+            let url = `${this.baseurl}api/apartments/categories/getAllApartmentCategory.php`;
 
             this.total_page = null
             try {
@@ -1327,13 +1272,8 @@ let userApp = Vue.createApp({
                 }
                 const response = await axios.get(url, {headers} );
                 if ( response.data.status ){
-                    if (response.data.data.page){
-                        this.apartment_category = response.data.data.apartmentCategories;
-                        this.currentPage = response.data.data.page;
-                        this.total_page = response.data.data.totalPage;
-                        this.per_page = response.data.data.per_page;
-                        this.totalData = response.data.data.total_data;   
-                    }
+                    this.apartment_category = response.data.data.apartmentCategories;   
+                    console.log(this.apartment_category);
                 }else{
                     this.apartment_category = null
                 }          
@@ -1373,7 +1313,6 @@ let userApp = Vue.createApp({
         },
         async getApartmentsInaCategory(cat_id){
             if ( page === "index.php" || page === "" ){
-                console.log(cat_id);
                 await this.getApartmentByCategory(cat_id, 5);
             }else{
                 window.localStorage.setItem("cat_id", cat_id);
@@ -2310,17 +2249,20 @@ let userApp = Vue.createApp({
         }
     },
     async mounted(){
-        // this.getToken();
-        await this.getUserDetails();
+        this.getToken();
+        if ( this.authToken ){
+            await this.getUserDetails();
+        }
         // this.getDefaultAddress();
         await this.getAllCategory();
         if ( page === "index.php" || page === "" ){
-            await this.getAllApartments();
             let cat_id = window.localStorage.getItem("cat_id");
             if ( cat_id ){
                 await this.getApartmentByCategory(cat_id, 4);
                 window.localStorage.removeItem("cat_id");
+                return;
             }
+            await this.getAllApartments();
         }
         if ( page === "rooms.php" ){
             await this.getApartmentDetails();

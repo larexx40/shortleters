@@ -16,6 +16,12 @@
 
 
     if($method =='GET'){
+
+        if (isset($_GET['admin'])) {
+            $admin = cleanme($_GET['admin']);
+        } else {
+            $admin = null;
+        }
         
         if (isset($_GET['search'])) {
             $search = cleanme($_GET['search']);
@@ -56,8 +62,8 @@
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("ss", $searchParam, $status);
                 $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
+                $user_result = $stmt->get_result();
+                $total_numRow = $user_result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
                 //paginate the fetch data
@@ -73,8 +79,8 @@
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->bind_param("s", $status);
                 $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
+                $user_result = $stmt->get_result();
+                $total_numRow = $user_result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
                 $sqlQuery = "SELECT * FROM `apartment_category` WHERE status = ? ORDER BY id DESC LIMIT ?,?";
@@ -92,8 +98,8 @@
                 $stmt= $connect->prepare($searchQuery);
                 $stmt->bind_param("s", $searchParam);
                 $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
+                $user_result = $stmt->get_result();
+                $total_numRow = $user_result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
                 //paginate the fetch data
@@ -108,8 +114,8 @@
                 $sqlQuery = "SELECT * FROM `apartment_category` ORDER BY id DESC";
                 $stmt= $connect->prepare($sqlQuery);
                 $stmt->execute();
-                $result= $stmt->get_result();
-                $total_numRow = $result->num_rows;
+                $user_result = $stmt->get_result();
+                $total_numRow = $user_result->num_rows;
                 $pages = ceil($total_numRow / $noPerPage);
     
                 $sqlQuery = "SELECT * FROM `apartment_category` ORDER BY id DESC LIMIT ?,?";
@@ -137,50 +143,94 @@
         }
         $stmt->close();
         //return fetched data as array
-        if($numRow > 0){
-            //`sendfrom`, `username`, `status`, `name`, `password`
-            $allResponse = [];
-            while($row = $result->fetch_assoc()){
-                $id = $row['id'];
-                $category_id = $row['category_id'];
-                $name = $row['name'];
-                $icon = $row['icon'];
-                $statusCode =$row['status'];
-                $status =($statusCode >= 1)? "Active": "Inactive";
-                $noOfApartment = checkifFieldExist($connect, "apartments", "category_id", $category_id);
-                $noOfApartment = ($noOfApartment)? $noOfApartment: 0;
-                array_push($allResponse, array(
-                    "id"=>$id, 'category_id'=>$category_id, 'name'=>$name, 'icon'=>$icon, 'noOfApartment'=>$noOfApartment, 'status'=>$status, 'statusCode'=>$statusCode
-                ));
+        if ( $admin ){
+            if($numRow > 0){
+                //`sendfrom`, `username`, `status`, `name`, `password`
+                $allResponse = [];
+                while($row = $result->fetch_assoc()){
+                    $id = $row['id'];
+                    $category_id = $row['category_id'];
+                    $name = $row['name'];
+                    $icon = $row['icon'];
+                    $statusCode =$row['status'];
+                    $status =($statusCode >= 1)? "Active": "Inactive";
+                    $noOfApartment = checkifFieldExist($connect, "apartments", "category_id", $category_id);
+                    $noOfApartment = ($noOfApartment)? $noOfApartment: 0;
+                    array_push($allResponse, array(
+                        "id"=>$id, 'category_id'=>$category_id, 'name'=>$name, 'icon'=>$icon, 'noOfApartment'=>$noOfApartment, 'status'=>$status, 'statusCode'=>$statusCode
+                    ));
+                }
+                $maindata = [
+                    'page' => $page_no,
+                    'per_page' => $noPerPage,
+                    'total_data' => $total_numRow,
+                    'totalPage' => $pages,
+                    'apartmentCategories'=> $allResponse
+                ];
+                $errordesc = " ";
+                $linktosolve = "htps://";
+                $hint = [];
+                $errordata = [];
+                $text = "Data found";
+                $method = getenv('REQUEST_METHOD');
+                $status = true;
+                $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+                respondOK($data);
+            }else{
+                //not found
+                $errordesc = " ";
+                $linktosolve = "htps://";
+                $hint = [];
+                $errordata = [];
+                $text = "No Record Found";
+                $method = getenv('REQUEST_METHOD');
+                $status = false;
+                $data = returnSuccessArray($text, $method, $endpoint, $errordata, null, $status);
+                respondOK($data);
             }
-            $maindata = [
-                'page' => $page_no,
-                'per_page' => $noPerPage,
-                'total_data' => $total_numRow,
-                'totalPage' => $pages,
-                'apartmentCategories'=> $allResponse
-            ];
-            $errordesc = " ";
-            $linktosolve = "htps://";
-            $hint = [];
-            $errordata = [];
-            $text = "Data found";
-            $method = getenv('REQUEST_METHOD');
-            $status = true;
-            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-            respondOK($data);
         }else{
-            //not found
-            $errordesc = " ";
-            $linktosolve = "htps://";
-            $hint = [];
-            $errordata = [];
-            $text = "No Record Found";
-            $method = getenv('REQUEST_METHOD');
-            $status = false;
-            $data = returnSuccessArray($text, $method, $endpoint, $errordata, null, $status);
-            respondOK($data);
+            if($total_numRow > 0){
+                //`sendfrom`, `username`, `status`, `name`, `password`
+                $allResponse = [];
+                while($row = $user_result->fetch_assoc()){
+                    $id = $row['id'];
+                    $category_id = $row['category_id'];
+                    $name = $row['name'];
+                    $icon = $row['icon'];
+                    $statusCode =$row['status'];
+                    $status =($statusCode >= 1)? "Active": "Inactive";
+                    $noOfApartment = checkifFieldExist($connect, "apartments", "category_id", $category_id);
+                    $noOfApartment = ($noOfApartment)? $noOfApartment: 0;
+                    array_push($allResponse, array(
+                        "id"=>$id, 'category_id'=>$category_id, 'name'=>$name, 'icon'=>$icon, 'noOfApartment'=>$noOfApartment, 'status'=>$status, 'statusCode'=>$statusCode
+                    ));
+                }
+                $maindata = [
+                    'apartmentCategories'=> $allResponse
+                ];
+                $errordesc = " ";
+                $linktosolve = "htps://";
+                $hint = [];
+                $errordata = [];
+                $text = "Data found";
+                $method = getenv('REQUEST_METHOD');
+                $status = true;
+                $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+                respondOK($data);
+            }else{
+                //not found
+                $errordesc = " ";
+                $linktosolve = "htps://";
+                $hint = [];
+                $errordata = [];
+                $text = "No Record Found";
+                $method = getenv('REQUEST_METHOD');
+                $status = false;
+                $data = returnSuccessArray($text, $method, $endpoint, $errordata, null, $status);
+                respondOK($data);
+            }
         }
+        
 
 
     }else {
