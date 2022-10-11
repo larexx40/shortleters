@@ -17,104 +17,79 @@ $maindata=[];
 
 //allow only post method
 if (getenv('REQUEST_METHOD') === 'GET'){
-  //get companydetalis and servername for auth token
-  $detailsID =1;
-  $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
-  $getCompanyDetails->bind_param('i', $detailsID);
-  $getCompanyDetails->execute();
-  $result = $getCompanyDetails->get_result();
-  $companyDetails = $result->fetch_assoc();
-  $companyprivateKey = $companyDetails['privatekey'];
-  $minutetoend = $companyDetails['tokenexpiremin'];
-  $serverName = $companyDetails['servername'];
+    //get companydetalis and servername for auth token
+    $detailsID =1;
+    $getCompanyDetails = $connect->prepare("SELECT * FROM apidatatable WHERE id=?");
+    $getCompanyDetails->bind_param('i', $detailsID);
+    $getCompanyDetails->execute();
+    $result = $getCompanyDetails->get_result();
+    $companyDetails = $result->fetch_assoc();
+    $companyprivateKey = $companyDetails['privatekey'];
+    $minutetoend = $companyDetails['tokenexpiremin'];
+    $serverName = $companyDetails['servername'];
 
-  // init configuration
-  $googleOauthKey = getActiveGoogleOauthDetails($connect);
-  $clientID = $googleOauthKey['clientID'];
-  $clientSecret = $googleOauthKey['clientSecret'];
-  $redirectUri = $googleOauthKey['redirectUri'];
-    
-  // create Client Request to access Google API
-  // $client = new Google_Client();
-  $client = new Google\Client();
-  $client->setClientId($clientID);
-  $client->setClientSecret($clientSecret);
-  $client->setRedirectUri($redirectUri);
-  $client->addScope("email");
-  $client->addScope("profile");
-  $loginUrl = $client->createAuthUrl();
-    
-  // authenticate code from Google OAuth Flow
-  if (isset($_GET['code'])) {
-    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-    $client->setAccessToken($token['access_token']);
-    
-    // get profile info
-  //   $google_oauth = new Google_Service_Oauth2($client);
-    $google_oauth = new Google\Service\Oauth2($client);
+    // init configuration
+    $googleOauthKey = getActiveGoogleOauthDetails($connect);
+    $clientID = $googleOauthKey['clientID'];
+    $clientSecret = $googleOauthKey['clientSecret'];
+    $redirectUri = $googleOauthKey['redirectUri'];
 
-    //get user info from google
-    $google_account_info = $google_oauth->userinfo->get();
-    $user = googleLogin($connect, $google_account_info);
-    //return user pub key
-    if($user){
-      // header('location: ../../user/index.php');
-      $googleStatus=1;
-      $userid = $google_account_info->id;
-      $email =  $google_account_info->email;
-      $firstname = $google_account_info->given_name;
-      $surname =  $google_account_info->family_name;
-      $gender = $google_account_info->gender;
-      $name =  $google_account_info->name;
-      $token = getTokenToSendAPI($userid,$companyprivateKey,$minutetoend,$serverName);
-      //proceed to index page
-      $maindata = [
-        'googleStatus'=>$googleStatus,
-        'redirectLink'=>'../user/index.php',
-        'userInfo'=>$google_account_info,
-        'token'=>$token,
-      ];
-      $errordesc = "";
-      $linktosolve = "htps://";
-      $hint = [];
-      $errordata = [];
-      $text = "User Details Fetched ";
-      $status = true;
-      $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-      respondOK($data);
+    // create Client Request to access Google API
+    // $client = new Google_Client();
+    $client = new Google\Client();
+    $client->setClientId($clientID);
+    $client->setClientSecret($clientSecret);
+    $client->setRedirectUri($redirectUri);
+    $client->addScope("email");
+    $client->addScope("profile");
+    $loginUrl = $client->createAuthUrl();
+    
+    // authenticate code from Google OAuth Flow
+    if(isset($_GET['code'])){ 
+        $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+        $client->setAccessToken($token['access_token']);
+
+        $google_oauth = new Google\Service\Oauth2($client);
+
+        //get user info from google
+        $google_account_info = $google_oauth->userinfo->get();
+        //create user and login
+        $userPubKey = googleLogin($connect, $google_account_info);
+        if($userPubKey){
+            $token = getTokenToSendAPI($userPubKey,$companyprivateKey,$minutetoend,$serverName);
+            $maindata=["authtoken"=> $token];
+            $errordesc = " ";
+            $linktosolve = "htps://";
+            $hint = [];
+            $errordata = [];
+            $text = "Token valid, Login successful";
+            $status = true;
+            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+            respondOK($data);
+        }
+
     }else{
-      //go to error
-      header('Location: ../user/errorpage.php');
-      exit();
+        //generate google URI to sign in
+        $redirectLink = $client->createAuthUrl();
+        $maindata=['googleLink'=>$redirectLink];
+        $linktosolve = "htps://";
+        $hint = [];
+        $errordata = [];
+        $text = "Redirect to google login page";
+        $status = true;
+        $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+        respondOK($data);
     }
-    
-  } else {
-    $redirectLink = $client->createAuthUrl();
-    // header("Location: $redirectLink");
-    $googleStatus=2;
-    $maindata = [
-      'googleStatus'=>$googleStatus,      
-      'redirectLink'=>$redirectLink,
-    ];
-    $errordesc = "";
-    $linktosolve = "htps://";
-    $hint = [];
-    $errordata = [];
-    $text = "User Details Fetched redirectlink";
-    $status = true;
-    $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-    respondOK($data);
-  }
 
 }else{
-  // method not allowed
-  $errordesc="Method not allowed";
-  $linktosolve="htps://";
-  $hint=["Ensure to use the method stated in the documentation."];
-  $errordata=returnError7003($errordesc,$linktosolve,$hint);
-  $text="Method used not allowed";
-  $method=getenv('REQUEST_METHOD');
-  $data=returnErrorArray($text,$method,$endpoint,$errordata);
-  respondMethodNotAlowed($data);
+    // method not allowed
+    $errordesc="Method not allowed";
+    $linktosolve="htps://";
+    $hint=["Ensure to use the method stated in the documentation."];
+    $errordata=returnError7003($errordesc,$linktosolve,$hint);
+    $text="Method used not allowed";
+    $method=getenv('REQUEST_METHOD');
+    $data=returnErrorArray($text,$method,$endpoint,$errordata);
+    respondMethodNotAlowed($data);
 }
 ?>

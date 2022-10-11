@@ -80,7 +80,7 @@
                     <div class="content" >
                         <div class="side1" >
                             <p style="font-size: 12px;line-height: 16px;margin-bottom: 10px;" >They earn</p>
-                            <h3 style="" >
+                            <h3 >
                                 <span style="font-size:32px;line-height:36px;font-weight:bold" >$81 </span>
                                 <span class="font-size:18px;line-height:24px;font-weight:400" >/ night</span>
                             </h3>
@@ -92,7 +92,7 @@
                     <div class="content" >
                         <div class="side1" >
                             <p style="font-size: 12px;line-height: 16px;margin-bottom: 10px;" >They are booked</p>
-                            <h3 style="" >
+                            <h3 >
                                 <span style="font-size:32px;line-height:36px;font-weight:bold" >12</span>
                                 <span class="font-size:18px;line-height:24px;font-weight:400" > nights / month</span>
                             </h3>

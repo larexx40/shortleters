@@ -521,7 +521,7 @@
                                     </li>
                                     <li class="filter-icon d-md-none" data-bs-target="#staticBackdropfilter" data-bs-toggle="modal">
                                         <button>
-                                <span><svg xmlns="http://www.w3.org/2000/svg" width="32" height=" preserveAspectRatio="
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="32" height="preserveAspectRatio="
                                         xMidYMid meet viewBox="0 0 21 21">
                                         <g transform="rotate(90 10.5 10.5)">
                                         <g fill="none" fill-rule="evenodd" stroke="currentColor"
@@ -576,97 +576,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="sub-header">
-                    <div class="sub-header-inner">
-                        <div class="container p-0">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="navigation-wrapper">
-                                    <button>
-                                        <div >
-                                            <span class="c1m2z0bj c1w8ohg7">
-                                                <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24">
-                                                <div>
-                                                    <span >Islands</span>
-                                                </div>
-                                            </span>
-                                        </div>
-                                    </button>
-                                    <button>
-                                            <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/8b44f770-7156-4c7b-b4d3-d92549c8652f.jpg" alt="" width="24" height="24"><div ><span >Arctic</span></div>
-                                            </span>
-                                    </div>
-                                    </button>
-                                    <button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/50861fca-582c-4bcc-89d3-857fb7ca6528.jpg" alt="" width="24" height="24"><div ><span >Design</span></div></span></div></button>
-                                    <button>
-                                        <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/bcd1adc0-5cee-4d7a-85ec-f6730b0f8d0c.jpg" alt="" width="24" height="24"><div ><span >Beachfront</span></div>
-                                        </span>
-                                </div>
-                                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/ee9e2a40-ffac-4db9-9080-b351efc3cfc4.jpg" alt="" width="24" height="24"><div ><span >Tropical</span></div></span></div></button>
-                                    <button>
-                                    <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg" alt="" width="24" height="24"><div ><span >OMG!</span></div>
-                                    </span>
-                            </div>
-                            </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/10ce1091-c854-40f3-a2fb-defc2995bcaf.jpg" alt="" width="24" height="24"><div ><span >Beach</span></div></span></div></button>
-                                    <button>
-                                <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/3fb523a0-b622-4368-8142-b5e03df7549b.jpg" alt="" width="24" height="24"><div ><span >Amazing pools</span></div>
-                                </span>
-                        </div>
-                        </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/5ed8f7c7-2e1f-43a8-9a39-4edfc81a3325.jpg" alt="" width="24" height="24"><div ><span >Bed &amp; breakfasts</span></div></span></div></button>
-                                    <button>
-                            <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/957f8022-dfd7-426c-99fd-77ed792f6d7a.jpg" alt="" width="24" height="24"><div ><span >Surfing</span></div>
-                            </span>
-                    </div>
-                    </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/52c8d856-33d0-445a-a040-a162374de100.jpg" alt="" width="24" height="24"><div ><span >Shared homes</span></div></span></div></button>
-                                    <button>
-                        <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/4221e293-4770-4ea8-a4fa-9972158d4004.jpg" alt="" width="24" height="24"><div ><span >Caves</span></div>
-                        </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/c0a24c04-ce1f-490c-833f-987613930eca.jpg" alt="" width="24" height="24"><div ><span >National parks</span></div></span></div></button>
-                                    <button>
-                    <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/6ad4bd95-f086-437d-97e3-14d12155ddfe.jpg" alt="" width="24" height="24"><div ><span >Countryside</span></div>
-                    </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/d7445031-62c4-46d0-91c3-4f29f9790f7a.jpg" alt="" width="24" height="24"><div ><span >Earth homes</span></div></span></div></button>
-                                    <button>
-                <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg" alt="" width="24" height="24"><div ><span >Cabins</span></div>
-                </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/c8e2ed05-c666-47b6-99fc-4cb6edcde6b4.jpg" alt="" width="24" height="24"><div ><span >Luxe</span></div></span></div></button>
-                                    <button>
-                <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/a4634ca6-1407-4864-ab97-6e141967d782.jpg" alt="" width="24" height="24"><div ><span >Lake</span></div>
-                </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/35919456-df89-4024-ad50-5fcb7a472df9.jpg" alt="" width="24" height="24"><div ><span >Tiny homes</span></div></span></div></button>
-                                    <button>
-                    <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/1b6a8b70-a3b6-48b5-88e1-2243d9172c06.jpg" alt="" width="24" height="24"><div ><span >Castles</span></div>
-                    </span>
-                    </div>
-                    </button>
-
-                                </div>
-                                <div class="filter-btn d-none d-md-inline-flex">
-                                    <!-- triggers a modal -->
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropfilter">
-                            <span>
-                                <span><svg xmlns="http://www.w3.org/2000/svg" width="32" height="preserveAspectRatio="xMidYMid meet viewBox="0 0 21 21">
-                                        <g transform="rotate(90 10.5 10.5)">
-                                        <g fill="none" fill-rule="evenodd" stroke="currentColor"
-                                            stroke-linecap="rou    stroke-linejoin=" round>
-                                            <path d="M14.5 9V2.5m0 16V14" />
-                                            <circle cx="14.5" cy="11.5" r="2.5" />
-                                            <path d="M6.5 5V2.5m0 16V10" />
-                                            <circle cx="6.5" cy="7.5" r="2.5" />
-                                        </g>
-                                        </g>
-                                    </svg></span>
-                                <span>Filters</span>
-                            </span>
-                            </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php include "./includes/category.php"; ?>
             </header>
 
             <!-- TODO <======== FILTER MODAL START =========> -->
@@ -1360,10 +1270,10 @@
             <!-- <======= SEARCH BAR MODAL ENDS ========> -->
 
 
-            <main>
+            <main v-if="apartment_details">
                 <div class="container" style="margin-top: 110px;">
                     <span class="_1n81at5">
-                    <h1  class="_fecoyn4">Charming Cottage</h1>
+                    <h1  class="_fecoyn4">{{apartment_details.title}}</h1>
                 </span>
                     <div class="_1qdp1ym">
                         <div class="_dm2bj1"><span class="_1jvg42j"><span class="_hyestb"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 14px; width: 14px; fill: currentcolor;"><path d="M15.094 1.579l-4.124 8.885-9.86 1.27a1 1 0 0 0-.542 1.736l7.293 6.565-1.965 9.852a1 1 0 0 0 1.483 1.061L16 25.951l8.625 4.997a1 1 0 0 0 1.482-1.06l-1.965-9.853 7.293-6.565a1 1 0 0 0-.541-1.735l-9.86-1.271-4.127-8.885a1 1 0 0 0-1.814 0z" fill-rule="evenodd"></path></svg></span>
@@ -1385,33 +1295,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row p-0 mt-4">
+                    <div v-if="apartment_details.images" class="row p-0 mt-4">
                         <div class="col-md-6">
                             <div class="full-height">
-                                <img class="_6tbg2q" alt="" src="https://a0.muscache.com/im/pictures/miso/Hosting-54299560/original/4ee10ddd-a741-4cd1-bf5d-e5955f6072ff.jpeg?im_w=720" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
+                                <img class="_6tbg2q" alt="Apartment Cover Photo" :src="apartment_details.images[0].image" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="full-height row">
-                                <div class="col-md-6 mb-3">
+                            <div v-if="apartment_details.images.length >= 5" class="full-height row">
+                                <div v-for="index in 4" class="col-md-6 mb-3">
                                     <div class="half-height">
-                                        <img class="_6tbg2q" alt="" src="https://a0.muscache.com/im/pictures/miso/Hosting-54299560/original/4ee10ddd-a741-4cd1-bf5d-e5955f6072ff.jpeg?im_w=720" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
+                                        <img class="_6tbg2q" alt="" :src="apartment_details.images[index].image" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
+                            </div>
+
+                            <div v-if="apartment_details.images.length < 5" class="full-height row">
+                                <div v-for="index in apartment_details.images.length - 1" class="col-md-6 mb-3">
                                     <div class="half-height">
-                                        <img class="_6tbg2q" alt="" src="https://a0.muscache.com/im/pictures/miso/Hosting-54299560/original/4ee10ddd-a741-4cd1-bf5d-e5955f6072ff.jpeg?im_w=720" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mt-3">
-                                    <div class="half-height">
-                                        <img class="_6tbg2q" alt="" src="https://a0.muscache.com/im/pictures/miso/Hosting-54299560/original/4ee10ddd-a741-4cd1-bf5d-e5955f6072ff.jpeg?im_w=720" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mt-3">
-                                    <div class="half-height position-relative">
-                                        <img class="_6tbg2q" alt="" src="https://a0.muscache.com/im/pictures/miso/Hosting-54299560/original/4ee10ddd-a741-4cd1-bf5d-e5955f6072ff.jpeg?im_w=720" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
-                                        <button class="btn _1ju7xj0j" data-bs-toggle="modal" data-bs-target="#exampleModal">All Photos</button>
+                                        <img class="_6tbg2q" alt="" :src="apartment_details.images[index].image" style="object-fit: cover; vertical-align: bottom;height: 100%;width: 100%; ">
                                     </div>
                                 </div>
                             </div>
@@ -1423,21 +1325,22 @@
                             <div class="d-flex justify-content-between align-content-center">
                                 <div class="_tqmy57">
                                     <div class="_cv5qq4">
-                                        <h2 tabindex="-1" class="_14i3z6h" elementtiming="LCP-target">Entire guesthouse hosted by&nbsp;Jaakko</h2>
+                                        <h2 tabindex="-1" class="_14i3z6h" elementtiming="LCP-target">{{apartment_details.title}} hosted by&nbsp;{{apartment_details.agent_name}}</h2>
                                     </div>
                                     <ul class="d-flex gap-2">
-                                        <li class="l7n4lsf dir dir-ltr"><span>2 guests</span><span class="axjq0r dir dir-ltr"><span class="s1b4clln dir dir-ltr" aria-hidden="true"> · </span></span>
+                                        <li v-if="apartment_details.max_guest" class="l7n4lsf dir dir-ltr"><span>{{apartment_details.max_guest}} guests</span><span class="axjq0r dir dir-ltr"><span class="s1b4clln dir dir-ltr" aria-hidden="true"> · </span></span>
                                         </li>
-                                        <li class="l7n4lsf dir dir-ltr"><span>1 bedroom</span><span class="axjq0r dir dir-ltr"><span class="s1b4clln dir dir-ltr" aria-hidden="true"> · </span></span>
+                                        <li v-if="apartment_details.facilities" v-for="(item, index) in apartment_details.facilities" class="l7n4lsf dir dir-ltr">
+                                            <span>{{item.number}} {{item.facility_name}}</span><span class="axjq0r dir dir-ltr"><span class="s1b4clln dir dir-ltr" aria-hidden="true"> · 
+
+                                            </span></span>
                                         </li>
-                                        <li class="l7n4lsf dir dir-ltr"><span>1 bed</span><span class="axjq0r dir dir-ltr"><span class="s1b4clln dir dir-ltr" aria-hidden="true"> · </span></span>
-                                        </li>
-                                        <li class="l7n4lsf dir dir-ltr"><span>0 baths</span></li>
+                                        
                                     </ul>
                                 </div>
                                 <div class="_kt26s1">
-                                    <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/e51705cc-09a0-4834-ba66-a4ae7fa2dc73.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
-
+                                    <img v-if="apartment_details.agent_photo" class="_9ofhsl" :src="apartment_details.agent_photo" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
+                                    <img v-if="!apartment_details.agent_photo" class="_9ofhsl" src="../assets/images/profile photo/User-avatar.svg.png" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
                                 </div>
                             </div>
                             <hr>
@@ -1472,10 +1375,7 @@
                             </div>
                             <hr>
                             <div style="padding-top: 32px; padding-bottom: 48px;">
-                                <div style="line-height: 24px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;"><span><span class="ll4r2nl dir dir-ltr">It is very easy to relax in this unique and peaceful resort. Small cottage in the Tornio countryside for two adults. Toilet and shower in next building (25 m). There is no kitchen in the cottage, but a fridge, coffee maker, microwave and cutlery can be found. At an additional cost (book at least one day before arrival): sauna, jacuzzi and fireplace (firewood, open fire) as well as restaurant services (meals and drinks). Bikes and snowshoes are rented.<br><br><span class="_1di55y9">The space</span><br>Completely
-                                    renovated in 2021, small, old cottage. Thermal insulation, Air source heat pump and extra heater. Small, compact, accommodation best suited for a couple (double bed in the loft). Sheets etc. are included. No water supply,
-                                    but coffee and tea water are waiting for guests. Below the loft is a sofa, table and fridge. There is a small kitchenette with a coffee and kettle and a microwave. Basic tableware can be found. Shower and toilet in the
-                                    adjoining building (25 m). At an additional cost a gym, sauna, outdoor hot tub, fireplace (firewood, open fire) and restaurant services (food and drink). Bikes and snowshoes are rented.</span>
+                                <div style="line-height: 24px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;"><span><span class="ll4r2nl dir dir-ltr">{{apartment_details.description}}</span>
                                     </span>
                                 </div>
                                 <div class="s1isfkwk dir dir-ltr">
@@ -1507,78 +1407,19 @@
                                 <div class="sewcpu6">
                                     <h2>What this place offers</h2>
                                 </div>
-                                <div class="_1byskwn row g-3 mt-4">
-                                    <div class="_19xnuo97 col-sm-6">
+                                <div v-if="apartment_details.amenities_ids" class="_1byskwn row g-3 mt-4">
+                                    <div v-for="(item, index) in apartment_details.amenities_ids" class="_19xnuo97 col-sm-6">
                                         <div class="iikjzje d-flex gap-2">
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="m15.9999 20.33323c2.0250459 0 3.66667 1.6416241 3.66667 3.66667s-1.6416241 3.66667-3.66667 3.66667-3.66667-1.6416241-3.66667-3.66667 1.6416241-3.66667 3.66667-3.66667zm0 2c-.9204764 0-1.66667.7461936-1.66667 1.66667s.7461936 1.66667 1.66667 1.66667 1.66667-.7461936 1.66667-1.66667-.7461936-1.66667-1.66667-1.66667zm.0001-7.33323c3.5168171 0 6.5625093 2.0171251 8.0432368 4.9575354l-1.5143264 1.5127043c-1.0142061-2.615688-3.5549814-4.4702397-6.5289104-4.4702397s-5.5147043 1.8545517-6.52891042 4.4702397l-1.51382132-1.5137072c1.48091492-2.939866 4.52631444-4.9565325 8.04273174-4.9565325zm.0001-5.3332c4.9804693 0 9.3676401 2.540213 11.9365919 6.3957185l-1.4470949 1.4473863c-2.1746764-3.5072732-6.0593053-5.8431048-10.489497-5.8431048s-8.31482064 2.3358316-10.48949703 5.8431048l-1.44709488-1.4473863c2.56895177-3.8555055 6.95612261-6.3957185 11.93659191-6.3957185zm-.0002-5.3336c6.4510616 0 12.1766693 3.10603731 15.7629187 7.9042075l-1.4304978 1.4309874c-3.2086497-4.44342277-8.4328305-7.3351949-14.3324209-7.3351949-5.8991465 0-11.12298511 2.89133703-14.33169668 7.334192l-1.43047422-1.4309849c3.58629751-4.79760153 9.31155768-7.9032071 15.7621709-7.9032071z"></path></svg></div>
-                                            <div>Wifi</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M26 19a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 18a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm20.693-5l.42 1.119C29.253 15.036 30 16.426 30 18v9c0 1.103-.897 2-2 2h-2c-1.103 0-2-.897-2-2v-2H8v2c0 1.103-.897 2-2 2H4c-1.103 0-2-.897-2-2v-9c0-1.575.746-2.965 1.888-3.882L4.308 13H2v-2h3v.152l1.82-4.854A2.009 2.009 0 0 1 8.693 5h14.614c.829 0 1.58.521 1.873 1.297L27 11.151V11h3v2h-2.307zM6 25H4v2h2v-2zm22 0h-2v2h2v-2zm0-2v-5c0-1.654-1.346-3-3-3H7c-1.654 0-3 1.346-3 3v5h24zm-3-10h.557l-2.25-6H8.693l-2.25 6H25zm-15 7h12v-2H10v2z"></path></svg></div>
-                                            <div>Free parking on premises</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M13.693 13.934a4 4 0 0 1 5.283.595l.292.366 4.768 6.755a4 4 0 0 1 .596 3.342 4.004 4.004 0 0 1-4.496 2.913l-.403-.084-3.474-.932a1 1 0 0 0-.518 0l-3.474.932a4 4 0 0 1-2.941-.347l-.401-.249a4.004 4.004 0 0 1-1.19-5.207l.229-.368 4.768-6.755a4 4 0 0 1 .961-.96zm3.756 1.889a2 2 0 0 0-2.979.09l-.104.136-4.838 6.861a2 2 0 0 0 2.048 3.017l.173-.038 3.992-1.07a1 1 0 0 1 .518 0l3.964 1.063.143.034a2 2 0 0 0 2.132-2.963l-4.947-7.014zM27 12a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM5 12a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm22 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM5 14a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6-10a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm10 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM11 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"></path></svg></div>
-                                            <div>Pets allowed</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M9 29v-2h2v-2H6a5 5 0 0 1-4.995-4.783L1 20V8a5 5 0 0 1 4.783-4.995L6 3h20a5 5 0 0 1 4.995 4.783L31 8v12a5 5 0 0 1-4.783 4.995L26 25h-5v2h2v2zm10-4h-6v2h6zm7-20H6a3 3 0 0 0-2.995 2.824L3 8v12a3 3 0 0 0 2.824 2.995L6 23h20a3 3 0 0 0 2.995-2.824L29 20V8a3 3 0 0 0-2.824-2.995z"></path></svg></div>
-                                            <div>24" HDTV</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M23 1a2 2 0 0 1 1.995 1.85L25 3v16h4v2h-2v8h2v2H3v-2h2v-8H3v-2h4V3a2 2 0 0 1 1.85-1.995L9 1zM9 21H7v8h2zm4 0h-2v8h2zm4 0h-2v8h2zm4 0h-2v8h2zm4 0h-2v8h2zm-10-8H9v6h6zm8 0h-6v6h6zM15 3H9v8h6zm8 0h-6v8h6z"></path></svg></div>
-                                            <div>Private patio or balcony</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6 ">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M16 1a5 5 0 0 1 5 5 5 5 0 0 1 0 10 5.002 5.002 0 0 1-4 4.9v4.287C18.652 23.224 21.153 22 23.95 22a8.94 8.94 0 0 1 3.737.814l.313.15.002 2.328A6.963 6.963 0 0 0 23.95 24c-3.542 0-6.453 2.489-6.93 5.869l-.02.15-.006.098a1 1 0 0 1-.876.876L16 31a1 1 0 0 1-.974-.77l-.02-.124C14.635 26.623 11.615 24 7.972 24a6.963 6.963 0 0 0-3.97 1.234l.002-2.314c1.218-.6 2.57-.92 3.968-.92 2.818 0 5.358 1.24 7.028 3.224V20.9a5.002 5.002 0 0 1-3.995-4.683L11 16l-.217-.005a5 5 0 0 1 0-9.99L11 6l.005-.217A5 5 0 0 1 16 1zm2.864 14.1c-.811.567-1.799.9-2.864.9s-2.053-.333-2.864-.9l-.062.232a3 3 0 1 0 5.851.001zM11 8a3 3 0 1 0 .667 5.926l.234-.062A4.977 4.977 0 0 1 11 11c0-1.065.333-2.053.9-2.864l-.232-.062A3.013 3.013 0 0 0 11 8zm10 0c-.228 0-.45.025-.667.074l-.234.062C20.667 8.947 21 9.935 21 11a4.977 4.977 0 0 1-.9 2.864l.232.062A3 3 0 1 0 21 8zm-5 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0-5a3 3 0 0 0-2.926 3.667l.062.234C13.947 6.333 14.935 6 16 6s2.053.333 2.864.9l.062-.232A3 3 0 0 0 16 3z"></path></svg></div>
-                                            <div>Backyard</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M25 1a2 2 0 0 1 1.995 1.85L27 3v26a2 2 0 0 1-1.85 1.995L25 31H7a2 2 0 0 1-1.995-1.85L5 29V3a2 2 0 0 1 1.85-1.995L7 1zm0 10H7v18h18zm-15 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM25 3H7v6h18zM10 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path></svg></div>
-                                            <div>Refrigerator</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M29 3a2 2 0 0 1 1.995 1.85L31 5v22a2 2 0 0 1-1.85 1.995L29 29H3a2 2 0 0 1-1.995-1.85L1 27V5a2 2 0 0 1 1.85-1.995L3 3zm0 2H3v22h26zm-6 2v18H5V7zm-2 2H7v14l3 .001a4.975 4.975 0 0 1-.992-2.721L9 20v-3h10v3a4.978 4.978 0 0 1-1 3.001L21 23zm-4 10h-6v1a3 3 0 0 0 2.65 2.98l.174.015L14 23a3 3 0 0 0 2.995-2.824L17 20zm9-8a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-4a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path></svg></div>
-                                            <div>Microwave</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M23 3a2 2 0 0 1 1.995 1.85L25 5v1.522l5-1.999v11.954l-5-2V16a2 2 0 0 1-1.85 1.995L23 18l-6.1.001a5.005 5.005 0 0 1-3.984 3.915 5.002 5.002 0 0 1-4.7 4.08L8 26H4v4H2V20h2v4h4a3.001 3.001 0 0 0 2.872-2.13A5.004 5.004 0 0 1 7.1 18.002L4 18a2 2 0 0 1-1.995-1.85L2 16V5a2 2 0 0 1 1.85-1.995L4 3zM12 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm11-9H4v11h3.1a5.002 5.002 0 0 1 9.8 0H23zm5 2.476l-3 1.2v3.647l3 1.2zM7 7a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path></svg></div>
-                                            <div>Security cameras on property</div>
-                                        </div>
-                                    </div>
-                                    <div class="_19xnuo97 col-sm-6">
-                                        <div class="iikjzje d-flex gap-2">
-
-                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="M2.05 6.292L4 8.242V25a3 3 0 0 0 2.824 2.995L7 28h16.757l1.95 1.95c-.161.023-.325.038-.49.045L25 30H7a5 5 0 0 1-4.995-4.783L2 25V7c0-.24.017-.477.05-.708zm1.657-4l26 26-1.414 1.415-26-26 1.414-1.414zM25 2a5 5 0 0 1 4.995 4.783L30 7v18c0 .24-.017.476-.05.707L28 23.757V7a3 3 0 0 0-2.824-2.995L25 4H8.242l-1.95-1.95c.162-.023.325-.038.491-.045L7 2h18zM11.1 17a5.006 5.006 0 0 0 3.9 3.9v2.03A7.005 7.005 0 0 1 9.071 17h2.03zm5.9 4.243l1.352 1.352a6.954 6.954 0 0 1-1.351.334L17 21.243zM21.243 17l1.686.001c-.067.467-.18.919-.334 1.351L21.243 17zm-4.242-7.929A7.005 7.005 0 0 1 22.929 15H20.9A5.006 5.006 0 0 0 17 11.1l.001-2.029zm-7.596 4.577L10.757 15 9.071 15c.067-.467.18-.92.334-1.352zM15 9.071l-.001 1.686-1.35-1.352A6.954 6.954 0 0 1 15 9.07zM23 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path></svg></div>
-                                            <div><del aria-hidden="true">Carbon monoxide alarm</del></div>
+                                            <div class="i4wvyiy i1fpqhzs dir dir-ltr">
+                                                <span><i class="fa fa-wifi"></i></span>
+                                                <!-- <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: currentcolor;"><path d="m15.9999 20.33323c2.0250459 0 3.66667 1.6416241 3.66667 3.66667s-1.6416241 3.66667-3.66667 3.66667-3.66667-1.6416241-3.66667-3.66667 1.6416241-3.66667 3.66667-3.66667zm0 2c-.9204764 0-1.66667.7461936-1.66667 1.66667s.7461936 1.66667 1.66667 1.66667 1.66667-.7461936 1.66667-1.66667-.7461936-1.66667-1.66667-1.66667zm.0001-7.33323c3.5168171 0 6.5625093 2.0171251 8.0432368 4.9575354l-1.5143264 1.5127043c-1.0142061-2.615688-3.5549814-4.4702397-6.5289104-4.4702397s-5.5147043 1.8545517-6.52891042 4.4702397l-1.51382132-1.5137072c1.48091492-2.939866 4.52631444-4.9565325 8.04273174-4.9565325zm.0001-5.3332c4.9804693 0 9.3676401 2.540213 11.9365919 6.3957185l-1.4470949 1.4473863c-2.1746764-3.5072732-6.0593053-5.8431048-10.489497-5.8431048s-8.31482064 2.3358316-10.48949703 5.8431048l-1.44709488-1.4473863c2.56895177-3.8555055 6.95612261-6.3957185 11.93659191-6.3957185zm-.0002-5.3336c6.4510616 0 12.1766693 3.10603731 15.7629187 7.9042075l-1.4304978 1.4309874c-3.2086497-4.44342277-8.4328305-7.3351949-14.3324209-7.3351949-5.8991465 0-11.12298511 2.89133703-14.33169668 7.334192l-1.43047422-1.4309849c3.58629751-4.79760153 9.31155768-7.9032071 15.7621709-7.9032071z"></path></svg> -->
+                                            </div>
+                                            <div>{{item.name}}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="b6xigss dir dir-ltr mt-4">
-                                    <button type="button" class="b65jmrv v7aged4 dir dir-ltr">Show all 24 amenities</button>
+                                    <button type="button" class="b65jmrv v7aged4 dir dir-ltr">Show all {{apartment_details.amenities_ids.length}} amenities</button>
                                 </div>
                             </section>
                             <hr>
@@ -1607,15 +1448,17 @@
                                                 <div class="_wgmchy" data-testid="book-it-default">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div style="color:#717171;font-size:14px;line-height:18px;font-weight:600;font-size:16px;line-height:20px;">
-                                                            <span class="a8jt5op d-flex align-items-end"><h2 class="m-0">$70</h2> night</span>
+                                                            <span class="a8jt5op d-flex align-items-end"><h2 class="m-0">{{apartment_details.listing_currency_symbol}}{{apartment_details.price}}</h2> night</span>
                                                         </div>
                                                         <div class="_klarpw d-block">
                                                             <span class="_1y9gwt75 d-flex align-items-center gap-2">
                                                                 <span class="_9qqdp4" style="font-size: 12px;">
                                                                     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;"><path d="M15.094 1.579l-4.124 8.885-9.86 1.27a1 1 0 0 0-.542 1.736l7.293 6.565-1.965 9.852a1 1 0 0 0 1.483 1.061L16 25.951l8.625 4.997a1 1 0 0 0 1.482-1.06l-1.965-9.853 7.293-6.565a1 1 0 0 0-.541-1.735l-9.86-1.271-4.127-8.885a1 1 0 0 0-1.814 0z" fill-rule="evenodd"></path></svg>
                                                                 </span>
-                                                            <span class="_12si43g" aria-hidden="true">5.0 ·</span>
-                                                            <button aria-label="Rated 5.0 out of 5 from 8 reviews." type="button" class="_u1thwpg"><span class="_1qx9l5ba">8 reviews</span></button></span>
+                                                            <span v-if="apartment_details.apartment_reviews" class="_12si43g" aria-hidden="true">{{apartment_details.apartment_reviews.average_review}} ·</span>
+                                                            <span v-if="!apartment_details.apartment_reviews" class="_12si43g" aria-hidden="true">No Review ·</span>
+                                                            <button v-if="apartment_details.apartment_reviews" aria-label="Rated 5.0 out of 5 from 8 reviews." type="button" class="_u1thwpg"><span class="_1qx9l5ba">{{apartment_details.apartment_reviews.num_of_reviews}} reviews</span></button></span>
+                                                            <button v-if="!apartment_details.apartment_reviews" aria-label="Rated 5.0 out of 5 from 8 reviews." type="button" class="_u1thwpg"><span class="_1qx9l5ba">0 reviews</span></button></span>
                                                         </div>
                                                     </div>
                                                     <div class="_p03egf">
@@ -1624,13 +1467,14 @@
                                                                 <div class="col-lg-6">
                                                                     <div class="w-100">
                                                                         <small>Check In Date</small>
-                                                                        <input type="date" class="date" style="width:100%">
+                                                                        <input type="date" @change="changeMinCheckOut" v-model="selected_check_in" :min="currentDate" class="date" style="width:100%">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="w-100">
                                                                         <small>Check Out Date</small>
-                                                                        <input type="date" class="date" style="width:100%">
+                                                                        <input v-if="selected_check_in" v-model="selected_check_out" type="date" :min="min_checkout" class="date" style="width:100%">
+                                                                        <input v-if="!selected_check_in" disabled type="date" :min="min_checkout" class="date" style="width:100%">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -1695,8 +1539,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="_fz3zdn w-100 mt-4">
-                                                        <button type="button" class="_qqb2vcb">
+                                                        <button v-if="!available" @click="checkAvailability" type="button" class="_qqb2vcb">
                                                             <span class="c4wd1yj">Check availability </span>
+                                                        </button>
+
+                                                        <button v-if="available" @click="bookApartment" disabled type="button" class="_qqb2vcb">
+                                                            <span class="c4wd1yj">Reserve Apartment </span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -1707,218 +1555,70 @@
                             </div>
                         </div>
                     </div>
-                    <section class="mt-5">
+                    <section v-if="apartment_details.apartment_reviews" class="mt-5">
                         <div class="dijfijm d-flex gap-2 mb-3">
                             <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M15.094 1.579l-4.124 8.885-9.86 1.27a1 1 0 0 0-.542 1.736l7.293 6.565-1.965 9.852a1 1 0 0 0 1.483 1.061L16 25.951l8.625 4.997a1 1 0 0 0 1.482-1.06l-1.965-9.853 7.293-6.565a1 1 0 0 0-.541-1.735l-9.86-1.271-4.127-8.885a1 1 0 0 0-1.814 0z" fill-rule="evenodd"></path></svg></span>
-                            <span class="nnn"><b>5.0 · 8 reviews</b></span>
+                            <span class="nnn"><b>{{apartment_details.apartment_reviews.average_review}} · {{apartment_details.apartment_reviews.num_of_reviews}} reviews</b></span>
                         </div>
                         <div class="d-block">
-                            <div class="mb-4">
+                            <div v-if="apartment_details.apartment_reviews.reviews" class="mb-4">
                                 <div class="row gy-2 gx-5">
-                                    <div class="col-sm-6">
+                                    <div v-for="(item, index) in apartment_details.apartment_reviews.reviews" class="col-sm-6">
                                         <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
+                                            <b>{{item.review}}</b>
                                             <div class="d-flex gap-3 align-items-center">
                                                 <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" :style="'width:' + percentage(item.rate_star)+'%'" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
-                                                <b><span>5.0</span></b>
+                                                <b><span>{{item.rate_star}}</span></b>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex justify-content-between">
-                                            <b>Cleanliness</b>
-                                            <div class="d-flex gap-3 align-items-center">
-                                                <div class="progress" style="width: 100px;height:5px">
-                                                    <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <b><span>5.0</span></b>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="d-block mt-4">
                             <div class="mb-4 mt-4">
-                                <div class="row gy-2 gx-5">
-                                    <div class="col-md-6 mb-5">
+                                <div v-if="apartment_details.apartment_reviews" class="row gy-2 gx-5">
+                                    <div v-for="(item, index) in apartment_details.apartment_reviews.reviews" class="col-md-6 mb-5">
                                         <div class="r1rl3yjt">
                                             <div>
                                                 <div class="chnzxuf mb-3">
                                                     <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
+                                                        <h3 tabindex="-1" class="_14i3z6h">{{item.user_fullname}}</h3>
+                                                        <span style="color: #717171;font-weight:400;">{{item.created.split(" ")[0]}}</span>
                                                     </div>
                                                     <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
+                                                        <img v-if="item.photo" class="_9ofhsl" :src="item.photo" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
+                                                        <img v-if="!item.photo" class="_9ofhsl" src="../assets/images/profile photo/User-avatar.svg.png" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
+                                                <span class="ll4r2nl">{{item.review_details}}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <div class="r1rl3yjt">
-                                            <div>
-                                                <div class="chnzxuf mb-3">
-                                                    <div class="t9gtck5 dir dir-ltr">
-                                                        <h3 tabindex="-1" class="_14i3z6h">Epp</h3>
-                                                        <span style="color: #717171;font-weight:400;">March 2022</span>
-                                                    </div>
-                                                    <div class="_e7hn5" style="height: 40px; width: 40px;overflow: hidden;border-radius: 50%;">
-                                                        <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/7c076346-313d-4a9b-b02d-5cc3a3849ced.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 100%;height: 100%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style="line-height: 24px;">
-                                                <span class="ll4r2nl">The location was a really charming old farmhouse setting in the middle of the beautiful Finnish nature. We enjoyed the calm and picturesque surroundings.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
                                 </div>
                             </div>
                         </div>
                         <div class="stu4mdj dir dir-ltr">
-                            <button data-testid="pdp-show-all-reviews-button" aria-label="Show all 8 reviews, Opens modal dialog" type="button" class="b65jmrv v7aged4 dir dir-ltr">Show all 8 reviews</button></div>
+                            <button data-testid="pdp-show-all-reviews-button" :aria-label="'Show all ' + apartment_details.apartment_reviews.num_of_reviews +' reviews, Opens modal dialog'" type="button" class="b65jmrv v7aged4 dir dir-ltr">Show all {{apartment_details.apartment_reviews.num_of_reviews}} reviews</button></div>
                     </section>
                     <hr>
                     <section>
                         <div class="d-flex align-items-center gap-4">
                             <div class="_kt26s1">
-                                <img class="_9ofhsl" src="https://a0.muscache.com/im/pictures/user/e51705cc-09a0-4834-ba66-a4ae7fa2dc73.jpg?im_w=240" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
-
+                                <img v-if="apartment_details.agent_photo" class="_9ofhsl" :src="apartment_details.agent_photo" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
+                                <img v-if="!apartment_details.agent_photo" class="_9ofhsl" src="../assets/images/profile photo/User-avatar.svg.png" style="object-fit: cover; vertical-align: bottom;width: 50px;height: 50px;border-radius: 50%;">
                             </div>
                             <div class="_tqmy57">
                                 <div class="_cv5qq4">
-                                    <h2 tabindex="-1" class="_14i3z6h" elementtiming="LCP-target">Hosted by&nbsp;Jaakko</h2>
+                                    <h2 tabindex="-1" class="_14i3z6h" elementtiming="LCP-target">Hosted by&nbsp;{{apartment_details.agent_name}}</h2>
                                 </div>
                                 <ul class="d-flex gap-2">
                                     <li class="l7n4lsf dir dir-ltr"><span>
-                                        Joined in August 2018
+                                        Joined in {{apartment_details.created.split(" ")[0]}}
                                         </span><span class="axjq0r dir dir-ltr"><span class="s1b4clln dir dir-ltr" aria-hidden="true"> · </span></span>
                                     </li>
 
@@ -1936,7 +1636,7 @@
                         <div class="c17fz67d dir dir-ltr">
                             <div class="i15y8om4 dir dir-ltr">
                                 <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: rgb(227, 28, 95); stroke: currentcolor;"><g><g stroke="none"><path d="m25 5 .5846837.00517475c4.2905015.07574932 8.8374917.98334075 13.644943 2.73687823l.7703733.28794702v27.3705076l-.0084766.1301365c-.0392237.2994207-.2122236.5656263-.4699074.7230756l-.1154775.0605995-11.4234694 5.0774159c.0623636-.7458456-.0433445-1.4943022-.3209346-2.2783707-.2495178-.7044496-.7667703-1.7805075-1.0418654-2.3950548-1.9094732-4.1561789-3.9589781-8.3688465-6.0912876-12.5211487l-.3317555-.6369277c-.4686141-.9115826-.8248653-1.6297768-1.3147672-2.2052384-.743401-.8737317-1.7668654-1.3549948-2.8821508-1.3549948-1.1154695 0-2.1391179.4816323-2.8828868 1.3557332-.6050254.7114646-1.0306408 1.6819288-1.6457867 2.8412431-.4956822.9653459-.9868615 1.9338929-1.47282629 2.9041739l.00159179-19.0721502.769087-.28647781c4.798406-1.75037189 9.3373349-2.65799308 13.6207364-2.73688762z" fill-opacity=".2"></path><path d="m25 1c5.5985197 0 11.5175072 1.27473768 17.7548231 3.81642897.7027419.28641855 1.1783863.94329535 1.2386823 1.69066764l.0064946.16143432v28.73197667c0 1.8999458-1.0758761 3.6285379-2.7638433 4.4721215l-.2054644.0969363-15.0427818 6.6856808c-.4614217.2050763-1.8621146.3276624-2.7955525.3430957l-.192358.0016581.0009065-1.0005013c.6483674-.0069073 1.2843321-.1330366 1.8784107-.3747752.8327784-.3388673 1.5457548-.8939986 2.0790671-1.5885618l13.2600311-5.8942194c1.023196-.4547538 1.7028179-1.4383245 1.7751735-2.5449525l.0064111-.1964822v-28.73197667l-.6916987-.27704554c-5.7517231-2.26330416-11.1871718-3.39148539-16.3083013-3.39148539-5.1211255 0-10.5565697 1.12817946-16.3082877 3.39148006l-.6917123.27707479-.00030284 24.49382405c-.68067737 1.4079172-1.34834149 2.8151846-2.00083161 4.2173468l.00113445-28.71117085c0-.81311953.4922453-1.5453083 1.24525131-1.85215622 6.23725069-2.54166294 12.15623339-3.81639863 17.75474869-3.81639863z"></path></g><path d="m15.999908 41.6930234.6867258-.8851772c1.5957359-2.0328613 2.5919668-3.8873951 2.9612752-5.511912.2804314-1.2318637.2318527-2.5167089-.4804505-3.5591688-.6801015-.9952012-1.8642067-1.5894421-3.1673665-1.5894421-1.3033438 0-2.487633.5940563-3.1675505 1.5890729-.7099111 1.039137-.761802 2.3201055-.4810025 3.5580612.3689403 1.6247015 1.3653552 3.4796045 2.9616432 5.5133888l.6867258.8851772.6447715.7192179c1.1495113 1.2599236 2.1735278 2.122579 3.2227536 2.7149739.8151649.4602182 1.6400823.7413704 2.4521191.8358878.8812245.1033783 1.7585848-.0123685 2.559765-.3383795 1.6422905-.6682672 2.8186673-2.1775911 3.0700251-3.9387151.1205267-.8438258.0264975-1.6854363-.2876078-2.572644-.2495178-.7044496-.7667703-1.7805075-1.0418654-2.3950548-1.9094732-4.1561789-3.9589781-8.3688465-6.0912876-12.5211487-.6486357-1.2222643-1.0477537-2.1388241-1.6465227-2.8421661-.743401-.8737317-1.7668654-1.3549948-2.8821508-1.3549948-1.1154695 0-2.1391179.4816323-2.8828868 1.3557332-.6050254.7114646-1.0306408 1.6819288-1.6457867 2.8412431-2.1326775 4.1534098-4.1819984 8.3660775-6.09128759 12.5211487-.28227155.6306079-.79308369 1.6933742-1.04168139 2.3948702-.3141053.8872077-.40813448 1.7288182-.28760784 2.5731978.25117384 1.7609394 1.42736664 3.2700787 3.06965711 3.9385305.81939715.3333951 1.69418134.4397272 2.55958102.3385641.81295679-.0948866 1.63805829-.3760388 2.45248709-.8360724 1.0492258-.5922103 2.0732422-1.4550503 3.2227536-2.7149739z" fill="none" stroke-width="2"></path></g></svg></div>To
-                            protect your payment, never transfer money or communicate outside of the Airbnb website or app.</div>
+                            protect your payment, never transfer money or communicate outside of the Shortleters website or app.</div>
                     </section>
                     <hr>
                     
@@ -1955,62 +1655,71 @@
                         <div class="col-12 mb-4">
                             <h4><b>What this place offers</b></h4>
                         </div>
-                        <div class="col-md-4">
+                        <!-- House Rules -->
+                        <div v-if="apartment_details.apartment_house_rules" class="col-md-4">
+                            <div class="c1lue5su dir dir-ltr">
+                                <div class="hgq99v9 dir dir-ltr">
+                                    <h3 class="_14i3z6h">House rules</h3>
+                                </div>
+                                <div v-for="(item, index) in apartment_details.apartment_house_rules" class="d-flex gap-2 mb-2">
+                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
+                                    <span>{{item.house_rule_name}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="!apartment_details.apartment_house_rules" class="col-md-4">
                             <div class="c1lue5su dir dir-ltr">
                                 <div class="hgq99v9 dir dir-ltr">
                                     <h3 class="_14i3z6h">House rules</h3>
                                 </div>
                                 <div class="d-flex gap-2 mb-2">
                                     <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
-                                    <span>Check-in: After 12:00 PM</span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
-                                    <span>Checkout: 12:00 PM</span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M24.242 19H27v2.758L24.242 19zM23 15c1.103 0 2 .897 2 2h2c0-2.206-1.794-4-4-4h-4.758l2 2H23zm6 8.758l2 2V19h-2v4.758zM18 5V3c-2.636 0-4.875 1.71-5.679 4.079l1.701 1.701C14.14 6.678 15.87 5 18 5zM4 19c-1.103 0-2 .897-2 2v4c0 1.103.897 2 2 2h19.758l-8-8H4zm25-2h2c0-3.629-2.429-6.701-5.746-7.677A3.97 3.97 0 0 0 26 7c0-2.206-1.794-4-4-4v2c1.103 0 2 .897 2 2s-.897 2-2 2v2h1c3.309 0 6 2.691 6 6zM3.293 3.707l26 26 1.414-1.414-26-26-1.414 1.414z"></path></svg></div>
-                                    <span>No smoking</span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M15 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zm6 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm10 4a4 4 0 1 0-8 0 4 4 0 0 0 8 0zM1 16a4 4 0 1 0 8 0 4 4 0 0 0-8 0zm7.925 11.225l.197.13a4 4 0 0 0 3.145.466L16 26.82l3.733 1.001a4 4 0 0 0 4.303-6.17l-4.768-6.756a4 4 0 0 0-5.398-1.079l-.177.118a4 4 0 0 0-.96.961l-4.77 6.755a4 4 0 0 0 .962 5.575z"></path></svg></div>
-                                    <span>Pets are allowed</span>
+                                    <span>No House Rule</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+
+                        <!-- Health and Safety -->
+                        <div v-if="apartment_details.safety_ids" class="col-md-4">
                             <div class="c1lue5su dir dir-ltr">
-                                <div class="hgq99v9 dir dir-ltr">
+                                <div  class="hgq99v9 dir dir-ltr">
+                                    <h3 class="_14i3z6h">Health & safety</h3>
+                                </div>
+                                <div v-for="(item, index) in apartment_details.safety_ids" class="d-flex gap-2 mb-2">
+                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
+                                    <span>{{item.details.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="!apartment_details.safety_ids" class="col-md-4">
+                            <div class="c1lue5su dir dir-ltr">
+                                <div  class="hgq99v9 dir dir-ltr">
                                     <h3 class="_14i3z6h">Health & safety</h3>
                                 </div>
                                 <div class="d-flex gap-2 mb-2">
                                     <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
-                                    <span>Check-in: After 12:00 PM</span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
-                                    <span>Checkout: 12:00 PM</span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M24.242 19H27v2.758L24.242 19zM23 15c1.103 0 2 .897 2 2h2c0-2.206-1.794-4-4-4h-4.758l2 2H23zm6 8.758l2 2V19h-2v4.758zM18 5V3c-2.636 0-4.875 1.71-5.679 4.079l1.701 1.701C14.14 6.678 15.87 5 18 5zM4 19c-1.103 0-2 .897-2 2v4c0 1.103.897 2 2 2h19.758l-8-8H4zm25-2h2c0-3.629-2.429-6.701-5.746-7.677A3.97 3.97 0 0 0 26 7c0-2.206-1.794-4-4-4v2c1.103 0 2 .897 2 2s-.897 2-2 2v2h1c3.309 0 6 2.691 6 6zM3.293 3.707l26 26 1.414-1.414-26-26-1.414 1.414z"></path></svg></div>
-                                    <span>Climbing or play structure</span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M15 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zm6 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm10 4a4 4 0 1 0-8 0 4 4 0 0 0 8 0zM1 16a4 4 0 1 0 8 0 4 4 0 0 0-8 0zm7.925 11.225l.197.13a4 4 0 0 0 3.145.466L16 26.82l3.733 1.001a4 4 0 0 0 4.303-6.17l-4.768-6.756a4 4 0 0 0-5.398-1.079l-.177.118a4 4 0 0 0-.96.961l-4.77 6.755a4 4 0 0 0 .962 5.575z"></path></svg></div>
-                                    <span>Security camera/recording device Show more
-                                        </span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M24.242 19H27v2.758L24.242 19zM23 15c1.103 0 2 .897 2 2h2c0-2.206-1.794-4-4-4h-4.758l2 2H23zm6 8.758l2 2V19h-2v4.758zM18 5V3c-2.636 0-4.875 1.71-5.679 4.079l1.701 1.701C14.14 6.678 15.87 5 18 5zM4 19c-1.103 0-2 .897-2 2v4c0 1.103.897 2 2 2h19.758l-8-8H4zm25-2h2c0-3.629-2.429-6.701-5.746-7.677A3.97 3.97 0 0 0 26 7c0-2.206-1.794-4-4-4v2c1.103 0 2 .897 2 2s-.897 2-2 2v2h1c3.309 0 6 2.691 6 6zM3.293 3.707l26 26 1.414-1.414-26-26-1.414 1.414z"></path></svg></div>
-                                    <span>Nearby lake, river, other body of water</span>
-                                </div>
-                                <div class="d-flex gap-2 mb-2">
-                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M15 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zm6 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm10 4a4 4 0 1 0-8 0 4 4 0 0 0 8 0zM1 16a4 4 0 1 0 8 0 4 4 0 0 0-8 0zm7.925 11.225l.197.13a4 4 0 0 0 3.145.466L16 26.82l3.733 1.001a4 4 0 0 0 4.303-6.17l-4.768-6.756a4 4 0 0 0-5.398-1.079l-.177.118a4 4 0 0 0-.96.961l-4.77 6.755a4 4 0 0 0 .962 5.575z"></path></svg></div>
-                                    <span>Pets are allowed</span>
+                                    <span>No Safety Features</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <!-- Cancellation Policy -->
+                        <div v-if="apartment_details.apartment_cancellation_policies" class="col-md-4">
+                            <div class="c1lue5su dir dir-ltr">
+                                <div class="hgq99v9 dir dir-ltr">
+                                    <h3 class="_14i3z6h">Cancellation policy
+                                    </h3>
+                                </div>
+                                <div v-for="(item, index) in apartment_details.safety_ids" class="d-flex gap-2 mb-2">
+                                    <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
+                                    <span>{{item.canc_sub_pol_name}}</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div v-if="!apartment_details.apartment_cancellation_policies" class="col-md-4">
                             <div class="c1lue5su dir dir-ltr">
                                 <div class="hgq99v9 dir dir-ltr">
                                     <h3 class="_14i3z6h">Cancellation policy
@@ -2018,7 +1727,7 @@
                                 </div>
                                 <div class="d-flex gap-2 mb-2">
                                     <div aria-hidden="true" class="iv1oy2i dir dir-ltr"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="M16 1C7.716 1 1 7.716 1 16s6.716 15 15 15 15-6.716 15-15S24.284 1 16 1zm7.895 22.954l-9.526-5.5a1.5 1.5 0 0 1-.743-1.154l-.007-.145v-11h3V16.29l8.776 5.067-1.5 2.598z"></path></svg></div>
-                                    <span>Add your trip dates to get the cancellation details for this stay.</span>
+                                    <span>No Cancellation Policy</span>
                                 </div>
 
                             </div>

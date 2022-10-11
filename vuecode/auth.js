@@ -1,12 +1,23 @@
+const urlPath = window.location.pathname.split("/");
+const length = urlPath.length;
+const page = urlPath[length -1];
+
 let authApp = Vue.createApp({
     data(){
         return{
+            loginField: true,
+            regField: null,
+            token: null,
             email: null,
+            userIdentity: null,
+            show_phone: null,
+            show_email: true,
             username: null,
             firstname: null,
             lastname: null,
             phone: null,
             password: null,
+            password1: null,
             ref_code: null,
             accessToken: null,
             confirmPassword: null,
@@ -16,24 +27,120 @@ let authApp = Vue.createApp({
             baseurl: "http://localhost/shortleters/"
         }
     },
-    methods: {  
+    async created() {
+        if (page == "resetpassword.php"){
+            const urlParams = new URLSearchParams(window.location.search);
+            const otpToken = (urlParams.get('token'))? urlParams.get('token') : null ;
+            this.token = otpToken;
+            console.log(otpToken);
+        }
+    },
+    methods: { 
+        loginWithPhone(){
+            this.show_phone = false;
+            this.show_email = true;
+        },
+        loginWithEmail(){
+            this.show_email = false;
+            this.show_phone = true;
+        },
+        newUser (){
+            this.regField = true;
+            this.loginField= false;
+        },
+        oldUser (){
+            this.loginField = true;
+            this.regField = false
+        },
+        //google oauth
+        async googleOauth(){
+            console.log("proceed to oauth");
+            const url = 'http://localhost/shortleters/api/accounts/redirect.php';
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    if(response.data.data.googleLink){
+                        console.log(response.data.data.googleLink);
+                        window.location.href= response.data.data.googleLink;
+                    }
+                    if(response.data.data.authtoken){
+                        //go index
+                        this.success = response.data.text;
+                        const dataValues = response.data.data;
+                        const token = dataValues.authtoken;
+                        localStorage.setItem("token", token);
+                        new Toasteur().success(this.success);
+                        console.log(token);
+                        window.location.href ="./index.php";
+                    }
+                   
+                }else{
+
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
         async loginUser() {
             if (!this.email || !this.password){
                 this.error = "Kindly Enter all Fields"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 return
             }
-           
-
+            // const url = `${this.baseUrl}api/accounts/login.php`
+            const url = "http://localhost/shortleters/api/accounts/login.php";
             let data = new FormData();
             data.append('email', this.email);
             data.append('password', this.password);
-
+            const options = {
+                method: "POST",
+                url,
+                data
+            }
             try {
                 this.loading = true
-                const response = await axios.post(`http://localhost/cart.ng2/api/accounts/login.php`, data, {
-                    headers: { "Content-type": "application/json"}
-                });
+                const response = await axios(options)
 
                 if (response.data.status) {
                     console.log(response.data);
@@ -41,32 +148,35 @@ let authApp = Vue.createApp({
                     const dataValues = response.data.data;
                     const token = dataValues.authtoken;
                     localStorage.setItem("token", token);
-                    swal(this.success);
-                    window.location.href ="user/index.php";
+                    new Toasteur().success(this.success);
+                    console.log(token);
+                    window.location.href ="./index.php";
+                }else{
+                    new Toasteur().error("Invalid email or password");   
                 }
             } catch (error) {
                if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return;
                     }
 
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return;
                     }
 
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return;
                     }
 
                }else{
                     this.error = error.message || "Error processing request"
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                }
                 
                 
@@ -77,7 +187,7 @@ let authApp = Vue.createApp({
         async adminLogin() {
             if (!this.email || !this.password){
                 this.error = "Kindly Enter all Fields"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 return
             }
            
@@ -89,7 +199,7 @@ let authApp = Vue.createApp({
             try {
                 this.loading = true
                 const response = await axios.post(`http://localhost/shortleters/api/admin/adminLogin.php`, data, {
-                    headers: { "Content-type": "application/json"}
+                    // headers: { "Content-type": "application/json"}
                 });
 
                 if (response.data.status) {
@@ -98,32 +208,32 @@ let authApp = Vue.createApp({
                     const dataValues = response.data.data;
                     const token = dataValues.authtoken;
                     localStorage.setItem("authToken", token);
-                    swal(this.success);
+                    new Toasteur().success(this.success);
                     window.location.href ="./index.php";
                 }
             } catch (error) {
                if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return;
                     }
 
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return;
                     }
 
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return;
                     }
 
                }else{
                     this.error = error.message || "Error processing request"
-                    swal(this.error);
+                    new Toasteur().error(this.error);
                }
                 
                 
@@ -134,7 +244,7 @@ let authApp = Vue.createApp({
         async adminForgotPass(){
             if (!this.username){
                 this.error = "Insert all fields"
-                swal(this.error);
+                new Toasteur().error(this.error);
             }
             const data = new FormData();
             data.append('username', this.username);
@@ -156,24 +266,24 @@ let authApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
             } finally {
                 this.loading = false
             }
@@ -186,20 +296,21 @@ let authApp = Vue.createApp({
             const urlParams = new URLSearchParams(window.location.search);
             const token = (urlParams.get('token'))? urlParams.get('token') : null ;
 
+
             if (!token){
                 this.error = "Kindly check your mail for the valid rest password link"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 return
             }
 
             if (!this.confirm_password || !this.password){
                 this.error = "Kindly Enter all fields"
-                swal(this.error);
+                new Toasteur().error(this.error);
 
             }
             if (this.confirm_password !== this.password){
                 this.error = "Password Does not match"
-                swal(this.error);
+                new Toasteur().error(this.error);
 
             }
 
@@ -221,381 +332,180 @@ let authApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
                 
             } finally {
                 this.loading = false;
             }
         },
-        async shopLogin() {
-            if (!this.email || !this.password){
-                this.error = "Kindly Enter all Fields"
-                swal(this.error);
-                return
-            }
-           
+        async userForgotPassword(){
+            if(!this.userIdentity){
+                new Toasteur().error("Pass in valid email")
+            }else{
+                const data = new FormData();
+                data.append('userIdentity', this.userIdentity);
+                const url = `${this.baseurl}api/accounts/forgotpass.php`;
 
-            let data = new FormData();
-            data.append('shop_email', this.email);
-            data.append('shop_password', this.password);
-
-            try {
-                this.loading = true
-                const response = await axios.post(`http://localhost/cart.ng2/api/shops/shopLogin.php`, data, {
-                    headers: { "Content-type": "application/json"}
-                });
-
-                if (response.data.status) {
-                    console.log(response.data);
-                    this.success = response.data.text;
-                    const dataValues = response.data.data;
-                    const token = dataValues.authToken;
-                    localStorage.setItem("authToken", token);
-                    swal(this.success);
-                    window.location.href ="./index.php";
+                const options = {
+                    method: "POST",
+                    url,
+                    data
                 }
-            } catch (error) {
-               if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return;
-                    }
 
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return;
-                    }
-
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return;
-                    }
-
-               }else{
-                    this.error = error.message || "Error processing request"
-                    swal(this.error);
-               }
                 
-                
-            } finally {
-                this.loading = false
+                try {
+                    this.loading = true
+                    const response = await axios(options)
+                    if ( response.data.status ){
+                        new Toasteur().success(response.data.text);
+                    }else{
+                        new Toasteur().error(response.data.text);
+                    }
+                }catch (error) {
+                    // console.log(error);
+                    if (error.response){
+                        if (error.response.status == 400){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            this.error = "User not Authorized";
+                            new Toasteur().error(this.error);
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
+                    }
+                    this.error = error.message || "Error Processing Request"
+                    new Toasteur().error(this.error);
+                } finally {
+                    this.loading = false
+                }
             }
         },
-        async shopForgotPass(){
-            if (!this.username){
-                this.error = "Insert all fields"
-                swal(this.error);
-            }
-            const data = new FormData();
-            data.append('username', this.username);
-
-            const headers = {
-                "Content-type": "application/json"
-            }
-
-            try {
-                this.loading = true
-                const response = await axios.post(`${this.baseurl}api/shops/forgotpass.php`, data, {headers});
-
-                if (response.data.data) {
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                }
-            } catch (error) {
-                // console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-                }
-                this.error = error.message || "Error Processing Request"
-                swal(this.error);
-            } finally {
-                this.loading = false
-            }
-
-
-        },
-        async shop_resetPassword(){
+        
+        async resetUserPassword(){
 
             const urlParams = new URLSearchParams(window.location.search);
             const token = (urlParams.get('token'))? urlParams.get('token') : null ;
+            this.token = (token)? token : this.token;
 
-            if (!token){
-                this.error = "Kindly check your mail for the valid rest password link"
-                swal(this.error);
+            //validate pasword
+            let validPassword = validatePassword(this.password);
+
+            if (!this.token){
+                this.error = "Kindly check your mail for the valid rest password token or resetlink"
                 return
             }
-
-            if (!this.confirm_password || !this.password){
-                this.error = "Kindly Enter all fields"
-                swal(this.error);
-
+            if(this.password !== this.password1){
+                new Toasteur().error("password does not match");
+                return
             }
-            if (this.confirm_password !== this.password){
-                this.error = "Password Does not match"
-                swal(this.error);
+            if(!validPassword){
+                new Toasteur().error("password too weak");
+            }else{
+                const url = `${this.baseurl}api/accounts/resetpassword.php?token=${token}`;
+                const data = new FormData();
+                data.append('password', this.password);
+                data.append('token', this.token);
+                const options = {
+                    method: "POST",
+                    url,
+                    data
+                }
 
+                
+                try {
+                    this.loading = true
+                    const response = await axios(options)
+                    if ( response.data.status ){
+                        this.success = response.data.text;
+                        new Toasteur().success(this.success);
+                        window.location.href="login.php";
+                    }else{
+                        new Toasteur().error(response.data.text);
+                    }        
+                } catch (error) {
+                    if (error.response){
+                        if (error.response.status == 400){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
+        
+                        if (error.response.status == 401){
+                            this.error = "User not Authorized";
+                            new Toasteur().error(this.error);
+                            return
+                        }
+        
+                        if (error.response.status == 405){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
+                    }
+
+                    this.error = error.message || "Error Processing Request"
+                    new Toasteur().error(this.error);
+                    
+                } finally {
+                    this.loading = false;
+                }
             }
-
-            const headers = { "Content-type": "application/json"}
-
-            const data = new FormData();
-            data.append('password', this.password);
-            data.append('token', token);
-
             
-            try {
-                this.loading = true
-                const response = await axios.post(`${this.baseurl}api/shops/resetPassword.php`, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    window.location.href="./auth-success.php";
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                swal(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
         },
-        async logisticsLogin() {
-            if (!this.email || !this.password){
-                this.error = "Kindly Enter all Fields"
-                swal(this.error);
-                return
-            }
-           
 
-            let data = new FormData();
-            data.append('email', this.email);
-            data.append('password', this.password);
-
-            try {
-                this.loading = true
-                const response = await axios.post(`http://localhost/cart.ng2/api/logistics/logisticLogin.php`, data, {
-                    headers: { "Content-type": "application/json"}
-                });
-
-                if (response.data.status) {
-                    console.log(response.data);
-                    this.success = response.data.text;
-                    const dataValues = response.data.data;
-                    const token = dataValues.authtoken;
-                    localStorage.setItem("authToken", token);
-                    swal(this.success);
-                    window.location.href ="./index.php";
-                }
-            } catch (error) {
-               if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return;
-                    }
-
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return;
-                    }
-
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return;
-                    }
-
-               }else{
-                    this.error = error.message || "Error processing request"
-                    swal(this.error);
-               }
-                
-                
-            } finally {
-                this.loading = false
-            }
-        },
-        async logisticsForgotPass(){
-            if (!this.username){
-                this.error = "Insert all fields"
-                swal(this.error);
-            }
-            const data = new FormData();
-            data.append('username', this.username);
-
-            const headers = {
-                "Content-type": "application/json"
-            }
-
-            try {
-                this.loading = true
-                const response = await axios.post(`${this.baseurl}api/logistics/forgotpass.php`, data, {headers});
-
-                if (response.data.data) {
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success);
-                }
-            } catch (error) {
-                // console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-                }
-                this.error = error.message || "Error Processing Request"
-                swal(this.error);
-            } finally {
-                this.loading = false
-            }
-
-
-        },
-        async logistics_resetPassword(){
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = (urlParams.get('token'))? urlParams.get('token') : null ;
-
-            if (!token){
-                this.error = "Kindly check your mail for the valid rest password link"
-                swal(this.error);
-                return
-            }
-
-            if (!this.confirm_password || !this.password){
-                this.error = "Kindly Enter all fields"
-                swal(this.error);
-
-            }
-            if (this.confirm_password !== this.password){
-                this.error = "Password Does not match"
-                swal(this.error);
-
-            }
-
-            const headers = { "Content-type": "application/json"}
-
-            const data = new FormData();
-            data.append('password', this.password);
-            data.append('token', token);
-
-            
-            try {
-                this.loading = true
-                const response = await axios.post(`${this.baseurl}api/logistics/resetPassword.php`, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    window.location.href="./auth-success.php";
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                swal(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
         async registerUser() {
-            if (!this.email || !this.username || !this.firstname || !this.lastname || !this.phone || !this.password){
+            let validPassword = validatePassword(this.password);
+            if(this.password !== this.password1){
+                new Toasteur().error("password does not match");
+                return
+            }
+            if (!this.email || !this.firstname || !this.lastname || !this.phone || !this.password){
                 this.error = "Kindly insert all fields";
-                swal(this.error);
+                new Toasteur().error(this.error);
                 return;
             }
-
-            if (this.password !== this.confirmPassword){
-                this.error = "Password does not match";
-                swal(this.error);
-                return;
+            if(!validPassword){
+                new Toasteur().error("password too weak");
+                return
             }
 
             if ( !validatePhoneNumber(this.phone) ){
@@ -608,43 +518,47 @@ let authApp = Vue.createApp({
             data.append('email', this.email);
             data.append('firstname', this.firstname);
             data.append('lastname', this.lastname);
-            data.append('username', this.username);
             data.append('phone', validatePhoneNumber(this.phone));
             data.append('refer_code', this.ref_code);
             data.append('password', this.password);
 
+            const url = `${this.baseurl}api/accounts/register.php`;
+            const options = {
+                method: "POST",
+                url,
+                data
+            }
+                
             try {
                 this.loading = true
-                const response = await axios.post(`http://localhost/cart.ng2/api/accounts/register.php`, data, {
-                    headers: { "Content-type": "application/json"}
-                });
+                const response = await axios(options);
 
                 if (response.data.data) {
                     const dataValues = response.data.data;
                     this.success =response.data.text;
                     const token = dataValues.auth.token;
                     localStorage.setItem("token", token);
-                    swal(this.success);
-                    window.location.href ="user/index.php";
+                    new Toasteur().success(this.success);
+                    window.location.href ="./index.php";
                     
                 }
             } catch (error) {
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
 
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
             } finally {
                 this.loading = false
             }
@@ -653,7 +567,7 @@ let authApp = Vue.createApp({
         async forgotPassword(){
             if (!this.username){
                 this.error = "Insert all fields"
-                swal(this.error);
+                new Toasteur().error(this.error);
             }
             const data = new FormData();
             data.append('username', this.username);
@@ -668,7 +582,7 @@ let authApp = Vue.createApp({
 
                 if (response.data.data) {
                     this.success = response.data.text;
-                    swal(this.success);
+                    new Toasteur().success(this.success);
                     window.location.href="login.php"; 
                 }
             } catch (error) {
@@ -676,92 +590,35 @@ let authApp = Vue.createApp({
                 if (error.response){
                     if (error.response.status == 400){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 405){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
     
                     if (error.response.status == 500){
                         this.error = error.response.data.text;
-                        swal(this.error);
+                        new Toasteur().error(this.error);
                         return
                     }
                 }
                 this.error = error.message || "Error Processing Request"
-                swal(this.error);
+                new Toasteur().error(this.error);
             } finally {
                 this.loading = false
             }
 
 
-        },
-        async resetPassword(){
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = (urlParams.get('token'))? urlParams.get('token') : null ;
-
-            if (!token){
-                this.error = "Kindly check your mail for the valid rest password link"
-            }
-
-            const headers = { "Content-type": "application/json"}
-
-            const data = new FormData();
-            data.append('password', this.password);
-
-            
-            try {
-                this.loading = true
-                const response = await axios.post(`${this.baseurl}api/accounts/resetpassword.php?token=${token}`, data, {headers});
-                if ( response.data.status ){
-                    this.success = response.data.text;
-                    swal(this.success);
-                    window.location.href="login.php";
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        swal(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                swal(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
         },
     },
     async mounted(){
@@ -774,7 +631,7 @@ let authApp = Vue.createApp({
             
         } catch (error) {
             this.error = error.message || "Error Fetching Request"
-            swal(this.error);
+            new Toasteur().error(this.error);
         }finally{
             this.loading = false
         }
@@ -821,5 +678,38 @@ const validatePhoneNumber = (input) => {
     } else {  
         bool = false
         return bool;
+    }
+}
+
+const validatePassword = (input)=>{
+    let lowerletters = /[a-z]/g;
+    let numbers = /[0-9]/g ;
+    let uppercase =  /[A-Z]/g;
+    let specialChar = /[^A-Za-z0-9]/g
+    let charLength = /^.{6,}$/g
+    
+    const isNumbers = input.match(numbers)
+    const isLowerCase = input.match(lowerletters)
+    const isUpperCase = input.match(uppercase)
+    const isSpecialChar = input.match(specialChar)
+    const isCharLength = input.match(charLength)
+    if(isLowerCase && isUpperCase && isSpecialChar && isNumbers && isCharLength){
+        return true
+    }else{
+        return false
+    }
+}
+
+const validatePassword1 =(input)=>{
+//     let passwordRegex = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{6,}$/g;
+//     const valid = input.match(passwordRegex)
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+    const strongPass = input.match(strongRegex)
+    const mediumPass = input.match(mediumRegex)
+    if(valid){
+        return true;
+    }else{
+        return false;
     }
 }

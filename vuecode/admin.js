@@ -293,7 +293,7 @@ let admin = Vue.createApp({
         }
     },
     async created() {
-        // this.getToken();
+        this.getToken();
 
         if(webPage == 'admin-details.php'){
             let adminid = (localStorage.getItem("adminid")) ? localStorage.getItem("adminid"): null;
@@ -447,7 +447,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -503,7 +503,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -570,7 +570,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -625,7 +625,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -690,7 +690,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -760,7 +760,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -825,7 +825,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -881,7 +881,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -943,7 +943,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -998,7 +998,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -1061,7 +1061,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -1129,7 +1129,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -1193,7 +1193,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -1249,7 +1249,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -1312,7 +1312,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -1369,7 +1369,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -1432,7 +1432,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -1501,7 +1501,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -1565,7 +1565,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -1621,7 +1621,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -1684,7 +1684,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -1741,7 +1741,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                             return
                         }
         
@@ -1805,7 +1805,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -1875,7 +1875,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -1940,7 +1940,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -1996,7 +1996,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -2058,7 +2058,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -2113,7 +2113,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -2176,7 +2176,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -2243,7 +2243,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -2308,7 +2308,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -2364,7 +2364,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -2427,7 +2427,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -2482,7 +2482,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -2545,7 +2545,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -2614,7 +2614,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -2679,7 +2679,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -2744,7 +2744,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -2799,7 +2799,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -2862,7 +2862,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -2932,7 +2932,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -2986,7 +2986,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -3072,7 +3072,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -3278,7 +3278,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -3340,7 +3340,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -3405,7 +3405,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -3476,7 +3476,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -3540,7 +3540,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -3605,7 +3605,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -3660,7 +3660,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -3723,7 +3723,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -3793,7 +3793,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -3858,7 +3858,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -3922,7 +3922,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -3986,7 +3986,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -4050,7 +4050,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -4121,7 +4121,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -4142,72 +4142,7 @@ let admin = Vue.createApp({
             }
 
         },
-        // google oauth
-        async googleOauth(){
-            console.log("proceed to oauth");
-            const url = `${this.baseUrl}api/accounts/redirect.php`;
-            const options = {
-                method: "GET",
-                headers: { 
-                    //"Content-type": "application/json",
-                    "Authorization": `Bearer ${this.authToken}`
-                },
-                url
-            }
-            try {
-                this.loading = true;
-                const response = await axios(options);
-                if(response.data.status){
-                    if(response.data.data.googleStatus ==1){
-                        //already logged in
-                        window.location.href='../user/index.php'
-                    }else{
-                        //click on the link
-                        const uri = response.data.data.redirectLink;
-                        console.log("uri", uri);
-                        window.location.href= uri;
-
-                    }
-                    
-                }else{
-                    this.user_booking = null;
-                }     
-            } catch (error) {
-                // //console.log(error);
-                if (error.response){
-                    if (error.response.status == 400){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        const errorMsg = "User not Authorized";
-                        new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        const errorMsg = error.response.data.text;
-                        new Toasteur().error(errorMsg);
-                        return
-                    }
-                }
-
-                new Toasteur().error(error.message || "Error processing request")
-
-                
-            }finally {
-                this.loading = false;
-            }
-        },
+        
         //admin
         async adminLogin(){
             const email = this.email;
@@ -4259,7 +4194,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // // window.location.href="./login.php"
+                    // window.location.href="./login.php"
                     return
                 }
 
@@ -4318,7 +4253,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -4374,8 +4309,7 @@ let admin = Vue.createApp({
                     }
                     if (error.response.status === 401){
                         this.error = error.response.data.error.text
-                        // new Toasteur().error(this.error);
-                        // window.location.href = "./login.php"
+                        window.location.href = "./login.php"
                     }
                     if (error.response.status === 405){
                         this.error = error.response.data.error.text
@@ -4426,7 +4360,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -4533,7 +4467,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -4597,7 +4531,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -4705,7 +4639,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -4778,7 +4712,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -4934,7 +4868,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -5006,7 +4940,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -5060,7 +4994,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -5120,7 +5054,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -5190,7 +5124,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -5251,7 +5185,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -5314,7 +5248,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -5371,7 +5305,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -5434,7 +5368,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -5503,7 +5437,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -5644,7 +5578,7 @@ let admin = Vue.createApp({
         //                 if (error.response.status == 401){
         //                     const errorMsg = "User not Authorized";
         //                     new Toasteur().error(errorMsg);
-        //                     // // window.location.href="./login.php"
+        //                     window.location.href="./login.php"
         //                     return
         //                 }
         
@@ -5823,7 +5757,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -5879,7 +5813,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -5952,7 +5886,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -6000,7 +5934,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -6062,7 +5996,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -6135,7 +6069,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
 
@@ -6201,7 +6135,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -6257,7 +6191,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -6323,7 +6257,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -6378,7 +6312,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -6433,7 +6367,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -6503,7 +6437,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -6572,7 +6506,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -6627,7 +6561,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -6693,7 +6627,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -6748,7 +6682,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -6803,7 +6737,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -6873,7 +6807,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -6944,7 +6878,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -7001,7 +6935,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -7067,7 +7001,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -7120,7 +7054,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -7175,7 +7109,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -7247,7 +7181,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                            new Toasteur().error(errorMsg);
-                           // // window.location.href="./login.php"
+                           window.location.href="./login.php"
                             return
                         }
         
@@ -7320,7 +7254,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -7377,7 +7311,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -7443,7 +7377,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -7499,7 +7433,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -7555,7 +7489,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -7625,7 +7559,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                            new Toasteur().error(errorMsg);
-                           // // window.location.href="./login.php"
+                           window.location.href="./login.php"
                             return
                         }
         
@@ -7696,7 +7630,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -7752,7 +7686,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -7819,7 +7753,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -7876,7 +7810,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -7931,7 +7865,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -8005,7 +7939,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                            new Toasteur().error(errorMsg);
-                           // // window.location.href="./login.php"
+                           window.location.href="./login.php"
                             return
                         }
         
@@ -8075,7 +8009,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -8131,7 +8065,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -8198,7 +8132,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                        new Toasteur().error(errorMsg);
-                       // // window.location.href="./login.php"
+                       window.location.href="./login.php"
                         return
                     }
     
@@ -8254,7 +8188,7 @@ let admin = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    // // window.location.href="./login.php"
+                    window.location.href="./login.php"
                     return
                 }
 
@@ -8309,7 +8243,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -8381,7 +8315,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                            new Toasteur().error(errorMsg);
-                           // // window.location.href="./login.php"
+                           window.location.href="./login.php"
                             return
                         }
         
@@ -9383,7 +9317,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -9441,7 +9375,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -9504,7 +9438,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -9562,7 +9496,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -9693,7 +9627,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -9751,7 +9685,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -9816,7 +9750,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -9874,7 +9808,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10004,7 +9938,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10062,7 +9996,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10120,7 +10054,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10185,7 +10119,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10243,7 +10177,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10409,7 +10343,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -10467,7 +10401,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10570,7 +10504,7 @@ let admin = Vue.createApp({
                             if (error.response.status == 401){
                                 const errorMsg = "User not Authorized";
                                 new Toasteur().error(errorMsg);
-                                // // window.location.href="./login.php"
+                                window.location.href="./login.php"
                                 return
                             }
             
@@ -10632,7 +10566,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10761,7 +10695,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10819,7 +10753,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10883,7 +10817,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -10941,7 +10875,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11072,7 +11006,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11130,7 +11064,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11196,7 +11130,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11254,7 +11188,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11383,7 +11317,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11441,7 +11375,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11506,7 +11440,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11564,7 +11498,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11687,7 +11621,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -11745,7 +11679,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -12425,7 +12359,7 @@ let admin = Vue.createApp({
                         if (error.response.status == 401){
                             const errorMsg = "User not Authorized";
                             new Toasteur().error(errorMsg);
-                            // // window.location.href="./login.php"
+                            window.location.href="./login.php"
                             return
                         }
         
@@ -12539,7 +12473,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -12599,7 +12533,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -12663,7 +12597,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -12722,7 +12656,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -12781,7 +12715,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -12840,7 +12774,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -12902,7 +12836,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -12960,7 +12894,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13041,7 +12975,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13110,7 +13044,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13181,7 +13115,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13258,7 +13192,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13331,7 +13265,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13390,7 +13324,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13446,7 +13380,7 @@ let admin = Vue.createApp({
                     if (error.response.status == 401){
                         this.error = "User not Authorized";
                         new Toasteur().error(this.error);
-                        // // window.location.href="./login.php"
+                        window.location.href="./login.php"
                         return
                     }
     
@@ -13729,7 +13663,7 @@ let admin = Vue.createApp({
         },
         async logout(){
             window.localStorage.removeItem("authToken");
-            // // window.location.href="./login.php"
+            window.location.href="./login.php"
         }, 
         async setSort(value){
             if ( webPage === "room-type.php"){
@@ -13793,7 +13727,7 @@ let admin = Vue.createApp({
         //     window.localStorage.removeItem("buildingTypeid");
         // }
         await this.getAdminDetails();
-        // this.getToken();
+        this.getToken();
         if (webPage === "index.php"){
             await this.getAllBookings();
             await this.getAllApartments(3,3);

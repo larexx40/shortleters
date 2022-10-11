@@ -134,8 +134,10 @@
                                 </div>
                             </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="register.php">Sign up</a></li>
-                                            <li><a class="dropdown-item" href="login.php">Log in</a></li>
+                                            <li v-if='!userDetails'><a class="dropdown-item" href="register.php">Sign up</a></li>
+                                            <li v-if='!userDetails'><a class="dropdown-item" href="login.php">Log in</a></li>
+                                            <li v-if='userDetails'><a class="dropdown-item" href="account-settings.php">Account</a></li>
+                                            <li v-if='userDetails'><a class="dropdown-item" href="login.php">Manage Listings</a></li>
                                             <div class="sub-menu-links">
                                                 <li><a class="dropdown-item" href="home.php">Host your Home</a></li>
                                                 <li><a class="dropdown-item" href="help.php">Help</a></li>
@@ -147,97 +149,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="sub-header">
-                    <div class="sub-header-inner">
-                        <div class="container p-0">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="navigation-wrapper">
-                                    <button>
-                                        <div >
-                                            <span class="c1m2z0bj c1w8ohg7">
-                                                <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24">
-                                                <div>
-                                                    <span >Islands</span>
-                                                </div>
-                                            </span>
-                                        </div>
-                                    </button>
-                                    <button>
-                                            <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/8b44f770-7156-4c7b-b4d3-d92549c8652f.jpg" alt="" width="24" height="24"><div ><span >Arctic</span></div>
-                                            </span>
-                                    </div>
-                                    </button>
-                                    <button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/50861fca-582c-4bcc-89d3-857fb7ca6528.jpg" alt="" width="24" height="24"><div ><span >Design</span></div></span></div></button>
-                                    <button>
-                                        <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/bcd1adc0-5cee-4d7a-85ec-f6730b0f8d0c.jpg" alt="" width="24" height="24"><div ><span >Beachfront</span></div>
-                                        </span>
-                                </div>
-                                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/ee9e2a40-ffac-4db9-9080-b351efc3cfc4.jpg" alt="" width="24" height="24"><div ><span >Tropical</span></div></span></div></button>
-                                    <button>
-                                    <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg" alt="" width="24" height="24"><div ><span >OMG!</span></div>
-                                    </span>
-                            </div>
-                            </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/10ce1091-c854-40f3-a2fb-defc2995bcaf.jpg" alt="" width="24" height="24"><div ><span >Beach</span></div></span></div></button>
-                                    <button>
-                                <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/3fb523a0-b622-4368-8142-b5e03df7549b.jpg" alt="" width="24" height="24"><div ><span >Amazing pools</span></div>
-                                </span>
-                        </div>
-                        </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/5ed8f7c7-2e1f-43a8-9a39-4edfc81a3325.jpg" alt="" width="24" height="24"><div ><span >Bed &amp; breakfasts</span></div></span></div></button>
-                                    <button>
-                            <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/957f8022-dfd7-426c-99fd-77ed792f6d7a.jpg" alt="" width="24" height="24"><div ><span >Surfing</span></div>
-                            </span>
-                    </div>
-                    </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/52c8d856-33d0-445a-a040-a162374de100.jpg" alt="" width="24" height="24"><div ><span >Shared homes</span></div></span></div></button>
-                                    <button>
-                        <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/4221e293-4770-4ea8-a4fa-9972158d4004.jpg" alt="" width="24" height="24"><div ><span >Caves</span></div>
-                        </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/c0a24c04-ce1f-490c-833f-987613930eca.jpg" alt="" width="24" height="24"><div ><span >National parks</span></div></span></div></button>
-                                    <button>
-                    <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/6ad4bd95-f086-437d-97e3-14d12155ddfe.jpg" alt="" width="24" height="24"><div ><span >Countryside</span></div>
-                    </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/d7445031-62c4-46d0-91c3-4f29f9790f7a.jpg" alt="" width="24" height="24"><div ><span >Earth homes</span></div></span></div></button>
-                                    <button>
-                <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg" alt="" width="24" height="24"><div ><span >Cabins</span></div>
-                </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/c8e2ed05-c666-47b6-99fc-4cb6edcde6b4.jpg" alt="" width="24" height="24"><div ><span >Luxe</span></div></span></div></button>
-                                    <button>
-                <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/a4634ca6-1407-4864-ab97-6e141967d782.jpg" alt="" width="24" height="24"><div ><span >Lake</span></div>
-                </span>
-                </div>
-                </button><button><div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/35919456-df89-4024-ad50-5fcb7a472df9.jpg" alt="" width="24" height="24"><div ><span >Tiny homes</span></div></span></div></button>
-                                    <button>
-                    <div ><span class="c1m2z0bj"><img src="https://a0.muscache.com/pictures/1b6a8b70-a3b6-48b5-88e1-2243d9172c06.jpg" alt="" width="24" height="24"><div ><span >Castles</span></div>
-                    </span>
-                    </div>
-                    </button>
-
-                                </div>
-                                <div class="filter-btn d-none d-md-inline-flex">
-                                    <!-- triggers a modal -->
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropfilter">
-                            <span>
-                                <span><svg xmlns="http://www.w3.org/2000/svg" width="32" height="preserveAspectRatio="xMidYMid meet viewBox="0 0 21 21">
-                                        <g transform="rotate(90 10.5 10.5)">
-                                        <g fill="none" fill-rule="evenodd" stroke="currentColor"
-                                            stroke-linecap="rou    stroke-linejoin=" round>
-                                            <path d="M14.5 9V2.5m0 16V14" />
-                                            <circle cx="14.5" cy="11.5" r="2.5" />
-                                            <path d="M6.5 5V2.5m0 16V10" />
-                                            <circle cx="6.5" cy="7.5" r="2.5" />
-                                        </g>
-                                        </g>
-                                    </svg></span>
-                                <span>Filters</span>
-                            </span>
-                            </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php include "./includes/category.php"; ?>
             </header>
 
             <!-- TODO <======== FILTER MODAL START =========> -->

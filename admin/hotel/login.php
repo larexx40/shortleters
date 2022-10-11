@@ -18,8 +18,8 @@
                                 <div class="nk-block nk-block-middle nk-auth-body">
                                     <div class="brand-logo pb-5">
                                         <a href="html/index.html" class="logo-link">
-                                            <img class="logo-light logo-img logo-img-lg" src="../images /logo.png" srcset="./images/logo2x.png 2x" alt="logo">
-                                            <img class="logo-dark logo-img logo-img-lg" src="../images /logo-dark.png" srcset="./images/logo-dark2x.png 2x" alt="logo-dark">
+                                            <img class="logo-light logo-img logo-img-lg" src="../images/logo.png" srcset="../images/logo2x.png 2x" alt="logo">
+                                            <img class="logo-dark logo-img logo-img-lg" src="../images/logo-dark.png" srcset="../images/logo-dark2x.png 2x" alt="logo-dark">
                                         </a>
                                     </div>
                                     <div class="nk-block-head">
@@ -128,6 +128,7 @@
             <!-- main @e -->
         </div>
     </div>
+    
     <!-- app-root @e -->
     <!-- JavaScript -->
     <script src="../assets/js/bundle.js?ver=3.0.3"></script>

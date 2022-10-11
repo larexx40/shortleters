@@ -61,6 +61,7 @@
 
     }
 
+
     // sets verify type due to user identity given
     function setVerifyType($user_identity){
         if ($user_identity == 'phone'){
@@ -70,6 +71,21 @@
         if ($user_identity == 'email'){
             return 1;
         }
+    }
+
+    function checkUserIdentity ($connect, $userIdentity){
+        $sqlQuery = 'SELECT id, userpubkey FROM users where email = ? OR phoneno = ?';
+        $stmt = $connect->prepare($sqlQuery);
+        $stmt->bind_param("ss", $userIdentity, $userIdentity);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0){  
+            $row = $result->fetch_assoc();
+            $userpubkey =$row['userpubkey'];
+            return $userpubkey;
+        }
+        return false;
     }
 
     function getIPAddress() {  
@@ -609,6 +625,27 @@
 
     }
 
+    function getUserProfilePic($connect, $userid){
+        $query = "SELECT `profile_pic` FROM `users` WHERE `id` = ?";
+        $getUser = $connect->prepare($query);
+        $getUser->bind_param("s", $userid);
+        $getUser->execute();
+        $result = $getUser->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $row = $result->fetch_assoc();
+
+            $photo = $row['profile_pic'];
+        }
+        else{
+            $photo = false;
+        }
+
+        return $photo;
+
+    }
+
     function getShopname($connect, $userid){
         $query = "SELECT * FROM `shops` WHERE `id` = ?";
         $getUser = $connect->prepare($query);
@@ -654,6 +691,8 @@
         }
         return false;
     }
+
+
 
     function checkIfIsAdmin($connect, $pubkey){
         $adminQuery = 'SELECT * FROM admin where userpubkey = ?';
@@ -828,7 +867,7 @@
     }
     function getApartmentImage($connect, $table, $field, $data){
         // check field
-        $query = "SELECT * FROM $table WHERE $field = ?";
+        $query = "SELECT * FROM $table WHERE $field = ? ORDER BY cover_photo DESC";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("s", $data );
         $stmt->execute();
@@ -904,6 +943,119 @@
                 $value = array('details' => $row);
             }
            return $value;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentFacilities($connect, $data){
+        $query = "SELECT `facility_id`, `total_number` FROM `apartment_facilities` WHERE `apartment_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $facilities = [];
+            while ($row = $result->fetch_assoc()){
+                $facility_id = $row['facility_id'];
+                $facility_name = getNameFromField($connect, "facilities", "facility_id", $facility_id);
+                $number = $row['total_number'];
+                array_push( $facilities ,array(
+                    "facility_id" => $facility_id,
+                    "facility_name" => ($facility_name)? $facility_name : null,
+                    "number" => $number
+                ));
+            }
+           return $facilities;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentHouseRule($connect, $data){
+        $query = "SELECT `house_rule_id` FROM `apartment_house_rule` WHERE `apart_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $rules = [];
+            while ($row = $result->fetch_assoc()){
+                $house_rule_id = $row['house_rule_id'];
+                $house_rule_name = getNameFromField($connect, "house_rule", "house_rule_id", $house_rule_id);
+                array_push( $rules ,array(
+                    "house_rule_id" => $house_rule_id,
+                    "house_rule_name" => ($house_rule_name)? $house_rule_name : null,
+                ));
+            }
+           return $rules;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentCancellationPolicy($connect, $data){
+        $query = "SELECT `canc_pol_id`, `canc_sub_pol_id` FROM `apartment_cancellation_policy` WHERE `apart_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $policies = [];
+            while ($row = $result->fetch_assoc()){
+                $canc_sub_pol_id = $row['canc_sub_pol_id'];
+                $canc_sub_pol_name = getNameFromField($connect, "sub_cancellation_policy", "sub_canc_pol_id", $canc_sub_pol_id);
+                $pol_id = $row['canc_pol_id'];
+                array_push( $policies ,array(
+                    "canc_sub_pol_id" => $canc_sub_pol_id,
+                    "canc_sub_pol_name" => ($canc_sub_pol_name)? $canc_sub_pol_name : null,
+                    "pol_id" => $pol_id
+                ));
+            }
+           return $policies;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentReviews($connect, $data){
+        $query = "SELECT `userid`, `review`, `review_details` ,`ratestar`, `created_at` FROM `apartment_review` WHERE `apartment_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $reviews = [];
+            $sum_review = 0;
+            while ($row = $result->fetch_assoc()){
+                $user_id = $row['userid'];
+                $fullname = getUserFullname($connect, $user_id);
+                $user_photo = getUserProfilePic($connect, $user_id);
+                $review = $row['review'];
+                $review_details = $row['review_details'];
+                $ratestar = $row['ratestar'];
+                $sum_review = $sum_review + $ratestar;
+                $created = ($row['created_at']) ? gettheTimeAndDate(strtotime($row['created_at'])) : null;
+                array_push( $reviews ,array(
+                    "user_id" => $user_id,
+                    "user_fullname" => ($fullname)? $fullname : "",
+                    "photo" => ($user_photo)? $user_photo : null,
+                    "review" => $review,
+                    "review_details" => $review_details,
+                    "rate_star" => $ratestar. ".0",
+                    "created" => $created
+                ));
+            }
+            $average = round( $sum_review / $num_row, 1);
+            return array("reviews" => $reviews, "average_review" => $average, "num_of_reviews" => $num_row );
         }
 
         return false;
@@ -1444,6 +1596,25 @@
 
         return false;
     }
+
+    function checkIsEmailorPhone($userIdentity){
+        //verifytype 1 = email, 2=phone
+        $phone =  (validatePhone($userIdentity)) ? 2 : null;
+        $email = (filter_var($userIdentity, FILTER_VALIDATE_EMAIL)) ? 1 : null;
+ 
+        if ($phone){
+         return $phone;
+        }
+ 
+        if ($email){
+         return $email;
+        }
+
+        if(!$phone && !$email){
+            return null;
+        }
+ 
+     }
 
 
 

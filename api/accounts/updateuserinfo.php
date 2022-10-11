@@ -28,7 +28,7 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $user_pubkey = $decodedToken->usertoken;
 
-        $user_id = getUserWithPubKey($connect, $user_pubkey);
+        $user_id = checkIfUser($connect, $user_pubkey);
 
         if (!$user_id){
             $errordesc = "Not Authorized";
@@ -44,7 +44,7 @@
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Pass in your firstnamw";
+            $text="Pass in your firstname";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -139,89 +139,89 @@
         }
         
 
-        if( empty($firstName) || empty($lastName) ||  empty($phoneno) || empty($dob) || empty($sex) ||empty($state) || empty($country) ){
-            //all input required / bad request
+        // if( empty($firstName) || empty($lastName) ||  empty($phoneno) || empty($dob) || empty($sex) ||empty($state) || empty($country) ){
+        //     //all input required / bad request
+        //     $errordesc="Bad request";
+        //     $linktosolve="htps://";
+        //     $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+        //     $errordata=returnError7003($errordesc,$linktosolve,$hint);
+        //     $text="Please fill all require data input";
+        //     $method=getenv('REQUEST_METHOD');
+        //     $data=returnErrorArray($text,$method,$endpoint,$errordata);
+        //     respondBadRequest($data);
+        // }
+
+        // if ( !validatePhone($phoneno) ){
+        //     $errordesc = "Invalid Phone number";
+        //     $linktosolve = 'https://';
+        //     $hint = "Phone number must a valid phone number";
+        //     $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //     respondBadRequest($data);
+        // }
+
+        // // check if phone is the same as current phone
+        // $query = "SELECT * FROM `users` WHERE `id` = ? AND `phoneno` = ?";
+        // $stmt = $connect->prepare($query);
+        // $stmt->bind_param("ss", $user_id, $phoneno);
+        // $stmt->execute();
+        // $result = $stmt->get_result();
+        // $num_row = $result->num_rows;
+
+        // if ($num_row < 1){
+        //     // check if phone is unique
+        //     $error = checkifFieldisUnique($connect, "users" , "phoneno" , $phoneno);
+        //     if ( $error ){
+        //         $errordesc = $error;
+        //         $linktosolve = 'https://';
+        //         $hint = "Phone number must be unique";
+        //         $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //         $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //         respondBadRequest($data);
+        //     }
+        // }
+
+        //update using userpubkey
+        $sql = "UPDATE users SET fname = ?, lname = ?, phoneno = ?, state = ?, country = ?, dob= ?, sex = ? WHERE id = ?";
+        $stmt = $connect->prepare($sql);
+        $stmt->bind_param('ssssssss', $firstName, $lastName, $phoneno, $state, $country, $dob, $sex, $user_id);
+        $stmt->execute();
+        $row_affected = $stmt->affected_rows;
+
+
+        if ( $stmt->error ){
+            $errordesc = $stmt->error;
+            $linktosolve = 'https://';
+            $hint = "DB error or invalid Input, Kindly check DB connection";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondBadRequest($data);
+        }
+        if ( $stmt->execute() ){
+            $maindata=[];
+            $errordesc = " ";
+            $linktosolve = "htps://";
+            $hint = [];
+            $errordata = [];
+            $text = "User Updated";
+            $status = true;
+            $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
+            respondOK($data);
+
+        }else{
+            //invalid input/ server error
             $errordesc="Bad request";
             $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Please fill all require data input";
+            $text="invalid userkey or DB issue";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
-        }else{
-
-            if ( !validatePhone($phoneno) ){
-                $errordesc = "Invalid Phone number";
-                $linktosolve = 'https://';
-                $hint = "Phone number must a valid phone number";
-                $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                respondBadRequest($data);
-            }
-
-            // check if phone is the same as current phone
-            $query = "SELECT * FROM `users` WHERE `id` = ? AND `phoneno` = ?";
-            $stmt = $connect->prepare($query);
-            $stmt->bind_param("ss", $user_id, $phoneno);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $num_row = $result->num_rows;
-
-            if ($num_row < 1){
-                // check if phone is unique
-                $error = checkifFieldisUnique($connect, "users" , "phoneno" , $phoneno);
-                if ( $error ){
-                    $errordesc = $error;
-                    $linktosolve = 'https://';
-                    $hint = "Phone number must be unique";
-                    $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                    $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                    respondBadRequest($data);
-                }
-            }
-
-            //update using userpubkey
-            $sql = "UPDATE users SET fname = ?, lname = ?, phoneno = ?, state = ?, country = ?, dob= ?, sex = ? WHERE userpubkey = ?";
-            $stmt = $connect->prepare($sql);
-            $stmt->bind_param('ssssssss', $firstName, $lastName, $phoneno, $state, $country, $dob, $sex, $user_pubkey);
-            $stmt->execute();
-            $row_affected = $stmt->affected_rows;
-
-
-            if ( $stmt->error ){
-                $errordesc = $stmt->error;
-                $linktosolve = 'https://';
-                $hint = "DB error or invalid Input, Kindly check DB connection";
-                $errorData = returnError7003($errordesc, $linktosolve, $hint);
-                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-                respondBadRequest($data);
-            }
-            if ( $stmt->execute() ){
-                $maindata=[];
-                $errordesc = " ";
-                $linktosolve = "htps://";
-                $hint = [];
-                $errordata = [];
-                $text = "User Updated";
-                $status = true;
-                $data = returnSuccessArray($text, $method, $endpoint, $errordata, $maindata, $status);
-                respondOK($data);
-
-            }else{
-                //invalid input/ server error
-                $errordesc="Bad request";
-                $linktosolve="htps://";
-                $hint=["Ensure to send valid data, data already registered in the database.", "Use registered API to get a valid data","Read the documentation to understand how to use this API"];
-                $errordata=returnError7003($errordesc,$linktosolve,$hint);
-                $text="invalid userkey or DB issue";
-                $method=getenv('REQUEST_METHOD');
-                $data=returnErrorArray($text,$method,$endpoint,$errordata);
-                respondBadRequest($data);
-
-            }
 
         }
+
+
 
 
     }else{

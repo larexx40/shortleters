@@ -1,10 +1,6 @@
 <?php
 date_default_timezone_set("Africa/Lagos");
-//Database Connection to loadngdatabase
-// $server= 'localhost';
-// $username= 'root';
-// $password= '';
-// $dbname= 'cart.ng';
+//Database Connection to shortleters
 
 $username= 'root';
 $password= '';
@@ -18,7 +14,7 @@ $connect= mysqli_connect('localhost',$username,$password,$dbname);
 // $connect= mysqli_connect($host,$user,$password,$dbName);
 
 
-$resetLink = "http://localhost/cart.ng2/resetpassword.php";
+$resetLink = "http://localhost/shortleters/pages/resetpassword.php";
 $admin_resetLink = "http://localhost/cart.ng2/admin/resetpassword.php";
 $shop_resetLink = "http://localhost/cart.ng2/shop/resetpassword.php";
 $logistics_resetLink = "http://localhost/cart.ng2/logistics/resetpassword.php";

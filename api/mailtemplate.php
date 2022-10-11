@@ -39,7 +39,6 @@ function sendWithSenGrid($subject,$toemail,$msgintext,$messageinhtml){
       $sendgrid = new \SendGrid($sendgridkey);
       try {
           $response = $sendgrid->send($email);
-
           $issent =true;
       // check response and set this well
           // print $response->statusCode() . "\n";

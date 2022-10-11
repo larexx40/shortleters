@@ -6,7 +6,7 @@
 
   <link href="" rel="shortcut icon" type="image/x-icon">
 
-  <link href="../assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+  <link href="./assets/css/dashlite.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
@@ -24,9 +24,9 @@
     </div>
         
     <!-- JavaScript -->
-    <script src="../assets/js/bundle.js?ver=3.0.3"></script>
-    <script src="../assets/js/scripts.js?ver=3.0.3"></script>
-    <script src="../assets/js/charts/chart-hotel.js?ver=3.0.3"></script>
+    <script src="./assets/js/bundle.js?ver=3.0.3"></script>
+    <script src="./assets/js/scripts.js?ver=3.0.3"></script>
+    <script src="./assets/js/charts/chart-hotel.js?ver=3.0.3"></script>
     <!-- <?php include "./vue-script.php" ?> -->
 </body>
 

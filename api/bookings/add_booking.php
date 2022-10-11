@@ -29,23 +29,15 @@
         $user_pubkey = $decodedToken->usertoken;
 
         $admin =  checkIfIsAdmin($connect, $user_pubkey);
-        $user_id =  checkIfUser($connect, $user_pubkey);
-
-        if(!$admin && !$user_id ){
+        if(!$admin){
             // send user not found response to the user
-            $errordesc =  "User not registered";
+            $errordesc =  "User not authorized";
             $linktosolve = 'https://';
-            $hint = "Create account ";
+            $hint = "Only admin can access this route ";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, null);
             respondUnAuthorized($data);
         }
-        if($admin){
-            $user_id = '';
-        }
-        // if($user_id){
-        //     $admin ='';
-        // }
 
         if (!isset($_POST['first_name'])){
             $errordesc = "All fields must be passed";

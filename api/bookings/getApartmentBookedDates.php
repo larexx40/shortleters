@@ -25,23 +25,23 @@
         $servername = $row['servername'];
         $expiresIn = $row['tokenexpiremin'];
 
-        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        // $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        // $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $pubkey);
-        // $agent = getShopWithPubKey($connect, $user_pubkey);
-        $user = getUserWithPubKey($connect, $pubkey);
+        // $admin =  checkIfIsAdmin($connect, $pubkey);
+        // // $agent = getShopWithPubKey($connect, $user_pubkey);
+        // $user = getUserWithPubKey($connect, $pubkey);
 
-        if  (!$admin && !$user){
+        // if  (!$admin && !$user){
 
-            // send user not found response to the user
-            $errordesc =  "User not an Admin";
-            $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
-        }
+        //     // send user not found response to the user
+        //     $errordesc =  "User not an Admin";
+        //     $linktosolve = 'https://';
+        //     $hint = "Only Admin has the ability to add send grid api details";
+        //     $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //     respondUnAuthorized($data);
+        // }
 
         if ( !isset($_GET['apartment_id']) ){
 

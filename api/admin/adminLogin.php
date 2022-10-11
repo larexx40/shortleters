@@ -28,11 +28,11 @@
 
         if ( !isset($_POST['email'])) {
 
-            $errordesc="logistics Email required";
+            $errordesc="Admin Email required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="logistics Email must be passed";
+            $text="Admin Email must be passed";
             $method;
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
