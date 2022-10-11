@@ -2,6 +2,47 @@ const urlPath = window.location.pathname.split("/");
 const length = urlPath.length;
 const page = urlPath[length -1];
 
+// get current Date
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth() + 1; //January is 0!
+var yyyy = today.getFullYear();
+
+if (dd < 10) {
+   dd = '0' + dd;
+}
+
+if (mm < 10) {
+   mm = '0' + mm;
+}
+    
+today = yyyy + '-' + mm + '-' + dd;
+
+// add days to date
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+
+    // get Format 
+    let dd = result.getDate();
+    let mm = result.getMonth() + 1;
+    let yyy = result.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd;
+     }
+     
+     if (mm < 10) {
+        mm = '0' + mm;
+     }
+         
+     let result_format = yyyy + '-' + mm + '-' + dd;
+
+    return result_format;
+}
+
+min_checkout = addDays(today, 1);
+
 let userApp = Vue.createApp({
     data(){
         return{
@@ -66,9 +107,15 @@ let userApp = Vue.createApp({
             highlights: null,
             //@E lanre data
             // @S korede data
+            currentDate: today,
+            min_checkout: min_checkout,
             apartments: null,
             apartment_details: null,
             apartment_category: null,
+            selected_check_in: null,
+            selected_check_out: null,
+            bookings: null,
+            available: null,
             active: true,
             transactions: null,
             // @E korede data
@@ -990,6 +1037,67 @@ let userApp = Vue.createApp({
             }
         },
         // Korede Shortleters
+        changeMinCheckOut(){
+            this.min_checkout = addDays(this.selected_check_in, 1) ;
+        },
+        async getAllBookedDates(load = 1){
+            const apart_id = window.localStorage.getItem("apart_id");
+            if ( !apart_id ){
+                window.location.href="./index.php";
+                return;
+            }
+            const headers = {
+                // "Authorization": `Bearer ${this.accessToken}`,
+                "Content-type": "application/json"
+            }
+
+            let url = `${this.baseurl}api/bookings/getApartmentBookedDates.php?apartment_id=${apart_id}`;
+
+            this.total_page = null
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios.get(url, {headers} );
+                if ( response.data.status ){
+                    this.bookings = response.data.data;
+                }else{
+                    this.bookings = null
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        new Toasteur().error(this.error);
+                        return
+                    }
+                }
+
+                this.error = error.message || "Error Processing Request"
+                new Toasteur().error(this.error);
+                
+            } finally {
+                this.loading = false;
+            }
+        },
         async getAllApartments(load = 1){
             let search = (this.search) ? `&search=${this.search}` : ""; 
             let sort = (this.sort !== null) ? `&sort=1&sortstatus=${this.sort}` : "";
@@ -1529,64 +1637,6 @@ let userApp = Vue.createApp({
                 this.loading = false
             }
         },
-        async addWalletAddress(){
-
-            if (!this.cointype || !this.useraddress || !this.producttrackid || !this.memo 
-                || !this.systemlivewallet || !this.liveaddressid || !this.redeemscript || !this.wallettrackid) {
-                    this.error = "Insert all Fields";
-                    new Toasteur().error(this.error);
-            }
-
-            const data = FormData();
-            data.append('cointype', this.cointype );
-            data.append('useraddress', this.useraddress );
-            data.append('producttrackid', this.producttrackid );
-            data.append('memo', this.memo );
-            data.append('systemlivewallet', this.systemlivewallet );
-            data.append('liveaddressid', this.liveaddressid );
-            data.append('redeemscript', this.redeemscript );
-            data.append('wallettrackid', this.wallettrackid );
-
-            try {
-                this.loading = true
-                const response = await axios.post(`${this.baseurl}api/userwalletaddress/addWallet.php`, data , {headers} );
-                if ( response.data.status ){ 
-                    this.success = response.data.text;
-                    new Toasteur().success(this.success)
-                }          
-            } catch (error) {
-                if (error.response.status == 400){
-                    this.error = error.response.data.text;
-                    new Toasteur().error(this.error);
-                    return
-                }
-
-                if (error.response.status == 401){
-                    this.error = "User not Authorized";
-                    new Toasteur().error(this.error);
-                    return
-                }
-
-                if (error.response.status == 405){
-                    this.error = error.response.data.text;
-                    new Toasteur().error(this.error);
-                    return
-                }
-
-                if (error.response.status == 500){
-                    this.error = error.response.data.text;
-                    new Toasteur().error(this.error);
-                    return
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
-        
         async getDefaultAddress(){
             const headers = {
                 "Authorization": `Bearer ${this.authToken}`,
@@ -2212,6 +2262,8 @@ let userApp = Vue.createApp({
         }
         if ( page === "rooms.php" ){
             await this.getApartmentDetails();
+            await this.getAllBookedDates();
+            console.log(this.bookings);
         }
         
     }
