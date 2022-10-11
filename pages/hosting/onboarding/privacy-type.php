@@ -86,6 +86,12 @@
                     <ul class="question-tag">
                         <li>
                             <div class="d-grid">
+                                <b>A Private Room</b>
+                            </div>
+
+                        </li>
+                        <li>
+                            <div class="d-grid">
                                 <b>Apartment</b>
                                 <small> A sepate building from the main house</small>
                             </div>

@@ -84,23 +84,13 @@
             </div>
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
                 <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
-                    <ul class="question-tag">
-                        <li>
+                    <ul v-if='buildingSubtypes' class="question-tag">
+                        <li v-for='(item, index) in buildingSubtypes'>
                             <div class="d-grid">
-                                <b>An Entire Place</b>
+                                <b>{{item.name}}</b>
+                                <small> {{item.description}}</small>
                             </div>
 
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>A Private Room</b>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>A Shared Room</b>
-                            </div>
                         </li>
 
                     </ul>

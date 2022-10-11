@@ -1,4 +1,3 @@
-<!-- This step occurs if the user enters the become a Host Section And Clicks on Let's Go -->
 
 <?php
     // pass cors header to allow from cross-origin
@@ -8,7 +7,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
     
   
 
@@ -48,7 +47,7 @@
         $active = "1";
 
         // Make user and agent
-        $query = "UPDATE `apartment_images` SET `is_agent`= ? WHERE id = ?";
+        $query = "UPDATE `users` SET `is_agent`= ? WHERE id = ?";
         $updateStatus = $connect->prepare($query);
         $updateStatus->bind_param("ss", $active, $user_id);
         $updateStatus->execute();
@@ -72,7 +71,7 @@
             if ( $slider_stmt->execute() ) {
                 $text= "Apartment successfully added";
                 $status = true;
-                $data = [];
+                $data = ['listing_apartmentid'=>$apartment_id];
                 $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
                 respondOK($successData);
 

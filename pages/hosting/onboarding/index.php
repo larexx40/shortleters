@@ -40,7 +40,7 @@
                         <h1 class="_1eg7jkhx">Become a Host in 10 easy steps</h1>
                         <div class="_qnr0t6x"><span class="ll4r2nl dir dir-ltr">Join us. We'll help you every step of the way.</span></div>
                     </div>
-                    <div class="position-absolute hovvvv">
+                    <div @click.prevent = 'addApartmentStep1' class="position-absolute hovvvv">
                         <a href="property-type-group.php" class="btn _kaq6tx ">Lets Go</a>
 
                     </div>
