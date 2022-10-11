@@ -299,7 +299,6 @@
                             <div @click.prevent='newUser' v-if="is_show_login" class="" >Sign Up</div>
                             <div @click.prevent='newUser' v-else class="btnx" >Sign Up</div>
                         </div>
-                        <!-- <a @click.prevent ='oldUser'> Log in  </a> <a >Sign Up</a> -->
                     </b>
                     <hr>                  
                     <form v-if='loginField' @submit.prevent='loginUser()' class="p-3 pt-3">
