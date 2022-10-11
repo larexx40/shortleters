@@ -82,9 +82,9 @@
                     </div>
 
                 </div>
-                <a href="../index.html" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
+                <a href="../index.php" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 160px;">Back</a>
-                <a href="../index.html" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
+                <a href="../index.php" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 20px;">Save and Exit</a>
 
             </div>
@@ -139,14 +139,14 @@
                             <div class="progress-bar" role="progressbar" style="width: 55%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
-                            <a href="./floor-plan.html" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                            <a href="./photos.html" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                            <a href="./floor-plan.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
+                            <a href="./photos.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
                         </div>
 
                     </div>
-                    <a href="../index.html" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
+                    <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 160px;">Back</a>
-                    <a href="../index.html" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
+                    <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 20px;">Save and Exit</a>
                 </div>
 

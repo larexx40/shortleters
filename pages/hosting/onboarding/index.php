@@ -13,9 +13,9 @@
                 <video class="_e2l2kr" autoplay muted loop aria-label="A Host waves from their living room and adjusts their sofa. Another Host takes a photo in their plant-filled space. Finally, two Hosts sit beside each other and wave hello." crossorigin="anonymous"
                     playsinline="" preload="auto" style="object-fit: cover; object-position: 0px 25%;"><source src="https://a0.muscache.com/v/8b/04/8b0456c7-13f8-54bc-889a-7cf549f144a3/8b0456c713f854bc889a7cf549f144a3_4000k_1.mp4?imformat=h265" type="video/mp4; codecs=hevc"><source src="https://a0.muscache.com/v/8b/04/8b0456c7-13f8-54bc-889a-7cf549f144a3/8b0456c713f854bc889a7cf549f144a3_4000k_1.mp4" type="video/mp4"></video>
 
-                <a href="../index.html" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn close _qa0cc5 position-absolute" style="bottom:20px !important; left:20px;">Watch full Video</a>
+                <a href="../index.php" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn close _qa0cc5 position-absolute" style="bottom:20px !important; left:20px;">Watch full Video</a>
                 <!-- Button trigger modal -->
-                <a href="../index.html" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
+                <a href="../index.php" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 20px;">Exit</a>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: black;">
@@ -41,10 +41,10 @@
                         <div class="_qnr0t6x"><span class="ll4r2nl dir dir-ltr">Join us. We'll help you every step of the way.</span></div>
                     </div>
                     <div class="position-absolute hovvvv">
-                        <a href="property-type-group.html" class="btn _kaq6tx ">Lets Go</a>
+                        <a href="property-type-group.php" class="btn _kaq6tx ">Lets Go</a>
 
                     </div>
-                    <a href="../index.html" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
+                    <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 20px;">Exit</a>
                 </div>
 
