@@ -148,7 +148,7 @@ let userApp = Vue.createApp({
             password: null,
             confirmpassword: null,
             currentpassword: null,
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjU0NTU2MTksImlzcyI6IkxPRyIsIm5iZiI6MTY2NTQ1NTYxOSwiZXhwIjoxNjY1NTI5NDE5LCJ1c2VydG9rZW4iOiJDTkdrTG1zNVF2N3dUdU1zWEhmbmNrYkg4UG1LcnRmc004cjBDazdsdXNlcnN1c2VyIn0.CQYK3IWh2sfaHXOMhFvEF-vAJILnpLYltJDa4BdO7S88e6Z6UO6m3sXpu1bDcPQg2QkVhB4Qrsh6TM3zkmxHpQ',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjU0NzMzNTcsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTQ3MzM1NywiZXhwIjoxNjY1NTQ3MTU3LCJ1c2VydG9rZW4iOiIxMDU5NDMyMzM1NzA4ODY2Mjc0OTUifQ.mvMQV5BDPjaRXsYDkIviRKOREKCpt8Xnm290MZ1PhFc1FadO9WN4WlzCTWFAFV4NLFi9P3_UH8xFgPp7Bad8MQ',
             confirmPassword: null,
             loading: false,
             search: null,
