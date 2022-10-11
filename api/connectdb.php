@@ -20,6 +20,4 @@ $shop_resetLink = "http://localhost/cart.ng2/shop/resetpassword.php";
 $logistics_resetLink = "http://localhost/cart.ng2/logistics/resetpassword.php";
 $imageurl = "http://localhost/shortleters/assets/images/"
 
-
-
 ?>

@@ -123,7 +123,7 @@ let userApp = Vue.createApp({
             password: null,
             confirmpassword: null,
             currentpassword: null,
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjU0NzMzNTcsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTQ3MzM1NywiZXhwIjoxNjY1NTQ3MTU3LCJ1c2VydG9rZW4iOiIxMDU5NDMyMzM1NzA4ODY2Mjc0OTUifQ.mvMQV5BDPjaRXsYDkIviRKOREKCpt8Xnm290MZ1PhFc1FadO9WN4WlzCTWFAFV4NLFi9P3_UH8xFgPp7Bad8MQ',
+            authToken: null,
             confirmPassword: null,
             loading: false,
             search: null,
@@ -2031,8 +2031,9 @@ let userApp = Vue.createApp({
                 let availability;
                 for( var i=0; i < this.bookings.length; i++ ){
                     availability = dateCheck(this.bookings[i].preferred_check_in, this.bookings[i].preferred_check_in, this.selected_check_in)
+                    console.log(availability);
 
-                    if ( !availability && ( this.bookings[i].paid_code  > 0 ) ){
+                    if ( availability && ( this.bookings[i].paid_code  > 0 ) ){
                         this.error = `Apartment not available for this period`
                         new Toasteur().error(this.error);
                         return;
@@ -3125,65 +3126,6 @@ let userApp = Vue.createApp({
                 this.loading = false;
             }
         },
-        async getAllWallets(){ 
-            let page = ( this.currentPage )? this.currentPage : 1;
-            let per_page = ( this.per_page ) ? this.per_page : 5;
-            const headers = {
-                "Authorization": `Bearer ${this.authToken}`,
-                "Content-type": "application/json"
-            }
-
-            let url = `${this.baseurl}api/userwalletaddress/getWalletByUserid.php?page=${page}&per_page=${per_page}`;
-
-            this.total_page = null
-            try {
-                this.loading = true
-                const response = await axios.get(url, {headers} );
-                if ( response.data.status ){
-                    if (response.data.data.page){
-                        this.wallets = response.data.data.wallets;
-                        this.currentPage = response.data.data.page;
-                        this.total_page = response.data.data.totalPage;
-                        this.per_page = response.data.data.per_page;
-                        this.totalData = response.data.data.total_data;   
-                    }
-                }else{
-                    this.wallets = null
-                }          
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 401){
-                        this.error = "User not Authorized";
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 405){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-    
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
-                }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-                
-            } finally {
-                this.loading = false;
-            }
-        },
         copyText(){
             this.$refs.myinput.focus();
             document.execCommand('copy');
@@ -3192,8 +3134,10 @@ let userApp = Vue.createApp({
         }
     },
     async mounted(){
-        // this.getToken();
-        await this.getUserDetails();
+        this.getToken();
+        if ( this.authToken ){
+            await this.getUserDetails();
+        }
         // this.getDefaultAddress();
         await this.getAllCategory();
         if ( page === "index.php" || page === "" ){
