@@ -1467,13 +1467,14 @@
                                                                 <div class="col-lg-6">
                                                                     <div class="w-100">
                                                                         <small>Check In Date</small>
-                                                                        <input type="date" class="date" style="width:100%">
+                                                                        <input type="date" @change="changeMinCheckOut" v-model="selected_check_in" :min="currentDate" class="date" style="width:100%">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="w-100">
                                                                         <small>Check Out Date</small>
-                                                                        <input type="date" class="date" style="width:100%">
+                                                                        <input v-if="selected_check_in" v-model="selected_check_out" type="date" :min="min_checkout" class="date" style="width:100%">
+                                                                        <input v-if="!selected_check_in" disabled type="date" :min="min_checkout" class="date" style="width:100%">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -1538,8 +1539,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="_fz3zdn w-100 mt-4">
-                                                        <button type="button" class="_qqb2vcb">
+                                                        <button v-if="!available" @click="checkAvailability" type="button" class="_qqb2vcb">
                                                             <span class="c4wd1yj">Check availability </span>
+                                                        </button>
+
+                                                        <button v-if="available" @click="bookApartment" disabled type="button" class="_qqb2vcb">
+                                                            <span class="c4wd1yj">Reserve Apartment </span>
                                                         </button>
                                                     </div>
                                                 </div>
