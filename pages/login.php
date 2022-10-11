@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../assets/css/auth.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../admin/assets/css/toasteur-default.min.css">
     <title>Layout Page</title>
 </head>
@@ -22,7 +23,6 @@
 
     <div class="body-wrapper">
             <header>
-
                 <div class="header-inner">
                     <div class="row col-12 m-0 align-items-center justify-content-between justify-content-md-around">
                         <div class="p-0 col-md-1 col-lg-2 logo text-md-start d-none d-md-inline-flex">
@@ -292,8 +292,16 @@
 
             <main class="container justify-content-center row " style="margin: auto;margin-bottom: 70px;">
                 <div class="card col-md-7 p-0" style="max-width: 500px;margin-top:120px;">
-                    <b class="text-center pt-3"> <a @click.prevent ='oldUser'> Log in or </a> <a @click.prevent='newUser'>Sign Up</a></b>
-                    <hr>
+                    <b class="text-center pt-3">
+                        <div class="login-btn" >
+                            <div @click.prevent='oldUser' v-if="is_show_login" class="btnx">Log In</div>
+                            <div @click.prevent='oldUser' v-else class="">Log In</div>
+                            <div @click.prevent='newUser' v-if="is_show_login" class="" >Sign Up</div>
+                            <div @click.prevent='newUser' v-else class="btnx" >Sign Up</div>
+                        </div>
+                        <!-- <a @click.prevent ='oldUser'> Log in  </a> <a >Sign Up</a> -->
+                    </b>
+                    <hr>                  
                     <form v-if='loginField' @submit.prevent='loginUser()' class="p-3 pt-3">
                         <h3 class="mb-3"><b>Welcome to Airbnb.</b></h3>
                         <!-- Email input -->

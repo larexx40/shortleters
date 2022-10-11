@@ -299,4 +299,21 @@
 .accessibility-inner-one .form-check, .accessibility-inner-two .form-check, .accessibility-inner-three .form-check, .accessibility-inner-four .form-check{
     margin: 0px 12px 0px 0px;
 }
+
+.login-btn{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
+
+.login-btn div{
+    width: 50%;
+    padding: 5px 10px;
+}
+
+.login-btn .btnx{
+    background-color: #53B561;
+    color: white;
+    border-radius: 5px;
+}
   

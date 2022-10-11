@@ -24,7 +24,8 @@ let authApp = Vue.createApp({
             confirm_password: null,
             loading: null,
             error: null,
-            baseurl: "http://localhost/shortleters/"
+            baseurl: "http://localhost/shortleters/",
+            is_show_login: true,
         }
     },
     async created() {
@@ -47,10 +48,14 @@ let authApp = Vue.createApp({
         newUser (){
             this.regField = true;
             this.loginField= false;
+            this.is_show_login = false;
+
         },
         oldUser (){
             this.loginField = true;
-            this.regField = false
+            this.regField = false;
+            this.is_show_login = true;
+
         },
         //google oauth
         async googleOauth(){
