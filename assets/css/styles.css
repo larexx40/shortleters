@@ -50,7 +50,7 @@
 
 .hero .section1 .submain .btn{
     color: white;
-    background-color: #da0a65;
+    background-color: #53B561;
     margin-top: 15%;
     padding: 10px 15px;
     font-weight: bold;
@@ -162,7 +162,7 @@
     min-height: 450px;
     margin: 96px 55px 40px 55px;
     color: white ;
-    background-color: #FF385C;
+    background-color: #53B561;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -245,7 +245,7 @@
 
 .tryhosting_section .main .section2 .submain .btn{
     color: white;
-    background-color: #da0a65;
+    background-color: #53B561;
     margin-top: 15%;
     padding: 10px 15px;
     font-weight: bold;
@@ -299,4 +299,34 @@
 .accessibility-inner-one .form-check, .accessibility-inner-two .form-check, .accessibility-inner-three .form-check, .accessibility-inner-four .form-check{
     margin: 0px 12px 0px 0px;
 }
-  
+
+.login-btn{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
+
+.login-btn div{
+    width: 50%;
+    padding: 5px 10px;
+}
+
+.login-btn .btnx{
+    background-color: #53B561;
+    color: white;
+    border-radius: 5px;
+}
+
+.register .terms_condition .heavy{
+    font-weight: 800;
+}
+
+.register .terms_condition .link{
+    text-decoration: underline;
+}
+
+.navigation-wrapper .a3r5gds .active{
+    border-bottom: 5px solid #53B561;
+    border-radius: 6px;
+    padding: 0px 7px;
+}

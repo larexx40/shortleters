@@ -1,6 +1,6 @@
 .btn-primary{
-    background-image: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%) !important;
-    border-color:#E61E4D !important;
+    background-image: linear-gradient(to right, #53B561 0%, #27b33c 50%, #09ad21 100%) !important;
+    border-color:#53B561 !important;
 }._16fq9mb {
 -webkit-box-align: center !important;
 -ms-flex-align: center !important;
@@ -32,7 +32,7 @@ box-shadow: none !important;
 
 }
 input:focus, select:focus{
-border-color: #d80765 !important;
+border-color: #53B561 !important;
 }.social-links button{
 border: 1px solid !important;
 padding: 10px;

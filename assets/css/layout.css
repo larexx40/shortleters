@@ -15,7 +15,7 @@
 
 :root {
     --font: CL;
-    --pink: #ff385c;
+    --primary: #53B561;
     --white: #fff;
     --inactive-clr: #717171;
     --active-clr: #222;
@@ -31,9 +31,7 @@
 
 /*  <====== DEFAULTS =======>  */
 
-*,
-*::after,
-*::before {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -103,7 +101,7 @@ header .header-inner {
 }
 
 header .logo>div a {
-    color: var(--pink);
+    color: var(--primary);
 }
 
 header .search-bar .middle-tabs {
@@ -159,7 +157,7 @@ header .search-bar .nav-pills .nav-item button {
 }
 
 header .search-bar .nav-pills .nav-item em::before {
-    background-color: var(--pink);
+    background-color: var(--primary);
     color: var(--white);
     font-size: 13px;
     padding: 8px;
@@ -357,7 +355,7 @@ header .menu-link .dropdown-menu .dropdown-item {
 }
 
 .sub-header .navigation-wrapper::-webkit-scrollbar-thumb {
-    background-color: var(--pink);
+    background-color: var(--primary);
     border-radius: 1rem;
     width: 2rem !important;
 }
@@ -1278,7 +1276,7 @@ footer .mobile-view .each-link a {
 }
 
 footer .mobile-view .each-link a.active {
-    color: var(--pink);
+    color: var(--primary);
 }
 
 footer .mobile-view .each-link a .svg-icon svg {
