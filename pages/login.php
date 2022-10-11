@@ -113,9 +113,9 @@
                                             <li><a class="dropdown-item" href="register.php">Sign up</a></li>
                                             <li><a class="dropdown-item" href="login.php">Log in</a></li>
                                             <div class="sub-menu-links">
-                                                <li><a class="dropdown-item" href="home.html">Host your Home</a></li>
-                                                <li><a class="dropdown-item" href="experience.html">Host an experience</a></li>
-                                                <li><a class="dropdown-item" href="help.html">Help</a></li>
+                                                <li><a class="dropdown-item" href="home.php">Host your Home</a></li>
+                                                <li><a class="dropdown-item" href="experience.php">Host an experience</a></li>
+                                                <li><a class="dropdown-item" href="help.php">Help</a></li>
                                             </div>
                                         </ul>
                                     </div>

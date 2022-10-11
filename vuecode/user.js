@@ -126,6 +126,11 @@ let userApp = Vue.createApp({
 
             //lanre data @S
             userDetails: null,
+            buildingTypes: null,
+            subTypesByBuildingid: null,
+            spaceTypes: null,
+            all_amenities: null,
+            highlights: null,
             //@E lanre data
             // @S korede data
             currentDate: today,
@@ -143,7 +148,7 @@ let userApp = Vue.createApp({
             password: null,
             confirmpassword: null,
             currentpassword: null,
-            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjUyMjQ5NzEsImlzcyI6IkxPRyIsIm5iZiI6MTY2NTIyNDk3MSwiZXhwIjoxNjY1Mjk4NzcxLCJ1c2VydG9rZW4iOiJDTkdrTG1zNVF2N3dUdU1zWEhmbmNrYkg4UG1LcnRmc004cjBDazdsdXNlcnN1c2VyIn0.yRZ4KF2vvpN_4WRegCkamxMajCBV9pApKTVOtiIkKU5bE8yGB0Jko1PWs6L8bb0PGk9OYX-Om6y-ZiS46kLldw',
+            authToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NjU0NTU2MTksImlzcyI6IkxPRyIsIm5iZiI6MTY2NTQ1NTYxOSwiZXhwIjoxNjY1NTI5NDE5LCJ1c2VydG9rZW4iOiJDTkdrTG1zNVF2N3dUdU1zWEhmbmNrYkg4UG1LcnRmc004cjBDazdsdXNlcnN1c2VyIn0.CQYK3IWh2sfaHXOMhFvEF-vAJILnpLYltJDa4BdO7S88e6Z6UO6m3sXpu1bDcPQg2QkVhB4Qrsh6TM3zkmxHpQ',
             confirmPassword: null,
             loading: false,
             search: null,
@@ -152,6 +157,7 @@ let userApp = Vue.createApp({
             total_page: null,
             currentPage: 1,
             totalData: null,
+            totalPage: null,
             per_page: 6,
             error: null,
             baseurl: "http://localhost/shortleters/"
@@ -161,10 +167,25 @@ let userApp = Vue.createApp({
         // this.getToken()
 
         //check page
-        if(page =='personal-info.php'){
-            await this.getUserDetails()
+        if(page =='property-type-group.php'){
+            await this.getAllBuildingType()
         }
-        
+        if(page =='property-type.php'){
+            let buildingTypeid = (localStorage.getItem("buildingTypeid")) ? localStorage.getItem("buildingTypeid"): null;
+            if(!buildingTypeid){
+                window.location.href="./property-type-group.php";
+            }
+            await this.getAllSubBuildingTypeByBuildingTypeid(buildingTypeid,1);
+        }
+        if(page =='privacy-type.php'){
+            await this.getAllSpaceType()
+        }
+        if(page =='amenities.php'){
+            await this.getAllAmenities()
+        }
+        if(page =='description.php'){
+            await this.getAllHighlight()
+        }
 
     },
     methods: {
@@ -375,6 +396,344 @@ let userApp = Vue.createApp({
                 new Toasteur().error(this.error);
                 
             } finally {
+                this.loading = false;
+            }
+        },
+
+        //onboarding
+        async getAllBuildingType(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}/api/buildingType/getBuildingType.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.buildingTypes = response.data.data.buildingTypes;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.buildingTypes = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getAllSubBuildingTypeByBuildingTypeid(id, load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}api/sub_building_type/getSubByBuildingid.php?buildingTypeid=${id}&noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            
+            // const url = `${this.baseUrl}api/sub_building_type/getSubByBuildingid.php?buildingTypeid=${id}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if (load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.subTypesByBuildingid = response.data.data;
+                    this.buildingSubtypes = response.data.data.buildingSubtypes;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("ApiDelivery address", response.data.data.deliveryAddress);
+                }else{
+                    this.subTypesByBuildingid = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getAllSpaceType(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}api/spaceType/getSpaceType.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.spaceTypes = response.data.data.spaceTypes;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                    //console.log("APiMonify", response.data.data.monifys);
+                }else{
+                    this.spaceTypes = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getAllAmenities( load = 1){
+            console.log(this.sort);
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
+            let page = ( this.kor_page )? this.kor_page : 1;
+            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
+    
+            const url = `${this.baseurl}api/amenities/get_all_amenities.php?per_page=${per_page}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.all_amenities = response.data.data.amenities;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.all_amenities = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getAllHighlight(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}api/highlights/getHighlights.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.highlights = response.data.data.highlights;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.highlights = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
+                
+            }finally {
                 this.loading = false;
             }
         },
@@ -1952,7 +2311,7 @@ let userApp = Vue.createApp({
     },
     async mounted(){
         // this.getToken();
-        // this.getUserDetails();
+        await this.getUserDetails();
         // this.getDefaultAddress();
         await this.getAllCategory();
         if ( page === "index.php" || page === "" ){

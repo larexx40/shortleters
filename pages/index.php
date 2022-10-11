@@ -145,8 +145,10 @@
                                 </div>
                             </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="register.php">Sign up</a></li>
-                                            <li><a class="dropdown-item" href="login.php">Log in</a></li>
+                                            <li v-if='!userDetails'><a class="dropdown-item" href="register.php">Sign up</a></li>
+                                            <li v-if='!userDetails'><a class="dropdown-item" href="login.php">Log in</a></li>
+                                            <li v-if='userDetails'><a class="dropdown-item" href="account-settings.php">Account</a></li>
+                                            <li v-if='userDetails'><a class="dropdown-item" href="login.php">Manage Listings</a></li>
                                             <div class="sub-menu-links">
                                                 <li><a class="dropdown-item" href="home.php">Host your Home</a></li>
                                                 <li><a class="dropdown-item" href="help.php">Help</a></li>

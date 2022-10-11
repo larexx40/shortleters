@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-
-
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../../assets/fonts/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../assets/css/layout.css">
-    <link rel="stylesheet" href="../../../assets/css/hosting.css">
-    <link rel="stylesheet" href="../../../assets/css/onboarding.css">
-    <title>Account Settings</title>
+<?php include "../includes/header.php"; ?>
+    <title>Location</title>
 </head>
 
 <style>
@@ -110,8 +97,9 @@
 </style>
 
 <body>
-
-    <div class="body-wrapper row m-0 p-0 position-relative">
+    <div id="user" v-cloak>
+        <?php include "../includes/loading.php"; ?>
+        <div class="body-wrapper row m-0 p-0 position-relative">
         <div class="col-md-6 video-container p-0 position-relative" style="background-image: linear-gradient(#4d1ca4, #a7238f);">
 
             <div style="height: 100%;display:flex;align-items: center;justify-content: center;">
@@ -120,9 +108,9 @@
                 </div>
 
             </div>
-            <a href="../index.html" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
+            <a href="../index.php" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
                 right: 160px;">Back</a>
-            <a href="../index.html" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
+            <a href="../index.php" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
                 right: 20px;">Save and Exit</a>
 
         </div>
@@ -174,23 +162,22 @@
                         <div class="progress-bar" role="progressbar" style="width: 40%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
-                        <a href="./privacy-type.html" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                        <a href="./is_location.html" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                        <a href="./privacy-type.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
+                        <a href="./is_location.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
                     </div>
 
                 </div>
-                <a href="../index.html" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
+                <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
                 right: 160px;">Back</a>
-                <a href="../index.html" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
+                <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
                 right: 20px;">Save and Exit</a>
             </div>
 
         </div>
 
     </div>
-
-    <script src="../../../assets/js/bootstrap.bundle.min.js "></script>
-    <script src="../../../assets/js/jquery-3.6.1.min.js "></script>
-</body>
+    </div>
+    
+    <?php include "../includes/vue-script.php"; ?>   
 
 </html>

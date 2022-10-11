@@ -1,5 +1,5 @@
 <?php include "../includes/header.php"; ?>
-    <title>Title</title>
+    <title>Photos</title>
 </head>
 <style>
     .hovvvv {
@@ -35,95 +35,9 @@
             width: 100%;
         }
     }
-    
-    ._j3ds15 {
-        -webkit-box-pack: start !important;
-        -webkit-box-align: center !important;
-        -webkit-box-direction: normal !important;
-        -webkit-box-orient: horizontal !important;
-        display: flex !important;
-        flex-flow: row wrap !important;
-        max-width: 445px !important;
-        min-width: min(300px, 100vw) !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-    }
-    
-    ._fplba90 {
-        padding-left: 4px !important;
-        padding-right: 4px !important;
-        padding-bottom: 12px !important;
-        animation-duration: 600ms !important;
-        animation-iteration-count: 1 !important;
-        animation-fill-mode: both !important;
-        animation-name: keyframe_14ic1xm !important;
-    }
-    
-    ._w0xfdo {
-        -webkit-box-orient: horizontal !important;
-        -webkit-box-align: center !important;
-        -webkit-box-pack: center !important;
-        cursor: pointer !important;
-        text-align: center !important;
-        border: 1px solid rgb(221, 221, 221) !important;
-        background-color: rgb(255, 255, 255) !important;
-        outline: none !important;
-        padding: 0px 16px !important;
-        margin: 0px !important;
-        color: rgb(34, 34, 34) !important;
-        font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important;
-        position: relative !important;
-        transition-property: -ms-transform, -webkit-transform, transform, background-color, border-color !important;
-        transition-duration: 0.15s !important;
-        transition-timing-function: ease-in-out !important;
-        border-radius: 32px !important;
-        height: 56px !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        flex: 1 1 0% !important;
-        font-size: 18px !important;
-        line-height: 24px !important;
-        font-weight: 600 !important;
-    }
-    
-    ._66qnx8 {
-        -webkit-box-pack: center !important;
-        -ms-flex-pack: center !important;
-        -webkit-box-direction: normal !important;
-        -webkit-box-orient: vertical !important;
-        display: -webkit-box !important;
-        display: -moz-box !important;
-        display: -ms-flexbox !important;
-        display: -webkit-flex !important;
-        display: flex !important;
-        -webkit-flex-direction: column !important;
-        -ms-flex-direction: column !important;
-        flex-direction: column !important;
-        -webkit-justify-content: center !important;
-        justify-content: center !important;
-    }
-    
-    ._5kaapu {
-        -webkit-box-align: center !important;
-        -ms-flex-align: center !important;
-        display: -webkit-box !important;
-        display: -moz-box !important;
-        display: -ms-flexbox !important;
-        display: -webkit-flex !important;
-        display: flex !important;
-        -webkit-align-items: center !important;
-        align-items: center !important;
-    }
-    
-    ._1b676g8 {
-        margin-right: 16px !important;
-    }
 </style>
 
 <body>
-
-    
     <div id="user" v-cloak>
         <?php include "../includes/loading.php"; ?>
         <div class="body-wrapper row m-0 p-0">
@@ -154,20 +68,37 @@
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative">
                 <div style="height: 100%;display:flex;align-items: center;justify-content: center;">
                     <ul class="question-tag px-4">
-                        <h2 class="text-left pt-4 mb-4"><b>
-                            Now, let's describe your place</b>
-                            <small style="font-size: 14px !important;display:block">Choose up to two Highlights.</small>
+                        <h2 class="text-center pt-4 mb-4"><b>
+                            Now for the fun part—set your price</b>
+                            <small style="font-size: 14px !important;display:block">Upload at least 5 Photos</small>
                         </h2>
 
                         <br>
 
-                        <div class="form-floating">
-                            <textarea class="form-control" style="height: 300px;" placeholder="Adorable guest house in lagos" id="floatingTextarea">Relax with the whole family at this peaceful place to stay.</textarea>
-                            <label for="floatingTextarea">Title</label>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
                         </div>
-                        <span>59/500</span>
 
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                        </div>
 
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                        </div>
 
 
 
@@ -177,8 +108,8 @@
                             <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
-                            <a href="./description.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                            <a href="./price.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                            <a href="./amenities.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
+                            <a href="./title.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
                         </div>
 
                     </div>
@@ -191,7 +122,8 @@
 
     </div>
 
-    <?php include "../includes/vue-script.php"; ?>
+    
+    <?php include "../includes/vue-script.php"; ?>   
 </body>
 
 </html>
