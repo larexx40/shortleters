@@ -6,7 +6,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     Header("Cache-Control: no-cache");
 
-    include "../cartsfunction.php";
+    include "../../cartsfunction.php";
 
     // This step occurs if the user Selects a sub Building Type According to Building Type Selected
     
@@ -88,7 +88,7 @@
 
         $num_row = checkifFieldExist($connect, "apartment_images", "apartment_id", $apartment_id);
 
-        $total_files_sent = count($productImages['name']);
+        $total_files_sent = count($apartmentImages['name']);
 
         if (!$num_row){
             if ( $total_files_sent < $min_photo_number ){
@@ -108,10 +108,10 @@
         
         for ($index = 0; $index < $total_files_sent; $index++){
              $file = [
-                'name' => $productImages['name'][$index],
-                'size' => $productImages['size'][$index],
-                'tmp_name' => $productImages['tmp_name'][$index],
-                'error' => $productImages['error'][$index]
+                'name' => $apartmentImages['name'][$index],
+                'size' => $apartmentImages['size'][$index],
+                'tmp_name' => $apartmentImages['tmp_name'][$index],
+                'error' => $apartmentImages['error'][$index]
             ];
 
             $path = "apartments";
