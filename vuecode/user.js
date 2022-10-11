@@ -1,3 +1,4 @@
+// Utilities or Functions
 const urlPath = window.location.pathname.split("/");
 const length = urlPath.length;
 const page = urlPath[length -1];
@@ -42,6 +43,31 @@ function addDays(date, days) {
 }
 
 min_checkout = addDays(today, 1);
+
+// check if a day is available
+function dateCheck(from,to,check) {
+
+    var fDate,lDate,cDate;
+    fDate = Date.parse(from);
+    lDate = Date.parse(to);
+    cDate = Date.parse(check);
+
+    if((cDate <= lDate && cDate >= fDate)) {
+        return true;
+    }
+    return false;
+}
+
+// check the difference between two dates
+const days_difference = (day1, day2) => {
+    var day1 = new Date(day1);
+    var day2 = new Date(day2);
+
+    var differnce_in_time = day2.getTime() - day1.getTime();
+    var days_difference = differnce_in_time / (1000 * 3600 * 24);
+    
+    return days_difference;
+}
 
 let userApp = Vue.createApp({
     data(){
@@ -737,6 +763,42 @@ let userApp = Vue.createApp({
                 
             } finally {
                 this.loading = false;
+            }
+        },
+        async checkAvailability(){
+            if ( !this.selected_check_in || !this.selected_check_out ){
+                this.error = "Kindly Select a Check in and Check Out date"
+                new Toasteur().error(this.error);
+                return;
+            }
+
+            let no_of_days = days_difference(this.selected_check_in, this.selected_check_out)
+
+            if ( no_of_days < this.apartment_details.min_stay ){
+                this.error = `Minimum Night is ${this.apartment_details.min_stay}`
+                new Toasteur().error(this.error);
+                return;
+            }
+
+            if ( no_of_days > this.apartment_details.max_stay ){
+                this.error = `Maximum Night is ${this.apartment_details.min_stay}`
+                new Toasteur().error(this.error);
+                return;
+            }
+
+            if ( this.bookings ){
+                let availability;
+                for( var i=0; i < this.bookings.length; i++ ){
+                    availability = dateCheck(this.bookings[i].preferred_check_in, this.bookings[i].preferred_check_in, this.selected_check_in)
+
+                    if ( !availability && ( this.bookings[i].paid_code  > 0 ) ){
+                        this.error = `Apartment not available for this period`
+                        new Toasteur().error(this.error);
+                        return;
+                    }
+                }
+
+                this.available = true;
             }
         },
         async getAllApartments(load = 1){
