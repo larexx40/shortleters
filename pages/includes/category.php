@@ -3,6 +3,16 @@
         <div class="container p-0">
             <div class="d-flex align-items-center justify-content-between">
                 <div v-if="apartment_category" class="navigation-wrapper">
+                    <button>
+                        <div class="a3r5gds"  @click="getApartmentsInaCategory(item.category_id, 5)" >
+                            <span class="c1m2z0bj c1w8ohg7">
+                                <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24">
+                                <div class="active" >
+                                    <span >All</span>
+                                </div>
+                            </span>
+                        </div>
+                    </button>                      
                     <button v-for="(item, index) in apartment_category" :key="index">
                         <div @click="getApartmentsInaCategory(item.category_id, 5)" >
                             <span class="c1m2z0bj c1w8ohg7">

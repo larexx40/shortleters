@@ -379,9 +379,9 @@
         padding: 14px 24px !important;
         transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s !important;
         -webkit-tap-highlight-color: transparent !important;
-        border: none !important;
-        background: linear-gradient(to right, rgb(230, 30, 77) 0%, rgb(227, 28, 95) 50%, rgb(215, 4, 102) 100%) !important;
-        color: rgb(255, 255, 255) !important;
+        background-image: linear-gradient(to right, #53B561 0%, #27b33c 50%, #09ad21 100%) !important;
+        border-color:#53B561 !important;
+        color: white;
     }
     
     .dropdown-menu.w-100 li a {
