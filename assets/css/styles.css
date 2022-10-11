@@ -316,3 +316,11 @@
     color: white;
     border-radius: 5px;
 }
+
+.register .terms_condition .heavy{
+    font-weight: 800;
+}
+
+.register .terms_condition .link{
+    text-decoration: underline;
+}

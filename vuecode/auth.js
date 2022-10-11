@@ -15,6 +15,7 @@ let authApp = Vue.createApp({
             username: null,
             firstname: null,
             lastname: null,
+            birthday: null,
             phone: null,
             password: null,
             password1: null,

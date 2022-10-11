@@ -360,7 +360,7 @@
                         </div>
                     </form>
 
-                    <form v-if='regField' @submit.prevent='registerUser()' class="p-3 pt-3">
+                    <form v-if='regField' @submit.prevent='registerUser()' class="register p-3 pt-3">
                         <h3 class="mb-3"><b>Welcome to Airbnb.</b></h3>
                         <!-- Email input -->
                         <div class="form-floating mb-3">
@@ -383,6 +383,10 @@
                             <label for="floatingInput">Lastname</label>
                         </div>
                         <div class="form-floating mb-3">
+                            <input type="date" v-model='birthday' class="form-control" placeholder="Birthday">
+                            <label for="floatingInput">Birthday</label>
+                        </div>                        
+                        <div class="form-floating mb-3">
                             <input type="password" v-model='password' class="form-control"  placeholder="Password">
                             <label for="floatingPassword">Password</label>
                         </div>
@@ -390,26 +394,12 @@
                             <input type="password" v-model='password1' class="form-control" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">Verify Password</label>
                         </div>
+                        <div class="terms_condition mb-3" >
+                            By selecting <span class="heavy">Agree and continue</span>, I agree to Airbnb’s <a target="_blank" href="#" class="link">Terms of Service</a>, <a target="_blank" href="/terms/payments_terms?source=tos" class="link">Payments Terms of Service</a>, and <a target="_blank" href="/terms/nondiscrimination_policy?source=tos" class="link">Nondiscrimination Policy</a> and acknowledge the <a target="_blank" href="/terms/privacy_policy?source=tos" class="link">Privacy Policy</a>
+                        </div>
                         <!-- 2 column grid layout for inline styling -->
                         <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary btn-block p-2 mb-2" style="width: calc(100% - 30px);">Continue</button>
-
-                        <div class="_16fq9mb">or</div>
-                        <!-- Register buttons -->
-                        <div class="social-links d-grid" style="gap:10px;">
-                            <button type="button" class="btn position-relative text-center btn-floating mx-1">
-                                <em class="bi bi-facebook position-absolute" style="color: rgb(24, 119, 242);"></em> <b> Continue with Facebook.</b>
-                            </button>
-
-                            <button @click.prevent='googleOauth()' type="button" class="btn position-relative text-center btn-floating mx-1">
-                                <em class="bi bi-google position-absolute" style="color: red;"></em> <b> Continue with Google.</b>
-                            </button>
-
-                            <button type="button" class="btn position-relative text-center btn-floating mx-1">
-                                <em class="bi bi-twitter position-absolute" style="color: #37afd6;"></em> <b>Continue with Twitter.</b>
-                            </button>
-
-                        </div>
+                        <button type="submit" class="btn btn-primary btn-block p-2 mb-2" style="width: calc(100% - 30px);">Agree or Continue</button>
                     </form>
                 </div>
 
