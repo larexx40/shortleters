@@ -100,7 +100,8 @@
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
                             <a href="./index.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
                             
-                            <span @click.prevent='addApartmentStep1()'><a  href="./property-type.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;" >Next</a></span>
+                            <span v-if="!buildingTypeid"><span class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;" >Next</span></span>
+                            <span v-if="buildingTypeid" @click.prevent='addApartmentStep2()'><span class="btn _kaq6tx  w-120" style="background-color: #53B561;background-image: none !important;" >Next</span></span>
                         </div>
 
                     </div>

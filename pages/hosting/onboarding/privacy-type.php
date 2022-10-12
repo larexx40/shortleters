@@ -83,55 +83,12 @@
             </div>
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
                 <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
-                    <ul class="question-tag">
-                        <li>
+                    <ul v-if="spaceTypes" class="question-tag">
+                        <li v-for="(item, index) in spaceTypes" @click="setSpaceId(item.spaceTypeid)">
                             <div class="d-grid">
-                                <b>A Private Room</b>
+                                <b>{{item.name}}</b>
                             </div>
-
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>Apartment</b>
-                                <small> A sepate building from the main house</small>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>Apartment</b>
-                                <small> A sepate building from the main house</small>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>Apartment</b>
-                                <small> A sepate building from the main house</small>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>Apartment</b>
-                                <small> A sepate building from the main house</small>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>Apartment</b>
-                                <small> A sepate building from the main house</small>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div class="d-grid">
-                                <b>Apartment</b>
-                                <small> A sepate building from the main house</small>
-                            </div>
-
-                        </li>
+                        </li>  
                     </ul>
                     <div class=" hovvvv justify-content-evenly">
                         <div class="progress" style="height:5px;">
@@ -139,7 +96,8 @@
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
                             <a href="./property-type-group.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                            <a href="./location.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                            <span v-if="!space_type_id"><span class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;" >Next</span></span>
+                            <span v-if="space_type_id" @click.prevent='addApartmentStep4(4)'><span class="btn _kaq6tx  w-120" style="background-color: #53B561;background-image: none !important;" >Next</span></span>
                         </div>
 
                     </div>

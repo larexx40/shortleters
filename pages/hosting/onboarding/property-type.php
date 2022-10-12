@@ -85,7 +85,7 @@
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
                 <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
                     <ul v-if='buildingSubtypes' class="question-tag">
-                        <li v-for='(item, index) in buildingSubtypes'>
+                        <li v-for='(item, index) in buildingSubtypes' @click="setSubBuildingType(item.sub_type_id)">
                             <div class="d-grid">
                                 <b>{{item.name}}</b>
                                 <small> {{item.description}}</small>
@@ -100,7 +100,8 @@
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
                             <a href="./property-type-group.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                            <a href="./privacy-type.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                            <span v-if="!sub_building_type_id"><span class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;" >Next</span></span>
+                            <span v-if="sub_building_type_id" @click.prevent='addApartmentStep3(4)'><span class="btn _kaq6tx  w-120" style="background-color: #53B561;background-image: none !important;" >Next</span></span>
                         </div>
 
                     </div>
