@@ -837,6 +837,7 @@ let userApp = Vue.createApp({
         },
         //select building type step 2
         async addApartmentStep2(load = 1){
+            console.log("apartment id", this.listing_apartmentid);
             const data = new FormData();
             data.append('building_type', this.buildingTypeid);
             data.append('apartment_id', this.listing_apartmentid);
