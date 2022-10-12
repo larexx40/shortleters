@@ -85,11 +85,10 @@
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
 
                 <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
-                    <ul v-if='buildingTypes' class="question-tag">
-                        <!-- if not click active, disable next -->
-                        <li v-for='(item, index) in buildingTypes' @click.prevent='setBuildingTypeid(item.buildingTypeid)'>
-                            <b>{{item.name}}</b>
-                            <img :src="item.imageUrl" :width="56" :height="56" />
+                    <ul class="question-tag">
+                        <li>
+                            <b>Apartment</b>
+                            <img src="https://a0.muscache.com/im/pictures/eadbcbdb-d57d-44d9-9a76-665a7a4d1cd7.jpg?im_w=240" width="56px" height="56px" />
                         </li>
 
                     </ul>
