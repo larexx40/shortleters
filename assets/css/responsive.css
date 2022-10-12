@@ -279,5 +279,9 @@
     .filter.modal .modal-body * .form-check {
         margin-bottom: 5px;
     }
+
+    .main-checkout .header{
+        display: none;
+    }
     
 }
