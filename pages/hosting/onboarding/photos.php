@@ -108,8 +108,8 @@
                             <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
-                            <a href="./amenities.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                            <a href="./title.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                            <a href="./amenities.php" class="_kaq6tx w-120" >Back</a>
+                            <a href="./title.php" class="_kaq6tx  w-120">Next</a>
                         </div>
 
                     </div>
