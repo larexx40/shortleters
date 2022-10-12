@@ -85,9 +85,13 @@
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
 
                 <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
-                    <ul v-if='buildingTypes' class="question-tag">
+                    <ul v-if='buildingTypes' class="question-tag" id="question-tag">
                         <!-- if not click active, disable next -->
-                        <li v-for='(item, index) in buildingTypes' @click.prevent='setBuildingTypeid(item.buildingTypeid)'>
+                        <li class="" v-for='(item, index) in buildingTypes' @click.prevent='setBuildingTypeid(item.buildingTypeid)'>
+                            <b>Test</b>
+                            <img src="http://localhost/shortleters/assets/images//buildingTypes/CNG-IMG-63218699206b00.84605450.jpg" :width="56" :height="56" />
+                        </li>                        
+                        <li class="question-tag-list-active" v-for='(item, index) in buildingTypes' @click.prevent='setBuildingTypeid(item.buildingTypeid)'>
                             <b>{{item.name}}</b>
                             <img :src="item.imageUrl" :width="56" :height="56" />
                         </li>
@@ -115,7 +119,8 @@
         </div>
     </div>
 
-    <?php include "../includes/vue-script.php"; ?>   
+    <?php include "../includes/vue-script.php"; ?>
+   
 </body>
 
 </html>

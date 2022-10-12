@@ -330,3 +330,11 @@
     border-radius: 6px;
     padding: 0px 7px;
 }
+
+.question-tag-list-active{
+    border: 2px solid black!important;
+}
+
+.main-checkout{
+
+}

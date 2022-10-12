@@ -2258,7 +2258,7 @@ let userApp = Vue.createApp({
                 const response = await axios.get(url, {headers} );
                 if ( response.data.status ){
                     this.apartment_category = response.data.data.apartmentCategories;   
-                    console.log(this.apartment_category);
+                    // console.log(this.apartment_category);
                 }else{
                     this.apartment_category = null
                 }          
