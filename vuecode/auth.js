@@ -61,7 +61,7 @@ let authApp = Vue.createApp({
         //google oauth
         async googleOauth(){
             console.log("proceed to oauth");
-            const url = 'http://localhost/shortleters/api/accounts/redirect.php';
+            const url = `${this.baseurl}api/accounts/redirect.php`;
             const options = {
                 method: "GET",
                 headers: { 
@@ -135,7 +135,7 @@ let authApp = Vue.createApp({
                 return
             }
             // const url = `${this.baseUrl}api/accounts/login.php`
-            const url = "http://localhost/shortleters/api/accounts/login.php";
+            const url = `${this.baseurl}api/accounts/login.php`;
             let data = new FormData();
             data.append('email', this.email);
             data.append('password', this.password);
