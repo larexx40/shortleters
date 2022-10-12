@@ -466,6 +466,8 @@
 
 .main-checkout .main .section .side2 ._mubbvpq ._a384rjh ._38duj2w{
     display: flex;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgb(221, 221, 221);
 }
 
 .main-checkout .main .section .side2 ._38duj2w img{
@@ -495,4 +497,14 @@
     -webkit-box-orient: vertical;
     word-break: break-word;
     margin-top: 4px;    
+}
+.main-checkout .main .section .side2 ._38duj2w ._25fsyw8{
+    margin-left:20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main-checkout .main .section .side2 ._38duj2w ._37dhgiw{
+    display: inline-flex;
 }

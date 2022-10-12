@@ -169,13 +169,14 @@
                                         <div style="width:124px;height:106px" >
                                             <img src="https://a0.muscache.com/im/pictures/prohost-api/Hosting-53856384/original/a99d723b-5920-4e3c-bbf1-51e1ac0f6ddb.jpeg?aki_policy=large" />
                                         </div>
-                                        <div style="margin-left:10px;" >
+                                        <div class="_25fsyw8">
                                             <div>
                                                 <p class="_4363gdj" >Entire home</p>
                                                 <p class="_bp4bbx" >Hacienda el Terrero - Casa Los Enanos</p>                                                
                                             </div>
-                                            <div>
-                                                
+                                            <div class="_37dhgiw" >
+                                                <p style="color:rgb(106 105 105);font-size:0.8rem" ><i class="fa-solid fa-star" ></i>&nbsp;5.00&nbsp;(18 reviews)</p>
+                                                <p style="color:rgb(106 105 105);font-size:0.8rem; margin-left:10px;" ><i class="fa-solid fa-user" ></i>host</p>
                                             </div>
                                         </div>
                                     </div>
