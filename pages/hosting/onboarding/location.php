@@ -100,7 +100,7 @@
     <div id="user" v-cloak>
         <?php include "../includes/loading.php"; ?>
         <div class="body-wrapper row m-0 p-0 position-relative">
-        <div class="col-md-6 video-container p-0 position-relative" style="background-image: linear-gradient(#4d1ca4, #a7238f);">
+        <div class="col-md-6 video-container p-0 position-relative" style="background-image: linear-gradient(rgb(28 107 164), rgb(35 167 57));">
 
             <div style="height: 100%;display:flex;align-items: center;justify-content: center;">
                 <div class="_e5xjym4">
@@ -162,8 +162,8 @@
                         <div class="progress-bar" role="progressbar" style="width: 40%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
-                        <a href="./privacy-type.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                        <a href="./is_location.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                        <a href="./privacy-type.php" class="_kaq6tx w-120">Back</a>
+                        <a href="./is_location.php" class="_kaq6tx  w-120">Next</a>
                     </div>
 
                 </div>
