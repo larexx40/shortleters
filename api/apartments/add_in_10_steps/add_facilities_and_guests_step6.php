@@ -139,7 +139,9 @@
                 respondBadRequest($data);
             }
 
+            //check later
             $check_if_exist = checkifFieldExist($connect, "apartment_facilities", "facility_id", $facility_id);
+            // $check_if_exist = checkifFieldExist($connect, "apartment_facilities", "apartment_id", $apartment_id);
 
             
 

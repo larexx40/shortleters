@@ -89,7 +89,7 @@
 
         for ( $i = 0; $i < $hightlight_length; $i++){
             // check if fields are valid
-            if ( !checkifFieldExist($connect, "sub_amenities", "sub_amen_id", $hightlight_id_array[$i] ) ) {
+            if ( !checkifFieldExist($connect, "highlights", "highlightid", $hightlight_id_array[$i] ) ) {
 
                 $errordesc = "Highlight does not Exist ";
                 $linktosolve = 'https://';

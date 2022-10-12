@@ -118,7 +118,7 @@
         // Make user and agent
         $query = "UPDATE `apartments` SET `amenities_id`= ?, `steps`= ? WHERE `apartment_id` = ? AND agent_id = ?";
         $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("sssss", $guest_safety_ids, $amenities_ids, $steps ,$apartment_id ,$user_id);
+        $updateStatus->bind_param("ssss", $amenities_ids, $steps ,$apartment_id ,$user_id);
         $execute = $updateStatus->execute();
 
         if ($updateStatus->error){

@@ -158,11 +158,11 @@
                         <br>
 
                         <div class="d-flex gap-3 justify-content-center align-items-center">
-                            <button class="_qvgwrg">
+                            <button @click.prevent='decrement' class="_qvgwrg">
                                 <span class="_8ovatg"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; fill: none; height: 12px; width: 12px; stroke: currentcolor; stroke-width: 5.33333; overflow: visible;"><path d="m2 16h28"></path></svg></span>
                             </button>
-                            <div class="_1mmrxodj"><input pattern="[0-9]*" placeholder="$00" class="_7q0o8o4" id="undefined-input" autocomplete="off" type="text" aria-describedby="" value="$249"></div>
-                            <button class="_qvgwrg">
+                            <div class="_1mmrxodj"><input v-model='price' type ='number' pattern="[0-9]*"  class="_7q0o8o4" autocomplete="off" type="text" aria-describedby=""></div>
+                            <button @click.prevent='increment' class="_qvgwrg">
                                 <span class="_8ovatg"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; fill: none; height: 12px; width: 12px; stroke: currentcolor; stroke-width: 5.33333; overflow: visible;"><path d="m2 16h28m-14-14v28"></path></svg></span>
                             </button>
                         </div>
@@ -170,7 +170,7 @@
                             <span>per night</span>
                         </div>
                         <div class="_16gvswn9 my-5" style="margin: auto;font-size: 23px;">
-                            <span aria-live="polite" aria-atomic="true">Keep in mind, places like yours usually range from $88 to $146.</span>
+                            <span aria-live="polite" aria-atomic="true">Keep in mind, places like yours usually range from ₦88000 to ₦146000.</span>
                             <div class="_8cd5tp d-inline"><button aria-label="Help understanding suggested prices" type="button" class="_oda838"><span class="_e296pg d-inline"><svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;"><path d="m6 0c3.3137085 0 6 2.6862915 6 6s-2.6862915 6-6 6-6-2.6862915-6-6 2.6862915-6 6-6zm0 1c-2.76142375 0-5 2.23857625-5 5s2.23857625 5 5 5 5-2.23857625 5-5-2.23857625-5-5-5zm-1.21367521 3.56538462 2.06131208.06394248-.5637119 1.8027053-.403785 1.36382709c-.06045747.19790506-.1176189.37225233-.17456178.5187348l-.05698401.13703467 1.32305033-.52022002-.21132331.80641769-.20588446.12754285-.26798068.15346349-.15093932.08107037c-.11436618.05996599-.22530423.11437536-.33131685.16193249-.29086708.1304826-.53030945.20354879-.70448479.20354879-.28120343 0-.50584046-.19835203-.50584046-.46656805 0-.03625985.00353186-.08162937.01044444-.13570439l.0128855-.08759111.0405308-.21314437.05945479-.26173957.07747193-.30790964.14800627-.54312832.18304846-.63161414.13486624-.44126408.13786306-.41960329.10856002-.29887213c.03556001-.09215019.07032879-.17592854.10381259-.24864113l.04920025-.1004328-1.09295986-.06283152.17094018-.64378699zm2.59829059-2.07692308.04797434.0640877-.39767242 1.22677604-1.13487378-.0640877.39767242-1.22677604z"></path></svg></span></button></div>
                         </div>
                         <div class="card  my-3">
@@ -185,11 +185,11 @@
                     </ul>
                     <div class=" hovvvv justify-content-evenly">
                         <div class="progress" style="height:5px;">
-                            <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 97%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
                             <a href="./description_title.php" class="_kaq6tx w-120">Back</a>
-                            <a href="./legal.php" class="_kaq6tx  w-120">Next</a>
+                            <a @click.prevent = 'addApartmentStep12()' href="./legal.php" class="_kaq6tx  w-120">Next</a>
                         </div>
 
                     </div>

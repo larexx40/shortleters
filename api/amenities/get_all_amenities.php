@@ -15,33 +15,33 @@
 
     if ($method == 'GET') {
 
-        // Get company private key
-        $query = 'SELECT * FROM apidatatable';
-        $stmt = $connect->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row =  mysqli_fetch_assoc($result);
-        $companykey = $row['privatekey'];
-        $servername = $row['servername'];
-        $expiresIn = $row['tokenexpiremin'];
+        // // Get company private key
+        // $query = 'SELECT * FROM apidatatable';
+        // $stmt = $connect->prepare($query);
+        // $stmt->execute();
+        // $result = $stmt->get_result();
+        // $row =  mysqli_fetch_assoc($result);
+        // $companykey = $row['privatekey'];
+        // $servername = $row['servername'];
+        // $expiresIn = $row['tokenexpiremin'];
 
-        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
+        // $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
+        // $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $pubkey);
-        // $agent = getShopWithPubKey($connect, $user_pubkey);
-        // $user = getUserWithPubKey($connect, $user_pubkey);
+        // $admin =  checkIfIsAdmin($connect, $pubkey);
+        // // $agent = getShopWithPubKey($connect, $user_pubkey);
+        // // $user = getUserWithPubKey($connect, $user_pubkey);
 
-        if  (!$admin){
+        // if  (!$admin){
 
-            // send user not found response to the user
-            $errordesc =  "User not an Admin";
-            $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
-        }
+        //     // send user not found response to the user
+        //     $errordesc =  "User not an Admin";
+        //     $linktosolve = 'https://';
+        //     $hint = "Only Admin has the ability to add send grid api details";
+        //     $errorData = returnError7003($errordesc, $linktosolve, $hint);
+        //     $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+        //     respondUnAuthorized($data);
+        // }
 
         if (isset($_GET['search'])) {
             $search = cleanme($_GET['search']);

@@ -78,6 +78,7 @@ let userApp = Vue.createApp({
             subTypesByBuildingid: null,
             spaceTypes: null,
             all_amenities: null,
+            all_sub_amenities: null,
             highlights: null,
             buildingSubtypes: null,
             apartment_id: null,
@@ -100,11 +101,11 @@ let userApp = Vue.createApp({
             title: null,
             guest_safety_ids: null,
             host_type_id: null,
-            price: null,
+            price: 0,
             description: null,
-            title: null,
             highlights_ids: null,
             listing_apartmentid: null,
+            systemSettings: null,
             // 10 steps of hosting variables
             buildingTypeid: null,
             //@E lanre data
@@ -180,7 +181,11 @@ let userApp = Vue.createApp({
             }
         }
         if(page === 'amenities.php'){
-            await this.getAllAmenities()
+            await this.getAllsubAmenities()
+            if(!this.listing_apartmentid){
+                this.getListing();
+            }
+        }if(page === 'title.php' || page=='description_title.php' || page == 'legal.php' || page == 'price.php'){
             if(!this.listing_apartmentid){
                 this.getListing();
             }
@@ -637,13 +642,20 @@ let userApp = Vue.createApp({
             }
         },
         async getAllAmenities( load = 1){
-            console.log(this.sort);
             let search = (this.search)? `&search=${this.search}`: '';
-            let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
-            let page = ( this.kor_page )? this.kor_page : 1;
-            let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
-    
-            const url = `${this.baseurl}api/amenities/get_all_amenities.php?per_page=${per_page}&page=${page}${search}${sort}`;
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}api/amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+
+            // console.log(this.sort);
+            // let search = (this.search)? `&search=${this.search}`: '';
+            // let sort = (this.kor_sort !== null) ? `&sort=1&sortstatus=${this.kor_sort}` : "";
+            // let page = ( this.kor_page )? this.kor_page : 1;
+            // let per_page = ( this.kor_per_page ) ? this.kor_per_page : 5;
+            // const url = `${this.baseurl}api/amenities/get_all_amenities.php?per_page=${per_page}&page=${page}${search}${sort}`;
+            
+            console.log("url", url);
             const options = {
                 method: "GET",
                 headers: { 
@@ -764,6 +776,72 @@ let userApp = Vue.createApp({
 
                 new Toasteur().error(error.message || "Error processing request")
 
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getAllsubAmenities( load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}api/sub_amenities/get_all_amenities.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+
+            const options = {
+                method: "GET",
+                headers: { 
+                    // "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.all_sub_amenities = response.data.data.amenities;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.all_amenities = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                } 
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
                 
             }finally {
                 this.loading = false;
@@ -1103,10 +1181,22 @@ let userApp = Vue.createApp({
             this.max_guest = parseInt(this.max_guest) - 1;
         },
         async decrement(index){
-            this.facilitie_number[index] = parseInt(this.facilitie_number[index]) - 1; 
+            if(page == 'floor-plan.php'){
+                this.facilitie_number[index] = parseInt(this.facilitie_number[index]) - 1; 
+            }
+            if(page == 'price.php'){
+                this.price = (this.price > 1 )? parseInt(this.price) - 1 : 0
+                console.log(this.price);           
+            }
         },
         async increment(index){
-            this.facilitie_number[index] = parseInt(this.facilitie_number[index]) + 1;
+            if(page == 'floor-plan.php'){
+            this.facilitie_number[index] = parseInt(this.facilitie_number[index]) + 1;               
+            }
+            if(page == 'price.php'){
+                this.price = (this.price >= 0 )? parseInt(this.price) + 1  : 0   
+                console.log(this.price);           
+            }
         },
         async increase(){
             this.max_guest = parseInt(this.max_guest) + 1;
@@ -1130,69 +1220,71 @@ let userApp = Vue.createApp({
 
             console.log( input);
             
-            // const url = `${this.baseurl}api/apartments/add_in_10_steps/add_facilities_and_guest_step6.php`;
-            // const options = {
-            //     method: "POST",
-            //     headers: { 
-            //         "Authorization": `Bearer ${this.authToken}`
-            //     },
-            //     input,
-            //     url
-            // }
+            const url = `${this.baseurl}api/apartments/add_in_10_steps/add_facilities_and_guests_step6.php`;
+            const options = {
+                method: "POST",
+                headers: { 
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                data: input,
+                url
+            }
             
-            // try {
-            //     if(load == 1){
-            //         this.loading = true;
-            //     }
-            //     const response = await axios(options);
-            //     if(response.data.status){
-            //         new Toasteur().success(response.data.text);
-            //     }else{
-            //         new Toasteur().error(response.data.text);
-            //     }     
-            // } catch (error) {
-            //     // //console.log(error);
-            //     if (error.response){
-            //         if (error.response.status == 400){
-            //             const errorMsg = error.response.data.text;
-            //             new Toasteur().error(errorMsg);
-            //             return
-            //         }
+            try {
+                const response = await axios(options);
+                if(response.data.status){
+                    new Toasteur().success(response.data.text);
+                    window.location.href='./amenities.php'
+                }else{
+                    new Toasteur().error(response.data.text);
+                    // window.location.href='./index.php';
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
     
-            //         if (error.response.status == 401){
-            //             const errorMsg = "User not Authorized";
-            //             new Toasteur().error(errorMsg);
-            //             window.location.href="./login.php"
-            //             return
-            //         }
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        window.location.href="./login.php"
+                        return
+                    }
     
-            //         if (error.response.status == 405){
-            //             const errorMsg = error.response.data.text;
-            //             new Toasteur().error(errorMsg);
-            //             return
-            //         }
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
     
-            //         if (error.response.status == 500){
-            //             const errorMsg = error.response.data.text;
-            //             new Toasteur().error(errorMsg);
-            //             return
-            //         }
-            //     }
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
 
-            //     new Toasteur().error(error.message || "Error processing request")
+                new Toasteur().error(error.message || "Error processing request")
 
                 
-            // }finally {
-            //     this.loading = false;
-            // } 
+            }finally {
+                this.loading = false;
+            } 
         },
         //add amenities
+        async setAmenityids(id){
+            this.amenities_ids = (!this.amenities_ids)? id : `${this.amenities_ids},${id}` 
+        },
         async addApartmentStep7(){
             const data = new FormData();
             data.append('amenities_ids', this.amenities_ids);
-            data.append('apartment_id', this.apartment_id);
+            data.append('apartment_id', this.listing_apartmentid);
             
-            const url = `${this.baseurl}api/apartments/add_in_10_steps/add_ammenities_step7.php`;
+            const url = `${this.baseurl}api/apartments/add_in_10_steps/add__amenities_step7.php`;
             const options = {
                 method: "POST",
                 headers: { 
@@ -1203,14 +1295,13 @@ let userApp = Vue.createApp({
             }
             
             try {
-                if(load == 1){
-                    this.loading = true;
-                }
                 const response = await axios(options);
                 if(response.data.status){
                     new Toasteur().success(response.data.text);
+                    window.location.href='./photos.php'
                 }else{
                     new Toasteur().error(response.data.text);
+                    // window.location.href='./index.php';
                 }     
             } catch (error) {
                 // //console.log(error);
@@ -1252,7 +1343,7 @@ let userApp = Vue.createApp({
         async addApartmentStep8(){
             const data = new FormData();
             data.append('images', this.images);
-            data.append('apartment_id', this.apartment_id);
+            data.append('apartment_id', this.listing_apartmentid);
             
             const url = `${this.baseurl}api/apartments/add_in_10_steps/add_images_step8.php`;
             const options = {
@@ -1273,6 +1364,7 @@ let userApp = Vue.createApp({
                     new Toasteur().success(response.data.text);
                 }else{
                     new Toasteur().error(response.data.text);
+                    // window.location.href='./index.php';
                 }   
             } catch (error) {
                 // //console.log(error);
@@ -1311,9 +1403,9 @@ let userApp = Vue.createApp({
             }
         },
         //apartment title
-        async addApartmentStep9(){
+        async addApartmentStep9(load = 1){
             const data = new FormData();
-            data.append('apartment_id', this.apartment_id);
+            data.append('apartment_id', this.listing_apartmentid);
             data.append('title', this.title);
             
             const url = `${this.baseurl}api/apartments/add_in_10_steps/add_apartment_title_9.php`;
@@ -1327,14 +1419,13 @@ let userApp = Vue.createApp({
             }
             
             try {
-                if(load == 1){
-                    this.loading = true;
-                }
                 const response = await axios(options);
                 if(response.data.status){
                     new Toasteur().success(response.data.text);
+                    window.location.href='./description.php';
                 }else{
                     new Toasteur().error(response.data.text);
+                    // window.location.href='./index.php';
                 }     
             } catch (error) {
                 // //console.log(error);
@@ -1373,10 +1464,14 @@ let userApp = Vue.createApp({
             }
         },
         
-        //highlights
+        //highlights / description
+        setHighlight(id){
+            this.highlights_ids = (!this.highlights_ids)? id : `${this.highlights_ids},${id}` 
+            console.log(this.highlights_ids)
+        },
         async addApartmentStep10(){
             const data = new FormData();
-            data.append('apartment_id', this.apartment_id);
+            data.append('apartment_id', this.listing_apartmentid);
             data.append('highlights_ids', this.highlights_ids);
             const url = `${this.baseurl}api/apartments/add_in_10_steps/add_highlights_step_10.php`;
             const options = {
@@ -1389,15 +1484,14 @@ let userApp = Vue.createApp({
             }
             
             try {
-                if(load == 1){
-                    this.loading = true;
-                }
                 const response = await axios(options);
                 if(response.data.status){
                     new Toasteur().success(response.data.text);
+                    window.location.href='./description_title.php';
                 }else{
                     new Toasteur().error(response.data.text);
-                }    
+                    // window.location.href='./index.php';
+                } 
             } catch (error) {
                 // //console.log(error);
                 if (error.response){
@@ -1438,7 +1532,7 @@ let userApp = Vue.createApp({
         //description step11
         async addApartmentStep11(){
             const data = new FormData();
-            data.append('apartment_id', this.apartment_id);
+            data.append('apartment_id', this.listing_apartmentid);
             data.append('description', this.description);
             const url = `${this.baseurl}api/apartments/add_in_10_steps/add_description_step11.php`;
             const options = {
@@ -1451,15 +1545,14 @@ let userApp = Vue.createApp({
             }
             
             try {
-                if(load == 1){
-                    this.loading = true;
-                }
                 const response = await axios(options);
                 if(response.data.status){
                     new Toasteur().success(response.data.text);
+                    window.location.href='./price.php';
                 }else{
                     new Toasteur().error(response.data.text);
-                }    
+                    // window.location.href='./index.php';
+                }      
             } catch (error) {
                 // //console.log(error);
                 if (error.response){
@@ -1499,7 +1592,7 @@ let userApp = Vue.createApp({
         //add price step12
         async addApartmentStep12(){
             const data = new FormData();
-            data.append('apartment_id', this.apartment_id);
+            data.append('apartment_id', this.listing_apartmentid);
             data.append('price', this.price);
             
             const url = `${this.baseurl}api/apartments/add_in_10_steps/add_price_step12.php`;
@@ -1513,15 +1606,14 @@ let userApp = Vue.createApp({
             }
             
             try {
-                if(load == 1){
-                    this.loading = true;
-                }
                 const response = await axios(options);
                 if(response.data.status){
                     new Toasteur().success(response.data.text);
+                    window.location.href='./legal.php';
                 }else{
                     new Toasteur().error(response.data.text);
-                }     
+                    // window.location.href='./index.php';
+                }    
             } catch (error) {
                 // //console.log(error);
                 if (error.response){
@@ -1561,7 +1653,7 @@ let userApp = Vue.createApp({
         //add host and safety
         async addApartmentStep13(){
             const data = new FormData();
-            data.append('apartment_id', this.apartment_id);
+            data.append('apartment_id', this.listing_apartmentid);
             data.append('host_type_id', this.host_type_id);
             data.append('guest_safety_ids', this.guest_safety_ids);
 

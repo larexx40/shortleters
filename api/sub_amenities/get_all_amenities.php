@@ -15,34 +15,6 @@
 
     if ($method == 'GET') {
 
-        // Get company private key
-        $query = 'SELECT * FROM apidatatable';
-        $stmt = $connect->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row =  mysqli_fetch_assoc($result);
-        $companykey = $row['privatekey'];
-        $servername = $row['servername'];
-        $expiresIn = $row['tokenexpiremin'];
-
-        $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
-        $pubkey = $decodedToken->usertoken;
-
-        $admin =  checkIfIsAdmin($connect, $pubkey);
-        // $agent = getShopWithPubKey($connect, $user_pubkey);
-        // $user = getUserWithPubKey($connect, $user_pubkey);
-
-        if  (!$admin){
-
-            // send user not found response to the user
-            $errordesc =  "User not an Admin";
-            $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
-        }
-
         if (isset($_GET['search'])) {
             $search = cleanme($_GET['search']);
         } else {
@@ -243,6 +215,7 @@
                 $name =  $row['name'];
                 $amen_id = $row['amen_id'];
                 $amen_name = getNameFromField($connect, "amenities", "amen_id", $amen_id);
+                $icon = $row['icon'];
                 $status_code = $row['status'];
                 $status = ($row['status'] == 1) ? "Active" : "Inactive";
                 $essential_code = $row['essential'];
@@ -256,6 +229,7 @@
                     'name' => $name,
                     'amen_id' => $amen_id,
                     'amenity_name' => ($amen_name)? $amen_name : false,
+                    'icon'=>$icon,
                     'status_code' => $status_code,
                     'status' => $status,
                     'essential_code' => $essential_code,

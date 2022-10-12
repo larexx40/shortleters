@@ -1,4 +1,3 @@
-<!-- This step occurs if the user Selects a sub Building Type According to Building Type Selected  -->
 
 <?php
     // pass cors header to allow from cross-origin
@@ -45,7 +44,6 @@
 
 
         if ( !isset($_POST['description']) ){
-
             $errordesc="Description is required";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
@@ -59,6 +57,20 @@
             $description = cleanme($_POST['description']);
         }
 
+        if ( !isset($_POST['apartment_id']) ){
+            $errordesc="apartment_id is required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Title is must be passed";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+
+        }else{
+            $apartment_id = cleanme($_POST['apartment_id']);
+        }
+
         if ( empty($description) || empty($apartment_id) ){
 
             $errordesc = "Enter all Fields";
@@ -69,9 +81,6 @@
             respondBadRequest($data);
         }
         
-
-        
-
         // check if fields are valid
 
         if ( !checkifFieldExist($connect, "apartments", "apartment_id", $apartment_id) ) {

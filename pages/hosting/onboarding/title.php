@@ -76,7 +76,7 @@
                         <br>
 
                         <div class="form-floating">
-                            <textarea class="form-control" style="height: 300px;" placeholder="Adorable guest house in lagos" id="floatingTextarea"></textarea>
+                            <textarea v-model ='title' class="form-control" style="height: 300px;" placeholder="Adorable guest house in lagos" id="floatingTextarea"></textarea>
                             <label for="floatingTextarea">Title</label>
                         </div>
 
@@ -86,12 +86,13 @@
 
                     </ul>
                     <div class=" hovvvv justify-content-evenly">
+
                         <div class="progress" style="height:5px;">
-                            <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
-                            <a href="./photos.php" class="_kaq6tx w-120">Back</a>
-                            <a href="./description.php" class="_kaq6tx  w-120">Next</a>
+                            <a href="./is_location.php" class="_kaq6tx w-120">Back</a>
+                            <span  @click.prevent='addApartmentStep9(4)'><span class="btn _kaq6tx  w-120" style="background-color: #53B561;background-image: none !important;" >Next</span></span>
                         </div>
 
                     </div>

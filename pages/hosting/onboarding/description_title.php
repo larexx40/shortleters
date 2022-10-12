@@ -1,5 +1,5 @@
 <?php include "../includes/header.php"; ?>
-    <title>Title</title>
+    <title>Description</title>
 </head>
 <style>
     .hovvvv {
@@ -156,16 +156,16 @@
                     <ul class="question-tag px-4">
                         <h2 class="text-left pt-4 mb-4"><b>
                             Now, let's describe your place</b>
-                            <small style="font-size: 14px !important;display:block">Choose up to two Highlights.</small>
                         </h2>
 
                         <br>
 
                         <div class="form-floating">
-                            <textarea class="form-control" style="height: 300px;" placeholder="Adorable guest house in lagos" id="floatingTextarea">Relax with the whole family at this peaceful place to stay.</textarea>
+                            <textarea v-model='description' maxlength= 500 class="form-control" style="height: 300px;" placeholder="Adorable guest house in lagos" id="floatingTextarea">Relax with the whole family at this peaceful place to stay.</textarea>
                             <label for="floatingTextarea">Title</label>
                         </div>
-                        <span>59/500</span>
+                        <span v-if='!description'>0/500</span>
+                        <span v-if='description'>{{description.length}}/500</span>
 
 
 
@@ -174,11 +174,11 @@
                     </ul>
                     <div class=" hovvvv justify-content-evenly">
                         <div class="progress" style="height:5px;">
-                            <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
                             <a href="./description.php" class="_kaq6tx w-120">Back</a>
-                            <a href="./price.php" class="_kaq6tx  w-120">Next</a>
+                            <a href="./price.php"  @click.prevent='addApartmentStep11(4)' class="_kaq6tx  w-120">Next</a>
                         </div>
 
                     </div>

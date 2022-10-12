@@ -1,4 +1,3 @@
-<!-- This step occurs if the user Selects a sub Building Type According to Building Type Selected  -->
 
 <?php
     // pass cors header to allow from cross-origin
@@ -57,6 +56,21 @@
 
         }else{
             $price = cleanme($_POST['price']);
+        }
+
+        if ( !isset($_POST['apartment_id']) ){
+
+            $errordesc="apartments id required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="apartments id must be passed";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+
+        }else{
+            $apartment_id = cleanme($_POST['apartment_id']);
         }
 
         if ( empty($price) || empty($apartment_id) ){
