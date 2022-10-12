@@ -500,15 +500,23 @@ let authApp = Vue.createApp({
 
         async registerUser() {
             let validPassword = validatePassword(this.password);
+
+            let data = new FormData();
+
+            data.append('email', this.email);
+            data.append('firstname', this.firstname);
+            data.append('lastname', this.lastname);
+            data.append('phone', validatePhoneNumber(this.phone));
+            data.append('refer_code', this.ref_code);
+            data.append('password', this.password);
+            data.append('birthday', this.birthday);
+
+            const url = `${this.baseurl}api/accounts/register.php`;
             if(this.password !== this.password1){
                 new Toasteur().error("password does not match");
                 return
             }
-            if (!this.email || !this.firstname || !this.lastname || !this.phone || !this.password){
-                this.error = "Kindly insert all fields";
-                new Toasteur().error(this.error);
-                return;
-            }
+            
             if(!validPassword){
                 new Toasteur().error("password too weak");
                 return
@@ -519,55 +527,54 @@ let authApp = Vue.createApp({
                 return;
             }
 
-            let data = new FormData();
-
-            data.append('email', this.email);
-            data.append('firstname', this.firstname);
-            data.append('lastname', this.lastname);
-            data.append('phone', validatePhoneNumber(this.phone));
-            data.append('refer_code', this.ref_code);
-            data.append('password', this.password);
-
-            const url = `${this.baseurl}api/accounts/register.php`;
-            const options = {
-                method: "POST",
-                url,
-                data
-            }
+            if (!this.email || !this.firstname || !this.lastname || !this.phone || !this.password){
+                this.error = "Kindly insert all fields";
+                new Toasteur().error(this.error);
                 
-            try {
-                this.loading = true
-                const response = await axios(options);
-
-                if (response.data.data) {
-                    const dataValues = response.data.data;
-                    this.success =response.data.text;
-                    const token = dataValues.auth.token;
-                    localStorage.setItem("token", token);
-                    new Toasteur().success(this.success);
-                    window.location.href ="./index.php";
-                    
+            }else{
+                const options = {
+                    method: "POST",
+                    url,
+                    data
                 }
-            } catch (error) {
-                if (error.response){
-                    if (error.response.status == 400){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
+                    
+                try {
+                    this.loading = true
+                    const response = await axios(options);
+    
+                    if (response.data.data) {
+                        const dataValues = response.data.data;
+                        this.success =response.data.text;
+                        const token = dataValues.auth.token;
+                        localStorage.setItem("token", token);
+                        new Toasteur().success(this.success);
+                        window.location.href ="./index.php";
+                        
+                    }
+                } catch (error) {
+                    if (error.response){
+                        if (error.response.status == 400){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
+        
+                        if (error.response.status == 500){
+                            this.error = error.response.data.text;
+                            new Toasteur().error(this.error);
+                            return
+                        }
                     }
     
-                    if (error.response.status == 500){
-                        this.error = error.response.data.text;
-                        new Toasteur().error(this.error);
-                        return
-                    }
+                    this.error = error.message || "Error Processing Request"
+                    new Toasteur().error(this.error);
+                } finally {
+                    this.loading = false
                 }
-
-                this.error = error.message || "Error Processing Request"
-                new Toasteur().error(this.error);
-            } finally {
-                this.loading = false
             }
+
+            
+            
             
         },
         async forgotPassword(){
