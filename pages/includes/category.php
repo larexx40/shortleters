@@ -4,20 +4,25 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div v-if="apartment_category" class="navigation-wrapper">
                     <button>
-                        <div class="a3r5gds"  @click="getApartmentsInaCategory(item.category_id, 5)" >
+                        <div class="a3r5gds"  @click="getAll" >
                             <span class="c1m2z0bj c1w8ohg7">
-                                <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24">
-                                <div class="active" >
+                                <!-- <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24"> -->
+                                <i style="font-size: 1.5rem; padding: .1rem; color: #000000;" class="fa-solid fa-list"></i>
+                                <div :class="{ active: all_active }" >
                                     <span >All</span>
                                 </div>
                             </span>
                         </div>
                     </button>                      
                     <button v-for="(item, index) in apartment_category" :key="index">
-                        <div @click="getApartmentsInaCategory(item.category_id, 5)" >
+                        <div class="a3r5gds" @click="getApartmentsInaCategory(item.category_id, 5)" >
                             <span class="c1m2z0bj c1w8ohg7">
-                                <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24">
-                                <div>
+                                <!-- <img src="https://a0.muscache.com/pictures/8e507f16-4943-4be9-b707-59bd38d56309.jpg" alt="" width="24" height="24"> -->
+                                <i style="font-size: 1.5rem; padding: .1rem; color: #000000;" :class="item.icon"></i>
+                                <div v-if="(item.category_id == cat_id)" class="active">
+                                    <span >{{item.name}}</span>
+                                </div>
+                                <div v-else>
                                     <span >{{item.name}}</span>
                                 </div>
                             </span>

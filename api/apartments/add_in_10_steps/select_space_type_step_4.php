@@ -1,6 +1,5 @@
-<!-- This step occurs if the user Selects a sub Building Type According to Building Type Selected  -->
-
 <?php
+    // This step occurs if the user Selects a sub Building Type According to Building Type Selected
     // pass cors header to allow from cross-origin
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");

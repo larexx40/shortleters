@@ -135,7 +135,7 @@ let authApp = Vue.createApp({
                 return
             }
             // const url = `${this.baseUrl}api/accounts/login.php`
-            const url = "http://localhost/shortleters/api/accounts/login.php";
+            const url = `${this.baseurl}api/accounts/login.php`;
             let data = new FormData();
             data.append('email', this.email);
             data.append('password', this.password);

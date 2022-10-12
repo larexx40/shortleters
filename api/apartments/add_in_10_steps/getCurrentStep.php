@@ -1,5 +1,4 @@
 <?php
-    // This step occurs if the user Selects a Building Type
     // pass cors header to allow from cross-origin
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
@@ -8,6 +7,8 @@
     Header("Cache-Control: no-cache");
 
     include "../../cartsfunction.php";
+
+    // This step occurs if the user Selects a sub Building Type According to Building Type Selected
     
   
 
@@ -42,28 +43,14 @@
             respondUnAuthorized($data);
         }
 
-        if ( !isset($_POST['building_type']) ){
-
-            $errordesc="Building Type id required";
-            $linktosolve="htps://";
-            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-            $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="Building Type id must be passed";
-            $method=getenv('REQUEST_METHOD');
-            $data=returnErrorArray($text,$method,$endpoint,$errordata);
-            respondBadRequest($data);
-
-        }else{
-            $building_type = cleanme($_POST['building_type']);
-        }
 
         if ( !isset($_POST['apartment_id']) ){
 
-            $errordesc="apartments id required";
+            $errordesc="Apartment id is required, Kindly seperate with a comma";
             $linktosolve="htps://";
             $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
             $errordata=returnError7003($errordesc,$linktosolve,$hint);
-            $text="apartments id must be passed";
+            $text="Apartment id must be passed";
             $method=getenv('REQUEST_METHOD');
             $data=returnErrorArray($text,$method,$endpoint,$errordata);
             respondBadRequest($data);
@@ -72,7 +59,7 @@
             $apartment_id = cleanme($_POST['apartment_id']);
         }
 
-        if ( empty($building_type) || empty($apartment_id) ){
+        if ( empty($apartment_id) ){
 
             $errordesc = "Enter all Fields";
             $linktosolve = 'https://';
@@ -81,42 +68,20 @@
             $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
             respondBadRequest($data);
         }
+
+        $draft = "1";
         
 
-        
-
-        // check if product is valid
-        if ( !checkifFieldExist($connect, "building_types", "build_id", $building_type) ) {
-
-            $errordesc = "Building Type does not Exist ";
-            $linktosolve = 'https://';
-            $hint = "Kindly ensure the product id passed is for an existing product";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
-
-        if ( !checkifFieldExist($connect, "apartments", "apartment_id", $apartment_id) ) {
-
-            $errordesc = "Apartment does not Exist ";
-            $linktosolve = 'https://';
-            $hint = "Kindly ensure the product id passed is for an existing product";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondBadRequest($data);
-        }
-
-
-        $steps = "2";
- 
         // Make user and agent
-        $query = "UPDATE `apartments` SET `building_type_id`= ?, `steps` = ? WHERE `apartment_id` = ? AND agent_id = ?";
-        $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("ssss", $building_type, $steps ,$apartment_id, $user_id);
-        $updateStatus->execute();
+        $query = "SELECT `steps` FROM `apartments` WHERE `apartment_id` = ? AND agent_id = ? AND draft = ?";
+        $get_step = $connect->prepare($query);
+        $get_step->bind_param("sss", $apartment_id, $user_id, $draft);
+        $get_step->execute();
+        $result= $get_step->get_result();
+        $numRow = $result->num_rows;
 
-        if ($updateStatus->error){
-            $errordesc =  $updateStatus->error;
+        if ($get_step->error){
+            $errordesc =  $get_step->error;
             $linktosolve = 'https://';
             $hint = "500 code internal error, check ur database connections";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -124,11 +89,13 @@
             respondInternalError($data);
         }
 
-        if ( $updateStatus->execute()){
+        if ( $numRow ){
+            $row = $user_result->fetch_assoc();
+            $step = $row['steps'];
             
             $text= "Saved";
             $status = true;
-            $data = [];
+            $data = $step;
             $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
             respondOK($successData);
 

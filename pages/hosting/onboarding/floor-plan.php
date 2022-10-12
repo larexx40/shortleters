@@ -113,38 +113,29 @@
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
                 <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
                     <ul class="question-tag">
-                        <div>
+                        <div v-if="facilities">
                             <div class="d-flex justify-content-between align-items-center px-3 mb-5">
                                 <h3><b>Guests</b></h3>
                                 <h3><b>
                                 <div class="d-flex gap-3 align-items-center">
-                                    <span class="_ul9u8c prev">-</span>
-                                    <span class="counter">5</span>
-                                    <span class="_ul9u8c next">+</span>
+                                    <span v-if="max_guest < 1" disabled @click.off class="_ul9u8c prev">-</span>
+                                    <span v-else @click="decrease" class="_ul9u8c prev">-</span>
+                                    <span class="counter">{{max_guest}}</span>
+                                    <span @click="increase" class="_ul9u8c next">+</span>
                                 </div>
                             </b></h3>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center px-3 mb-5">
-                                <h3><b>Beds</b></h3>
+                            <div v-for="(item, index) in facilities" class="d-flex justify-content-between align-items-center px-3 mb-5">
+                                <h3><b>{{item.name}}</b></h3>
                                 <h3><b>
                                 <div class="d-flex gap-3 align-items-center">
-                                    <span class="_ul9u8c prev">-</span>
-                                    <span class="counter">5</span>
-                                    <span class="_ul9u8c next">+</span>
+                                    <span v-if="facilitie_number[index] < 1" disabled @click.off class="_ul9u8c prev">-</span>
+                                    <span v-else @click="decrement(index)" class="_ul9u8c prev">-</span>
+                                    <span class="counter">{{facilitie_number[index]}}</span>
+                                    <span @click="increment(index)" class="_ul9u8c next">+</span>
                                 </div>
-                            </b></h3>
+                                </b></h3>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center px-3 mb-5">
-                                <h3><b>Bathrooms</b></h3>
-                                <h3><b>
-                                <div class="d-flex gap-3 align-items-center">
-                                    <span class="_ul9u8c prev">-</span>
-                                    <span class="counter">5</span>
-                                    <span class="_ul9u8c next">+</span>
-                                </div>
-                            </b></h3>
-                            </div>
-
                         </div>
 
 
@@ -155,7 +146,8 @@
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
                             <a href="./is_location.php" class="btn _kaq6tx w-120" style="background-color: transparent;background-image: none !important;color: black;">Back</a>
-                            <a href="./amenities.php" class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;">Next</a>
+                            <span v-if="max_guest < 1"><span class="btn _kaq6tx  w-120" style="background-color: #dddddd;background-image: none !important;" >Next</span></span>
+                            <span v-if="max_guest > 0" @click.prevent='addApartmentStep6(4)'><span class="btn _kaq6tx  w-120" style="background-color: #53B561;background-image: none !important;" >Next</span></span>
                         </div>
 
                     </div>

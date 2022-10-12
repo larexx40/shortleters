@@ -41,7 +41,7 @@
                         <div class="_qnr0t6x"><span class="ll4r2nl dir dir-ltr">Join us. We'll help you every step of the way.</span></div>
                     </div>
                     <div @click.prevent = 'addApartmentStep1' class="position-absolute hovvvv">
-                        <a href="property-type-group.php" class="btn _kaq6tx ">Lets Go</a>
+                        <span class="btn _kaq6tx ">Lets Go</span>
 
                     </div>
                     <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;

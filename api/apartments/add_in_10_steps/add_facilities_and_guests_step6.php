@@ -119,7 +119,6 @@
             $facility_id = cleanme($values[$i]->facility);
             $number = cleanme($values[$i]->number);
 
-            $apartment_facility_id = generateUniqueShortKey($connect, "apartment_facilities", "apart_facility_id");
 
             if ( empty($facility_id) ){
                 $errordesc = "Enter all Fields";
@@ -142,6 +141,8 @@
 
             $check_if_exist = checkifFieldExist($connect, "apartment_facilities", "facility_id", $facility_id);
 
+            
+
             if ( $check_if_exist ){
                 $update_apartment_facilities = "UPDATE `apartment_facilities` SET `total_number`= ? WHERE `apartment_id` = ? AND `facility_id` = ?";
                 $update_apartment_facility = $connect->prepare($update_apartment_facilities);
@@ -157,6 +158,8 @@
                     respondInternalError($data);
                 }
             }else{
+
+                $apartment_facility_id = generateUniqueShortKey($connect, "apartment_facilities", "apart_facility_id");
 
                 $insert_apartment_facilities = "INSERT INTO `apartment_facilities`(`apart_facility_id`, `apartment_id`, `facility_id`, `total_number`) VALUES (?, ?, ?, ?)";
                 $apartment_facility = $connect->prepare($insert_apartment_facilities);
