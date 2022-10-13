@@ -28,21 +28,6 @@
         $decodedToken = ValidateAPITokenSentIN($servername, $companykey, $method, $endpoint);
         $pubkey = $decodedToken->usertoken;
 
-        $admin =  checkIfIsAdmin($connect, $pubkey);
-        // $agent = getShopWithPubKey($connect, $user_pubkey);
-        // $user = getUserWithPubKey($connect, $user_pubkey);
-
-        if  (!$admin){
-
-            // send user not found response to the user
-            $errordesc =  "User not an Admin";
-            $linktosolve = 'https://';
-            $hint = "Only Admin has the ability to add send grid api details";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondUnAuthorized($data);
-        }
-
         if (isset($_GET['search'])) {
             $search = cleanme($_GET['search']);
         } else {

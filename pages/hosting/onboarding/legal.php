@@ -95,13 +95,7 @@
                             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
 
                         </div>
-                        <div class="form-check d-flex p-0 justify-content-between mb-3 align-items-center">
-                            <label class="form-check-label " for="exampleRadios1">
-                                I'm hosting as a business
-                            </label>
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-
-                        </div>
+                        
                         <br>
                         <h3 class="_atr2bu"><b>Do you have any of these at your place??</b></h3>
                         <div class="form-check d-flex p-0 justify-content-between my-3 align-items-center">

@@ -499,39 +499,38 @@ let authApp = Vue.createApp({
         },
 
         async registerUser() {
-            let validPassword = validatePassword(this.password);
-
-            let data = new FormData();
-
-            data.append('email', this.email);
-            data.append('firstname', this.firstname);
-            data.append('lastname', this.lastname);
-            data.append('phone', validatePhoneNumber(this.phone));
-            data.append('refer_code', this.ref_code);
-            data.append('password', this.password);
-            data.append('birthday', this.birthday);
-
+            
+            let isPasswordValid = (this.password)? validatePassword(this.password) : null;
+            let isPhoneValid = (this.phone)? checkPhone(this.phone) : null;
             const url = `${this.baseurl}api/accounts/register.php`;
             if(this.password !== this.password1){
                 new Toasteur().error("password does not match");
                 return
             }
             
-            if(!validPassword){
+            if(!isPasswordValid){
                 new Toasteur().error("password too weak");
                 return
             }
 
-            if ( !validatePhoneNumber(this.phone) ){
-                swal("Invalid Phone Number");
-                return;
+            if(!isPhoneValid){
+                 swal("Invalid Phone Number");
+                 return;
             }
 
-            if (!this.email || !this.firstname || !this.lastname || !this.phone || !this.password){
+            if (!this.email || !this.firstname || !this.lastname || !this.phone || !this.password || !this.password1 || !isPasswordValid || !isPhoneValid){
                 this.error = "Kindly insert all fields";
                 new Toasteur().error(this.error);
                 
             }else{
+                let data = new FormData();
+                data.append('email', this.email);
+                data.append('firstname', this.firstname);
+                data.append('lastname', this.lastname);
+                data.append('phone', validatePhoneNumber(this.phone));
+                data.append('refer_code', this.ref_code);
+                data.append('password', this.password);
+                data.append('birthday', this.birthday);
                 const options = {
                     method: "POST",
                     url,
@@ -724,5 +723,15 @@ const validatePassword1 =(input)=>{
         return true;
     }else{
         return false;
+    }
+}
+
+const checkPhone=(phone)=>{
+    var phoneRegex = /^\d{11}$/g;
+    let isValid = phone.match(phoneRegex)
+    if (isValid){
+        return true
+    }else{
+        return false
     }
 }

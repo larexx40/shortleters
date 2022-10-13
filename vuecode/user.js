@@ -79,6 +79,8 @@ let userApp = Vue.createApp({
             spaceTypes: null,
             all_amenities: null,
             all_sub_amenities: null,
+            guestSafeties: null,
+            all_host_type: null,
             highlights: null,
             buildingSubtypes: null,
             apartment_id: null,
@@ -192,6 +194,13 @@ let userApp = Vue.createApp({
         }
         if(page === 'description.php'){
             await this.getAllHighlight()
+            if(!this.listing_apartmentid){
+                this.getListing();
+            }
+        }
+        if(page === 'legal.php'){
+            await this.getAllHosttype()
+            await this.getAllGuestSafety();
             if(!this.listing_apartmentid){
                 this.getListing();
             }
@@ -842,6 +851,137 @@ let userApp = Vue.createApp({
     
                 new Toasteur().error(error.message || "Error processing request")
     
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getAllHosttype( load = 1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}api/host_type/get_all_host_type.php?per_page=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                this.loading = true;
+                const response = await axios(options);
+                if(response.data.status){
+                    this.all_host_type = response.data.data.host_types;
+                    this.kor_per_page = response.data.data.per_page;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.all_amenities = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }   
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        // window.location.href="/login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+    
+                new Toasteur().error(error.message || "Error processing request")
+    
+                
+            }finally {
+                this.loading = false;
+            }
+        },
+        async getAllGuestSafety(load=1){
+            let search = (this.search)? `&search=${this.search}`: '';
+            let sort = (this.sort != null) ? `&sort=1&sortStatus=${this.sort}` : "";  
+            let page = ( this.currentPage )? this.currentPage : 1;
+            let noPerPage = ( this.per_page ) ? this.per_page : 4;
+            const url = `${this.baseurl}api/guestSafety/getGuestSafety.php?noPerPage=${noPerPage}&page=${page}${search}${sort}`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+            try {
+                if(load == 1){
+                    this.loading = true;
+                }
+                const response = await axios(options);
+                if(response.data.status){
+                    this.guestSafeties = response.data.data.guestSafeties;
+                    this.currentPage =response.data.data.page;
+                    this.totalData =response.data.data.total_data;
+                    this.totalPage =response.data.data.totalPage;
+                }else{
+                    this.guestSafeties = null;
+                    this.currentPage =0;
+                    this.totalData =0;
+                    this.totalPage =0;
+                }     
+            } catch (error) {
+                // //console.log(error);
+                if (error.response){
+                    if (error.response.status == 400){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        const errorMsg = "User not Authorized";
+                        new Toasteur().error(errorMsg);
+                        window.location.href="./login.php"
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        const errorMsg = error.response.data.text;
+                        new Toasteur().error(errorMsg);
+                        return
+                    }
+                }
+
+                new Toasteur().error(error.message || "Error processing request")
+
                 
             }finally {
                 this.loading = false;
