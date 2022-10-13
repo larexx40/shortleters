@@ -30,7 +30,7 @@
         </div>
         <div class="section" >
             <div class="confirm_pay" >
-                <div style="display:inline-flex;align-items: center;;" >
+                <div style="display:inline-flex;align-items: center;" >
                     <div class="svg_div" >
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-label="Back" role="img" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;">
                             <g fill="none">
@@ -41,9 +41,36 @@
                     <h2>Confirm and pay</h2>                    
                 </div>
             </div>
+            <div class="confirm_pay-mobile" id="confirm_pay" >
+                <div style="display:inline-flex;align-items: center;" >
+                    <div class="svg_div" >
+                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-label="Back" role="img" focusable="false" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 3; overflow: visible;">
+                            <g fill="none">
+                                <path d="m20 28-11.29289322-11.2928932c-.39052429-.3905243-.39052429-1.0236893 0-1.4142136l11.29289322-11.2928932"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <h2>Confirm and pay</h2>                    
+                </div>
+            </div>            
             <div class="main" >
                 <div class="section" >
                     <div class="side1" >
+                        <div class="_38duj2w" >
+                            <div style="width:124px;height:106px" >
+                                <img src="https://a0.muscache.com/im/pictures/prohost-api/Hosting-53856384/original/a99d723b-5920-4e3c-bbf1-51e1ac0f6ddb.jpeg?aki_policy=large" />
+                            </div>
+                            <div class="_25fsyw8">
+                                <div>
+                                    <p class="_4363gdj" >Entire home</p>
+                                    <p class="_bp4bbx" >Hacienda el Terrero - Casa Los Enanos</p>                                                
+                                </div>
+                                <div class="_37dhgiw" >
+                                    <p style="color:rgb(106 105 105);font-size:0.8rem" ><i class="fa-solid fa-star" ></i>&nbsp;5.00&nbsp;(18 reviews)</p>
+                                    <p style="color:rgb(106 105 105);font-size:0.8rem; margin-left:10px;" ><i class="fa-solid fa-user" >&nbsp;</i>host</p>
+                                </div>
+                            </div>
+                        </div>                                                   
                         <div style="padding-bottom:15px; border-bottom:1px solid rgb(221, 221, 221);" >
                             <p style="margin-bottom:10px;" class="_14i3z6h" >Your Trip</p>
                             <div class="_b7b6bk" >
@@ -88,6 +115,29 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="_ew823uje" style="padding:20px 0px; border-bottom:1px solid rgb(221, 221, 221);">
+                            <p style="margin:10px 0px 20px 0px" class="_14i3z6h">Price Details</p>
+                            <div class="_dwb483ik">
+                                <p>$196.17 x 5 nights</p>
+                                <p>$980.85</p>
+                            </div>
+                            <div class="_dwb483ik">
+                                <p>Cleaning fee</p>
+                                <p>$29.13</p>
+                            </div>
+                            <div class="_dwb483ik">
+                                <p>Service fee</p>
+                                <p>$0.00</p>
+                            </div>
+                            <div class="_dwb483ik">
+                                <p>Occupancy taxes and fees</p>
+                                <p>$68.66</p>
+                            </div>                                                                                                                                                   
+                            <div class="_dwb483ik" style="font-weight:bolder" >
+                                <p>Total(USD)</p>
+                                <p>$1078.64</p>
+                            </div>                            
+                        </div>                        
                         <div style="padding-bottom:30px; border-bottom:1px solid rgb(221, 221, 221); ">
                             <p style="margin:20px 0px 10px 0px" class="_14i3z6h" >Pay With</p>
                             <div class="_74fbhwj7" >
@@ -155,7 +205,7 @@
                         </div>
                         <div style="padding-bottom:20px; border-bottom:1px solid rgb(221, 221, 221); margin-bottom:20px;">
                             <p style="margin:20px 0px 10px 0px" class="_14i3z6h" >Cancellation policy</p>
-                            <p style="margin:10px 0px 5px 0px;font-size:16px;line-height:20px;" ><b>Free cancellation before Nov 8.</b>Cancel before check-in on Nov 13 for a partial refund<a href="#" class="_15rpys7s" >Learn More</a></p>
+                            <p style="margin:10px 0px 5px 0px;font-size:16px;line-height:24px;" ><b>Free cancellation before Nov 8.</b>Cancel before check-in on Nov 13 for a partial refund<a href="#" class="_15rpys7s" > Learn More</a></p>
                         </div>
                         <div class="_ajwg73i_btn" >
                             Confirm and Pay
@@ -176,9 +226,37 @@
                                             </div>
                                             <div class="_37dhgiw" >
                                                 <p style="color:rgb(106 105 105);font-size:0.8rem" ><i class="fa-solid fa-star" ></i>&nbsp;5.00&nbsp;(18 reviews)</p>
-                                                <p style="color:rgb(106 105 105);font-size:0.8rem; margin-left:10px;" ><i class="fa-solid fa-user" ></i>host</p>
+                                                <p style="color:rgb(106 105 105);font-size:0.8rem; margin-left:10px;" ><i class="fa-solid fa-user" >&nbsp;</i>host</p>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div style="padding:20px 0px; border-bottom:1px solid rgb(221, 221, 221);" >
+                                        <p style="font-size: 16px;line-height: 20px;" >Your booking is protected by <span style="font-weight:bolder;" >Shortleters</span></p>
+                                    </div>
+                                    <div style="padding:20px 0px; border-bottom:1px solid rgb(221, 221, 221);" >
+                                        <p style="margin:10px 0px 20px 0px" class="_14i3z6h" >Price Details</p>
+                                        <div class="_dwb483ik" >
+                                            <p>$196.17 x 5 nights</p>
+                                            <p>$980.85</p>
+                                        </div>
+                                        <div class="_dwb483ik" >
+                                            <p>Cleaning fee</p>
+                                            <p>$29.13</p>
+                                        </div>
+                                        <div class="_dwb483ik" >
+                                            <p>Service fee</p>
+                                            <p>$0.00</p>
+                                        </div>
+                                        <div class="_dwb483ik" >
+                                            <p>Occupancy taxes and fees</p>
+                                            <p>$68.66</p>
+                                        </div>                                                                                                                        
+                                    </div>
+                                    <div style="padding:10px 0px;" >
+                                        <div class="_dwb483ik" style="font-weight:bolder" >
+                                            <p>Total(USD)</p>
+                                            <p>$1078.64</p>
+                                        </div>                        
                                     </div>
                                 </div>
                             </div>
@@ -189,6 +267,38 @@
             </div>
         </div>
     </div>
+    <script src="../assets/js/jquery-3.6.1.min.js"></script>
+    <script>
+        var fixmeTop = $('._wj48rfd').offset().top;
+        $(window).scroll(function() {
+            var currentScroll = $(window).scrollTop();
+            if (currentScroll >= fixmeTop) {
+                $('._wj48rfd').css({
+                    position: 'fixed',
+                    top: '75px',
+                    right: '75px',
+                    width:'38%',
+                });
+            } else {
+                $('._wj48rfd').css({
+                    position: 'static',
+                    width:'100%'
+                });
+            }
+        }); 
+        
+        window.onscroll = function() {stickyFunction()};
 
+        var header = document.getElementById("confirm_pay");
+        var sticky = header.offsetTop;
+
+        function stickyFunction() {
+            if (window.pageYOffset > sticky) {
+                header.classList.add("sticky-situation");
+            } else {
+                header.classList.remove("sticky-situation");
+            }
+        }         
+    </script>
 </body>
 </html>
