@@ -129,6 +129,10 @@ let userApp = Vue.createApp({
             transactions: null,
             // @E korede data
             password: null,
+            total_adult_guest: 0,
+            no_of_adults: 0,
+            no_of_kids: 0,
+            no_of_pets: 0,
             confirmpassword: null,
             currentpassword: null,
             authToken: null,
@@ -326,7 +330,9 @@ let userApp = Vue.createApp({
                this.loading = false;
            }
         },
-        
+        async move_tocheckout() {
+            window.location.href = "./checkout.php";
+        },
         //change user password
         async changePassword(){
             if (!this.currentpassword || !this.password || !this.confirmPassword){
@@ -1320,6 +1326,18 @@ let userApp = Vue.createApp({
         async decrease(){
             this.max_guest = parseInt(this.max_guest) - 1;
         },
+        async decreaseValue(test){
+            if ( test === "adult" ){
+                this.no_of_adults = parseInt(this.no_of_adults) - 1;
+                this.total_adult_guest = parseInt(this.total_adult_guest) - 1
+            }
+            if ( test === "kids" ){
+                this.no_of_kids = parseInt(this.no_of_kids) - 1;
+            }
+            if ( test === "pets" ){
+                this.no_of_pets = parseInt(this.no_of_pets) - 1
+            }
+        },
         async decrement(index){
             if(page == 'floor-plan.php'){
                 this.facilitie_number[index] = parseInt(this.facilitie_number[index]) - 1; 
@@ -1340,6 +1358,18 @@ let userApp = Vue.createApp({
         },
         async increase(){
             this.max_guest = parseInt(this.max_guest) + 1;
+        },
+        async increaseValue(test){
+            if ( test === "adult" ){
+                this.no_of_adults = parseInt(this.no_of_adults) + 1;
+                this.total_adult_guest = parseInt(this.total_adult_guest) + 1
+            }
+            if ( test === "kids" ){
+                this.no_of_kids = parseInt(this.no_of_kids) + 1;
+            }
+            if ( test === "pets" ){
+                this.no_of_pets = parseInt(this.no_of_pets) + 1
+            }
         },
         async addApartmentStep6(){
             // get Facilities value
