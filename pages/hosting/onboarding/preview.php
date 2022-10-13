@@ -118,34 +118,40 @@
             </div>
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
 
-                <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
-                    <ul class="question-tag">
-                        <div class="card _192g50s">
+                <div v-if='apartment_details' class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
+                    <ul class="question-tag container">
+                        <div class="card _192g50s container">
                             <div class="image-list">
-                                <img class="_91slf2a w-100" aria-hidden="true" alt="Cover photo" src="https://a0.muscache.com/im/pictures/miso/Hosting-718921680261877081/original/21c4bcf5-6d59-457a-b45f-6e499e5f195b.jpeg?aki_policy=x_medium" style="object-fit: cover; border-radius: 24px 24px 0px 0px;">
+                                <img v-if='apartment_details.image' class="_91slf2a w-100" aria-hidden="true" alt="Cover photo" :src="apartment_details.image" style="object-fit: cover; border-radius: 24px 24px 0px 0px;">
+                                <img v-if='!apartment_details.image' class="_91slf2a w-100" aria-hidden="true" alt="Cover photo" src="https://a0.muscache.com/im/pictures/miso/Hosting-718921680261877081/original/21c4bcf5-6d59-457a-b45f-6e499e5f195b.jpeg?aki_policy=x_medium" style="object-fit: cover; border-radius: 24px 24px 0px 0px;">
                             </div>
-                            <h3 class="my-2 mt-4"><b style="font-weight: 900;">hhh</b></h3>
+                            <h3 class="my-2 mt-4"><b style="font-weight: 900;">{{apartment_details.title}}</b></h3>
                             <hr>
                             <div class="_12halnnq d-flex align-item w-100">
-                                <h5 class="_15epaj9" style="width: calc(100% - 40px);"><b>Shared room in guesthouse hosted by Okeke</b></h5>
+                                <h5 class="_15epaj9" style="width: calc(100% - 40px);"><b>{{apartment_details.space_type_name}} hosted by {{apartment_details.agent_name}}</b></h5>
                                 <div class="_1h6n1zu" role="img" aria-busy="false" style="display: inline-block; vertical-align: bottom; height: 40px; width: 40px; min-height: 1px; border-radius: 50px;">
                                     <img class="_9ofhsl" aria-hidden="true" alt="Profile photo" src="https://a0.muscache.com/defaults/user_pic-68x68.png?v=3" style="object-fit: cover; vertical-align: bottom; border-radius: 50px;width: 100%;">
                                 </div>
                             </div>
                             <hr>
-                            <div class="_uhouic5">2 guests <span aria-hidden="true"> · </span>1 bedroom
-                                <span aria-hidden="true"> · </span>1 shared bath</div>
+                            <div class="_uhouic5">
+                                {{apartment_details.max_guest}} guests 
+                                <div v-if='apartment_details.apartment_facilities' v-for='(item, index) in apartment_details.apartment_facilities'>
+                                    {{item.number}} {{item.facility_name}}
+                                </div>
+                            </div>
                             <hr>
-                            <p>Relax with the whole family at this peaceful place to stay.</p>
+                            <p>{{apartment_details.description}}</p>
                             <hr>
                             <b class="mb-3">Amenities</b>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <p>Exercise equipment</p>
-                                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: black;"><path d="M10 5a2 2 0 0 1 1.995 1.85L12 7v8h8V7a2 2 0 0 1 1.85-1.995L22 5h2a2 2 0 0 1 1.995 1.85L26 7v2h2a2 2 0 0 1 1.995 1.85L30 11v4h2v2h-2v4a2 2 0 0 1-1.85 1.995L28 23h-2v2a2 2 0 0 1-1.85 1.995L24 27h-2a2 2 0 0 1-1.995-1.85L20 25v-8h-8v8a2 2 0 0 1-1.85 1.995L10 27H8a2 2 0 0 1-1.995-1.85L6 25v-2H4a2 2 0 0 1-1.995-1.85L2 21v-4H0v-2h2v-4a2 2 0 0 1 1.85-1.995L4 9h2V7a2 2 0 0 1 1.85-1.995L8 5zm14 2h-2v18h2zM10 7H8v18h2zm18 4h-2v10h2zM6 11H4v10h2z"></path></svg>
+                            <div v-if='apartment_details.amenities_ids' v-for='(item, index) in apartment_details.amenities_ids' class="d-flex align-items-center justify-content-between mb-3">
+                                <p>{{item.name}}</p>
+                                <i :class="item.icon" aria-hidden="true"></i>
+                                <!-- <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 24px; width: 24px; fill: black;"><path d="M10 5a2 2 0 0 1 1.995 1.85L12 7v8h8V7a2 2 0 0 1 1.85-1.995L22 5h2a2 2 0 0 1 1.995 1.85L26 7v2h2a2 2 0 0 1 1.995 1.85L30 11v4h2v2h-2v4a2 2 0 0 1-1.85 1.995L28 23h-2v2a2 2 0 0 1-1.85 1.995L24 27h-2a2 2 0 0 1-1.995-1.85L20 25v-8h-8v8a2 2 0 0 1-1.85 1.995L10 27H8a2 2 0 0 1-1.995-1.85L6 25v-2H4a2 2 0 0 1-1.995-1.85L2 21v-4H0v-2h2v-4a2 2 0 0 1 1.85-1.995L4 9h2V7a2 2 0 0 1 1.85-1.995L8 5zm14 2h-2v18h2zM10 7H8v18h2zm18 4h-2v10h2zM6 11H4v10h2z"></path></svg> -->
                             </div>
                             <hr>
                             <b class="mb-3">Location</b>
-                            <p>39 Town Planning Way, Ilupeju 102215, Lagos, Nigeria</p>
+                            <p>{{apartment_details.apartment_address, apartment_details.apartment_city, apartment_details.apartment_country}}</p>
                             <small>We’ll only share your address with guests who are booked as outlined in our privacy policy.</small>
                             <hr>
                         </div>

@@ -105,7 +105,7 @@
 
         for ( $i = 0; $i < $guest_safety_length; $i++){
             // check if fields are valid
-            if ( !checkifFieldExist($connect, "sub_amenities", "sub_amen_id", $guest_safety_id_array[$i] ) ) {
+            if ( !checkifFieldExist($connect, "guest_safety", "guest_safetyid", $guest_safety_id_array[$i] ) ) {
 
                 $errordesc = "Guest Safety does not Exist ";
                 $linktosolve = 'https://';

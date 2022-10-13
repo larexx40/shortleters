@@ -406,6 +406,23 @@
         return false;
     }
 
+    function checkApartmentFacility($connect, $facility_id, $apartment_id){
+        // check field
+        $Checkquery = "SELECT * FROM `apartment_facilities` WHERE `apartment_id` = ? AND `facility_id` = ?";
+        $Checkstmt = $connect->prepare($Checkquery);
+
+        $Checkstmt->bind_param("ss", $facility_id, $apartment_id );
+        $Checkstmt->execute();
+        $result = $Checkstmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+           return $num_row;
+        }
+
+        return false;
+    }
+
     function getNameFromField($connect, $table, $field, $data){
         // check field
         $query = "SELECT * FROM $table WHERE $field = ?";
@@ -870,6 +887,28 @@
         $query = "SELECT * FROM $table WHERE $field = ? ORDER BY cover_photo DESC";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $all_images = [];
+            while ($row = $result->fetch_assoc()){
+                $image = $row['image_url'];
+                array_push($all_images, array('image' => $image));
+            }
+           return $all_images;
+        }
+
+        return false;
+    }
+
+    function getApartmentCoverImage($connect, $table, $field, $data){
+        // check field
+        $cover = 1;
+        $query = "SELECT * FROM $table WHERE $field = ? AND cover_photo = ? ";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("ss", $data, $cover );
         $stmt->execute();
         $result = $stmt->get_result();
         $num_row = $result->num_rows;
