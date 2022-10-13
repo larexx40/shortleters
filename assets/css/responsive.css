@@ -283,5 +283,33 @@
     .main-checkout .header{
         display: none;
     }
+
+    .main-checkout .section .main {
+        padding: 40px 20px 20px 20px;
+    }
+
+    .main-checkout .main .section{
+        display: block;
+    }
+
+    .main-checkout .main .section .side1{
+        margin: 0px 10px;
+    }
+
+    .main-checkout .main .section .side2{
+        display: none;
+    }
+
+    .main-checkout .confirm_pay{
+        display: none;
+    }
+
+    .main-checkout .main .section .side1 ._ew823uje, .main-checkout .confirm_pay-mobile{
+        display: block;
+    }
+
+    .main-checkout .main .section .side1 ._38duj2w{
+        display: flex;
+    }
     
 }
