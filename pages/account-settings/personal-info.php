@@ -276,7 +276,7 @@
 										<strong>Email address</strong>
 										<!-- <button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Edit</button> -->
 									</div>
-									<div class="value"><span>{{userDetails.Email}}</span></div>
+									<div class="value"><span>{{userDetails.email}}</span></div>
 								</div>
 								<div class="each-form-content variant">
 									<div class="title-button">
@@ -288,21 +288,25 @@
 											>
 										</div>
 									</div>
-									<button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Add</button>
+									<button v-if='userDetails.phoneno' type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Edit</button>
+									<button v-if='!userDetails.phoneno' type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Add</button>
 								</div>
 								<div class="each-form-content">
 									<div class="title-button">
 										<strong>Government Id</strong>
-										<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editValidid">Add</button>
+										<button v-if='!userDetails.user_identity_id' type="button" class="" data-bs-toggle="modal" data-bs-target="#editValidid">Add</button>
+										<button v-if='userDetails.user_identity_id' type="button" class="" data-bs-toggle="modal" data-bs-target="#editValidid">Edit</button>
 									</div>
-									<div class="value"><span>{{userDetails.identity}}</span></div>
+									<div v-if='userDetails.user_identity_id' class="value"><span>{{userDetails.identity_status}}</span></div>
+									<div v-if='!userDetails.user_identity_id' class="value"><span>Not Provided</span></div>
 								</div>
 								<div class="each-form-content">
 									<div class="title-button">
 										<strong>Address</strong>
-										<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editAddress">Edit</button>
+										<button v-if='userDetails.address' type="button" class="" data-bs-toggle="modal" data-bs-target="#editAddress">Add</button>
+										<button v-if='userDetails.address' type="button" class="" data-bs-toggle="modal" data-bs-target="#editAddress">Edit</button>
 									</div>
-									<div v-if='userDetails.address' class="value"><span>{{userDetails.address}}, {{userDetails.state}}, {{userDetails.country}}</span></div>
+									<div v-if='userDetails.address && userDetails.address != "" ' class="value"><span>{{userDetails.address}}, {{userDetails.state}}, {{userDetails.country}}</span></div>
 									<div v-else class="value"><span>Not provided</span></div>
 								</div>
 								<div class="each-form-content">
@@ -702,10 +706,10 @@
 										<label class="form-label" for="currency_tag">Identity Type</label>
 										<select v-model="user_validid_type" class="form-select" aria-label="Default select example">
 											<option value="null" >Select an Identity Card</option>
-											<option value="NIMC">NIN Slip / Card</option>
-											<option value="Voters Card">Voters Card</option>
-											<option value="Valid Id card">Valid Id card</option>
-											<option value="International Passport">International Passport</option>
+											<option value="1">NIN Slip / Card</option>
+											<option value="2">Voters Card</option>
+											<option value="3">Valid Id card</option>
+											<option value="4">International Passport</option>
 										</select>
 									</div><br>
 

@@ -28,10 +28,10 @@
         $userpubkey = $decodeToken->usertoken;
 
         //check if isadmin
-        $userid = checkIfIsAdmin($connect,$userpubkey);
+        $userid = checkIfUser($connect,$userpubkey);
         if(!$userid){
             // send user not found response to the user
-            $errordesc =  "User not a found";
+            $errordesc =  "User not  found";
             $linktosolve = 'https://';
             $hint = "Register to access this endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -39,8 +39,6 @@
             respondUnAuthorized($data);
         }
 
-        //INSERT INTO `user_valid_identity`(`id`, `user_valid_identity_id`, 
-        //`identity_no`, `userid`, `user_validid_type`, `image_url`, `status`,
         if ( !isset($_POST['identity_no']) ){
             // send error if howmanyminread field is not passed
             $errordesc = "Space type identity_no must be passed";
@@ -64,12 +62,12 @@
             respondBadRequest($data);
 
         }else{
-            $image_url = cleanme($_FILES['image_url']);
+            $image_url = $_FILES['image_url'];
         }
 
         if ( !isset($_POST['user_validid_type']) ){
             // send error if howmanyminread field is not passed
-            $errordesc = "Space type user_validid_type must be passed";
+            $errordesc = "user_validid_type must be passed";
             $linktosolve = 'https://';
             $hint = "Kindly pass the required field in this register endpoint";
             $errorData = returnError7003($errordesc, $linktosolve, $hint);
@@ -93,16 +91,33 @@
         
         $status =0;
         $user_valid_identity_id = generateUniqueShortKey($connect,'user_valid_identity','user_valid_identity_id');
-        $imageName = uploadImage($image, "validIdentity", $endpoint, $method);
+
+        $imageName = uploadImage($image_url, "validIdentity", $endpoint, $method);
         $imageUrl = $imageurl."/validIdentity/". $imageName;
 
-        $query = "INSERT INTO `user_valid_identity`(`user_valid_identity_id`, `identity_no`, `status`, userid) VALUES (?,?,?,?)";
+        $query = "INSERT INTO `user_valid_identity`(`user_valid_identity_id`, `identity_no`, `status`, userid, user_validid_type) VALUES (?,?,?,?,?)";
         $stmt = $connect->prepare($query);
-        $stmt->bind_param("ssss", $user_valid_identity_id, $identity_no, $status, $userid);
+        $stmt->bind_param("sssss", $user_valid_identity_id, $identity_no, $status, $userid, $user_validid_type);
 
         //INSERT INTO `user_valid_identity`(`id`, `user_valid_identity_id`, `identity_no`, `userid`, 
         //`user_validid_type`, `image_url`, `status`,
         if ( $stmt->execute() ){
+            $stmt->close();
+
+            //update userinfo with userid
+            $sql = "UPDATE users SET user_identity_id = ? WHERE id = ?";
+            $updateuserValidid = $connect->prepare($sql);
+            $updateuserValidid->bind_param('ss', $user_valid_identity_id, $userid);
+            $updateuserValidid->execute();
+            if ( $updateuserValidid->error ){
+                $errordesc = $updateuserValidid->error;
+                $linktosolve = 'https://';
+                $hint = "DB error or invalid Input, Kindly check DB connection";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }
+
             $text= "Valid id successfully added";
             $status = true;
             $data = [];

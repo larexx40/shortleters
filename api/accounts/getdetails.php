@@ -54,12 +54,25 @@
             $location = $row['location'];
             $balance = $row['bal'];
             $refcode = $row['refcode'];
+            $address = $row['address'];
+            $zipcode = $row['zipcode'];
             $state = $row['state'];
             $country = $row['country'];
             $username = $row['username'];
             $agent = $row["is_agent"];
             $dob = $row['dob'];
             $sex = $row['sex'];
+            $user_identity_id = $row['user_identity_id'];
+            $validid_details = ($user_identity_id)? getValidIdentityDetails($connect, $user_identity_id): null;
+            $validid_status = ($validid_details)? $validid_details['status']: null;
+            if($validid_status == 0){
+                $identity_status = 'Pending Verification';
+            }elseif($validid_status == 1){
+                $identity_status = 'Verified';
+            }else{
+                $identity_status = 'Not Valid';
+            }
+
             $created = gettheTimeAndDate(strtotime($row['created_at']));
             $updated = gettheTimeAndDate(strtotime($row['updated_at']));
             $referredBy = ( getUserFullname($connect, $row['referby']) ) ? getUserFullname($connect, $row['referby']) : "";
@@ -85,6 +98,7 @@
                 'email' => $email,
                 'firstname' => $firstname,
                 'lastname' => $lastname,
+                'fullname'=>$firstname .' '.$lastname,
                 'phoneno' => $phoneno,
                 'location' => $location,
                 'balance' => $balance,
@@ -99,8 +113,13 @@
                 'admin_seen' => $adminCheck,
                 'username' => $username,
                 'referredBy' => $referredBy,
+                'address'=>$address,
+                'zipcode'=>$zipcode,
                 'dob' => $dob,
                 "sex" => $sex,
+                'user_identity_id'=>$user_identity_id,
+                'validid_status'=>$validid_status,
+                'identity_status'=> $identity_status,
                 'created' => $created,
                 'updated' => $updated
             ];

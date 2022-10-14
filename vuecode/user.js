@@ -171,9 +171,6 @@ let userApp = Vue.createApp({
     async created() {
         this.getToken();
         //check page
-        if(page === 'personal-info.php'){
-            await this.getUserValidIdentity()
-        }
         if(page === 'property-type-group.php'){
             await this.getAllBuildingType()
             if(!this.listing_apartmentid){
@@ -438,7 +435,7 @@ let userApp = Vue.createApp({
             data.append('user_validid_type', this.user_validid_type );
             data.append('image_url', this.uploadImage );
 
-            const url = `${this.baseUrl}/api/user_valid_id/addValidid.php`;
+            const url = `${this.baseurl}/api/user_valid_id/addValidid.php`;
             
             const options = {
                 method: "POST",
@@ -457,7 +454,6 @@ let userApp = Vue.createApp({
                     this.name = null;
                     this.uploadImage= null;
                     new Toasteur().success(response.data.text);
-                    
                 }
             } catch (error) {
                 ////console.log(error);
@@ -470,7 +466,7 @@ let userApp = Vue.createApp({
                 if (error.response.status == 401){
                     const errorMsg = "User not Authorized";
                     new Toasteur().error(errorMsg);
-                    window.location.href="./login.php"
+                    // window.location.href=".../../login.php"
                     return
                 }
 
@@ -1282,7 +1278,7 @@ let userApp = Vue.createApp({
                     if (error.response.status == 401){
                         const errorMsg = "User not Authorized";
                         new Toasteur().error(errorMsg);
-                        window.location.href="./login.php"
+                        window.location.href="../../login.php"
                         return
                     }
     
@@ -1665,7 +1661,7 @@ let userApp = Vue.createApp({
                 const response = await axios(options);
                 if(response.data.status){
                     new Toasteur().success(response.data.text);
-                    // window.location.href='./amenities.php'
+                    window.location.href='./amenities.php'
                 }else{
                     new Toasteur().error(response.data.text);
                     // window.location.href='./index.php';

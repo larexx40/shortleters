@@ -98,6 +98,18 @@
             $image_url = $row['image_url'];
             $userid = $row['userid'];
             $user_validid_type = $row['user_validid_type'];
+            if($user_validid_type == 1){
+                $identity_type = "NIMC";
+            }elseif($user_validid_type == 2){
+                $identity_type = "Voters Card";
+            }elseif($user_validid_type == 3){
+                $identity_type = "Valid Id card";
+            }elseif($user_validid_type == 4){
+                $identity_type = "International Passport";
+            }else{
+                $identity_type= null;
+            }
+
             $statusCode = $row['status'];
             if($statusCode == 1){
                 $status = "Verified";
@@ -111,9 +123,8 @@
                 "user_valid_identity_id"=>$user_valid_identity_id,
                 "identity_no"=>$identity_no,
                 "user_validid_type"=>$user_validid_type,
+                'identity_type'=>$identity_type,
                 "image_url"=>$image_url,
-                "name"=>$name,
-                "name"=>$name,
                 "status"=>$status,
                 "statusCode"=>$statusCode,
             ];
