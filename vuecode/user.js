@@ -83,6 +83,8 @@ let userApp = Vue.createApp({
     data(){
         return{
             //lanre data @S
+            user_validid_type: null,
+            identity_no: null,
             apartment_details: null,
             userDetails: null,
             buildingTypes: null,
@@ -169,10 +171,19 @@ let userApp = Vue.createApp({
     async created() {
         this.getToken();
         //check page
+        if(page === 'personal-info.php'){
+            await this.getUserValidIdentity()
+        }
         if(page === 'property-type-group.php'){
             await this.getAllBuildingType()
             if(!this.listing_apartmentid){
                 this.getListing();
+            }
+        }
+        if(page === 'account-settings.php'){
+            await this.getUserDetails();
+            if(!this.userDetails){
+                window.location.href="./login.php";
             }
         }
         if(page === 'property-type.php'){
@@ -235,7 +246,11 @@ let userApp = Vue.createApp({
     },
     methods: {
         //lanre method
-        
+        //utilities
+        async uploadImage(event){
+            this.uploadImage = event.target.files[0];
+            console.log("image", this.uploadImage);
+        },
         async getUserDetails(){
             const url = `${this.baseurl}api/accounts/getdetails.php?`;
             const options = {
@@ -292,6 +307,190 @@ let userApp = Vue.createApp({
             }
         },
         async updateUserInfo() {
+            console.log(this.userDetails);
+            console.log(this.authToken);
+
+            const data = new FormData();
+            data.append('firstname', this.userDetails.Firstname);
+            data.append('lastname', this.userDetails.Lastname);
+            data.append('phoneno', this.userDetails.phone);
+            data.append('dob', this.userDetails.dob);
+            data.append('sex', this.userDetails.sex);
+            data.append('state', this.userDetails.state);
+            data.append('country', this.userDetails.country);
+            data.append('address', this.userDetails.address);
+            data.append('zipcode', this.userDetails.zipcode);
+            
+            const url = `${this.baseurl}api/accounts/updateuserinfo.php`;
+            const options = {
+                method: "POST",
+                headers: { 
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                data,
+                url
+            }
+            try {
+                this.loading = true
+                const response = await axios(options);
+            
+                if ( response.data.status ){
+                    new Toasteur().success(response.data.text);
+                    // window.location.reload();
+                }          
+           } catch (error) {
+               if (error.response.status == 400){
+                   this.error = error.response.data.text;
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               if (error.response.status == 401){
+                   this.error = "User not Authorized";
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               if (error.response.status == 405){
+                   this.error = error.response.data.text;
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               if (error.response.status == 500){
+                   this.error = error.response.data.text;
+                   new Toasteur().error(this.error);
+                   return
+               }
+
+               this.error = error.message || "Error Processing Request"
+               new Toasteur().error(this.error);
+               
+           } finally {
+               this.loading = false;
+           }
+        },
+        //valid identity
+        async getUserValidIdentity(){
+            const url = `${this.baseurl}api/user_valid_id/getUserValidid.php?`;
+            const options = {
+                method: "GET",
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                },
+                url
+            }
+           
+            
+            try {
+                this.loading = true
+                const response = await axios(options);
+                if ( response.data.status ){
+                    this.userDetails = response.data.data
+                    this.ref_link = `${this.baseurl}register.php?code=${this.userDetails.refcode}`;
+                }          
+            } catch (error) {
+                if (error.response){
+                    if (error.response.status == 400){
+                        this.error = error.response.data.text;
+                        // new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 401){
+                        this.error = "User not Authorized";
+                        // new Toasteur().error(this.error);
+                        // window.location.href ="../login.php";
+                        return
+                    }
+    
+                    if (error.response.status == 405){
+                        this.error = error.response.data.text;
+                        // new Toasteur().error(this.error);
+                        return
+                    }
+    
+                    if (error.response.status == 500){
+                        this.error = error.response.data.text;
+                        // new Toasteur().error(this.error);
+                        return
+                    }
+                }else{
+                    this.error = error.message || "Error Processing Request"
+                    // new Toasteur().error(this.error);
+                }    
+                
+            } finally {
+                this.loading = false;
+            }
+        },
+        async addValidIdentity(){
+            console.log('identity_no', this.identity_no);
+            console.log('user_validid_type', this.user_validid_type);
+            console.log('uploadImage', this.uploadImage);
+            if(this.identity_no == null || this.user_validid_type == null || this.uploadImage== null ){
+                new Toasteur().error("Kindly fill all fields")
+            }
+
+            let data = new FormData();
+            data.append('identity_no', this.identity_no );
+            data.append('user_validid_type', this.user_validid_type );
+            data.append('image_url', this.uploadImage );
+
+            const url = `${this.baseUrl}/api/user_valid_id/addValidid.php`;
+            
+            const options = {
+                method: "POST",
+                data,
+                url,
+                headers: { 
+                    //"Content-type": "application/json",
+                    "Authorization": `Bearer ${this.authToken}`
+                }
+            }
+
+            try {
+                this.loading = true;
+                const response = await axios(options); 
+                if(response.data.status){
+                    this.name = null;
+                    this.uploadImage= null;
+                    new Toasteur().success(response.data.text);
+                    
+                }
+            } catch (error) {
+                ////console.log(error);
+                if (error.response.status == 400){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 401){
+                    const errorMsg = "User not Authorized";
+                    new Toasteur().error(errorMsg);
+                    window.location.href="./login.php"
+                    return
+                }
+
+                if (error.response.status == 405){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+
+                if (error.response.status == 500){
+                    const errorMsg = error.response.data.text;
+                    new Toasteur().error(errorMsg);
+                    return
+                }
+            }finally {
+                this.loading = false;
+            }
+
+        },
+        async updateValidIdentity() {
             console.log(this.userDetails);
             console.log(this.authToken);
 

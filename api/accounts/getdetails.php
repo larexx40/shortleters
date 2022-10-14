@@ -41,8 +41,10 @@
         $getUser->execute();
         $result = $getUser->get_result();
 
+        //user exist
         if($result->num_rows > 0){
-            //user exist
+            $getUser->close();
+            
             $row = $result->fetch_assoc();
             $id = $row['id'];
             $email = $row['email'];

@@ -28,19 +28,32 @@
         $decodeToken = ValidateAPITokenSentIN($serverName,$companyprivateKey,$method,$endpoint);
         $userpubkey = $decodeToken->usertoken;
 
-       //confirm if userid is passed
-       if(!isset($_POST['userid'])){
-        $errordesc="userid required";
-        $linktosolve="htps://";
-        $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
-        $errordata=returnError7003($errordesc,$linktosolve,$hint);
-        $text="Pass in space type  id";
-        $data=returnErrorArray($text,$method,$endpoint,$errordata);
-        respondBadRequest($data);
-        
-        }else {
-            $userid = cleanme($_POST['userid']); 
+        //check if aadmin or user
+        $adminid = checkIfIsAdmin($connect,$userpubkey);
+        $userid = checkIfUser($connect, $userpubkey);
+        if (!$userid && !$adminid){
+            // send user not found response to the user
+            $errordesc =  "User not Authorized";
+            $linktosolve = 'https://';
+            $hint = "User is not in the database ensure the user is in the database";
+            $errorData = returnError7003($errordesc, $linktosolve, $hint);
+            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+            respondUnAuthorized($data);
         }
+
+        if ( $adminid ){
+            if ( !isset($_GET['userid']) ){
+                $errordesc = "User id must be passed";
+                $linktosolve = 'https://';
+                $hint = "Kindly pass the required user id field in this endpoint";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondBadRequest($data);
+            }else{
+                $userid = cleanme($_GET['userid']);
+            }
+        }
+
 
         //confirm if userid is not empty
         if(empty($userid)){
