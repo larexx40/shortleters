@@ -35,6 +35,37 @@
             width: 100%;
         }
     }
+
+    #wrapper #image_preview{
+        margin-top: 15px;
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 10px;
+    }
+
+    #wrapper #image_preview .img_container{
+        position:relative;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        overflow:hidden;
+    }
+
+    #wrapper #image_preview .img_container img{
+        flex-shrink:0;
+        width:250px;
+        object-fit: fill;
+        height: 200px;
+        border-radius: 10px;
+    }
+
+    ._4793j_upload_btn{
+        display: initial;
+        background-color:#212529;
+        color: white;
+        padding: 10px 6px;
+        border-radius: 5px;
+    }
 </style>
 
 <body>
@@ -75,35 +106,18 @@
 
                         <br>
 
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                        </div>
-
-
-
+                        <div id="wrapper">
+                            <div style="text-align:center" >
+                                <div class="_4793j_upload_btn" onclick="document.getElementById('upload_file').click()" >Choose Images</div> 
+                            </div>
+                            
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <input type="file"  style="display:none" id="upload_file" name="upload_file[]" onchange="preview_image();" multiple/>
+                            </form>
+                            <div id="image_preview"></div>
+                        </div> 
                     </ul>
-                    <div class=" hovvvv justify-content-evenly">
+                    <div class="hovvvv justify-content-evenly">
                         <div class="progress" style="height:5px;">
                             <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
@@ -123,7 +137,20 @@
     </div>
 
     
-    <?php include "../includes/vue-script.php"; ?>   
+    <?php include "../includes/vue-script.php"; ?>
+
+    <script>
+        function preview_image(){
+            var total_file=document.getElementById("upload_file").files.length;
+            for(var i=0;i<total_file;i++)
+            {
+                $('#image_preview').append("<div class='img_container' ><img src='"+URL.createObjectURL(event.target.files[i])+"'></div>");
+            }
+        }
+    </script>
+</head>
+<body>
+      
 </body>
 
 </html>
