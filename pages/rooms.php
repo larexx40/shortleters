@@ -466,6 +466,25 @@
         background: rgb(255, 255, 255) !important;
         border-radius: 50% !important;
     }
+
+    ._show-photos-btn{
+        position: absolute;
+        z-index: 1;
+        top: 34em;
+        right: 4em;
+        background: white;
+        border: 1px solid black;
+        display: initial;
+        padding: 10px 5px;
+        border-radius: 5px;
+        cursor: pointer;       
+    }
+
+    ._show-photos-btn:hover{
+        border:none;
+        background-color: #53B561;
+        color: white; 
+    }
 </style>
 
 <body>
@@ -1258,12 +1277,50 @@
             </div>
             <!-- <======= SEARCH BAR MODAL ENDS ========> -->
 
+            <!-- <======== SHOW ALL PHOTOS MODAL START=========> -->
+            <div class="modal fade filter" id="staticBackdropfilter2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div style="background-color: transparent; width: 2rem;height: 2px"></div>
+                        </div>
+                        <div class="modal-body"> 
+                            <div class="container" style="border:none;">
+                                <div class="container" style="max-width:750px" >
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="_hd748ehj" >
+                                                <img src="https://a0.muscache.com/im/pictures/prohost-api/Hosting-51701996/original/0af6ce14-581c-4056-aa6b-58f4b267816b.png" />                                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="_hd748ehj">
+                                                <img src="https://a0.muscache.com/im/pictures/prohost-api/Hosting-51701996/original/0af6ce14-581c-4056-aa6b-58f4b267816b.png" />
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="_hd748ehj">
+                                                <img src="https://a0.muscache.com/im/pictures/prohost-api/Hosting-51701996/original/0af6ce14-581c-4056-aa6b-58f4b267816b.png" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <!-- <======== SHOW ALL PHOTOS MODAL ENDS =========> -->
 
             <main v-if="apartment_details">
                 <div class="container" style="margin-top: 110px;">
                     <span class="_1n81at5">
-                    <h1  class="_fecoyn4">{{apartment_details.title}}</h1>
-                </span>
+                        <h1  class="_fecoyn4">{{apartment_details.title}}</h1>
+                    </span>
                     <div class="_1qdp1ym">
                         <div class="_dm2bj1"><span class="_1jvg42j"><span class="_hyestb"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 14px; width: 14px; fill: currentcolor;"><path d="M15.094 1.579l-4.124 8.885-9.86 1.27a1 1 0 0 0-.542 1.736l7.293 6.565-1.965 9.852a1 1 0 0 0 1.483 1.061L16 25.951l8.625 4.997a1 1 0 0 0 1.482-1.06l-1.965-9.853 7.293-6.565a1 1 0 0 0-.541-1.735l-9.86-1.271-4.127-8.885a1 1 0 0 0-1.814 0z" fill-rule="evenodd"></path></svg></span>
                             <span class="_17p6nbba" aria-hidden="true">5.0 ·</span><span class="_s65ijh7"><button aria-label="Rated 5.0 out of 5 from 8 reviews." type="button" class="_11eqlma4">8 reviews</button></span></span><span class="_5oadh0" aria-hidden="true">·</span>
@@ -1306,7 +1363,9 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="_show-photos-btn" data-bs-target="#staticBackdropfilter2" data-bs-toggle="modal">
+                                Show all Photos
+                            </div>   
                         </div>
                     </div>
                     <div class="row p-0 pt-4">
