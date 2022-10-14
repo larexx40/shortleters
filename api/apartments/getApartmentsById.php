@@ -92,6 +92,7 @@
                 $no_of_pets = $row["no_of_pets"];
                 $no_of_floor = $row["no_of_floor"];
                 $listing_currency_id = $row["listing_currency_id"];
+                $currency_name = getNameFromField($connect, "listing_currency", "currency_id", $row["listing_currency_id"]);
                 $listing_currency_symbol = getCurrencySymbol($connect, $listing_currency_id);
                 $available_floor = $row["available_floor"];
                 $safety_ids = ($row["safety_ids"])? explode(",", $row["safety_ids"]) : null;
@@ -158,7 +159,7 @@
                 $agent_id = $row['agent_id'];
                 $agent_fullname = ($agent_id)? getUserFullname($connect, $agent_id): null;
                 $agent_photo = ( $agent_id )? getUserProfilePic($connect, $agent_id): null;
-                // $space_type_name = getNameFromField($connect, "space_type", "space_id", $space_type_id);
+                $space_type_name = getNameFromField($connect, "space_type", "space_id", $space_type_id);
                 $apartment_address = $row["apartment_address"];
                 $apartment_country = $row["apartment_country"];
                 $apartment_city = $row["apartment_city"];
@@ -168,6 +169,7 @@
                 $apartment_facilities = getAllApartmentFacilities($connect, $row['apartment_id']);
                 $apartment_house_rules = getAllApartmentHouseRule($connect, $row['apartment_id']);
                 $apartment_cancellation_policies = getAllApartmentCancellationPolicy($connect, $row['apartment_id']);
+                $apartment_charges = getAllApartmentAdditionalChrg( $connect, $row['apartment_id'] );
                 $apartment_reviews = getAllApartmentReviews($connect, $row['apartment_id']);
                 $apartment_lga = $row["apartment_lga"];
                 $location_sharing = ($row["location_sharing"] > 0)? "Sharing" : "Not Sharing";
@@ -210,6 +212,7 @@
                     'no_of_pets' => $no_of_pets,
                     'no_of_floor' => $no_of_floor,
                     'listing_currency_id' => $listing_currency_id,
+                    "currency_name" => ($currency_name) ? $currency_name : null,
                     'listing_currency_symbol' => ($listing_currency_symbol) ? $listing_currency_symbol : null,
                     'available_floor' => $available_floor,
                     'safety_ids' => $safety_id_name,
@@ -231,6 +234,7 @@
                     'apartment_status' => $apartment_status,
                     'apartment_house_rules' => $apartment_house_rules,
                     'apartment_cancellation_policies' => $apartment_cancellation_policies,
+                    "apartment_charges" => $apartment_charges,
                     "apartment_reviews" => ($apartment_reviews) ?  $apartment_reviews : null,
                     'agent_id' => $agent_id,
                     'agent_name' => $agent_fullname,

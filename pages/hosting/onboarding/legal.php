@@ -77,49 +77,36 @@
                     </div>
 
                 </div>
-                <a href="../index.html" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
+                <a href="../index.php" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 160px;">Back</a>
-                <a href="../index.html" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
+                <a href="../index.php" class="btn d-md-none d-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 20px;">Save and Exit</a>
 
             </div>
             <div class="col-md-6 video-container p-0 pt-md-5 position-relative" style="background-color: white !important;">
 
-                <div class="w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
+                <div class="container w-md-100 w-auto pt-5" style="display:flex;align-items: center;justify-content: center;">
                     <ul class="question-tag">
                         <h3 class="_atr2bu"><b>How are you hosting on Airbnb?</b></h3>
-                        <div class="form-check d-flex p-0 justify-content-between my-3 align-items-center">
+                        <div v-if='all_host_type'  v-for='(item, index) in all_host_type' class="form-check d-flex p-0 justify-content-between my-3 align-items-center">
                             <label class="form-check-label " for="exampleRadios1">
-                                I'm hosting as a business
+                                {{item.name}}
                             </label>
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <input class="form-check-input"  v-model='host_type_id' type="radio" :name="item.name" :value='item.id'>
 
                         </div>
                         
                         <br>
                         <h3 class="_atr2bu"><b>Do you have any of these at your place??</b></h3>
-                        <div class="form-check d-flex p-0 justify-content-between my-3 align-items-center">
-                            <label class="form-check-label " for="exampleRadios1">Security camera(s)
+                        <div v-if='guestSafeties' v-for='(item, index) in guestSafeties' class="form-check d-flex p-0 justify-content-between my-3 align-items-center">
+                            <label class="form-check-label " :for='item.guestSafetyid'>{{item.name}}
                             </label>
-                            <input class="form-check-input" type="checkbox" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <input :id='item.guestSafetyid' class="form-check-input" v-model='guest_safety_ids' type="checkbox" :name='item.guestSafetyid' :value='item.guestSafetyid'>
 
+                            <!-- <input type="checkbox" id="jack" value="Jack" v-model="checkedNames" />
+                            <label for="jack">Jack</label> -->
                         </div>
-                        <div class="form-check d-flex p-0 justify-content-between mb-3 align-items-center">
-                            <label class="form-check-label " for="exampleRadios1">
-                Weapons
-
-
-                            </label>
-                            <input class="form-check-input" type="checkbox" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-
-                        </div>
-                        <div class="form-check d-flex p-0 justify-content-between mb-3 align-items-center">
-                            <label class="form-check-label " for="exampleRadios1">
-                                Dangerous animals
-                            </label>
-                            <input class="form-check-input" type="checkbox" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-
-                        </div>
+                        
                         <br>
                         <h3 class="_atr2bu"><b>Some important things to know ?</b></h3>
                         <p>Be sure to comply with your local laws and review Airbnb's nondiscrimination policy and guest and Host fees. Update your cancellation policy after you publish.</p>
@@ -130,14 +117,14 @@
                             <div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <div class="d-flex justify-content-evenly" style="padding-top: 10px;">
-                            <a href="./index.html" class="_kaq6tx w-120">Back</a>
-                            <a href="./property-type.html" class="_kaq6tx  w-120">Review</a>
+                            <a href="./index.php" class="_kaq6tx w-120">Back</a>
+                            <a @click.prevent='addApartmentStep13(4)' href="./property-type.php" class="_kaq6tx  w-120">Review</a>
                         </div>
 
                     </div>
-                    <a href="../index.html" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
+                    <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 160px;">Back</a>
-                    <a href="../index.html" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
+                    <a href="../index.php" class="btn  d-none d-md-flex close _qa0cc5 position-absolute" style="top: 20px;
                     right: 20px;">Save and Exit</a>
                 </div>
 

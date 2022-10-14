@@ -140,11 +140,11 @@
             }
 
             //check later
-            $check_if_exist = checkifFieldExist($connect, "apartment_facilities", "facility_id", $facility_id);
+            $check_if_exist = checkApartmentFacility($connect, $facility_id, $apartment_id);
             // $check_if_exist = checkifFieldExist($connect, "apartment_facilities", "apartment_id", $apartment_id);
 
             
-
+            $error = true;
             if ( $check_if_exist ){
                 $update_apartment_facilities = "UPDATE `apartment_facilities` SET `total_number`= ? WHERE `apartment_id` = ? AND `facility_id` = ?";
                 $update_apartment_facility = $connect->prepare($update_apartment_facilities);
@@ -162,11 +162,10 @@
             }else{
 
                 $apartment_facility_id = generateUniqueShortKey($connect, "apartment_facilities", "apart_facility_id");
-
                 $insert_apartment_facilities = "INSERT INTO `apartment_facilities`(`apart_facility_id`, `apartment_id`, `facility_id`, `total_number`) VALUES (?, ?, ?, ?)";
                 $apartment_facility = $connect->prepare($insert_apartment_facilities);
                 $apartment_facility->bind_param("ssss", $apartment_facility_id, $apartment_id, $facility_id, $number);
-                $apartment_facility->execute();
+                $execute = $apartment_facility->execute();
 
                 if($apartment_facility->error){
                     $errordesc =  $apartment_facility->error;
@@ -177,36 +176,43 @@
                     respondInternalError($data);
                 }
 
+                if ( $execute){
+                    $error = false;
+                }
+
+
+
             }
 
         }
 
         $steps = "6";
         
+        if ( !$error ){
+            // Make user and agent
+            $query = "UPDATE `apartments` SET `max_guest`= ?,`steps`= ? WHERE `apartment_id` = ? AND agent_id = ?";
+            $updateStatus = $connect->prepare($query);
+            $updateStatus->bind_param("ssss", $max_guest, $steps ,$apartment_id ,$user_id);
+            $execute = $updateStatus->execute();
 
-        // Make user and agent
-        $query = "UPDATE `apartments` SET `max_guest`= ?,`steps`= ? WHERE `apartment_id` = ? AND agent_id = ?";
-        $updateStatus = $connect->prepare($query);
-        $updateStatus->bind_param("ssss", $max_guest, $steps ,$apartment_id ,$user_id);
-        $execute = $updateStatus->execute();
+            if ($updateStatus->error){
+                $errordesc =  $updateStatus->error;
+                $linktosolve = 'https://';
+                $hint = "500 code internal error, check ur database connections";
+                $errorData = returnError7003($errordesc, $linktosolve, $hint);
+                $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
+                respondInternalError($data);
+            }
 
-        if ($updateStatus->error){
-            $errordesc =  $updateStatus->error;
-            $linktosolve = 'https://';
-            $hint = "500 code internal error, check ur database connections";
-            $errorData = returnError7003($errordesc, $linktosolve, $hint);
-            $data = returnErrorArray($errordesc, $method, $endpoint, $errorData, []);
-            respondInternalError($data);
-        }
+            if ( $execute ){
+                
+                $text= "Saved";
+                $status = true;
+                $data = [];
+                $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
+                respondOK($successData);
 
-        if ( $execute ){
-            
-            $text= "Saved";
-            $status = true;
-            $data = [];
-            $successData = returnSuccessArray($text, $method, $endpoint, [], $data, $status);
-            respondOK($successData);
-
+            }
         }
 
     }else{

@@ -406,6 +406,23 @@
         return false;
     }
 
+    function checkApartmentFacility($connect, $facility_id, $apartment_id){
+        // check field
+        $Checkquery = "SELECT * FROM `apartment_facilities` WHERE `apartment_id` = ? AND `facility_id` = ?";
+        $Checkstmt = $connect->prepare($Checkquery);
+
+        $Checkstmt->bind_param("ss", $facility_id, $apartment_id );
+        $Checkstmt->execute();
+        $result = $Checkstmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+           return $num_row;
+        }
+
+        return false;
+    }
+
     function getNameFromField($connect, $table, $field, $data){
         // check field
         $query = "SELECT * FROM $table WHERE $field = ?";
@@ -886,6 +903,28 @@
         return false;
     }
 
+    function getApartmentCoverImage($connect, $table, $field, $data){
+        // check field
+        $cover = 1;
+        $query = "SELECT * FROM $table WHERE $field = ? AND cover_photo = ? ";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("ss", $data, $cover );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $all_images = [];
+            while ($row = $result->fetch_assoc()){
+                $image = $row['image_url'];
+                array_push($all_images, array('image' => $image));
+            }
+           return $all_images;
+        }
+
+        return false;
+    }
+
     function getCategoryImage($connect, $field ,$data){
         // check field
         $query = "SELECT * FROM productcategories WHERE $field = ?";
@@ -947,6 +986,24 @@
 
         return false;
     }
+
+    function getValidIdentityDetails($connect, $data){
+        $query = "SELECT user_valid_identity_id, identity_no, user_validid_type, status FROM user_valid_identity WHERE user_valid_identity_id = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+        if ($num_row > 0){
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+        
+        return false;
+    }
+
+    
+
 
     function getAllApartmentFacilities($connect, $data){
         $query = "SELECT `facility_id`, `total_number` FROM `apartment_facilities` WHERE `apartment_id` = ?";
@@ -1019,6 +1076,34 @@
                 ));
             }
            return $policies;
+        }
+
+        return false;
+    }
+
+    function getAllApartmentAdditionalChrg($connect, $data){
+        $query = "SELECT `add_charg_id`, `price`, `name`, `description` FROM `apartment_additional_charge` LEFT JOIN additional_charge ON additional_charge.add_chrg_id = apartment_additional_charge.add_charg_id WHERE `apartment_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $charges = [];
+            while ($row = $result->fetch_assoc()){
+                $add_charg_id = $row['add_charg_id'];
+                $charge_name = $row['name'];
+                $charge_price = $row['price'];
+                $charge_description = $row['description'];
+                array_push( $charges ,array(
+                    "add_charg_id" => $add_charg_id,
+                    "charge_name" => $charge_name,
+                    "charge_price" => $charge_price,
+                    "charge_description" => $charge_description
+                ));
+            }
+           return $charges;
         }
 
         return false;
