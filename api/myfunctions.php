@@ -987,6 +987,24 @@
         return false;
     }
 
+    function getValidIdentityDetails($connect, $data){
+        $query = "SELECT user_valid_identity_id, identity_no, user_validid_type, status FROM user_valid_identity WHERE user_valid_identity_id = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+        if ($num_row > 0){
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+        
+        return false;
+    }
+
+    
+
+
     function getAllApartmentFacilities($connect, $data){
         $query = "SELECT `facility_id`, `total_number` FROM `apartment_facilities` WHERE `apartment_id` = ?";
         $stmt = $connect->prepare($query);

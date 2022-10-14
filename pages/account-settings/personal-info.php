@@ -262,7 +262,7 @@
 										<strong>Gender</strong>
 										<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editGender">Edit</button>
 									</div>
-									<div class="value"><span>{{userDetails.sex}}</span></div>
+									<div class="value"><span>{{userDetails.gender}}</span></div>
 								</div>
 								<div class="each-form-content">
 									<div class="title-button">
@@ -293,16 +293,17 @@
 								<div class="each-form-content">
 									<div class="title-button">
 										<strong>Government Id</strong>
-										<button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Add</button>
+										<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editValidid">Add</button>
 									</div>
-									<div class="value"><span>Not provided</span></div>
+									<div class="value"><span>{{userDetails.identity}}</span></div>
 								</div>
 								<div class="each-form-content">
 									<div class="title-button">
 										<strong>Address</strong>
-										<button type="button" class="" data-bs-toggle="modal" data-bs-target="#currency">Edit</button>
+										<button type="button" class="" data-bs-toggle="modal" data-bs-target="#editAddress">Edit</button>
 									</div>
-									<div class="value"><span>Not provided</span></div>
+									<div v-if='userDetails.address' class="value"><span>{{userDetails.address}}, {{userDetails.state}}, {{userDetails.country}}</span></div>
+									<div v-else class="value"><span>Not provided</span></div>
 								</div>
 								<div class="each-form-content">
 									<div class="title-button">
@@ -602,8 +603,9 @@
 							<div class="modal-body">
 								<form @submit.prevent='updateUserInfo' action="" method="">
 									<div class="form-input">
-										<select class="form-select" aria-label="Default select example">
-											<option selected>Select Gender</option>
+						    			<label class="form-label" for="currency_tag">Gender</label>
+										<select v-model='userDetails.sex 'class="form-select" aria-label="Default select example" required>
+											<option value="">Select Gender</option>
 											<option value="1">Male</option>
 											<option value="2">Female</option>
 											<option value="3">Others</option>
@@ -666,6 +668,119 @@
 									</div>
 									<div class="submit-btn">
 										<button>Save</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--EditValidid Modal -->
+				<div class="modal fade" id="editValidid" tabindex="-1" aria-labelledby="lang-modal" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div v-if= 'userDetails' class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="lang-modal">Upload Valid Identity</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="pre">
+									<h6>Legal name</h6>
+									<small>This is the name on your travel document, which could be a license or a passport.</small>
+								</div>
+								<form @submit.prevent="addValidIdentity">
+									<div class="form-floating">
+										<input
+											type="text"
+											class="form-control"
+											id="floatingInputValue1"
+											v-model="identity_no" />
+										<label for="floatingInputValue1">Identity id</label>
+									</div>
+									<br>
+									
+									<div class="form-input">
+										<label class="form-label" for="currency_tag">Identity Type</label>
+										<select v-model="user_validid_type" class="form-select" aria-label="Default select example">
+											<option value="null" >Select an Identity Card</option>
+											<option value="NIMC">NIN Slip / Card</option>
+											<option value="Voters Card">Voters Card</option>
+											<option value="Valid Id card">Valid Id card</option>
+											<option value="International Passport">International Passport</option>
+										</select>
+									</div><br>
+
+                                    <div class="form-input">
+                                        <label class="form-label" for="quantity-add">Identity Image</label>
+                                        <div class="form-control-wrap">        
+                                            <div class="form-file">            
+                                                <input type="file" @change='uploadImage' class="form-file-input" id="customFile">         
+                                            </div>    
+                                        </div>
+                                        <!-- <input type="text" v-model="amenities_icon" class="form-control" id="quantity-add" placeholder="Quantity"> -->
+                                    </div>
+									
+									
+									<div class="submit-btn">
+										<button type="submit" class="btn" style="background-color: #000; color: #fff; padding: 14px 1.8rem">Save</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--EditAddress Modal -->
+				<div class="modal fade" id="editAddress" tabindex="-1" aria-labelledby="lang-modal" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div v-if= 'userDetails' class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="lang-modal">Edit Your Address</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="pre">
+									<h6>Legal name</h6>
+									<small>This is the name on your travel document, which could be a license or a passport.</small>
+								</div>
+								<form @submit.prevent="updateUserInfo">
+									<div class="form-floating">
+										<input
+											type="text"
+											class="form-control"
+											id="floatingInputValue1"
+											v-model="userDetails.address" />
+										<label for="floatingInputValue1">Street Address</label>
+									</div>
+									<br>
+									<div class="form-floating">
+										<input
+											type="text"
+											class="form-control"
+											id="floatingInputValue1"
+											v-model="userDetails.state" />
+										<label for="floatingInputValue1">State</label>
+									</div><br>	
+									<div class="form-floating">
+										<input
+											type="text"
+											class="form-control"
+											id="floatingInputValue1"
+											v-model="userDetails.country" />
+										<label for="floatingInputValue1">Country</label>
+									</div>
+									<br>
+									<div class="form-floating">
+										<input
+											type="number"
+											class="form-control"
+											id="floatingInputValue1"
+											v-model="userDetails.zipcode" />
+										<label for="floatingInputValue1">Zip Code</label>
+									</div>
+									<br>					
+									
+									
+									<div class="submit-btn">
+										<button type="submit" class="btn" style="background-color: #000; color: #fff; padding: 14px 1.8rem">Save</button>
 									</div>
 								</form>
 							</div>

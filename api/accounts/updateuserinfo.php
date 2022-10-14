@@ -137,6 +137,34 @@
         }else {
             $country = cleanme($_POST['country']);
         }
+
+        if( !isset($_POST['address'])){
+            $errordesc="address required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Pass in your address";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+            
+        }else {
+            $address = cleanme($_POST['address']);
+        }
+
+        if( !isset($_POST['zipcode'])){
+            $errordesc="zipcode required";
+            $linktosolve="htps://";
+            $hint=["Ensure that all data specified in the API is sent","Ensure that all data sent is not empty","Ensure that the exact data type specified in the documentation is sent."];
+            $errordata=returnError7003($errordesc,$linktosolve,$hint);
+            $text="Pass in your zipcode";
+            $method=getenv('REQUEST_METHOD');
+            $data=returnErrorArray($text,$method,$endpoint,$errordata);
+            respondBadRequest($data);
+            
+        }else {
+            $zipcode = cleanme($_POST['zipcode']);
+        }
         
 
         // if( empty($firstName) || empty($lastName) ||  empty($phoneno) || empty($dob) || empty($sex) ||empty($state) || empty($country) ){
@@ -182,9 +210,9 @@
         // }
 
         //update using userpubkey
-        $sql = "UPDATE users SET fname = ?, lname = ?, phoneno = ?, state = ?, country = ?, dob= ?, sex = ? WHERE id = ?";
+        $sql = "UPDATE users SET fname = ?, lname = ?, phoneno = ?, address= ?, state = ?, country = ?, zipcode= ?, dob= ?, sex = ? WHERE id = ?";
         $stmt = $connect->prepare($sql);
-        $stmt->bind_param('ssssssss', $firstName, $lastName, $phoneno, $state, $country, $dob, $sex, $user_id);
+        $stmt->bind_param('ssssssssss', $firstName, $lastName, $phoneno, $address, $state, $country, $zipcode, $dob, $sex, $user_id);
         $stmt->execute();
         $row_affected = $stmt->affected_rows;
 

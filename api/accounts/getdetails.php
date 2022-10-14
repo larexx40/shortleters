@@ -41,8 +41,10 @@
         $getUser->execute();
         $result = $getUser->get_result();
 
+        //user exist
         if($result->num_rows > 0){
-            //user exist
+            $getUser->close();
+            
             $row = $result->fetch_assoc();
             $id=$row['id'];
             $email =$row['email'];
@@ -56,8 +58,26 @@
             $country = $row['country'];
             $dob = $row['dob'];
             $sex = $row['sex'];
+            if($sex== 1){
+                $gender = "Male";
+            }elseif($sex== 2){
+                $gender = "Female";
+            }else{
+                $gender = "Others";
+            }
             $refcode = $row['refcode'];
-            $getUser->close();
+            $verified = $row['verified'];
+            $validid = $row['validid'];
+            if($validid == ''){
+                $identity = 'Not Provided';
+            }
+            $identity_details = ($validid)? getValidIdentityDetails($connect, $validid): null;
+            $validid_status = ($identity_details)? $identity_details['status']: null;$address = $row['address'];
+            $address = $row['address'];
+            $state = $row['state'];
+            $country = $row['country'] ;
+            $zipCode = $row['zipcode'];
+            
 
             //get default delivery address
             // $default = 1;
@@ -69,11 +89,9 @@
             //     //get delivery address
             //     $row = $result->fetch_assoc();
             //     $addressno = ( $row ) ? $row['address_no'] : "";
-            //     $address = ( $row ) ? $row['address'] : "";
+                
             //     $lga = ( $row ) ? $row['lga'] : "";
-            //     $address_state = ( $row ) ? $row['state'] : "";
-            //     $address_country = ( $row ) ? $row['country'] : "" ;
-            //     $zipCode = ( $row ) ? $row['zipcode'] : "";
+            
             //     $getAddress->close();
 
             $maindata = [
@@ -87,16 +105,25 @@
                 "phone" => $phoneno,
                 "balance"=>$balance,
                 // "Addressno"=> $addressno,
-                // "Address"=> $address,
                 // "address_state" => $address_state,
                 // "address_country" => $address_country,
                 // "Local government"=> $lga ,
                 "State"=>$state,
                 "Country"=>$country,
                 "sex" => $sex,
+                'gender'=>$gender,
                 'dob' => $dob,
                 // "Zipcode"=>$zipCode,
-                "refcode" => $refcode
+                "refcode" => $refcode,
+               'verified'=> $verified,
+               'validid'=>$validid,
+               'identity_details'=>$identity_details,
+               'validid_status'=>$validid_status,
+               'identity'=>$identity,
+               "address"=> $address,
+               'state'=>$state,
+               'country'=>$country,
+               'zipcode'=>$zipCode,
             ];
             $errordesc = "";
             $linktosolve = "htps://";
