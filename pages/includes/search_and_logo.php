@@ -56,7 +56,9 @@
             <div class="p-0 col-md-4 col-lg-3 menu d-none d-md-inline-flex justify-content-md-end">
                 <div class="end-tabs">
                     <div class="host">
-                        <a href="./hosting/index.php" class="host-link"><span>Become a Host</span></a>
+                        <a v-if="!userDetails" href="./login.php" class="host-link"><span>Become a Host</span></a>
+                        <a v-if="userDetails && ( is_agent < 1 )" href="./hosting/onboarding/" class="host-link"><span>Become a Host</span></a>
+                        <a v-if="userDetails && ( is_agent > 0 )" href="./hosting/listing.php" class="host-link"><span>Become a Host</span></a>
                     </div>
                     <div class="menu-link">
                         <div class="dropdown">

@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../assets/fonts/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../assets/css/nav.css">
-    <link rel="stylesheet" href="../../assets/css/footer.css">
-    <link rel="stylesheet" href="../../assets/css/layout.css">
-    <link rel="stylesheet" href="../../assets/css/hosting.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
+<?php include "./includes/header.php"; ?>
     <title>Account Settings</title>
 </head>
 <style>

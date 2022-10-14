@@ -1063,6 +1063,34 @@
         return false;
     }
 
+    function getAllApartmentAdditionalChrg($connect, $data){
+        $query = "SELECT `add_charg_id`, `price`, `name`, `description` FROM `apartment_additional_charge` LEFT JOIN additional_charge ON additional_charge.add_chrg_id = apartment_additional_charge.add_charg_id WHERE `apartment_id` = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("s", $data );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_row = $result->num_rows;
+
+        if ($num_row > 0){
+            $charges = [];
+            while ($row = $result->fetch_assoc()){
+                $add_charg_id = $row['add_charg_id'];
+                $charge_name = $row['name'];
+                $charge_price = $row['price'];
+                $charge_description = $row['description'];
+                array_push( $charges ,array(
+                    "add_charg_id" => $add_charg_id,
+                    "charge_name" => $charge_name,
+                    "charge_price" => $charge_price,
+                    "charge_description" => $charge_description
+                ));
+            }
+           return $charges;
+        }
+
+        return false;
+    }
+
     function getAllApartmentReviews($connect, $data){
         $query = "SELECT `userid`, `review`, `review_details` ,`ratestar`, `created_at` FROM `apartment_review` WHERE `apartment_id` = ?";
         $stmt = $connect->prepare($query);

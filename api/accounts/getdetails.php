@@ -44,59 +44,63 @@
         if($result->num_rows > 0){
             //user exist
             $row = $result->fetch_assoc();
-            $id=$row['id'];
-            $email =$row['email'];
-            $firstName = $row['fname'];
-            $lastName = $row['lname'];
-            $username = $row['username'];
-            $fullname = $row['fname']." ".$row['lname'];
-            $balance = $row['bal'];
+            $id = $row['id'];
+            $email = $row['email'];
+            $firstname = $row['fname'];
+            $lastname = $row['lname'];
             $phoneno = $row['phoneno'];
+            $location = $row['location'];
+            $balance = $row['bal'];
+            $refcode = $row['refcode'];
             $state = $row['state'];
             $country = $row['country'];
+            $username = $row['username'];
+            $agent = $row["is_agent"];
             $dob = $row['dob'];
             $sex = $row['sex'];
-            $refcode = $row['refcode'];
-            $getUser->close();
+            $created = gettheTimeAndDate(strtotime($row['created_at']));
+            $updated = gettheTimeAndDate(strtotime($row['updated_at']));
+            $referredBy = ( getUserFullname($connect, $row['referby']) ) ? getUserFullname($connect, $row['referby']) : "";
+            $statusCode = $row['status'];
+            if ($row['status'] == 0){
+                $userStatus = "Banned";
+            }
+            if ($row['status'] == 1){
+                $userStatus = "Active";
+            }
+            if ($row['status'] == 2){
+                $userStatus = "Suspended";
+            }
+            if ($row['status'] == 3){
+                $userStatus = "Frozen";
+            }
+            $adminSeen = $row['adminseen'];
+            $adminCheck = ($row['adminseen'] == 0) ? "Not seen" : "Seen";
 
-            //get default delivery address
-            // $default = 1;
-            // $getAddress = $connect->prepare("SELECT * FROM deliveryaddress WHERE defultaddress = ? AND userid = ?");
-            // $getAddress->bind_param("ss",$default, $user_id);
-            // $getAddress->execute();
-            // $result = $getAddress->get_result();
-
-            //     //get delivery address
-            //     $row = $result->fetch_assoc();
-            //     $addressno = ( $row ) ? $row['address_no'] : "";
-            //     $address = ( $row ) ? $row['address'] : "";
-            //     $lga = ( $row ) ? $row['lga'] : "";
-            //     $address_state = ( $row ) ? $row['state'] : "";
-            //     $address_country = ( $row ) ? $row['country'] : "" ;
-            //     $zipCode = ( $row ) ? $row['zipcode'] : "";
-            //     $getAddress->close();
 
             $maindata = [
-                "userid"=>$id,
-                "Email"=>$email,
-                "Firstname"=>$firstName,
-                "Lastname"=>$lastName,
-                "fullname" => $fullname,
-                "Username"=>$username,
-                "Fullname"=>$fullname,
-                "phone" => $phoneno,
-                "balance"=>$balance,
-                // "Addressno"=> $addressno,
-                // "Address"=> $address,
-                // "address_state" => $address_state,
-                // "address_country" => $address_country,
-                // "Local government"=> $lga ,
-                "State"=>$state,
-                "Country"=>$country,
-                "sex" => $sex,
+                'id' => $id,
+                'email' => $email,
+                'firstname' => $firstname,
+                'lastname' => $lastname,
+                'phoneno' => $phoneno,
+                'location' => $location,
+                'balance' => $balance,
+                'refcode' => $refcode,
+                'state' => $state,
+                'country' => $country,
+                'status_code' => $statusCode,
+                'status' => $userStatus,
+                'status' => $userStatus,
+                'agent' => $agent,
+                'admin_seen_code' => $adminSeen,
+                'admin_seen' => $adminCheck,
+                'username' => $username,
+                'referredBy' => $referredBy,
                 'dob' => $dob,
-                // "Zipcode"=>$zipCode,
-                "refcode" => $refcode
+                "sex" => $sex,
+                'created' => $created,
+                'updated' => $updated
             ];
             $errordesc = "";
             $linktosolve = "htps://";

@@ -42,6 +42,16 @@ function addDays(date, days) {
     return result_format;
 }
 
+const getMonthAndDay = (date) => {
+    const mon = ["Jan","Feb","March","April","May","June","July","August","Sept","Oct","Nov","Dec"];
+    var dateObj = new Date(date);
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+
+    newdate = mon[month] + " " + day;
+    return newdate;
+}
+
 min_checkout = addDays(today, 1);
 
 // check if a day is available
@@ -121,6 +131,11 @@ let userApp = Vue.createApp({
             apartments: null,
             apartment_details: null,
             apartment_category: null,
+            is_agent: null,
+            booking_details: null,
+            no_of_days: null,
+            total_price: 0,
+            total_price_with_charges: 0,
             selected_check_in: null,
             selected_check_out: null,
             bookings: null,
@@ -237,7 +252,8 @@ let userApp = Vue.createApp({
                 this.loading = true
                 const response = await axios(options);
                 if ( response.data.status ){
-                    this.userDetails = response.data.data
+                    this.userDetails = response.data.data;
+                    this.is_agent = response.data.data.agent;
                     this.ref_link = `${this.baseurl}register.php?code=${this.userDetails.refcode}`;
                 }          
             } catch (error) {
@@ -338,7 +354,38 @@ let userApp = Vue.createApp({
            }
         },
         async move_tocheckout() {
+            let booking_details = {
+                check_in: this.selected_check_in,
+                check_out: this.selected_check_out,
+                total_guest: this.total_adult_guest,
+                total_kids: ( this.no_of_kids )? this.no_of_kids: null,
+                total_pets: ( this.no_of_pets )? this.no_of_pets: null
+            }
+            window.localStorage.setItem("booking", JSON.stringify(booking_details));
+            console.log("id", this.apartment_details.id);
+            await this.setApartmentId(this.apartment_details.id);
             window.location.href = "./checkout.php";
+        },
+        async fetchBookingDetails(){
+            await this.getApartmentDetails();
+            let booking = ( window.localStorage.getItem("booking") )? window.localStorage.getItem("booking") : null;
+
+            if ( booking ){
+                this.booking_details = JSON.parse(booking);
+                this.no_of_days = days_difference(this.booking_details.check_in, this.booking_details.check_out);
+                this.total_price = this.apartment_details.price * days_difference(this.booking_details.check_in, this.booking_details.check_out);
+                this.total_price_with_charges = this.total_price;
+                this.booking_details.check_in = getMonthAndDay(this.booking_details.check_in);
+                this.booking_details.check_out = getMonthAndDay(this.booking_details.check_out);
+
+                if ( this.apartment_details.apartment_charges ){
+                    for (var i = 0; i < this.apartment_details.apartment_charges.length; i++ ){
+                        this.total_price_with_charges = parseInt(this.total_price_with_charges) + parseInt(this.apartment_details.apartment_charges[i].charge_price); 
+                    }
+                }
+
+                
+            }
         },
         //change user password
         async changePassword(){
@@ -2451,6 +2498,12 @@ let userApp = Vue.createApp({
                 return;
             }
 
+            if ( this.total_adult_guest < 1 ){
+                this.error = `Kindly Add a Guest`
+                new Toasteur().error(this.error);
+                return;
+            }
+
             if ( this.bookings ){
                 let availability;
                 for( var i=0; i < this.bookings.length; i++ ){
@@ -3561,6 +3614,9 @@ let userApp = Vue.createApp({
             await this.getApartmentDetails();
             await this.getAllBookedDates();
             console.log(this.bookings);
+        }
+        if ( page === "checkout.php" ){
+            await this.fetchBookingDetails();
         }
         
     }
